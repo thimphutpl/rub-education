@@ -1,0 +1,97 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:Event/{DD}/{MM}/{YY}-{####}",
+ "creation": "2025-08-13 09:30:49.775230",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_uupt",
+  "amended_from",
+  "event",
+  "column_break_cmzg",
+  "attendance_date",
+  "college",
+  "class_section",
+  "attendance_list"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_uupt",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Event Attendance",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "column_break_cmzg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "attendance_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Attendance Date"
+  },
+  {
+   "fieldname": "college",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "College"
+  },
+  {
+   "fieldname": "event",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Event",
+   "options": "Events"
+  },
+  {
+   "fieldname": "class_section",
+   "fieldtype": "Section Break",
+   "label": "Class"
+  },
+  {
+   "fieldname": "attendance_list",
+   "fieldtype": "Table",
+   "label": "Class",
+   "options": "Attedance Table"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-08-13 16:24:36.829267",
+ "modified_by": "Administrator",
+ "module": "Event Management",
+ "name": "Event Attendance",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

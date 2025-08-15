@@ -163,8 +163,9 @@
   },
   {
    "fieldname": "nationality",
-   "fieldtype": "Data",
-   "label": "Nationality"
+   "fieldtype": "Select",
+   "label": "Nationality",
+   "options": "\nBhutanese\nNon Bhutanese"
   },
   {
    "fieldname": "student_applicant",
@@ -351,7 +352,7 @@
    "link_fieldname": "student"
   }
  ],
- "modified": "2024-06-07 16:52:48.135292",
+ "modified": "2025-08-13 15:54:07.499804",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student",
@@ -385,6 +386,7 @@
    "share": 1
   }
  ],
+ "row_format": "Dynamic",
  "show_name_in_global_search": 1,
  "show_title_field_in_link": 1,
  "sort_field": "modified",

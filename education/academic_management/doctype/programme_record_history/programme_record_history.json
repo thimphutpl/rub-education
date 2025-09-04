@@ -1,0 +1,75 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:programme_name",
+ "creation": "2025-08-25 15:58:03.651023",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "programme_name",
+  "approval_date",
+  "ccr_date",
+  "column_break_toei",
+  "programme_leader",
+  "apmr_date"
+ ],
+ "fields": [
+  {
+   "fieldname": "programme_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Programme Name",
+   "read_only": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "approval_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Approval Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "ccr_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "CCR Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_toei",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "programme_leader",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Programme Leader",
+   "options": "Employee",
+   "read_only": 1
+  },
+  {
+   "fieldname": "apmr_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "APMR Date",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-08-25 16:57:22.020930",
+ "modified_by": "Administrator",
+ "module": "Academic Management",
+ "name": "Programme Record History",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

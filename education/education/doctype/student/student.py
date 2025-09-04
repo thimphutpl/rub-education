@@ -27,6 +27,20 @@ class Student(Document):
 		# for each student check whether a customer exists or not if it does not exist then create a customer with customer group student
 		# This prevents from polluting users data
 		self.set_missing_customer_details()
+  
+		if self.status:
+			frappe.db.sql("""
+				UPDATE `tabHostel Allocation Item`
+				SET status = %s
+				WHERE student_code = %s
+			""", (self.status, self.name))
+
+			frappe.db.commit() 
+			frappe.msgprint(
+				_("Hostel Allocation Item status updated for Student {0} to {1}")
+				.format(self.name, self.status),
+				alert=True
+			)
 
 	def set_missing_customer_details(self):
 		self.set_customer_group()

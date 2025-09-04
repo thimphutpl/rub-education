@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "format:Event/{DD}/{MM}/{YY}/{####}",
  "creation": "2025-08-11 15:07:58.103744",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -15,6 +16,7 @@
   "end_date",
   "event_venue",
   "event_banner",
+  "color",
   "agenda_section",
   "event_agenda",
   "equipment_section",
@@ -123,7 +125,7 @@
   },
   {
    "allow_on_submit": 1,
-   "depends_on": "eval:doc.registration_type=='Faculty'",
+   "depends_on": "eval:doc.registration_type=='Faculty' || doc.registration_type=='All'",
    "fieldname": "event_register",
    "fieldtype": "Table",
    "label": "Faculty",
@@ -134,10 +136,10 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Register Type",
-   "options": "All\nFaculty\nClass"
+   "options": "\nAll\nFaculty\nClass"
   },
   {
-   "depends_on": "eval:doc.registration_type=='Faculty'",
+   "depends_on": "eval:doc.registration_type=='Faculty' || doc.registration_type=='All'",
    "fieldname": "get_all_faculty",
    "fieldtype": "Button",
    "label": "Get All Faculty"
@@ -163,27 +165,33 @@
    "fieldtype": "Section Break"
   },
   {
-   "depends_on": "eval:doc.registration_type=='Class'",
+   "depends_on": "eval:doc.registration_type=='Class' || doc.registration_type=='All'",
    "fieldname": "student_register",
    "fieldtype": "Table",
    "label": "Class",
    "options": "Student Registration"
   },
   {
-   "depends_on": "eval:doc.registration_type=='Class'",
+   "depends_on": "eval:doc.registration_type=='Class' || doc.registration_type=='All'",
    "fieldname": "get_all_student",
    "fieldtype": "Button",
    "label": "Get All Class"
+  },
+  {
+   "fieldname": "color",
+   "fieldtype": "Color",
+   "label": "Color"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-08-22 16:08:53.538392",
+ "modified": "2025-08-28 14:24:17.500048",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "Events",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {

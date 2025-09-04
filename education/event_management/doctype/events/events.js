@@ -26,6 +26,7 @@ frappe.ui.form.on("Events", {
     },
     create_attendace: function (frm) {
         let method = "education.event_management.doctype.event_attendance.event_attendance.create_attendance";
+        frappe.dom.freeze("Please wait. Creating Attendance...", true);
         return frappe.call({
             method: method,
             args: {
@@ -34,16 +35,22 @@ frappe.ui.form.on("Events", {
             },
             callback: function (r) {
                 if (r.message && r.message.attendance_name) {
-                    frappe.msgprint("Attendance created.");
+                    frappe.msgprint("Successfully Attendance created.");
                     frappe.set_route("List", "Event Attendance", r.message.attendance_name);
                 } else {
                     frappe.msgprint("No attendance records created.");
                 }
             },
+            always: function () {
+                setTimeout(() => {
+                    frappe.dom.unfreeze();
+                }, 500);
+            }
         });
     },
 
     get_all_faculty(frm) {
+        frappe.dom.freeze("Please wait. Fetching Faculty...", true);
         frappe.call({
             method: "frappe.client.get_list",
             args: {
@@ -55,11 +62,18 @@ frappe.ui.form.on("Events", {
                     frm.doc._all_faculty = r.message;
                     reload_faculty_rows(frm);
                 }
-            }
+            },
+            always: function () {
+                setTimeout(() => {
+                    frappe.dom.unfreeze();
+                }, 500);
+            },
         });
     },
 
     get_all_student(frm) {
+        frappe.dom.freeze("Please wait. Fetching Students...", true);
+
         frappe.call({
             method: "frappe.client.get_list",
             args: {
@@ -71,33 +85,14 @@ frappe.ui.form.on("Events", {
                     frm.doc._all_student = r.message;
                     reload_student_rows(frm);
                 }
+            },
+            always: function () {
+                setTimeout(() => {
+                    frappe.dom.unfreeze();
+                }, 500);
             }
         });
     },
-
-    // get_all_student(frm) {
-    //     frm.clear_table("student_register");
-    //     frappe.call({
-    //         method: "frappe.client.get_list",
-    //         args: {
-    //             doctype: "Student",
-    //             fields: ["name", "student_email_id", "first_name"],
-    //         },
-    //         callback: function (r) {
-    //             if (r.message && r.message.length) {
-    //                 r.message.forEach(std => {
-    //                     let row = frm.add_child("student_register");
-    //                     row.student = std.name;
-    //                     row.student_email = std.student_email_id;
-    //                     row.student_name = std.first_name;
-    //                 });
-    //                 frm.refresh_field("student_register");
-    //             }
-    //         }
-    //     });
-    // }
-
-
 
 });
 
@@ -117,8 +112,8 @@ function reload_faculty_rows(frm) {
 
 function reload_student_rows(frm) {
     frm.clear_table("student_register");
-    let faculty_to_show = frm.doc._all_student.slice(0);
-    faculty_to_show.forEach(std => {
+    let student_to_show = frm.doc._all_student.slice(0);
+    student_to_show.forEach(std => {
         let row = frm.add_child("student_register");
         row.student = std.name;
         row.student_email = std.student_email_id;

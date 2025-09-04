@@ -14,29 +14,37 @@
   "first_name",
   "middle_name",
   "last_name",
+  "company",
+  "scholarship_type",
+  "programme",
+  "year",
+  "semester",
   "column_break_4",
   "naming_series",
   "joining_date",
   "user",
   "student_applicant",
+  "catering_type",
   "image",
+  "status",
   "section_break_7",
   "student_email_id",
   "date_of_birth",
   "blood_group",
+  "bank_account_number",
   "column_break_3",
   "student_mobile_number",
   "gender",
   "nationality",
   "address_tab",
   "section_break_22",
-  "address_line_1",
-  "address_line_2",
-  "pincode",
-  "column_break_20",
-  "city",
-  "state",
   "country",
+  "dzongkhag",
+  "gewog",
+  "village",
+  "column_break_20",
+  "house_number",
+  "thram_number",
   "relations_tab",
   "section_break_18",
   "guardians",
@@ -69,7 +77,8 @@
   },
   {
    "fieldname": "section_break_3",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "label": "Student Profile"
   },
   {
    "fieldname": "first_name",
@@ -126,7 +135,7 @@
    "fieldname": "joining_date",
    "fieldtype": "Date",
    "in_list_view": 1,
-   "label": "Joining Date"
+   "label": "Enrollment Date"
   },
   {
    "fieldname": "image",
@@ -179,39 +188,16 @@
    "fieldtype": "Section Break"
   },
   {
-   "fieldname": "address_line_1",
-   "fieldtype": "Data",
-   "label": "Address Line 1"
-  },
-  {
-   "fieldname": "address_line_2",
-   "fieldtype": "Data",
-   "label": "Address Line 2"
-  },
-  {
-   "fieldname": "pincode",
-   "fieldtype": "Data",
-   "label": "Pincode"
-  },
-  {
    "fieldname": "column_break_20",
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "city",
-   "fieldtype": "Data",
-   "label": "City"
-  },
-  {
-   "fieldname": "state",
-   "fieldtype": "Data",
-   "label": "State"
-  },
-  {
+   "default": "Bhutan",
    "fieldname": "country",
    "fieldtype": "Link",
    "label": "Country",
-   "options": "Country"
+   "options": "Country",
+   "reqd": 1
   },
   {
    "fieldname": "section_break_18",
@@ -268,7 +254,7 @@
   {
    "fieldname": "address_tab",
    "fieldtype": "Tab Break",
-   "label": "Address"
+   "label": "Permanent Address"
   },
   {
    "fieldname": "relations_tab",
@@ -312,6 +298,83 @@
   {
    "fieldname": "column_break_rgpi",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "College",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "scholarship_type",
+   "fieldtype": "Link",
+   "label": "Scholarship Type",
+   "options": "Scholarship Type",
+   "reqd": 1
+  },
+  {
+   "fieldname": "bank_account_number",
+   "fieldtype": "Data",
+   "label": "Bank Account Number",
+   "reqd": 1
+  },
+  {
+   "fieldname": "catering_type",
+   "fieldtype": "Select",
+   "label": "Catering Type",
+   "options": "\nMess Services\nSelf-Catering",
+   "reqd": 1
+  },
+  {
+   "fieldname": "dzongkhag",
+   "fieldtype": "Data",
+   "label": "Dzongkhag"
+  },
+  {
+   "fieldname": "gewog",
+   "fieldtype": "Data",
+   "label": "Gewog"
+  },
+  {
+   "fieldname": "village",
+   "fieldtype": "Data",
+   "label": "Village"
+  },
+  {
+   "fieldname": "house_number",
+   "fieldtype": "Data",
+   "label": "House Number"
+  },
+  {
+   "fieldname": "thram_number",
+   "fieldtype": "Data",
+   "label": "Thram Number"
+  },
+  {
+   "fieldname": "programme",
+   "fieldtype": "Link",
+   "label": "Programme",
+   "options": "Programme"
+  },
+  {
+   "fieldname": "year",
+   "fieldtype": "Link",
+   "label": "Year",
+   "options": "Fiscal Year"
+  },
+  {
+   "fieldname": "semester",
+   "fieldtype": "Data",
+   "label": "Semester"
+  },
+  {
+   "default": "Active",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Active\nInactive\nLeft",
+   "search_index": 1
   }
  ],
  "image_field": "image",
@@ -352,7 +415,7 @@
    "link_fieldname": "student"
   }
  ],
- "modified": "2025-08-13 15:54:07.499804",
+ "modified": "2025-09-01 16:08:07.155403",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student",
@@ -388,7 +451,6 @@
  ],
  "row_format": "Dynamic",
  "show_name_in_global_search": 1,
- "show_title_field_in_link": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],

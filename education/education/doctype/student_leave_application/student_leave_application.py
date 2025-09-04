@@ -9,6 +9,7 @@ from erpnext.setup.doctype.holiday_list.holiday_list import is_holiday
 from frappe import _
 from frappe.model.document import Document
 from frappe.utils import date_diff, flt, get_link_to_form, getdate
+from erpnext.custom_workflow import validate_workflow_states, notify_workflow_states
 
 from education.education.doctype.student_attendance.student_attendance import (
 	get_holiday_list,
@@ -17,15 +18,20 @@ from education.education.doctype.student_attendance.student_attendance import (
 
 class StudentLeaveApplication(Document):
 	def validate(self):
+		validate_workflow_states()
 		self.validate_holiday_list()
 		self.validate_duplicate()
 		self.validate_from_to_dates("from_date", "to_date")
+		if self.workflow_state != "Approved":
+			notify_workflow_states()
 
 	def on_submit(self):
 		self.update_attendance()
+		notify_workflow_states
 
 	def on_cancel(self):
 		self.cancel_attendance()
+		notify_workflow_states()
 
 	def validate_duplicate(self):
 		data = frappe.db.sql(

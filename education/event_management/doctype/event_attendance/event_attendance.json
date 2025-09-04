@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "format:Event/{DD}/{MM}/{YY}-{####}",
+ "autoname": "format:Attendance/{DD}/{MM}/{YY}/{####}",
  "creation": "2025-08-13 09:30:49.775230",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -69,7 +69,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-08-13 16:24:36.829267",
+ "modified": "2025-08-28 14:24:34.350955",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "Event Attendance",

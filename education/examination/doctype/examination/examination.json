@@ -1,0 +1,175 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "EXM.YY.MM.####",
+ "creation": "2025-09-02 15:20:11.951423",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "column_break_muxk",
+  "column_break_mnhi",
+  "examination_status",
+  "section_break_lbn5",
+  "exam_name",
+  "academic_year",
+  "column_break_uyam",
+  "exam_code",
+  "course",
+  "section_break_btkf",
+  "examination_time",
+  "start_time",
+  "end_time",
+  "duration",
+  "column_break_hsde",
+  "invigilator",
+  "xam_room",
+  "section_break_hgnu",
+  "total_marks",
+  "column_break_xsgv",
+  "passing_marks",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_lbn5",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "exam_name",
+   "fieldtype": "Data",
+   "label": "Exam Name"
+  },
+  {
+   "fieldname": "column_break_uyam",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "exam_code",
+   "fieldtype": "Data",
+   "label": "Examination Code"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Examination",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "academic_year",
+   "fieldtype": "Link",
+   "label": "Academic Year",
+   "options": "Academic Year"
+  },
+  {
+   "fieldname": "course",
+   "fieldtype": "Link",
+   "label": "Course",
+   "options": "Course"
+  },
+  {
+   "fieldname": "examination_time",
+   "fieldtype": "Date",
+   "label": "Examination Time"
+  },
+  {
+   "fieldname": "start_time",
+   "fieldtype": "Time",
+   "label": "Start Time"
+  },
+  {
+   "fieldname": "end_time",
+   "fieldtype": "Time",
+   "label": "End Time"
+  },
+  {
+   "fieldname": "duration",
+   "fieldtype": "Data",
+   "label": "Duration"
+  },
+  {
+   "fieldname": "total_marks",
+   "fieldtype": "Int",
+   "label": "Total Marks"
+  },
+  {
+   "fieldname": "passing_marks",
+   "fieldtype": "Float",
+   "label": "Passing Marks"
+  },
+  {
+   "fieldname": "invigilator",
+   "fieldtype": "Link",
+   "label": "Invigilator",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "examination_status",
+   "fieldtype": "Select",
+   "label": "Examination Status",
+   "options": "Draft\nScheduled\nOngoing\nCompleted\nResult Published"
+  },
+  {
+   "fieldname": "section_break_btkf",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_hsde",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_hgnu",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_xsgv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_muxk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_mnhi",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "xam_room",
+   "fieldtype": "Link",
+   "label": "Examination Room",
+   "options": "Room"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-09-02 16:50:47.855591",
+ "modified_by": "Administrator",
+ "module": "Examination",
+ "name": "Examination",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

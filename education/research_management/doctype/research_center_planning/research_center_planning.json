@@ -1,0 +1,95 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:research_center",
+ "creation": "2025-09-16 12:05:47.338462",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "company",
+  "research_center",
+  "column_break_sdyt",
+  "fiscal_year",
+  "section_break_rgwm",
+  "table_byyg",
+  "section_break_pbpz",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_pbpz",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Research Center Planning",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "College",
+   "options": "Company"
+  },
+  {
+   "fieldname": "research_center",
+   "fieldtype": "Link",
+   "label": "Research Center",
+   "options": "Research Center",
+   "unique": 1
+  },
+  {
+   "fieldname": "column_break_sdyt",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "fiscal_year",
+   "fieldtype": "Link",
+   "label": "Fiscal Year",
+   "options": "Fiscal Year"
+  },
+  {
+   "fieldname": "section_break_rgwm",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "table_byyg",
+   "fieldtype": "Table",
+   "options": "Research Publications Details"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-10-10 18:01:32.957460",
+ "modified_by": "Administrator",
+ "module": "Research Management",
+ "name": "Research Center Planning",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -1,0 +1,135 @@
+{% extends "templates/web.html" %}
+
+{% block title %}{{ _("conference Announcement") }}{% endblock %}
+{% block script %}
+<!-- <script src="assets/js/moment-bundle.min.js"></script>
+<script src="book_appointment/index.js"></script> -->
+<script src="conference-announcement/index.js"></script>
+
+
+{% endblock %}
+
+{% block page_content %}
+
+
+<div id="conference-list"></div>
+
+<style>
+    #conference-list {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .conference-card {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px;
+        height: 350px;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .conference-image {
+        width: 100%;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+
+
+    /* .conference-card:hover {
+        transform: scale(1.02);
+        box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.15);
+    } */
+    .conference-start-date,
+    .conference-end-date {
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 3px;
+        /* spacing between dates */
+    }
+
+    .conference-image-placeholder {
+        width: 100%;
+        height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f0f0f0;
+        color: #555;
+        font-weight: bold;
+        border-radius: 5px;
+    }
+
+
+    .conference-title {
+        font-size: 18px;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 5px;
+    }
+
+    .conference-dates,
+    .conference-location {
+        font-size: 14px;
+        color: #555;
+    }
+
+    .conference-description {
+        font-size: 13px;
+        margin-top: 10px;
+        color: #333;
+    }
+
+    .register-btn {
+        margin-top: 15px;
+        /* pushes button to the bottom of the card */
+        display: block;
+        /* center horizontally with margin auto */
+        margin-left: auto;
+        margin-right: auto;
+        padding: 8px 12px;
+        background-color: #2980b9;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.2s;
+        text-align: center;
+    }
+
+    .register-btn:hover {
+        transform: scale(1.02);
+        background-color: #1f6092;
+    }
+
+    /* Responsive for smaller screens */
+    @media (max-width: 1200px) {
+        #conference-list {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        #conference-list {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 480px) {
+        #conference-list {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+</div>
+{% endblock %}

@@ -7,16 +7,19 @@
  "engine": "InnoDB",
  "field_order": [
   "company",
+  "programme_leader",
+  "programme_leader_name",
   "column_break_cplj",
   "from_date",
   "to_date"
  ],
  "fields": [
   {
+   "allow_on_submit": 1,
    "fieldname": "company",
    "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "Company",
+   "label": "College",
    "options": "Company"
   },
   {
@@ -24,23 +27,39 @@
    "fieldtype": "Column Break"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "from_date",
    "fieldtype": "Date",
    "in_list_view": 1,
    "label": "From Date"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "to_date",
    "fieldtype": "Date",
    "in_list_view": 1,
    "label": "To Date"
+  },
+  {
+   "fieldname": "programme_leader",
+   "fieldtype": "Link",
+   "label": "Programme Leader",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "programme_leader.employee_name",
+   "fieldname": "programme_leader_name",
+   "fieldtype": "Data",
+   "label": "Programme Leader Name",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-08-25 15:53:31.333930",
+ "modified": "2026-01-09 15:15:48.659992",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Colleges",

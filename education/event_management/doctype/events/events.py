@@ -23,3 +23,21 @@ class Events(Document):
 		}
 
 
+@frappe.whitelist()
+def get_student_college(user=None):
+	"""
+	Returns the College of the logged-in Student
+	"""
+	if not user:
+		user = frappe.session.user
+
+	student = frappe.get_all(
+		"Student",
+		filters={"user": user, "status": "Active"},
+		fields=["company"],
+		limit_page_length=1
+	)
+
+	if student:
+		return student[0].company
+	return None

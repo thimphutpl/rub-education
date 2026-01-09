@@ -1,0 +1,85 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:publications",
+ "creation": "2025-09-16 12:20:01.218415",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "kpi_type_section",
+  "publications",
+  "uom",
+  "weight",
+  "column_break_pwvm",
+  "is_group",
+  "parent_task"
+ ],
+ "fields": [
+  {
+   "fieldname": "kpi_type_section",
+   "fieldtype": "Section Break",
+   "label": "KPI Type"
+  },
+  {
+   "fieldname": "publications",
+   "fieldtype": "Data",
+   "label": "Research KPI",
+   "unique": 1
+  },
+  {
+   "fieldname": "column_break_pwvm",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_group",
+   "fieldtype": "Check",
+   "label": "Is Group"
+  },
+  {
+   "depends_on": "eval:doc.is_group == 1",
+   "fieldname": "parent_task",
+   "fieldtype": "Link",
+   "label": "Group KPI",
+   "options": "Research KPI"
+  },
+  {
+   "fieldname": "uom",
+   "fieldtype": "Link",
+   "label": "UOM",
+   "options": "UOM"
+  },
+  {
+   "fieldname": "weight",
+   "fieldtype": "Data",
+   "label": "Weight"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-10-17 10:52:11.918718",
+ "modified_by": "Administrator",
+ "module": "Research Management",
+ "name": "Research KPI",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

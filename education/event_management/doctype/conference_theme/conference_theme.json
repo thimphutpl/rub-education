@@ -1,0 +1,58 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "Theme-.####",
+ "creation": "2025-11-24 13:30:20.205004",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "theme",
+  "panel_member_section",
+  "panel_member"
+ ],
+ "fields": [
+  {
+   "fieldname": "theme",
+   "fieldtype": "Data",
+   "label": "Theme"
+  },
+  {
+   "fieldname": "panel_member_section",
+   "fieldtype": "Section Break",
+   "label": "Panel Member"
+  },
+  {
+   "fieldname": "panel_member",
+   "fieldtype": "Table",
+   "label": "Panel Member",
+   "options": "Panel Member"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-12-19 19:53:55.938790",
+ "modified_by": "Administrator",
+ "module": "Event Management",
+ "name": "Conference Theme",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

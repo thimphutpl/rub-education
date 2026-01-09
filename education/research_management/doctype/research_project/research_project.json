@@ -1,0 +1,150 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "RP.YYYY.MM.#####",
+ "creation": "2025-08-26 10:51:33.952077",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "posting_date",
+  "column_break_hvbm",
+  "grant_type",
+  "grant_amount",
+  "research_section",
+  "research_title",
+  "researcher_details",
+  "research_project_description_section",
+  "attach_sidt",
+  "column_break_vunu",
+  "remarks",
+  "research_milestone_update_section",
+  "table_bzbl",
+  "research_milestone_progress",
+  "total_budget_consumed",
+  "section_break_obju",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Posting Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "research_section",
+   "fieldtype": "Section Break",
+   "label": "Research"
+  },
+  {
+   "fieldname": "research_title",
+   "fieldtype": "Data",
+   "label": "Research Title"
+  },
+  {
+   "fieldname": "researcher_details",
+   "fieldtype": "Table",
+   "label": "Researcher Details",
+   "options": "Researcher Details"
+  },
+  {
+   "fieldname": "research_project_description_section",
+   "fieldtype": "Section Break",
+   "label": "Research Project Description"
+  },
+  {
+   "fieldname": "attach_sidt",
+   "fieldtype": "Attach"
+  },
+  {
+   "fieldname": "column_break_vunu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "research_milestone_update_section",
+   "fieldtype": "Section Break",
+   "label": "Research Milestone Update"
+  },
+  {
+   "fieldname": "table_bzbl",
+   "fieldtype": "Table",
+   "options": "Research Milestone Item"
+  },
+  {
+   "fieldname": "research_milestone_progress",
+   "fieldtype": "Data",
+   "label": "Milestone Progress"
+  },
+  {
+   "fieldname": "section_break_obju",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Research Project",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "grant_type",
+   "fieldtype": "Link",
+   "label": "Grant Type",
+   "options": "Grant Type"
+  },
+  {
+   "fieldname": "total_budget_consumed",
+   "fieldtype": "Data",
+   "label": "Total Budget Consumed"
+  },
+  {
+   "fieldname": "column_break_hvbm",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "grant_type.grant_amount",
+   "fieldname": "grant_amount",
+   "fieldtype": "Currency",
+   "label": "Grant Amount"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-10-21 11:23:26.584055",
+ "modified_by": "kalden.dorji@thimphutechpark.bt",
+ "module": "Research Management",
+ "name": "Research Project",
+ "naming_rule": "Expression (old style)",
+ "owner": "kalden.dorji@thimphutechpark.bt",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

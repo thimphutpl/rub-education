@@ -28,7 +28,7 @@
    "fieldname": "enrollment",
    "fieldtype": "Link",
    "label": "Enrollment",
-   "options": "Course Enrollment",
+   "options": "Module Enrollment",
    "set_only_once": 1
   },
   {
@@ -116,7 +116,7 @@
   }
  ],
  "links": [],
- "modified": "2023-02-06 12:25:09.357718",
+ "modified": "2025-10-07 11:37:42.722358",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Quiz Activity",
@@ -146,6 +146,7 @@
   }
  ],
  "quick_entry": 1,
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],

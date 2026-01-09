@@ -1,0 +1,73 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "hash",
+ "creation": "2025-10-06 21:39:37.598584",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "tutor",
+  "tutor_name",
+  "column_break_tnca",
+  "tutor_type",
+  "semester",
+  "student_group"
+ ],
+ "fields": [
+  {
+   "fieldname": "tutor",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Tutor",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "tutor.employee_name",
+   "fieldname": "tutor_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Tutor Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_tnca",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "tutor_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Tutor Type",
+   "options": "Module Coordinator\nModule Tutor"
+  },
+  {
+   "fieldname": "semester",
+   "fieldtype": "Link",
+   "label": "Semester",
+   "options": "Semester"
+  },
+  {
+   "fieldname": "student_group",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Student Group",
+   "options": "Student Section"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-10-20 12:28:42.990298",
+ "modified_by": "Administrator",
+ "module": "Academic Management",
+ "name": "Module Tutor Item",
+ "naming_rule": "Random",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -11,9 +11,6 @@ class EventAttendance(Document):
 @frappe.whitelist()
 def create_attendance(dt, dn):
     event = frappe.get_doc(dt, dn)
-    # if event.registration_type != "Class":
-    #     frappe.throw(_("Attendance can only be created for class events."))
-
     if not event.get("student_register") or len(event.student_register) == 0:
         frappe.throw(_("Cannot create attendance - Student Register is empty. Please add students first."))    
     attendance = frappe.new_doc("Event Attendance")
@@ -24,7 +21,6 @@ def create_attendance(dt, dn):
             continue 
         attendance.append("attendance_list", {
             "student": row.student,
-            "student_email": row.student_email,
             "student_name": row.student_name,
          
         })
@@ -33,3 +29,6 @@ def create_attendance(dt, dn):
         "status": "success",
         "attendance_name": attendance.name
     }
+
+
+

@@ -1,0 +1,184 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "RCAR.YYYY.MM.#####",
+ "creation": "2025-09-16 14:42:49.126598",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "college",
+  "research_center_name",
+  "column_break_gfsq",
+  "posting_date",
+  "section_break_brji",
+  "table_rjff",
+  "section_break_oykt",
+  "amended_from",
+  "publications_tab",
+  "1_publications_section",
+  "11_policy_briefs",
+  "12_journals",
+  "table_rad",
+  "conference_seminar_paper",
+  "book_chapters",
+  "knowledge_transfer_and_community_service_tab",
+  "2_knowledge_transfer_and_community_service_section",
+  "training_workshop_organized",
+  "table_gumb",
+  "research_projects_and_funding_tab",
+  "table_drxe"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_oykt",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Research Center Annual Reporting",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "college",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "College",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "research_center_name",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Research Center Name",
+   "options": "Research Center",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_gfsq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Posting Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_brji",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "table_rjff",
+   "fieldtype": "Table",
+   "options": "Research Publications Details"
+  },
+  {
+   "fieldname": "publications_tab",
+   "fieldtype": "Tab Break",
+   "label": "Publications"
+  },
+  {
+   "fieldname": "1_publications_section",
+   "fieldtype": "Section Break",
+   "label": "1. Publications"
+  },
+  {
+   "fieldname": "11_policy_briefs",
+   "fieldtype": "Table",
+   "label": "1.1 Policy Briefs",
+   "options": "Policy Briefs Details"
+  },
+  {
+   "fieldname": "12_journals",
+   "fieldtype": "Table",
+   "label": "1.2 Journals",
+   "options": "Journals Details"
+  },
+  {
+   "fieldname": "conference_seminar_paper",
+   "fieldtype": "Table",
+   "label": " 1.4 Conference/Seminar Paper",
+   "options": "Conference Seminar Paper Details"
+  },
+  {
+   "fieldname": "book_chapters",
+   "fieldtype": "Table",
+   "label": "1.5 Book Chapters",
+   "options": "Book Chapters"
+  },
+  {
+   "fieldname": "knowledge_transfer_and_community_service_tab",
+   "fieldtype": "Tab Break",
+   "label": "Knowledge Transfer and Community Service"
+  },
+  {
+   "fieldname": "2_knowledge_transfer_and_community_service_section",
+   "fieldtype": "Section Break",
+   "label": "2. Knowledge Transfer and Community Service "
+  },
+  {
+   "fieldname": "training_workshop_organized",
+   "fieldtype": "Table",
+   "label": "2.1 Training/ Workshop Organized",
+   "options": "Trainings Organized Details"
+  },
+  {
+   "fieldname": "table_gumb",
+   "fieldtype": "Table",
+   "label": "2.2 Research Event Organized",
+   "options": "Research Event Organized"
+  },
+  {
+   "fieldname": "research_projects_and_funding_tab",
+   "fieldtype": "Tab Break",
+   "label": "Research Projects and Funding"
+  },
+  {
+   "fieldname": "table_drxe",
+   "fieldtype": "Table",
+   "options": "Research Grants Details"
+  },
+  {
+   "fieldname": "table_rad",
+   "fieldtype": "Table",
+   "label": "1.3 Research Articles",
+   "options": "Research Articles Details"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-12-15 16:01:32.376709",
+ "modified_by": "Administrator",
+ "module": "Research Management",
+ "name": "Research Center Annual Reporting",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

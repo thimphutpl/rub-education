@@ -1,0 +1,96 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-12-19 21:06:48.235064",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_asju",
+  "amended_from",
+  "conference",
+  "theme",
+  "source_doctype",
+  "source_name",
+  "evaluation_criteria_full_paper_section",
+  "full_paper_evaluation_criteria_full_paper"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_asju",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Full Paper Panel Mark",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "conference",
+   "fieldtype": "Read Only",
+   "label": "Conference"
+  },
+  {
+   "fieldname": "theme",
+   "fieldtype": "Read Only",
+   "label": "Theme"
+  },
+  {
+   "fieldname": "source_doctype",
+   "fieldtype": "Select",
+   "label": "Source Doctype",
+   "options": "\nCall For Paper\nFull Paper",
+   "read_only": 1
+  },
+  {
+   "fieldname": "source_name",
+   "fieldtype": "Dynamic Link",
+   "hidden": 1,
+   "label": "Source Name",
+   "options": "source_doctype"
+  },
+  {
+   "fieldname": "evaluation_criteria_full_paper_section",
+   "fieldtype": "Section Break",
+   "label": "Evaluation Criteria Full Paper"
+  },
+  {
+   "fieldname": "full_paper_evaluation_criteria_full_paper",
+   "fieldtype": "Table",
+   "label": "Evaluation Criteria",
+   "options": "Panel Evaluation Criteria Full Paper"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-12-30 13:42:49.118646",
+ "modified_by": "Administrator",
+ "module": "Event Management",
+ "name": "Full Paper Panel Mark",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

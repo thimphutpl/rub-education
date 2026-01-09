@@ -1,0 +1,213 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-11-03 10:22:17.394778",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "full_paper",
+  "registrant_type",
+  "section_break_tyv6",
+  "amended_from",
+  "salutation",
+  "organisation",
+  "country_of_your_current_location",
+  "column_break_rcna",
+  "first_nama",
+  "nationality",
+  "current_position",
+  "column_break_bbdf",
+  "last_name",
+  "passportcid_number",
+  "email_address",
+  "mobile_number",
+  "emergency_contact_information_section",
+  "name1",
+  "column_break_qbhb",
+  "contact_number",
+  "column_break_xzue",
+  "relationship",
+  "column_break_ewtw",
+  "test",
+  "institutional__professional_information_tab",
+  "test2",
+  "logistics_information_tab",
+  "test1"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_tyv6",
+   "fieldtype": "Section Break",
+   "label": "Personal Information"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Audience Registration",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "salutation",
+   "fieldtype": "Link",
+   "label": "salutation",
+   "options": "Salutation"
+  },
+  {
+   "fieldname": "organisation",
+   "fieldtype": "Data",
+   "label": "Organisation"
+  },
+  {
+   "fieldname": "country_of_your_current_location",
+   "fieldtype": "Link",
+   "label": "Country of your current location",
+   "options": "Country"
+  },
+  {
+   "fieldname": "column_break_rcna",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "first_nama",
+   "fieldtype": "Data",
+   "label": "First Nama"
+  },
+  {
+   "fieldname": "nationality",
+   "fieldtype": "Link",
+   "label": "Nationality",
+   "options": "Country"
+  },
+  {
+   "fieldname": "current_position",
+   "fieldtype": "Data",
+   "label": " Current Position"
+  },
+  {
+   "fieldname": "column_break_bbdf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "last_name",
+   "fieldtype": "Data",
+   "label": "Last Name"
+  },
+  {
+   "fieldname": "passportcid_number",
+   "fieldtype": "Data",
+   "label": "Passport/CID Number"
+  },
+  {
+   "fieldname": "email_address",
+   "fieldtype": "Data",
+   "label": "Email Address"
+  },
+  {
+   "fieldname": "mobile_number",
+   "fieldtype": "Data",
+   "label": "Mobile Number"
+  },
+  {
+   "fieldname": "emergency_contact_information_section",
+   "fieldtype": "Section Break",
+   "label": "Emergency Contact Information"
+  },
+  {
+   "fieldname": "name1",
+   "fieldtype": "Data",
+   "label": "Name"
+  },
+  {
+   "fieldname": "contact_number",
+   "fieldtype": "Data",
+   "label": "Contact Number"
+  },
+  {
+   "fieldname": "relationship",
+   "fieldtype": "Data",
+   "label": "Relationship"
+  },
+  {
+   "fieldname": "registrant_type",
+   "fieldtype": "Link",
+   "label": "Registrant Type",
+   "options": "Registrant Type"
+  },
+  {
+   "fieldname": "test",
+   "fieldtype": "Data",
+   "label": "Test"
+  },
+  {
+   "fieldname": "full_paper",
+   "fieldtype": "Link",
+   "label": "Full Paper",
+   "options": "Events"
+  },
+  {
+   "fieldname": "institutional__professional_information_tab",
+   "fieldtype": "Tab Break",
+   "label": "Institutional / Professional Information"
+  },
+  {
+   "fieldname": "logistics_information_tab",
+   "fieldtype": "Tab Break",
+   "label": "Logistics Information"
+  },
+  {
+   "fieldname": "column_break_qbhb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_xzue",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_ewtw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "test2",
+   "fieldtype": "Data",
+   "label": "Test2"
+  },
+  {
+   "fieldname": "test1",
+   "fieldtype": "Data",
+   "label": "Test1"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-12-23 16:27:05.509309",
+ "modified_by": "Administrator",
+ "module": "Event Management",
+ "name": "Audience Registration",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

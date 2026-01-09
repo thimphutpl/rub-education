@@ -2,6 +2,9 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on("Event Attendance", {
+    programme: function (frm) { fetch_students(frm); },
+    year: function (frm) { fetch_students(frm); },
+    semester: function (frm) { fetch_students(frm); },
     refresh(frm) {
         if (frm.doc.docstatus === 0) {
             frm.add_custom_button(__('Mark Attendance'), function () {
@@ -40,3 +43,4 @@ frappe.ui.form.on("Event Attendance", {
         }
     }
 });
+

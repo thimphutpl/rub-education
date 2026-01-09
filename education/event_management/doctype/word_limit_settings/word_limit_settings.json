@@ -1,0 +1,106 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-12-18 14:13:59.826275",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "brief_bio_of_the_authors_section",
+  "min_words",
+  "column_break_zsbs",
+  "max_words",
+  "abstract_section",
+  "min_abstract",
+  "column_break_oiwp",
+  "max_abstract",
+  "revise_abstract",
+  "min_revise_abstract",
+  "column_break_esxh",
+  "max_revise_abstract"
+ ],
+ "fields": [
+  {
+   "fieldname": "brief_bio_of_the_authors_section",
+   "fieldtype": "Section Break",
+   "label": "Brief Bio of the author(s)"
+  },
+  {
+   "fieldname": "min_words",
+   "fieldtype": "Int",
+   "label": "Min"
+  },
+  {
+   "fieldname": "column_break_zsbs",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "max_words",
+   "fieldtype": "Int",
+   "label": "Max"
+  },
+  {
+   "fieldname": "abstract_section",
+   "fieldtype": "Section Break",
+   "label": "Abstract"
+  },
+  {
+   "fieldname": "min_abstract",
+   "fieldtype": "Int",
+   "label": "Min"
+  },
+  {
+   "fieldname": "column_break_oiwp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "max_abstract",
+   "fieldtype": "Int",
+   "label": "Max"
+  },
+  {
+   "fieldname": "revise_abstract",
+   "fieldtype": "Section Break",
+   "label": "Revise Abstract"
+  },
+  {
+   "fieldname": "column_break_esxh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "min_revise_abstract",
+   "fieldtype": "Int",
+   "label": "Min"
+  },
+  {
+   "fieldname": "max_revise_abstract",
+   "fieldtype": "Int",
+   "label": "Max"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-12-19 16:29:20.690346",
+ "modified_by": "Administrator",
+ "module": "Event Management",
+ "name": "Word Limit Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -88,8 +88,8 @@ class ProgramEnrollment(Document):
 	@frappe.whitelist()
 	def get_courses(self):
 		return frappe.db.sql(
-			"""select course from `tabProgram Course` where parent = %s and required = 1""",
-			(self.program),
+			"""select distinct parent from `tabModule College` where programme = %s and college = %s""",
+			(self.program, self.college),
 			as_dict=1,
 		)
 
@@ -123,18 +123,26 @@ class ProgramEnrollment(Document):
 @frappe.whitelist()
 @frappe.validate_and_sanitize_search_inputs
 def get_program_courses(doctype, txt, searchfield, start, page_len, filters):
-	if not filters.get("program"):
-		frappe.msgprint(_("Please select a Program first."))
-		return []
+	if filters.get("validate") == 1:
+		if not filters.get("program"):
+			frappe.msgprint(_("Please select a Programme."))
+			return []
+		if not filters.get("college"):
+			frappe.msgprint(_("Please select a College."))
+			return []
+		if not filters.get("semester"):
+			frappe.msgprint(_("Please select a Semester."))
+			return []
 
-	doctype = "Program Course"
+
+	doctype = "Module"
 	return frappe.db.sql(
-		"""select course, course_name from `tabProgram Course`
-        where  parent = %(program)s and course like %(txt)s {match_cond}
+		"""select m.name as course, m.module_title as course_name from `tabModule` m, `tabModule College` mc
+        where  m.name = mc.parent and mc.programme = %(program)s and m.name like %(txt)s and mc.college = %(college)s
+		and mc.module_semester = %(semester)s
         order by
-            if(locate(%(_txt)s, course), locate(%(_txt)s, course), 99999),
-            idx desc,
-            `tabProgram Course`.course asc
+            if(locate(%(_txt)s, m.name), locate(%(_txt)s, m.name), 99999),
+            m.name asc
         limit {start}, {page_len}""".format(
 			match_cond=get_match_cond(doctype), start=start, page_len=page_len
 		),
@@ -142,6 +150,32 @@ def get_program_courses(doctype, txt, searchfield, start, page_len, filters):
 			"txt": "%{0}%".format(txt),
 			"_txt": txt.replace("%", ""),
 			"program": filters["program"],
+			"college": filters["college"],
+			"semester": filters["semester"],
+		},
+	)
+
+@frappe.whitelist()
+@frappe.validate_and_sanitize_search_inputs
+def get_programmes(doctype, txt, searchfield, start, page_len, filters):
+	if not filters.get("college"):
+		frappe.msgprint(_("Please select a College first."))
+		return []
+
+	doctype = "Programme"
+	return frappe.db.sql(
+		"""select m.programme_name, m.abbreviation from `tabProgramme` m, `tabColleges` mc
+        where  m.name = mc.parent and m.name like %(txt)s and mc.company = %(college)s
+        order by
+            if(locate(%(_txt)s, m.name), locate(%(_txt)s, m.name), 99999),
+            m.name asc
+        limit {start}, {page_len}""".format(
+			start=start, page_len=page_len
+		),
+		{
+			"txt": "%{0}%".format(txt),
+			"_txt": txt.replace("%", ""),
+			"college": filters["college"],
 		},
 	)
 

@@ -9,7 +9,14 @@ frappe.ui.form.on('Student', {
           ignore_user_type: 1,
         },
       }
-    })
+    });
+    frm.set_query("company", function(){
+			return {
+				filters: {
+					"is_group": 0,
+				}
+			}
+		});   
 
     if (!frm.is_new()) {
       frm.add_custom_button(__('Accounting Ledger'), function () {

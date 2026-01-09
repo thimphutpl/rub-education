@@ -15,6 +15,7 @@
   "from_date",
   "to_date",
   "total_leave_days",
+  "leave_type",
   "section_break_5",
   "reason",
   "sb_approver",
@@ -107,6 +108,7 @@
    "label": "<u>Student and Leave Details</u>"
   },
   {
+   "fetch_from": "student.programme",
    "fieldname": "programme",
    "fieldtype": "Link",
    "label": "Programme",
@@ -186,12 +188,19 @@
    "fieldname": "section_break_vccc",
    "fieldtype": "Section Break",
    "label": "<u>More Info.<u></u></u>"
+  },
+  {
+   "fieldname": "leave_type",
+   "fieldtype": "Link",
+   "label": "Leave Type",
+   "options": "Student Leave Type",
+   "reqd": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2025-08-27 12:20:07.200910",
- "modified_by": "Administrator",
+ "modified": "2025-12-01 12:10:45.279202",
+ "modified_by": "sangay.choden@thimphutechpark.bt",
  "module": "Education",
  "name": "Student Leave Application",
  "naming_rule": "Expression (old style)",

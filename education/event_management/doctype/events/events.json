@@ -9,28 +9,38 @@
   "section_break_imeu",
   "amended_from",
   "event_title",
+  "college",
   "event_type",
+  "conference_theme",
   "event_description",
   "column_break_ryhp",
   "start_date",
   "end_date",
-  "event_venue",
+  "room",
+  "capacity",
   "event_banner",
   "color",
   "agenda_section",
   "event_agenda",
+  "culture_agenda",
+  "equipment_tab",
   "equipment_section",
   "event_equipment",
-  "section_break_bhiz",
-  "column_break_chsd",
+  "participant_tab",
+  "section_break_ogfn",
+  "guest__external_participant",
+  "external_participant",
+  "section_break_ccxe",
   "registration_type",
-  "section_break_cgaj",
+  "section_break_hfph",
   "get_all_faculty",
-  "section_break_khox",
-  "event_register",
-  "section_break_xppi",
+  "section_break_hhyc",
+  "faculty_register",
+  "section_break_nhtw",
   "get_all_student",
-  "section_break_drvz",
+  "student_filter",
+  "get_student",
+  "section_break_wnzy",
   "student_register"
  ],
  "fields": [
@@ -85,13 +95,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "event_venue",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Event Venue",
-   "options": "Event Venue"
-  },
-  {
    "fieldname": "event_banner",
    "fieldtype": "Attach",
    "in_list_view": 1,
@@ -120,18 +123,6 @@
    "options": "Event Agenda"
   },
   {
-   "fieldname": "section_break_khox",
-   "fieldtype": "Section Break"
-  },
-  {
-   "allow_on_submit": 1,
-   "depends_on": "eval:doc.registration_type=='Faculty' || doc.registration_type=='All'",
-   "fieldname": "event_register",
-   "fieldtype": "Table",
-   "label": "Faculty",
-   "options": "Event Registration"
-  },
-  {
    "fieldname": "registration_type",
    "fieldtype": "Select",
    "in_list_view": 1,
@@ -145,26 +136,6 @@
    "label": "Get All Faculty"
   },
   {
-   "fieldname": "section_break_bhiz",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "section_break_cgaj",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "column_break_chsd",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "section_break_xppi",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "section_break_drvz",
-   "fieldtype": "Section Break"
-  },
-  {
    "depends_on": "eval:doc.registration_type=='Class' || doc.registration_type=='All'",
    "fieldname": "student_register",
    "fieldtype": "Table",
@@ -175,19 +146,118 @@
    "depends_on": "eval:doc.registration_type=='Class' || doc.registration_type=='All'",
    "fieldname": "get_all_student",
    "fieldtype": "Button",
+   "hidden": 1,
    "label": "Get All Class"
   },
   {
    "fieldname": "color",
    "fieldtype": "Color",
    "label": "Color"
+  },
+  {
+   "depends_on": "eval:doc.registration_type=='Class' || doc.registration_type=='All'",
+   "fieldname": "get_student",
+   "fieldtype": "Button",
+   "label": "Get Student"
+  },
+  {
+   "depends_on": "eval:doc.registration_type=='Class' || doc.registration_type=='All'",
+   "fieldname": "student_filter",
+   "fieldtype": "Table",
+   "label": "Student Filter",
+   "options": "Student Filter"
+  },
+  {
+   "fieldname": "culture_agenda",
+   "fieldtype": "Table",
+   "label": "Culture Agenda",
+   "options": "Culture Agenda"
+  },
+  {
+   "fieldname": "college",
+   "fieldtype": "Link",
+   "label": "College",
+   "options": "Company"
+  },
+  {
+   "fieldname": "room",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Room",
+   "options": "Room"
+  },
+  {
+   "fetch_from": "room.seating_capacity",
+   "fieldname": "capacity",
+   "fieldtype": "Read Only",
+   "label": "Capacity"
+  },
+  {
+   "fieldname": "section_break_ogfn",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "guest__external_participant",
+   "fieldtype": "Check",
+   "label": "Guest / External Participant"
+  },
+  {
+   "fieldname": "external_participant",
+   "fieldtype": "Table",
+   "label": "Guest/External Participant",
+   "options": "External Participant"
+  },
+  {
+   "allow_on_submit": 1,
+   "depends_on": "eval:doc.registration_type=='Faculty' || doc.registration_type=='All'",
+   "fieldname": "faculty_register",
+   "fieldtype": "Table",
+   "label": "Faculty",
+   "options": "Faculty Registration"
+  },
+  {
+   "fieldname": "participant_tab",
+   "fieldtype": "Tab Break",
+   "label": "Participant"
+  },
+  {
+   "fieldname": "section_break_ccxe",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section_break_hfph",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section_break_hhyc",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section_break_nhtw",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section_break_wnzy",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "equipment_tab",
+   "fieldtype": "Tab Break",
+   "label": "Equipment"
+  },
+  {
+   "fieldname": "conference_theme",
+   "fieldtype": "Link",
+   "label": "Conference Theme",
+   "options": "Conference Theme"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-08-28 14:24:17.500048",
+ "modified": "2025-12-23 16:06:37.207267",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "Events",

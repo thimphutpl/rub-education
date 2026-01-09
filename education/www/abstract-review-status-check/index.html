@@ -1,0 +1,198 @@
+{% extends "templates/web.html" %}
+
+{% block title %}{{ _("Conference Registration Status") }}{% endblock %}
+
+{% block script %}
+<script src="abstract-review-status-check/index.js"></script>
+
+
+{% endblock %}
+
+{% block page_content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <!-- Card starts -->
+            <div class="card shadow-sm justify-content-center">
+                <div class="card-body">
+                    <h5 class="text-left mb-4 fw-semibold text-dark">
+                        {{ _('Check Abstract Review Status') }}
+                    </h5>
+                    <form onsubmit="getConferenceInfo(); return false;">
+                        <div class="input-container">
+                            <input id="email" name="email" type="email" class="form-control mr-2"
+                                placeholder="Enter email" required>
+                            <button type="submit" class="Searchbutton">
+                                Search
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- Card ends -->
+        </div>
+    </div>
+
+    <div id="abstract-review-status-check" class="mt-4"></div>
+
+</div>
+
+
+</div>
+
+
+<style>
+    #abstract-review-status-check {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 15px;
+    }
+
+
+    .card {
+        border-radius: 0.25rem;
+        border-top-color: #92c5f7;
+        border-top-width: 0.25rem;
+    }
+
+    .card-body {
+        padding: 1rem 1.5rem;
+    }
+
+    .form-control {
+        min-width: 0;
+    }
+
+    .status-text {
+        display: inline-block;
+        padding: 0.35rem 0.75rem;
+        border-radius: 50px;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        font-weight: 400;
+        text-transform: uppercase;
+        color: #fff;
+    }
+
+
+    .input-container {
+        position: relative;
+        display: flex;
+        height: 2.8rem;
+        width: 100%;
+        min-width: 200px;
+        background-color: #fff;
+    }
+
+    .input-container input {
+        height: 100%;
+        width: 100%;
+        border-radius: 8px;
+        border: 1px solid #eee;
+        background-color: white;
+        padding: 0.625rem 70px 0.625rem 0.75rem;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        font-weight: 400;
+        outline: none;
+        transition: all .15s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .input-container input:focus {
+        border: 1px solid #6fb4f4;
+    }
+
+    .Searchbutton {
+        background-color: #6fb4f4;
+        appearance: none;
+        width: 15%;
+        border: 1px solid rgba(27, 31, 35, 0.15);
+        font-weight: 500;
+        border-radius: 8px;
+        color: white;
+        font-size: 0.875rem;
+        font-weight: 400;
+        letter-spacing: 1px;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .Searchbutton:hover {
+        background-color: #92c5f7;
+        border-radius: 8px;
+        border-color: #92c5f7;
+        box-shadow: 0 4px 8px rgba(146, 197, 247, 0.4);
+    }
+
+    @media (max-width: 576px) {
+        .form-inline .form-group {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .form-inline .form-control,
+        .form-inline {
+            width: 50%;
+            margin: 0.25rem 0 0 0;
+        }
+
+        .form-inline label {
+            margin-bottom: 0.25rem;
+        }
+    }
+
+    .conference-card {
+        background-color: #fff;
+        padding: 1rem;
+        width: 49%;
+        border-left-width: 0.25rem;
+        border-left-style: solid;
+        border-left-color: #6fb4f4;
+    }
+
+
+
+    .conference-card h5 {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .conference-detail p {
+        margin: 0.25rem 0;
+        font-size: 0.9rem;
+    }
+
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+        .conference-card {
+            width: 100%;
+            /* full width on smaller screens */
+        }
+    }
+
+    .full-button {
+        display: block;
+        width: 30%;
+        /* Full width */
+        max-width: 300px;
+        padding: 8px 0;
+        background: #6fb4f4;
+
+        color: #fff;
+        font-size: 0.875rem;
+        font-weight: 400;
+        text-align: center;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .full-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+</style>
+{% endblock %}

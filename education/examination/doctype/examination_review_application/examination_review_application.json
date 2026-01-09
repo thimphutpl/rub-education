@@ -1,0 +1,186 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "ERA.######",
+ "creation": "2025-10-13 16:46:50.478945",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_bdxi",
+  "exam_review_type",
+  "student",
+  "student_name",
+  "college",
+  "academic_term",
+  "examination_registration",
+  "column_break_ovjl",
+  "programme",
+  "module",
+  "semester",
+  "assessment_component",
+  "tutor",
+  "section_break_esjd",
+  "journal_entry",
+  "column_break_fxnd",
+  "amount_paid",
+  "section_break_nikz",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_bdxi",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Examination Review Application",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "student",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Student",
+   "options": "Student",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_ovjl",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_nikz",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fetch_from": "student.company",
+   "fieldname": "college",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "College",
+   "options": "Company",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fetch_from": "student.programme",
+   "fieldname": "programme",
+   "fieldtype": "Link",
+   "label": "Programme",
+   "options": "Programme",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "module",
+   "fieldtype": "Link",
+   "label": "Module",
+   "options": "Module",
+   "reqd": 1
+  },
+  {
+   "fieldname": "exam_review_type",
+   "fieldtype": "Select",
+   "label": "Exam Review Type",
+   "options": "\nExam Recheck\nExam Re-Evaluation\nExam Re-Assessment",
+   "reqd": 1
+  },
+  {
+   "fieldname": "semester",
+   "fieldtype": "Link",
+   "label": "Semester",
+   "options": "Semester",
+   "reqd": 1
+  },
+  {
+   "fieldname": "academic_term",
+   "fieldtype": "Link",
+   "label": "Academic Term",
+   "options": "Academic Term",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_esjd",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "journal_entry",
+   "fieldtype": "Data",
+   "label": "Journal Number"
+  },
+  {
+   "fieldname": "column_break_fxnd",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "amount_paid",
+   "fieldtype": "Float",
+   "label": "Amount Paid"
+  },
+  {
+   "fetch_from": "student.student_name",
+   "fieldname": "student_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Student Name",
+   "options": "Student",
+   "reqd": 1
+  },
+  {
+   "fieldname": "tutor",
+   "fieldtype": "Link",
+   "label": "Tutor",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "description": "The Examination Registration of the assesment Component the student failed",
+   "fieldname": "examination_registration",
+   "fieldtype": "Link",
+   "label": "Examination Registration",
+   "options": "Examination Registration",
+   "read_only": 1
+  },
+  {
+   "fieldname": "assessment_component",
+   "fieldtype": "Link",
+   "label": "Assesment Component",
+   "options": "Assessment Component",
+   "reqd": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-10-16 23:43:16.517402",
+ "modified_by": "Administrator",
+ "module": "Examination",
+ "name": "Examination Review Application",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

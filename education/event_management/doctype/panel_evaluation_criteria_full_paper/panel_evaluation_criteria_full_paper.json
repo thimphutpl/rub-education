@@ -1,0 +1,54 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-12-30 13:40:04.755799",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "criteria",
+  "score",
+  "weight_marks",
+  "remark"
+ ],
+ "fields": [
+  {
+   "fieldname": "criteria",
+   "fieldtype": "Read Only",
+   "in_list_view": 1,
+   "label": "Criteria"
+  },
+  {
+   "fieldname": "score",
+   "fieldtype": "Read Only",
+   "in_list_view": 1,
+   "label": "Score"
+  },
+  {
+   "fieldname": "weight_marks",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Weight (Marks)"
+  },
+  {
+   "fieldname": "remark",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Remark"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-12-30 13:43:04.466138",
+ "modified_by": "Administrator",
+ "module": "Event Management",
+ "name": "Panel Evaluation Criteria Full Paper",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

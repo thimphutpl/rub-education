@@ -17,6 +17,32 @@ from education.education.doctype.student_attendance.student_attendance import (
 
 
 class StudentLeaveApplication(Document):
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		amended_from: DF.Link | None
+		approved_by_sso: DF.Check
+		approver: DF.Link | None
+		approver_designation: DF.Link | None
+		approver_name: DF.Data | None
+		attach_zqhy: DF.Attach
+		college: DF.Link
+		from_date: DF.Date
+		leave_type: DF.Link
+		programme: DF.Link
+		reason: DF.Text | None
+		reason_for_late_rejoining: DF.SmallText | None
+		rejoining_date: DF.Date | None
+		student: DF.Link
+		student_name: DF.ReadOnly | None
+		to_date: DF.Date
+		total_leave_days: DF.Float
+	# end: auto-generated types
 	def validate(self):
 		validate_workflow_states()
 		self.validate_holiday_list()
@@ -59,6 +85,13 @@ class StudentLeaveApplication(Document):
 				),
 				title=_("Duplicate Entry"),
 			)
+
+	@frappe.whitelist()
+	def calculate_leave_days(self):
+		total_leave_days = 0
+		if self.from_date and self.to_date:
+			total_leave_days = date_diff(self.to_date, self.from_date) + 1
+		return total_leave_days
 
 	def validate_holiday_list(self):
 		holiday_list = get_holiday_list()

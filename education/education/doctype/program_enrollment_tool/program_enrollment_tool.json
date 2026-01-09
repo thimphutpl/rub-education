@@ -36,8 +36,8 @@
    "fieldname": "program",
    "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "Program",
-   "options": "Program",
+   "label": "Programme",
+   "options": "Programme",
    "reqd": 1
   },
   {
@@ -135,7 +135,7 @@
  "hide_toolbar": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-11-16 14:35:38.467928",
+ "modified": "2025-09-16 11:27:41.805866",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Program Enrollment Tool",
@@ -148,6 +148,7 @@
    "write": 1
   }
  ],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

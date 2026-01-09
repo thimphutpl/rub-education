@@ -24,9 +24,11 @@
   "joining_date",
   "user",
   "student_applicant",
+  "student_batch",
   "catering_type",
   "image",
   "status",
+  "hostel_status",
   "section_break_7",
   "student_email_id",
   "date_of_birth",
@@ -62,7 +64,11 @@
   "column_break_31",
   "reason_for_leaving",
   "student_name",
-  "connections_tab"
+  "connections_tab",
+  "extra_curricular_activities_tab",
+  "extra_curricular_activities_details",
+  "disciplinary_action_tab",
+  "disciplinary_action_details"
  ],
  "fields": [
   {
@@ -248,7 +254,6 @@
   {
    "fieldname": "student_name",
    "fieldtype": "Data",
-   "hidden": 1,
    "label": "Student Name"
   },
   {
@@ -355,7 +360,7 @@
    "fieldname": "programme",
    "fieldtype": "Link",
    "label": "Programme",
-   "options": "Programme"
+   "options": "Programme Master"
   },
   {
    "fieldname": "year",
@@ -365,8 +370,9 @@
   },
   {
    "fieldname": "semester",
-   "fieldtype": "Data",
-   "label": "Semester"
+   "fieldtype": "Link",
+   "label": "Semester",
+   "options": "Semester"
   },
   {
    "default": "Active",
@@ -375,6 +381,40 @@
    "label": "Status",
    "options": "Active\nInactive\nLeft",
    "search_index": 1
+  },
+  {
+   "fieldname": "student_batch",
+   "fieldtype": "Link",
+   "label": "Student Batch",
+   "options": "Student Batch Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "extra_curricular_activities_tab",
+   "fieldtype": "Tab Break",
+   "label": "Extra Curricular Activities "
+  },
+  {
+   "fieldname": "extra_curricular_activities_details",
+   "fieldtype": "Table",
+   "options": "Extra Curricular Activities Details"
+  },
+  {
+   "fieldname": "disciplinary_action_tab",
+   "fieldtype": "Tab Break",
+   "label": "Disciplinary Action"
+  },
+  {
+   "fieldname": "disciplinary_action_details",
+   "fieldtype": "Table",
+   "label": "Disciplinary Action Details",
+   "options": "Disciplinary Action Details"
+  },
+  {
+   "fieldname": "hostel_status",
+   "fieldtype": "Select",
+   "label": "Hostel Status",
+   "options": "Day Scholar\nHostel"
   }
  ],
  "image_field": "image",
@@ -386,7 +426,7 @@
   },
   {
    "group": "Admission",
-   "link_doctype": "Course Enrollment",
+   "link_doctype": "Module Enrollment",
    "link_fieldname": "student"
   },
   {
@@ -396,7 +436,7 @@
   },
   {
    "group": "Student Activity",
-   "link_doctype": "Student Group",
+   "link_doctype": "Student Section",
    "link_fieldname": "student"
   },
   {
@@ -415,7 +455,7 @@
    "link_fieldname": "student"
   }
  ],
- "modified": "2025-09-01 16:08:07.155403",
+ "modified": "2025-10-28 11:02:54.892203",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student",

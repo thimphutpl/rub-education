@@ -6,7 +6,7 @@ import frappe
 from frappe import _
 from frappe.model.document import Document
 
-from education.education.doctype.student_group.student_group import get_students
+# from education.education.doctype.student_group.student_group import get_students
 
 
 class StudentGroupCreationTool(Document):
@@ -94,14 +94,15 @@ class StudentGroupCreationTool(Document):
 			student_group.max_strength = d.max_strength
 			student_group.academic_term = self.academic_term
 			student_group.academic_year = self.academic_year
-			student_list = get_students(
-				self.academic_year,
-				d.group_based_on,
-				self.academic_term,
-				self.program,
-				d.batch,
-				d.course,
-			)
+			# student_list = get_students(
+			# 	self.academic_year,
+			# 	d.group_based_on,
+			# 	self.academic_term,
+			# 	self.program,
+			# 	d.batch,
+			# 	d.course,
+			# )
+			student_list = []
 
 			for student in student_list:
 				student_group.append("students", student)

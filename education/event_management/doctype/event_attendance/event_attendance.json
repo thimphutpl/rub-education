@@ -42,9 +42,10 @@
   },
   {
    "fieldname": "college",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "College"
+   "label": "College",
+   "options": "Company"
   },
   {
    "fieldname": "event",
@@ -69,7 +70,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-08-28 14:24:34.350955",
+ "modified": "2025-10-29 13:08:51.354804",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "Event Attendance",

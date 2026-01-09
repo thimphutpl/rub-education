@@ -26,7 +26,7 @@ class Student(Document):
 	def on_update(self):
 		# for each student check whether a customer exists or not if it does not exist then create a customer with customer group student
 		# This prevents from polluting users data
-		self.set_missing_customer_details()
+		#self.set_missing_customer_details()
   
 		if self.status:
 			frappe.db.sql("""

@@ -1,0 +1,223 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "CAE.####",
+ "creation": "2025-11-03 17:09:01.761040",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "exam_type",
+  "weightage",
+  "column_break_xvsj",
+  "posting_date",
+  "section_break_ptbh",
+  "college",
+  "programme",
+  "semester",
+  "module",
+  "academic_year",
+  "assessment_component",
+  "total_marks",
+  "passing_marks",
+  "examination_registration",
+  "column_break_rdat",
+  "academic_term",
+  "tutor",
+  "tutor_name",
+  "get_students",
+  "section_break_jygm",
+  "items",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "exam_type",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Exam Type",
+   "options": "\nRegular Assessment",
+   "precision": "2"
+  },
+  {
+   "fieldname": "weightage",
+   "fieldtype": "Float",
+   "label": "Weightage",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_xvsj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "examination_registration.module",
+   "fieldname": "module",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Module",
+   "options": "Module",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "examination_registration.assessment_component",
+   "fieldname": "assessment_component",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Assessment Component",
+   "options": "Assessment Component",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_ptbh",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fetch_from": "examination_registration.academic_year",
+   "fieldname": "academic_year",
+   "fieldtype": "Link",
+   "label": "Academic Year",
+   "options": "Academic Year",
+   "reqd": 1
+  },
+  {
+   "fieldname": "semester",
+   "fieldtype": "Link",
+   "label": "Semester",
+   "options": "Semester",
+   "reqd": 1
+  },
+  {
+   "fieldname": "total_marks",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Total Marks",
+   "reqd": 1
+  },
+  {
+   "fieldname": "passing_marks",
+   "fieldtype": "Float",
+   "label": "Passing Marks",
+   "reqd": 1
+  },
+  {
+   "fieldname": "examination_registration",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Examination Registration",
+   "options": "Examination Registration",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_rdat",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "examination_registration.academic_term",
+   "fieldname": "academic_term",
+   "fieldtype": "Link",
+   "label": "Academic Term",
+   "options": "Academic Term",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "examination_registration.tutor",
+   "fieldname": "tutor",
+   "fieldtype": "Link",
+   "label": "Tutor",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "tutor.employee_name",
+   "fieldname": "tutor_name",
+   "fieldtype": "Data",
+   "label": "Tutor Name",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "examination_registration.company",
+   "fieldname": "college",
+   "fieldtype": "Link",
+   "label": "College",
+   "options": "Company"
+  },
+  {
+   "fieldname": "get_students",
+   "fieldtype": "Button",
+   "label": "Get Students"
+  },
+  {
+   "fieldname": "section_break_jygm",
+   "fieldtype": "Section Break"
+  },
+  {
+   "allow_bulk_edit": 1,
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "options": "Exam Marks"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Continuous Assessment Entry",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Continuous Assessment Entry",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "programme",
+   "fieldtype": "Link",
+   "label": "Programme",
+   "options": "Programme",
+   "reqd": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-11-04 11:08:47.626998",
+ "modified_by": "Administrator",
+ "module": "Academic Management",
+ "name": "Continuous Assessment Entry",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

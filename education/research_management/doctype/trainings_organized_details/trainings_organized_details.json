@@ -1,0 +1,77 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-09-16 15:41:23.820720",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "trainings_organized_title",
+  "employee",
+  "no_of_staffs_engaged",
+  "no_of_student_engaged",
+  "no_of_external_participants",
+  "venue",
+  "funding_source",
+  "remarks"
+ ],
+ "fields": [
+  {
+   "fieldname": "no_of_staffs_engaged",
+   "fieldtype": "Data",
+   "label": "No. of Staffs Engaged"
+  },
+  {
+   "fieldname": "no_of_student_engaged",
+   "fieldtype": "Data",
+   "label": "No. of Student Engaged"
+  },
+  {
+   "fieldname": "no_of_external_participants",
+   "fieldtype": "Data",
+   "label": "No. of External Participants"
+  },
+  {
+   "fieldname": "venue",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Venue"
+  },
+  {
+   "fieldname": "funding_source",
+   "fieldtype": "Data",
+   "label": "Funding Source"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "trainings_organized_title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Title"
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Resource Person"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-12-18 18:29:29.814440",
+ "modified_by": "Administrator",
+ "module": "Research Management",
+ "name": "Trainings Organized Details",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -34,6 +34,7 @@ update_website_context = []
 website_generators = ["Student Admission"]
 
 website_route_rules = [
+	{"from_route": "/events", "to_route": "events"},
 	{"from_route": "/admissions", "to_route": "Student Admission"},
 	{"from_route": "/student-portal/<path:app_path>", "to_route": "student-portal"},
 ]

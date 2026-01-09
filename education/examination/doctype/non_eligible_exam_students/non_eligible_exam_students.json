@@ -1,0 +1,76 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-10-08 15:29:05.203063",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "student",
+  "consider_attendance",
+  "reason_for_consideration",
+  "attachment",
+  "column_break_bhyu",
+  "student_name",
+  "attendance_percentage"
+ ],
+ "fields": [
+  {
+   "fieldname": "student",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Student",
+   "options": "Student"
+  },
+  {
+   "fieldname": "column_break_bhyu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "student.student_name",
+   "fieldname": "student_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Student Name"
+  },
+  {
+   "fieldname": "attendance_percentage",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Attendance Percentage"
+  },
+  {
+   "default": "0",
+   "fieldname": "consider_attendance",
+   "fieldtype": "Check",
+   "label": "Consider Attendance"
+  },
+  {
+   "depends_on": "eval: doc.consider_attendance===1;",
+   "fieldname": "reason_for_consideration",
+   "fieldtype": "Small Text",
+   "label": "Reason for Consideration",
+   "mandatory_depends_on": "eval: doc.consider_attendance===1;"
+  },
+  {
+   "depends_on": "eval: doc.consider_attendance===1;",
+   "fieldname": "attachment",
+   "fieldtype": "Attach",
+   "label": "Attachment"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-10-08 15:36:13.191392",
+ "modified_by": "Administrator",
+ "module": "Examination",
+ "name": "Non Eligible Exam Students",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

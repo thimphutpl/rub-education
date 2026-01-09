@@ -2,7 +2,7 @@
  "actions": [],
  "allow_rename": 1,
  "autoname": "field:programme_name",
- "creation": "2025-08-25 15:15:27.201038",
+ "creation": "2025-09-16 11:18:29.368530",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
@@ -10,6 +10,7 @@
   "programme_leader",
   "column_break_yvlq",
   "abbreviation",
+  "programme_master",
   "programme_duration_section",
   "from_date",
   "column_break_znrv",
@@ -26,8 +27,8 @@
   "upload_approved_dpd",
   "sb_more_info",
   "programme_description",
-  "tb_history",
-  "programme_record"
+  "section_break_bntf",
+  "amended_from"
  ],
  "fields": [
   {
@@ -39,22 +40,24 @@
    "unique": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "programme_leader",
    "fieldtype": "Link",
    "label": "Programme Leader",
    "options": "Employee",
-   "reqd": 1
+   "read_only": 1
   },
   {
    "fieldname": "column_break_yvlq",
    "fieldtype": "Column Break"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "abbreviation",
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Abbreviation",
-   "reqd": 1
+   "read_only": 1
   },
   {
    "fieldname": "programme_duration_section",
@@ -62,22 +65,36 @@
    "label": "Programme Duration"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "from_date",
    "fieldtype": "Date",
    "in_list_view": 1,
    "label": "From Date",
-   "reqd": 1
+   "read_only": 1
   },
   {
    "fieldname": "column_break_znrv",
    "fieldtype": "Column Break"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "to_date",
    "fieldtype": "Date",
    "in_list_view": 1,
    "label": "To Date",
-   "reqd": 1
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb_colleges",
+   "fieldtype": "Section Break",
+   "label": "Colleges"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "colleges",
+   "fieldtype": "Table",
+   "label": "Colleges",
+   "options": "Colleges"
   },
   {
    "fieldname": "section_break_emfb",
@@ -87,15 +104,14 @@
    "fieldname": "mode_of_study",
    "fieldtype": "Select",
    "label": "Mode of Study",
-   "options": "Full Time Campus\nContinued Education",
+   "options": "Full Time Campus\nContinued Education\nBoth",
    "reqd": 1
   },
   {
    "description": "APMR: Annual Programme Monitoring Report",
    "fieldname": "programme_apmr_date",
    "fieldtype": "Date",
-   "label": "Programme APMR Date",
-   "reqd": 1
+   "label": "Programme APMR Date"
   },
   {
    "fieldname": "column_break_gqao",
@@ -104,8 +120,13 @@
   {
    "fieldname": "programme_approval_date",
    "fieldtype": "Date",
-   "label": "Programme Approval Date",
-   "reqd": 1
+   "label": "Programme Approval Date"
+  },
+  {
+   "description": "CCR: Complete Cycle Review Date",
+   "fieldname": "programme_ccr_date",
+   "fieldtype": "Date",
+   "label": "Programme CCR date"
   },
   {
    "fieldname": "section_break_slol",
@@ -113,15 +134,10 @@
    "label": "Attachments"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "upload_approved_dpd",
    "fieldtype": "Attach",
    "label": "Upload Approved DPD"
-  },
-  {
-   "fieldname": "colleges",
-   "fieldtype": "Table",
-   "label": "Colleges",
-   "options": "Colleges"
   },
   {
    "collapsible": 1,
@@ -130,39 +146,40 @@
    "label": "More Information"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "programme_description",
    "fieldtype": "Text",
    "label": "Programme Description"
   },
   {
-   "fieldname": "sb_colleges",
-   "fieldtype": "Section Break",
-   "label": "Colleges"
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Programme",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
   },
   {
-   "fieldname": "tb_history",
-   "fieldtype": "Tab Break",
-   "label": "Programme Record History"
+   "fieldname": "section_break_bntf",
+   "fieldtype": "Section Break"
   },
   {
-   "fieldname": "programme_record",
-   "fieldtype": "Table",
-   "options": "Programme Record History",
+   "allow_on_submit": 1,
+   "fieldname": "programme_master",
+   "fieldtype": "Link",
+   "label": "Programme Master",
+   "options": "Programme Master",
    "read_only": 1
-  },
-  {
-   "description": "CCR: Complete Cycle Review Date",
-   "fieldname": "programme_ccr_date",
-   "fieldtype": "Date",
-   "label": "Programme CCR date",
-   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
+ "is_submittable": 1,
  "links": [],
- "modified": "2025-08-25 17:05:18.128729",
- "modified_by": "Administrator",
+ "modified": "2025-10-21 09:46:15.307458",
+ "modified_by": "sonam.norbu@thimphutechpark.bt",
  "module": "Academic Management",
  "name": "Programme",
  "naming_rule": "By fieldname",
@@ -178,11 +195,13 @@
    "report": 1,
    "role": "System Manager",
    "share": 1,
+   "submit": 1,
    "write": 1
   }
  ],
  "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_changes": 1
 }

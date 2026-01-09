@@ -1,0 +1,40 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-12-15 11:03:56.598434",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "criteria",
+  "score"
+ ],
+ "fields": [
+  {
+   "fieldname": "criteria",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Criteria"
+  },
+  {
+   "fieldname": "score",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Score"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-12-30 13:45:25.303574",
+ "modified_by": "Administrator",
+ "module": "Event Management",
+ "name": "Evaluation Criteria Full Paper",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

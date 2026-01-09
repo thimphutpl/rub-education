@@ -1,0 +1,366 @@
+{
+    "actions": [],
+    "allow_rename": 1,
+    "autoname": "CallForPaper-.####",
+    "creation": "2025-12-18 10:55:58.025788",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "section_break_obzu",
+        "theme",
+        "section_break_yqgt",
+        "amended_from",
+        "conference",
+        "prefix",
+        "column_break_rnzf",
+        "first_name",
+        "column_break_zddm",
+        "middle_name",
+        "column_break_npib",
+        "last_name",
+        "section_break_qdlb",
+        "nationality",
+        "column_break_hwpa",
+        "passport__cid_number",
+        "column_break_ugdd",
+        "country_of_your_current_location",
+        "section_break_mgmj",
+        "organisation",
+        "column_break_grpk",
+        "current_position",
+        "section_break_fstr",
+        "email",
+        "column_break_edev",
+        "mobile_number",
+        "emergency_contact_information_section",
+        "name1",
+        "column_break_dhai",
+        "contact_number",
+        "column_break_pzfz",
+        "relationship",
+        "abstract_tab",
+        "abstract_details_section",
+        "title",
+        "author_name",
+        "affiliation",
+        "brief_bio",
+        "abstract",
+        "evaluate_tab",
+        "give_marks",
+        "view_marks",
+        "section_break_lhnd",
+        "total_panel_member",
+        "column_break_nddb",
+        "total_mark_submitted",
+        "column_break_xhky",
+        "waiting_for_review",
+        "evaluation_criteria_section",
+        "master_evaluation_criteria_call_for_paper",
+        "total_mark"
+    ],
+    "fields": [
+        {
+            "fieldname": "section_break_yqgt",
+            "fieldtype": "Section Break",
+            "label": "Personal Information"
+        },
+        {
+            "fieldname": "amended_from",
+            "fieldtype": "Link",
+            "hidden": 1,
+            "label": "Amended From",
+            "no_copy": 1,
+            "options": "Call For Paper",
+            "print_hide": 1,
+            "read_only": 1,
+            "search_index": 1
+        },
+        {
+            "fieldname": "conference",
+            "fieldtype": "Link",
+            "hidden": 1,
+            "label": "Conference",
+            "options": "Conference Announcement"
+        },
+        {
+            "fieldname": "email",
+            "fieldtype": "Data",
+            "label": "Email",
+            "read_only": 1
+        },
+        {
+            "fieldname": "abstract_details_section",
+            "fieldtype": "Section Break",
+            "label": "Abstract Details"
+        },
+        {
+            "fieldname": "title",
+            "fieldtype": "Data",
+            "in_list_view": 1,
+            "label": "Title of the Paper",
+            "read_only": 1,
+            "reqd": 1
+        },
+        {
+            "fieldname": "evaluate_tab",
+            "fieldtype": "Tab Break",
+            "label": "Evaluate"
+        },
+        {
+            "fieldname": "abstract",
+            "fieldtype": "Small Text",
+            "in_list_view": 1,
+            "label": "Abstract",
+            "read_only": 1,
+            "reqd": 1
+        },
+        {
+            "fieldname": "prefix",
+            "fieldtype": "Link",
+            "label": "Prefix",
+            "options": "Salutation",
+            "read_only": 1
+        },
+        {
+            "fieldname": "column_break_rnzf",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "first_name",
+            "fieldtype": "Data",
+            "label": "First Name",
+            "read_only": 1
+        },
+        {
+            "fieldname": "column_break_zddm",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "middle_name",
+            "fieldtype": "Data",
+            "label": "Middle Name",
+            "read_only": 1
+        },
+        {
+            "fieldname": "column_break_npib",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "last_name",
+            "fieldtype": "Data",
+            "label": "Last Name",
+            "read_only": 1
+        },
+        {
+            "fieldname": "nationality",
+            "fieldtype": "Link",
+            "label": "Nationality",
+            "options": "Country",
+            "read_only": 1
+        },
+        {
+            "fieldname": "passport__cid_number",
+            "fieldtype": "Data",
+            "label": "Passport / CID number",
+            "read_only": 1
+        },
+        {
+            "fieldname": "organisation",
+            "fieldtype": "Data",
+            "label": "Organisation",
+            "read_only": 1
+        },
+        {
+            "fieldname": "country_of_your_current_location",
+            "fieldtype": "Data",
+            "label": "Country of your current location",
+            "read_only": 1
+        },
+        {
+            "fieldname": "current_position",
+            "fieldtype": "Data",
+            "label": "Current Position",
+            "read_only": 1
+        },
+        {
+            "fieldname": "mobile_number",
+            "fieldtype": "Data",
+            "label": "Mobile Number",
+            "read_only": 1
+        },
+        {
+            "fieldname": "emergency_contact_information_section",
+            "fieldtype": "Section Break",
+            "label": "Emergency Contact Information"
+        },
+        {
+            "fieldname": "name1",
+            "fieldtype": "Data",
+            "label": "Name",
+            "read_only": 1
+        },
+        {
+            "fieldname": "column_break_dhai",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "contact_number",
+            "fieldtype": "Data",
+            "label": "Contact Number",
+            "read_only": 1
+        },
+        {
+            "fieldname": "column_break_pzfz",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "relationship",
+            "fieldtype": "Data",
+            "label": "Relationship",
+            "read_only": 1
+        },
+        {
+            "fieldname": "section_break_qdlb",
+            "fieldtype": "Section Break"
+        },
+        {
+            "fieldname": "column_break_hwpa",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "column_break_ugdd",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "section_break_mgmj",
+            "fieldtype": "Section Break"
+        },
+        {
+            "fieldname": "column_break_grpk",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "section_break_fstr",
+            "fieldtype": "Section Break"
+        },
+        {
+            "fieldname": "column_break_edev",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "evaluation_criteria_section",
+            "fieldtype": "Section Break",
+            "hide_border": 1,
+            "label": "Evaluation Criteria"
+        },
+        {
+            "fieldname": "section_break_obzu",
+            "fieldtype": "Section Break"
+        },
+        {
+            "fieldname": "theme",
+            "fieldtype": "Data",
+            "label": "Theme"
+        },
+        {
+            "fieldname": "author_name",
+            "fieldtype": "Table",
+            "label": "Author(s) Name",
+            "options": "Author Name"
+        },
+        {
+            "fieldname": "affiliation",
+            "fieldtype": "Small Text",
+            "label": "Affiliation"
+        },
+        {
+            "fieldname": "give_marks",
+            "fieldtype": "Button",
+            "label": "Give Marks"
+        },
+        {
+            "fieldname": "view_marks",
+            "fieldtype": "Button",
+            "label": "View Marks"
+        },
+        {
+            "fieldname": "brief_bio",
+            "fieldtype": "Table",
+            "label": "Brief Bio of the author(s)",
+            "options": "Author Details"
+        },
+        {
+            "fieldname": "abstract_tab",
+            "fieldtype": "Tab Break",
+            "label": "Abstract"
+        },
+        {
+            "fieldname": "master_evaluation_criteria_call_for_paper",
+            "fieldtype": "Table",
+            "label": "Evaluation Criteria",
+            "options": "Evaluation Master Criteria For Call For Paper"
+        },
+        {
+            "fieldname": "section_break_lhnd",
+            "fieldtype": "Section Break"
+        },
+        {
+            "fieldname": "column_break_nddb",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "total_mark_submitted",
+            "fieldtype": "Int",
+            "label": "Total Mark Submitted"
+        },
+        {
+            "fieldname": "column_break_xhky",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "waiting_for_review",
+            "fieldtype": "Int",
+            "label": "Waiting For Review"
+        },
+        {
+            "fieldname": "total_mark",
+            "fieldtype": "Float",
+            "label": "Total Mark",
+            "precision": "2"
+        },
+        {
+            "fieldname": "total_panel_member",
+            "fieldtype": "Int",
+            "label": "Total Panel Member"
+        }
+    ],
+    "grid_page_length": 50,
+    "index_web_pages_for_search": 1,
+    "is_submittable": 1,
+    "links": [],
+    "modified": "2025-12-20 15:51:28.197719",
+    "modified_by": "Administrator",
+    "module": "Event Management",
+    "name": "Call For Paper",
+    "naming_rule": "Expression (old style)",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "share": 1,
+            "submit": 1,
+            "write": 1
+        }
+    ],
+    "row_format": "Dynamic",
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": []
+}

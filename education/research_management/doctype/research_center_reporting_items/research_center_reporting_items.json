@@ -1,0 +1,468 @@
+{
+ "actions": [],
+ "autoname": "RCPI.YY.MM.######",
+ "creation": "2025-12-07 12:16:47.102393",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "college",
+  "posting_date",
+  "research_center_name",
+  "year",
+  "reporting_type",
+  "policy_briefs_section",
+  "policy_briefs_title",
+  "publisher_policy_brief",
+  "date_of_publisher",
+  "remarks_policy_briefs",
+  "journals_section",
+  "name_of_the_journal",
+  "vol_no_journal",
+  "issue_no_journal",
+  "website_links_journal",
+  "section_break_mxnz",
+  "research_articles_title",
+  "publisher",
+  "website_link_articles",
+  "section_break_sohe",
+  "conference_seminar_paper_title",
+  "conferenceseminar_title",
+  "date",
+  "nationalinternational",
+  "section_break_bmwu",
+  "book_chapter_title",
+  "book_title",
+  "publishers",
+  "website_link_books",
+  "knowledge_transfer_and_community_service_section",
+  "trainings_organized_title",
+  "no_of_staffs_engaged",
+  "no_of_student_engaged",
+  "no_of_external_participants",
+  "venue",
+  "funding_source",
+  "remarks",
+  "research_event_organized_section",
+  "research_event_organized_title",
+  "no_of_staffs_engageds",
+  "no_of_student_engageds",
+  "no_of_external_participantss",
+  "venues",
+  "funding_sources",
+  "remarkss",
+  "research_projects_and_funding_section",
+  "project_title",
+  "funding_agency_nameinstitution",
+  "country",
+  "application_amount",
+  "funding_secured",
+  "is_joint_research",
+  "secured_amount",
+  "grant_in_kind",
+  "project_completed",
+  "principal",
+  "employees",
+  "sb_students",
+  "student",
+  "employee",
+  "section_break_xckp",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_xckp",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Research Center Reporting Items",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "college",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "College",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Posting Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "research_center_name",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Research Center name",
+   "options": "Research Center",
+   "reqd": 1
+  },
+  {
+   "fieldname": "reporting_type",
+   "fieldtype": "Select",
+   "label": "Reporting Type",
+   "options": "Policy Briefs\nJournals\nResearch Articles\nConference Seminar Paper\nBook Chapters\nKnowledge Transfer and Community Service\nResearch Event Organized\nResearch Projects and Funding"
+  },
+  {
+   "depends_on": "eval:doc.reporting_type == 'Policy Briefs'",
+   "fieldname": "policy_briefs_section",
+   "fieldtype": "Section Break",
+   "label": "Policy Briefs"
+  },
+  {
+   "fieldname": "publisher_policy_brief",
+   "fieldtype": "Data",
+   "label": "Publisher"
+  },
+  {
+   "fieldname": "date_of_publisher",
+   "fieldtype": "Date",
+   "label": "Date of Publisher"
+  },
+  {
+   "fieldname": "remarks_policy_briefs",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "depends_on": "eval:doc.reporting_type == 'Journals'",
+   "fieldname": "journals_section",
+   "fieldtype": "Section Break",
+   "label": "Journals"
+  },
+  {
+   "fieldname": "name_of_the_journal",
+   "fieldtype": "Data",
+   "label": "Name of the Journal"
+  },
+  {
+   "fieldname": "vol_no_journal",
+   "fieldtype": "Data",
+   "label": "Vol No."
+  },
+  {
+   "fieldname": "issue_no_journal",
+   "fieldtype": "Data",
+   "label": "Issue No."
+  },
+  {
+   "fieldname": "website_links_journal",
+   "fieldtype": "Data",
+   "label": "Website Links"
+  },
+  {
+   "fieldname": "sb_students",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "policy_briefs_title",
+   "fieldtype": "Data",
+   "label": "Title"
+  },
+  {
+   "depends_on": "eval:doc.reporting_type == 'Research Articles'",
+   "fieldname": "section_break_mxnz",
+   "fieldtype": "Section Break",
+   "label": "Research Articles"
+  },
+  {
+   "fieldname": "research_articles_title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Title"
+  },
+  {
+   "fieldname": "publisher",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Publisher"
+  },
+  {
+   "fieldname": "year",
+   "fieldtype": "Link",
+   "label": "Year",
+   "options": "Fiscal Year"
+  },
+  {
+   "depends_on": "eval:doc.reporting_type == 'Conference Seminar Paper'",
+   "fieldname": "section_break_sohe",
+   "fieldtype": "Section Break",
+   "label": "Conference Seminar Paper"
+  },
+  {
+   "fieldname": "conference_seminar_paper_title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Title"
+  },
+  {
+   "fieldname": "conferenceseminar_title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Conference/Seminar Title"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date"
+  },
+  {
+   "fieldname": "nationalinternational",
+   "fieldtype": "Select",
+   "label": "National/International ",
+   "options": "National\nInternational"
+  },
+  {
+   "depends_on": "eval:doc.reporting_type == 'Book Chapters'",
+   "fieldname": "section_break_bmwu",
+   "fieldtype": "Section Break",
+   "label": "Book Chapters"
+  },
+  {
+   "fieldname": "book_chapter_title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Book Chapter Title"
+  },
+  {
+   "fieldname": "book_title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Book Title"
+  },
+  {
+   "fieldname": "publishers",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Publisher"
+  },
+  {
+   "fieldname": "website_link_articles",
+   "fieldtype": "Data",
+   "label": "Website Link"
+  },
+  {
+   "depends_on": "eval:['Research Articles','Conference Seminar Paper','Book Chapters'].includes(doc.reporting_type)",
+   "fieldname": "student",
+   "fieldtype": "Table MultiSelect",
+   "label": "Students",
+   "options": "Research Article Students"
+  },
+  {
+   "depends_on": "eval:['Research Articles','Conference Seminar Paper','Book Chapters','Knowledge Transfer and Community Service'].includes(doc.reporting_type)",
+   "fieldname": "employee",
+   "fieldtype": "Table MultiSelect",
+   "label": "Employees",
+   "options": "Research Article Employees"
+  },
+  {
+   "fieldname": "website_link_books",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Website Link"
+  },
+  {
+   "fieldname": "trainings_organized_title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Title"
+  },
+  {
+   "fieldname": "no_of_staffs_engaged",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "No. of Staffs Engaged"
+  },
+  {
+   "fieldname": "no_of_student_engaged",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "No. of Student Engaged"
+  },
+  {
+   "fieldname": "no_of_external_participants",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "No. of External Participants"
+  },
+  {
+   "fieldname": "venue",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Venue"
+  },
+  {
+   "fieldname": "funding_source",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Funding Source"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "research_event_organized_title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Title"
+  },
+  {
+   "fieldname": "no_of_staffs_engageds",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "No. of staffs engaged"
+  },
+  {
+   "fieldname": "no_of_student_engageds",
+   "fieldtype": "Data",
+   "label": "No. of student engaged"
+  },
+  {
+   "fieldname": "no_of_external_participantss",
+   "fieldtype": "Data",
+   "label": "No. of External Participants"
+  },
+  {
+   "fieldname": "venues",
+   "fieldtype": "Data",
+   "label": "Venue"
+  },
+  {
+   "fieldname": "funding_sources",
+   "fieldtype": "Data",
+   "label": "Funding Source"
+  },
+  {
+   "fieldname": "remarkss",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "depends_on": "eval:doc.reporting_type == 'Research Event Organized'",
+   "fieldname": "research_event_organized_section",
+   "fieldtype": "Section Break",
+   "label": "Research Event Organized"
+  },
+  {
+   "depends_on": "eval:doc.reporting_type == 'Knowledge Transfer and Community Service'",
+   "fieldname": "knowledge_transfer_and_community_service_section",
+   "fieldtype": "Section Break",
+   "label": "Knowledge Transfer and Community Service "
+  },
+  {
+   "fieldname": "project_title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Project Title"
+  },
+  {
+   "fieldname": "funding_agency_nameinstitution",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Funding Agency Name/Institution"
+  },
+  {
+   "fieldname": "country",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Country",
+   "options": "Country"
+  },
+  {
+   "fieldname": "application_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "GAS(Amount)"
+  },
+  {
+   "fieldname": "funding_secured",
+   "fieldtype": "Select",
+   "label": "Funding Secured?",
+   "options": "Yes\nNo"
+  },
+  {
+   "fieldname": "is_joint_research",
+   "fieldtype": "Select",
+   "label": "Is Joint Research?",
+   "options": "Yes\nNo"
+  },
+  {
+   "fieldname": "secured_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "SGD(Amount)"
+  },
+  {
+   "fieldname": "grant_in_kind",
+   "fieldtype": "Select",
+   "label": "Grant in Kind?",
+   "options": "Yes\nNo"
+  },
+  {
+   "fieldname": "project_completed",
+   "fieldtype": "Select",
+   "label": "Project Completed?",
+   "options": "Yes\nNo\nOngoing"
+  },
+  {
+   "depends_on": "eval:doc.reporting_type == 'Research Projects and Funding'",
+   "fieldname": "research_projects_and_funding_section",
+   "fieldtype": "Section Break",
+   "label": "Research Projects and Funding"
+  },
+  {
+   "fieldname": "employees",
+   "fieldtype": "Table MultiSelect",
+   "label": "Co-Investigator",
+   "options": "Research Article Employees"
+  },
+  {
+   "fieldname": "principal",
+   "fieldtype": "Table MultiSelect",
+   "label": "Principal Investigator",
+   "options": "Research Article Employees"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-12-19 12:45:37.706958",
+ "modified_by": "Administrator",
+ "module": "Research Management",
+ "name": "Research Center Reporting Items",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

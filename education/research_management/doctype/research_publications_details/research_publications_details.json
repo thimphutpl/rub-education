@@ -1,0 +1,96 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-09-16 12:18:16.748101",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "key_performancesuccess_indicators_section",
+  "research_kpi",
+  "is_group",
+  "kpi_child",
+  "column_break_tmfj",
+  "weight",
+  "uom",
+  "review_section",
+  "amount",
+  "remarks"
+ ],
+ "fields": [
+  {
+   "fieldname": "key_performancesuccess_indicators_section",
+   "fieldtype": "Section Break",
+   "label": "Key Performance/Success Indicators"
+  },
+  {
+   "fetch_from": "research_kpi.parent_task",
+   "fieldname": "kpi_child",
+   "fieldtype": "Data",
+   "label": "Group KPI",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_tmfj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "uom",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "UOM",
+   "options": "UOM"
+  },
+  {
+   "fieldname": "weight",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Weight"
+  },
+  {
+   "fieldname": "research_kpi",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Key Performance/Success Indicators",
+   "options": "Research KPI"
+  },
+  {
+   "default": "0",
+   "fetch_from": "research_kpi.is_group",
+   "fieldname": "is_group",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Is_Group",
+   "read_only": 1
+  },
+  {
+   "fieldname": "review_section",
+   "fieldtype": "Section Break",
+   "label": "Review "
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Data",
+   "label": "Amount"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Data",
+   "label": "Remarks "
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-09-16 14:55:21.427902",
+ "modified_by": "Administrator",
+ "module": "Research Management",
+ "name": "Research Publications Details",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

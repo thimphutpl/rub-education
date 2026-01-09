@@ -13,12 +13,12 @@
   "new_programme_name",
   "new_programme_abbraviation",
   "new_programme_duration_section",
-  "from_date",
   "new_programme_approval_date",
   "new_programme_ccr_date",
   "column_break_vqbw",
-  "to_date",
   "new_programme_apmr_date",
+  "sb_colleges",
+  "table_rziz",
   "section_break_kwuf",
   "mode_of_study",
   "new_programme_description",
@@ -47,7 +47,7 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Old Programme",
-   "options": "Programme",
+   "options": "Programme Master",
    "reqd": 1
   },
   {
@@ -83,13 +83,7 @@
   {
    "fieldname": "new_programme_duration_section",
    "fieldtype": "Section Break",
-   "label": "New Programme Duration"
-  },
-  {
-   "fieldname": "from_date",
-   "fieldtype": "Date",
-   "label": "From Date",
-   "reqd": 1
+   "label": "New Programme Details"
   },
   {
    "fieldname": "new_programme_approval_date",
@@ -100,12 +94,6 @@
   {
    "fieldname": "column_break_vqbw",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "to_date",
-   "fieldtype": "Date",
-   "label": "To Date",
-   "reqd": 1
   },
   {
    "description": "APMR: Annual Programme Monitoring Report",
@@ -146,13 +134,23 @@
    "fieldname": "upload_approved_dpd",
    "fieldtype": "Attach",
    "label": "Upload Approved DPD"
+  },
+  {
+   "fieldname": "sb_colleges",
+   "fieldtype": "Section Break",
+   "label": "Colleges"
+  },
+  {
+   "fieldname": "table_rziz",
+   "fieldtype": "Table",
+   "options": "Colleges"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-08-25 16:49:52.494802",
+ "modified": "2025-09-25 17:54:15.679554",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Update Programme",

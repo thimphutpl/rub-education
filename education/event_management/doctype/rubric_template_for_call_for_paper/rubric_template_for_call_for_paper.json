@@ -1,0 +1,71 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "RubricCallForPaper-.####",
+ "creation": "2025-12-20 15:21:48.393166",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_9zg8",
+  "theme",
+  "evaluation_criteria_full_paper",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_9zg8",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "theme",
+   "fieldtype": "Link",
+   "label": "Theme",
+   "options": "Conference Theme"
+  },
+  {
+   "fieldname": "evaluation_criteria_full_paper",
+   "fieldtype": "Table",
+   "label": "Evaluation Criteria Call For Paper",
+   "options": "Evaluation Criteria Call For Paper"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Rubric Template For Call For Paper",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-12-20 15:29:55.355329",
+ "modified_by": "Administrator",
+ "module": "Event Management",
+ "name": "Rubric Template For Call For Paper",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

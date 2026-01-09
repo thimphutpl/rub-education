@@ -1,0 +1,461 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "FullPaper-.####",
+ "creation": "2025-10-31 14:05:20.270836",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_obzu",
+  "theme",
+  "section_break_xglx",
+  "registrant_type",
+  "section_break_yqgt",
+  "amended_from",
+  "conference",
+  "prefix",
+  "column_break_rnzf",
+  "first_name",
+  "column_break_zddm",
+  "middle_name",
+  "column_break_npib",
+  "last_name",
+  "section_break_qdlb",
+  "nationality",
+  "column_break_hwpa",
+  "passport__cid_number",
+  "column_break_ugdd",
+  "country_of_your_current_location",
+  "section_break_mgmj",
+  "organisation",
+  "column_break_grpk",
+  "current_position",
+  "section_break_swbi",
+  "is_presenter",
+  "section_break_fstr",
+  "email",
+  "column_break_edev",
+  "mobile_number",
+  "emergency_contact_information_section",
+  "name1",
+  "column_break_dhai",
+  "contact_number",
+  "column_break_pzfz",
+  "relationship",
+  "abstract_details_tab",
+  "abstract_details_section",
+  "title",
+  "key_words",
+  "author_name",
+  "affiliation",
+  "brief_bio",
+  "abstract",
+  "revise_abstract",
+  "full_paper_tab",
+  "full_paper_section",
+  "check_column",
+  "full_paper",
+  "have_you_published_your_work",
+  "yes",
+  "not",
+  "dietary_requirement",
+  "check_yybq",
+  "evaluate_tab",
+  "give_marks",
+  "view_marks",
+  "section_break_cwuw",
+  "total_panel_member",
+  "column_break_fetw",
+  "total_mark_submitted",
+  "column_break_pfcx",
+  "waiting_for_review",
+  "evaluation_criteria_section",
+  "master_evaluation_criteria_full_paper",
+  "total_mark"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_yqgt",
+   "fieldtype": "Section Break",
+   "label": "Personal Information"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Full Paper",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "conference",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Conference",
+   "options": "Conference Announcement"
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Email",
+   "read_only": 1
+  },
+  {
+   "fieldname": "abstract_details_section",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Title of the Paper",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "evaluate_tab",
+   "fieldtype": "Tab Break",
+   "label": "Evaluate"
+  },
+  {
+   "fieldname": "abstract",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Abstract",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "prefix",
+   "fieldtype": "Link",
+   "label": "Prefix",
+   "options": "Salutation",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_rnzf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "first_name",
+   "fieldtype": "Data",
+   "label": "First Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_zddm",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "middle_name",
+   "fieldtype": "Data",
+   "label": "Middle Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_npib",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "last_name",
+   "fieldtype": "Data",
+   "label": "Last Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "nationality",
+   "fieldtype": "Link",
+   "label": "Nationality",
+   "options": "Country",
+   "read_only": 1
+  },
+  {
+   "fieldname": "passport__cid_number",
+   "fieldtype": "Data",
+   "label": "Passport / CID number",
+   "read_only": 1
+  },
+  {
+   "fieldname": "organisation",
+   "fieldtype": "Data",
+   "label": "Organisation",
+   "read_only": 1
+  },
+  {
+   "fieldname": "country_of_your_current_location",
+   "fieldtype": "Data",
+   "label": "Country of your current location",
+   "read_only": 1
+  },
+  {
+   "fieldname": "current_position",
+   "fieldtype": "Data",
+   "label": "Current Position",
+   "read_only": 1
+  },
+  {
+   "fieldname": "mobile_number",
+   "fieldtype": "Data",
+   "label": "Mobile Number",
+   "read_only": 1
+  },
+  {
+   "fieldname": "emergency_contact_information_section",
+   "fieldtype": "Section Break",
+   "label": "Emergency Contact Information"
+  },
+  {
+   "fieldname": "name1",
+   "fieldtype": "Data",
+   "label": "Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_dhai",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "contact_number",
+   "fieldtype": "Data",
+   "label": "Contact Number",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_pzfz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "relationship",
+   "fieldtype": "Data",
+   "label": "Relationship",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_qdlb",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_hwpa",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_ugdd",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_mgmj",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_grpk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_fstr",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_edev",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "evaluation_criteria_section",
+   "fieldtype": "Section Break",
+   "hide_border": 1,
+   "label": "Evaluation Criteria"
+  },
+  {
+   "fieldname": "section_break_obzu",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "theme",
+   "fieldtype": "Data",
+   "label": "Theme"
+  },
+  {
+   "fieldname": "author_name",
+   "fieldtype": "Table",
+   "label": "Author(s) Name",
+   "options": "Author Name"
+  },
+  {
+   "fieldname": "affiliation",
+   "fieldtype": "Small Text",
+   "label": "Affiliation"
+  },
+  {
+   "fieldname": "give_marks",
+   "fieldtype": "Button",
+   "label": "Give Marks"
+  },
+  {
+   "fieldname": "view_marks",
+   "fieldtype": "Button",
+   "label": "View Marks"
+  },
+  {
+   "fieldname": "brief_bio",
+   "fieldtype": "Table",
+   "label": "Brief Bio of the author(s)",
+   "options": "Author Details"
+  },
+  {
+   "fieldname": "section_break_swbi",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_presenter",
+   "fieldtype": "Check",
+   "label": "Is Presenter"
+  },
+  {
+   "fieldname": "key_words",
+   "fieldtype": "Small Text",
+   "label": "key Words"
+  },
+  {
+   "fieldname": "revise_abstract",
+   "fieldtype": "Small Text",
+   "label": "Revise Abstract"
+  },
+  {
+   "fieldname": "full_paper_section",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "check_column",
+   "fieldtype": "Column Break",
+   "label": "Check"
+  },
+  {
+   "fieldname": "full_paper",
+   "fieldtype": "Attach",
+   "label": "Full paper"
+  },
+  {
+   "depends_on": "eval:doc.have_you_publsihed_your_work=='Yes'",
+   "fieldname": "yes",
+   "fieldtype": "Small Text",
+   "label": "If yes, mention the detials of the pulication"
+  },
+  {
+   "depends_on": "eval:doc.have_you_publsihed_your_work=='No'\r\n",
+   "fieldname": "not",
+   "fieldtype": "Select",
+   "label": "If not, would you like to publish in Bhutan Journal of Research and Development?",
+   "options": "\nYes\nNo"
+  },
+  {
+   "fieldname": "dietary_requirement",
+   "fieldtype": "Select",
+   "label": "Dietary Requirement",
+   "options": "\nVegetarian\nNon-Vegetarian"
+  },
+  {
+   "default": "0",
+   "description": "By registering for this conference, you acknowledge and agree that your participation, including your presentations, photographs, audio, and video recordings taken during the conference, may be recorded and used by the Royal University of Bhutan (RUB) and its conference partners. These materials may be published, reproduced, and shared for academic, promotional, and reporting purposes through official RUB and partner websites, social media platforms, and other communication channels.",
+   "fieldname": "check_yybq",
+   "fieldtype": "Check",
+   "label": "Agree"
+  },
+  {
+   "fieldname": "section_break_xglx",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "registrant_type",
+   "fieldtype": "Select",
+   "label": "Registrant Type",
+   "options": "\nPresenter"
+  },
+  {
+   "fieldname": "master_evaluation_criteria_full_paper",
+   "fieldtype": "Table",
+   "label": "Evaluation Criteria",
+   "options": "Evaluation Master Criteria For Full Paper"
+  },
+  {
+   "fieldname": "abstract_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Abstract Details"
+  },
+  {
+   "fieldname": "full_paper_tab",
+   "fieldtype": "Tab Break",
+   "label": "Full Paper"
+  },
+  {
+   "fieldname": "section_break_cwuw",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "total_panel_member",
+   "fieldtype": "Int",
+   "label": "Total Panel Member"
+  },
+  {
+   "fieldname": "column_break_fetw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_mark_submitted",
+   "fieldtype": "Int",
+   "label": "Total Mark Submitted"
+  },
+  {
+   "fieldname": "column_break_pfcx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "waiting_for_review",
+   "fieldtype": "Int",
+   "label": "Waiting for Review"
+  },
+  {
+   "fieldname": "total_mark",
+   "fieldtype": "Float",
+   "label": "Total Mark",
+   "precision": "2"
+  },
+  {
+   "fieldname": "have_you_published_your_work",
+   "fieldtype": "Select",
+   "label": "Have you Publishedyour work?",
+   "options": "\nYes\nNo"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-12-30 14:36:21.593307",
+ "modified_by": "Administrator",
+ "module": "Event Management",
+ "name": "Full Paper",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

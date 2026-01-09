@@ -2,6 +2,17 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Program Enrollment', {
+  refresh: function (frm) {
+    frm.set_query('program', function () {
+      return {
+        query:
+          'education.education.doctype.program_enrollment.program_enrollment.get_programmes',
+        filters: {
+          college: frm.doc.college,
+        },
+      }
+    })
+  },
   onload: function (frm) {
     frm.set_query('academic_term', function () {
       return {
@@ -34,9 +45,11 @@ frappe.ui.form.on('Program Enrollment', {
             'education.education.doctype.program_enrollment.program_enrollment.get_program_courses',
           filters: {
             program: frm.doc.program,
+            college: frm.doc.college,
           },
         }
       })
+      
     }
 
     // frm.set_query('student', function() {
@@ -91,6 +104,21 @@ frappe.ui.form.on('Program Enrollment', {
 
 frappe.ui.form.on('Program Enrollment Course', {
   courses_add: function (frm) {
+    // frm.fields_dict['courses'].grid.get_field('course').get_query = function (
+    //   doc
+    // ) {
+    //   var course_list = []
+    //   if (!doc.__islocal) course_list.push(doc.name)
+    //   $.each(doc.courses, function (_idx, val) {
+    //     if (val.course) course_list.push(val.course)
+    //   })
+    //   return {
+    //     filters: [
+    //       ['Course', 'name', 'not in', course_list],
+    //       ['Course', 'name', 'in', frm.program_courses.map((e) => e.course)],
+    //     ],
+    //   }
+    // }
     frm.fields_dict['courses'].grid.get_field('course').get_query = function (
       doc
     ) {
@@ -100,10 +128,12 @@ frappe.ui.form.on('Program Enrollment Course', {
         if (val.course) course_list.push(val.course)
       })
       return {
-        filters: [
-          ['Course', 'name', 'not in', course_list],
-          ['Course', 'name', 'in', frm.program_courses.map((e) => e.course)],
-        ],
+        query:
+          'education.education.doctype.program_enrollment.program_enrollment.get_program_courses',
+        filters: {
+          program: frm.doc.program,
+          college: frm.doc.college,
+        },
       }
     }
   },

@@ -1,0 +1,200 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-09-16 15:53:04.587665",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "project_title",
+  "rsearch_details_section",
+  "principal",
+  "column_break_akwn",
+  "co",
+  "funding_source_details_section",
+  "funding_agency_nameinstitution",
+  "column_break_bgdl",
+  "country",
+  "grant_application_submitted_section",
+  "column_break_tqit",
+  "column_break_kisb",
+  "application_amount",
+  "status_section",
+  "funding_secured",
+  "joint_research_section",
+  "is_joint_research",
+  "column_break_ivdg",
+  "agencycollege",
+  "joint_research_country",
+  "secured_grant_details_section",
+  "grant_secured_date",
+  "column_break_tzqh",
+  "secured_amount",
+  "grant_in_kind_section",
+  "grant_in_kind",
+  "project_completed_section",
+  "project_completed"
+ ],
+ "fields": [
+  {
+   "fieldname": "project_title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Project Title"
+  },
+  {
+   "description": "Name and Designation",
+   "fieldname": "rsearch_details_section",
+   "fieldtype": "Section Break",
+   "label": "Rsearch Details "
+  },
+  {
+   "fieldname": "column_break_akwn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "funding_source_details_section",
+   "fieldtype": "Section Break",
+   "label": "Funding Source Details"
+  },
+  {
+   "fieldname": "funding_agency_nameinstitution",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Funding Agency Name/Institution"
+  },
+  {
+   "fieldname": "column_break_bgdl",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "country",
+   "fieldtype": "Link",
+   "label": "Country",
+   "options": "Country"
+  },
+  {
+   "fieldname": "grant_application_submitted_section",
+   "fieldtype": "Section Break",
+   "label": "Grant Application Submitted"
+  },
+  {
+   "fieldname": "column_break_kisb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "status_section",
+   "fieldtype": "Section Break",
+   "label": "Status "
+  },
+  {
+   "fieldname": "funding_secured",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Funding Secured?"
+  },
+  {
+   "fieldname": "joint_research_section",
+   "fieldtype": "Section Break",
+   "label": "Joint Research"
+  },
+  {
+   "fieldname": "is_joint_research",
+   "fieldtype": "Data",
+   "label": "Is Joint Research?"
+  },
+  {
+   "fieldname": "column_break_ivdg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval doc.is_joint_research == \"Yes\"",
+   "fieldname": "agencycollege",
+   "fieldtype": "Data",
+   "label": "Agency/College"
+  },
+  {
+   "fieldname": "joint_research_country",
+   "fieldtype": "Link",
+   "label": "Country",
+   "options": "Country"
+  },
+  {
+   "fieldname": "application_amount",
+   "fieldtype": "Currency",
+   "label": "Amount (Nu)"
+  },
+  {
+   "fieldname": "secured_grant_details_section",
+   "fieldtype": "Section Break",
+   "label": "Secured Grant Details"
+  },
+  {
+   "fieldname": "grant_secured_date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "column_break_tzqh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "secured_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Amount (Nu)"
+  },
+  {
+   "fieldname": "grant_in_kind_section",
+   "fieldtype": "Section Break",
+   "label": "Grant in Kind"
+  },
+  {
+   "fieldname": "grant_in_kind",
+   "fieldtype": "Data",
+   "label": "Grant in Kind?"
+  },
+  {
+   "fieldname": "project_completed_section",
+   "fieldtype": "Section Break",
+   "label": "Project Completed"
+  },
+  {
+   "bold": 1,
+   "fieldname": "project_completed",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Project Completed?"
+  },
+  {
+   "fieldname": "column_break_tqit",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "First Name, Second Name, Designation",
+   "fieldname": "principal",
+   "fieldtype": "Data",
+   "label": "Principal Investigator"
+  },
+  {
+   "description": "First Name, Second Name, Designation",
+   "fieldname": "co",
+   "fieldtype": "Data",
+   "label": "Co-Investigator  "
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-12-19 12:03:07.063619",
+ "modified_by": "Administrator",
+ "module": "Research Management",
+ "name": "Research Grants Details",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -1,0 +1,253 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "RCPR.YYYY.MM.#####",
+ "creation": "2025-09-16 14:10:55.610184",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "college",
+  "research_center_name",
+  "column_break_xpgq",
+  "posting_date",
+  "1_introduction_section",
+  "introduction",
+  "2_research_projects_section",
+  "long_text_hdcp",
+  "research_funding_section",
+  "research_funding",
+  "researcher_productivity_and_impact_section",
+  "researcher_productivity_and_impact",
+  "knowledge_transfer_and_outreach_section",
+  "knowledge_transfer_and_outreach",
+  "research_infrastructure_and_facilities_section",
+  "research_infrastructure_and_facilities",
+  "collaborations_and_partnerships_section",
+  "collaborations_and_partnerships",
+  "impact_and_relevance_section",
+  "impact_and_relevance",
+  "financial_overview_section",
+  "financial_overview",
+  "key_challenges_and_mitigation_strategies_section",
+  "key_challenges_and_mitifation_strategies",
+  "future_plans_and_objectives_section",
+  "future_plans_and_objectives",
+  "conclusion_section",
+  "conclusion",
+  "annexure_section",
+  "annexure",
+  "contact_information_section",
+  "contact_information",
+  "section_break_ngdf",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_ngdf",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Amended From",
+   "no_copy": 1,
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "college",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "College",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "research_center_name",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Research Center Name",
+   "options": "Research Center",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_xpgq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Posting Date",
+   "reqd": 1
+  },
+  {
+   "description": "Briefly describe the research centre\u2019s mission, objectives, and focus areas. Mention the reporting period covered in this report.",
+   "fieldname": "1_introduction_section",
+   "fieldtype": "Section Break",
+   "label": "1. Introduction"
+  },
+  {
+   "fieldname": "introduction",
+   "fieldtype": "Long Text"
+  },
+  {
+   "description": "List ongoing and completed research projects during the reporting period, along with their objectives and outcomes. Include information on research funding acquired and the success rate of grant applications.",
+   "fieldname": "2_research_projects_section",
+   "fieldtype": "Section Break",
+   "label": "2. Research Projects"
+  },
+  {
+   "fieldname": "long_text_hdcp",
+   "fieldtype": "Long Text"
+  },
+  {
+   "fieldname": "research_funding_section",
+   "fieldtype": "Section Break",
+   "label": "3. Research Funding"
+  },
+  {
+   "fieldname": "research_funding",
+   "fieldtype": "Long Text"
+  },
+  {
+   "description": "Present data on the productivity of researchers, including the number of publications, citations, and collaborations. Highlight any awards or recognition received by researchers.",
+   "fieldname": "researcher_productivity_and_impact_section",
+   "fieldtype": "Section Break",
+   "label": "4. Researcher Productivity and Impact"
+  },
+  {
+   "fieldname": "researcher_productivity_and_impact",
+   "fieldtype": "Long Text"
+  },
+  {
+   "description": "Outline the centre\u2019s efforts in knowledge dissemination and outreach activities, such as workshops, conferences, and community engagement. Include details on the number of events, participants, and feedback received.",
+   "fieldname": "knowledge_transfer_and_outreach_section",
+   "fieldtype": "Section Break",
+   "label": "5. Knowledge Transfer and Outreach"
+  },
+  {
+   "fieldname": "knowledge_transfer_and_outreach",
+   "fieldtype": "Long Text"
+  },
+  {
+   "description": "Provide an update on the status of research infrastructure and facilities, including utilization rates and any improvements or upgrades made during the reporting period.",
+   "fieldname": "research_infrastructure_and_facilities_section",
+   "fieldtype": "Section Break",
+   "label": "6. Research Infrastructure and Facilities:"
+  },
+  {
+   "fieldname": "research_infrastructure_and_facilities",
+   "fieldtype": "Long Text"
+  },
+  {
+   "description": "Detail the centre\u2019s collaborations and partnerships with other research institutions, universities, industries, and government bodies. Highlight the impact of these collaborations on research outcomes.",
+   "fieldname": "collaborations_and_partnerships_section",
+   "fieldtype": "Section Break",
+   "label": "7. Collaborations and Partnerships"
+  },
+  {
+   "fieldname": "collaborations_and_partnerships",
+   "fieldtype": "Long Text"
+  },
+  {
+   "description": "Evaluate the societal and economic impact of research outcomes and assess how the research aligns with current challenges and the centre\u2019s mission.",
+   "fieldname": "impact_and_relevance_section",
+   "fieldtype": "Section Break",
+   "label": "8. Impact and Relevance"
+  },
+  {
+   "fieldname": "impact_and_relevance",
+   "fieldtype": "Long Text"
+  },
+  {
+   "fieldname": "financial_overview_section",
+   "fieldtype": "Section Break",
+   "label": "9. Financial Overview"
+  },
+  {
+   "fieldname": "financial_overview",
+   "fieldtype": "Long Text"
+  },
+  {
+   "fieldname": "key_challenges_and_mitifation_strategies",
+   "fieldtype": "Long Text"
+  },
+  {
+   "description": "Outline the research centre goals and objectives for the next reporting period. Include any strategic initiatives or new projects planned.",
+   "fieldname": "future_plans_and_objectives_section",
+   "fieldtype": "Section Break",
+   "label": "11. Future Plans and Objectives:"
+  },
+  {
+   "fieldname": "future_plans_and_objectives",
+   "fieldtype": "Long Text"
+  },
+  {
+   "fieldname": "conclusion",
+   "fieldtype": "Long Text"
+  },
+  {
+   "description": "Identify major challenges faced during the reporting period and describe the strategies implemented to address these challenges.",
+   "fieldname": "key_challenges_and_mitigation_strategies_section",
+   "fieldtype": "Section Break",
+   "label": "10. Key Challenges and Mitigation Strategies"
+  },
+  {
+   "description": "Summarize the overall performance of the research centre during the reporting period and emphasize any key achievements or areas that need improvement.",
+   "fieldname": "conclusion_section",
+   "fieldtype": "Section Break",
+   "label": "12. Conclusion"
+  },
+  {
+   "fieldname": "annexure_section",
+   "fieldtype": "Section Break",
+   "label": "13. Annexure"
+  },
+  {
+   "fieldname": "annexure",
+   "fieldtype": "Attach"
+  },
+  {
+   "description": "Provide contact details of key personnel responsible for the research centre\u2019s management, such as the director, administrative staff, or project managers.",
+   "fieldname": "contact_information_section",
+   "fieldtype": "Section Break",
+   "label": "Contact Information"
+  },
+  {
+   "fieldname": "contact_information",
+   "fieldtype": "Small Text"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-10-10 18:51:26.128938",
+ "modified_by": "Administrator",
+ "module": "Research Management",
+ "name": "Research Center Progress Reporting",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

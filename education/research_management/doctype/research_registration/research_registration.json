@@ -1,0 +1,185 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:RR{YY}{MM}{####}",
+ "creation": "2025-08-26 10:16:05.827258",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "title_of_the_project",
+  "registration_number",
+  "registration_date",
+  "column_break_zwqy",
+  "project_start_date",
+  "project_end_date",
+  "section_break_pvby",
+  "funding_agency",
+  "funding_amount",
+  "crc_approval_date",
+  "column_break_bzds",
+  "research_center",
+  "program_leader",
+  "designation_of_pl",
+  "department_of_pl",
+  "approver_details_section",
+  "approved_by_pl",
+  "column_break_zjke",
+  "approved_by_dril",
+  "attachments_section",
+  "attach_eyif",
+  "section_break_xwuw",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "title_of_the_project",
+   "fieldtype": "Data",
+   "label": "Title of the Project"
+  },
+  {
+   "fieldname": "registration_number",
+   "fieldtype": "Data",
+   "label": "Registration Number"
+  },
+  {
+   "fieldname": "registration_date",
+   "fieldtype": "Date",
+   "label": "Registration Date"
+  },
+  {
+   "fieldname": "column_break_zwqy",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "project_start_date",
+   "fieldtype": "Date",
+   "label": "Project Start Date"
+  },
+  {
+   "fieldname": "project_end_date",
+   "fieldtype": "Date",
+   "label": "Project End Date"
+  },
+  {
+   "fieldname": "section_break_pvby",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "funding_agency",
+   "fieldtype": "Data",
+   "label": "Funding Agency"
+  },
+  {
+   "fieldname": "funding_amount",
+   "fieldtype": "Currency",
+   "label": "Funding Amount"
+  },
+  {
+   "fieldname": "crc_approval_date",
+   "fieldtype": "Date",
+   "label": "CRC Approval Date"
+  },
+  {
+   "fieldname": "column_break_bzds",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "research_center",
+   "fieldtype": "Link",
+   "label": "Research Center",
+   "options": "Research Center"
+  },
+  {
+   "fieldname": "program_leader",
+   "fieldtype": "Link",
+   "label": "Program Leader",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "program_leader.designation",
+   "fieldname": "designation_of_pl",
+   "fieldtype": "Data",
+   "label": "Designation of PL",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "program_leader.department",
+   "fieldname": "department_of_pl",
+   "fieldtype": "Data",
+   "label": "Department of PL",
+   "read_only": 1
+  },
+  {
+   "fieldname": "approver_details_section",
+   "fieldtype": "Section Break",
+   "label": "Approver Details"
+  },
+  {
+   "fieldname": "approved_by_pl",
+   "fieldtype": "Data",
+   "label": "Approved by PL "
+  },
+  {
+   "fieldname": "column_break_zjke",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "approved_by_dril",
+   "fieldtype": "Data",
+   "label": "Approved by DRIL"
+  },
+  {
+   "fieldname": "attachments_section",
+   "fieldtype": "Section Break",
+   "label": "Attachments"
+  },
+  {
+   "description": "Signed MoU/Letter from the Cabinet Secretariat, if any",
+   "fieldname": "attach_eyif",
+   "fieldtype": "Attach"
+  },
+  {
+   "fieldname": "section_break_xwuw",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Research Registration",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-10-20 15:22:49.042351",
+ "modified_by": "Administrator",
+ "module": "Research Management",
+ "name": "Research Registration",
+ "naming_rule": "Expression",
+ "owner": "kalden.dorji@thimphutechpark.bt",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

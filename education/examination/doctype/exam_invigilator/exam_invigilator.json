@@ -1,0 +1,43 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-10-28 16:34:14.704007",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "invigilator_name",
+  "designation"
+ ],
+ "fields": [
+  {
+   "fieldname": "invigilator_name",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Invigilator Name",
+   "link_filters": "[[\"Employee\",\"is_teaching_staff\",\"=\",1]]",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "invigilator_name.designation",
+   "fieldname": "designation",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Designation"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-10-29 13:18:29.738465",
+ "modified_by": "Administrator",
+ "module": "Examination",
+ "name": "Exam Invigilator",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

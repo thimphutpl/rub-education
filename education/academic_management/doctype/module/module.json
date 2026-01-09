@@ -1,0 +1,154 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 1,
+ "autoname": "field:module_title",
+ "creation": "2025-09-16 16:35:35.238824",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_mnmf",
+  "module_title",
+  "module_type",
+  "contact_hours",
+  "column_break_kynw",
+  "module_code",
+  "module_credit",
+  "sb_colleges",
+  "colleges",
+  "more_details_section",
+  "module_description",
+  "tb_tutor_allocation",
+  "tutor_details_section",
+  "tutors",
+  "tb_assessment",
+  "sb_assessment",
+  "assessment_item"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_mnmf",
+   "fieldtype": "Section Break",
+   "label": "Module Details"
+  },
+  {
+   "fieldname": "module_title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Module Title",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "module_code",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Module Code",
+   "reqd": 1
+  },
+  {
+   "fieldname": "module_type",
+   "fieldtype": "Select",
+   "label": "Module Type",
+   "options": "Compulsory\nElective"
+  },
+  {
+   "fieldname": "module_credit",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Module Credit",
+   "options": "\n12\n24",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_kynw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sb_colleges",
+   "fieldtype": "Section Break",
+   "label": "Colleges"
+  },
+  {
+   "fieldname": "contact_hours",
+   "fieldtype": "Float",
+   "label": "Contact Hours"
+  },
+  {
+   "fieldname": "more_details_section",
+   "fieldtype": "Section Break",
+   "label": "More Details"
+  },
+  {
+   "fieldname": "module_description",
+   "fieldtype": "Text",
+   "label": "Module Description"
+  },
+  {
+   "fieldname": "tb_assessment",
+   "fieldtype": "Tab Break",
+   "label": "Assessment"
+  },
+  {
+   "fieldname": "sb_assessment",
+   "fieldtype": "Section Break",
+   "label": "Assessment Criteria"
+  },
+  {
+   "description": "*Note: Assessment criteria should sum up to 100%.",
+   "fieldname": "assessment_item",
+   "fieldtype": "Table",
+   "label": "Assesment",
+   "options": "Module Assessment Item"
+  },
+  {
+   "fieldname": "tb_tutor_allocation",
+   "fieldtype": "Tab Break",
+   "label": "Tutor Allocation"
+  },
+  {
+   "fieldname": "tutor_details_section",
+   "fieldtype": "Section Break",
+   "label": "Tutor Details"
+  },
+  {
+   "allow_bulk_edit": 1,
+   "fieldname": "tutors",
+   "fieldtype": "Table",
+   "options": "Module Tutor Item"
+  },
+  {
+   "fieldname": "colleges",
+   "fieldtype": "Table",
+   "label": "Colleges",
+   "options": "Module College"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-10-27 15:21:01.448864",
+ "modified_by": "Administrator",
+ "module": "Academic Management",
+ "name": "Module",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

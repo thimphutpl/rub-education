@@ -11,6 +11,7 @@
   "student_name",
   "enrollment_date",
   "column_break_4",
+  "college",
   "program",
   "academic_year",
   "academic_term",
@@ -19,7 +20,6 @@
   "student_category",
   "student_batch_name",
   "column_break_ebuo",
-  "school_house",
   "boarding_student",
   "enrolled_courses",
   "courses",
@@ -69,8 +69,8 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "in_standard_filter": 1,
-   "label": "Program",
-   "options": "Program",
+   "label": "Programme",
+   "options": "Programme",
    "reqd": 1
   },
   {
@@ -160,10 +160,11 @@
   },
   {
    "allow_on_submit": 1,
-   "fieldname": "school_house",
+   "fieldname": "college",
    "fieldtype": "Link",
-   "label": "School House",
-   "options": "School House"
+   "label": "College",
+   "options": "Company",
+   "reqd": 1
   }
  ],
  "image_field": "image",
@@ -175,7 +176,7 @@
    "link_fieldname": "program_enrollment"
   }
  ],
- "modified": "2024-01-30 15:41:31.016037",
+ "modified": "2025-10-06 11:38:28.026917",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Program Enrollment",
@@ -207,6 +208,7 @@
    "share": 1
   }
  ],
+ "row_format": "Dynamic",
  "show_name_in_global_search": 1,
  "sort_field": "modified",
  "sort_order": "DESC",

@@ -1,0 +1,212 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:{company_abbr}-{academic_year}-{YY}-{MM}-{###}",
+ "creation": "2025-09-02 15:20:11.951423",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_lbn5",
+  "company",
+  "company_abbr",
+  "assessment_component",
+  "reassesment",
+  "examination_registration",
+  "column_break_uyam",
+  "posting_date",
+  "module",
+  "module_code",
+  "semester",
+  "filters_section",
+  "academic_year",
+  "tutor",
+  "column_break_mcli",
+  "academic_term",
+  "get_students",
+  "section_break_sdrw",
+  "eligible_students",
+  "section_break_rndh",
+  "non_eligible_students",
+  "more_information_section",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_lbn5",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_uyam",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Examination Registration",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "academic_year",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Academic Year",
+   "options": "Academic Year",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_sdrw",
+   "fieldtype": "Section Break",
+   "label": "Eligible Students"
+  },
+  {
+   "fieldname": "academic_term",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Academic Term",
+   "options": "Academic Term",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_rndh",
+   "fieldtype": "Section Break",
+   "label": "Ineligible Students"
+  },
+  {
+   "fieldname": "filters_section",
+   "fieldtype": "Section Break",
+   "label": "Filters"
+  },
+  {
+   "fieldname": "column_break_mcli",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "get_students",
+   "fieldtype": "Button",
+   "label": "Get Students"
+  },
+  {
+   "fieldname": "more_information_section",
+   "fieldtype": "Section Break",
+   "label": "More Information"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "College",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "module.module_code",
+   "fieldname": "module_code",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Module Code",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fetch_from": "company.abbr",
+   "fieldname": "company_abbr",
+   "fieldtype": "Data",
+   "label": "Company Abbr",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "assessment_component",
+   "fieldtype": "Link",
+   "label": "Assessment Component",
+   "options": "Assessment Component",
+   "reqd": 1
+  },
+  {
+   "fieldname": "module",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Module",
+   "options": "Module",
+   "reqd": 1
+  },
+  {
+   "fieldname": "eligible_students",
+   "fieldtype": "Table",
+   "label": "Students",
+   "options": "Exam Students"
+  },
+  {
+   "fieldname": "non_eligible_students",
+   "fieldtype": "Table",
+   "label": "Non Eligible",
+   "options": "Non Eligible Exam Students"
+  },
+  {
+   "fieldname": "tutor",
+   "fieldtype": "Link",
+   "label": "Tutor",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fieldname": "semester",
+   "fieldtype": "Link",
+   "label": "Semester",
+   "options": "Semester",
+   "reqd": 1
+  },
+  {
+   "fieldname": "examination_registration",
+   "fieldtype": "Link",
+   "label": " Earlier Examination Registration",
+   "options": "Examination Registration",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "reassesment",
+   "fieldtype": "Check",
+   "label": "Reassesment"
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date",
+   "reqd": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-10-29 11:04:33.050563",
+ "modified_by": "Administrator",
+ "module": "Examination",
+ "name": "Examination Registration",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "search_fields": "module,module_code,assessment_component,academic_term",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

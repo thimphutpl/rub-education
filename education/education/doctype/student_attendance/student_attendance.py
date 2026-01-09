@@ -14,13 +14,13 @@ from education.education.api import get_student_group_students
 
 class StudentAttendance(Document):
 	def validate(self):
-		self.validate_mandatory()
+		# self.validate_mandatory()
 		# self.validate_date()
 		self.set_date()
 		self.set_student_group()
 		self.validate_student()
 		self.validate_duplication()
-		self.validate_is_holiday()
+		# self.validate_is_holiday()
 
 	def set_date(self):
 		if self.course_schedule:

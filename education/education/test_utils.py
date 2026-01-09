@@ -1,6 +1,6 @@
 import frappe
 from education.education.doctype.fee_schedule.fee_schedule import get_fee_structure
-from education.education.doctype.student_group.student_group import get_students
+# from education.education.doctype.student_group.student_group import get_students
 from erpnext.setup.utils import enable_all_roles_and_domains
 from frappe.utils import now_datetime, add_years, nowdate
 
@@ -184,7 +184,8 @@ def create_student_group(
 	student_group.group_based_on = group_based_on
 	student_group.program = program
 
-	students_in_group = get_students(academic_year, group_based_on, academic_term, program)
+	# students_in_group = get_students(academic_year, group_based_on, academic_term, program)
+	students_in_group = []
 
 	for student in students_in_group:
 		student_group.append("students", {"student": student.get("student")})

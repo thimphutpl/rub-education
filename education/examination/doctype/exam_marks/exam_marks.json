@@ -1,0 +1,73 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-10-08 16:24:41.442308",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "student",
+  "student_name",
+  "column_break_jqwd",
+  "marks_obtained",
+  "marks_verified",
+  "weightage_achieved"
+ ],
+ "fields": [
+  {
+   "fieldname": "student",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Student",
+   "options": "Student"
+  },
+  {
+   "fieldname": "column_break_jqwd",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "marks_obtained",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Marks Obtained",
+   "non_negative": 1,
+   "precision": "2"
+  },
+  {
+   "fieldname": "marks_verified",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Marks Verified",
+   "non_negative": 1,
+   "precision": "2"
+  },
+  {
+   "fetch_from": "student.student_name",
+   "fieldname": "student_name",
+   "fieldtype": "Data",
+   "label": "Student name"
+  },
+  {
+   "fieldname": "weightage_achieved",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Weightage Achieved",
+   "precision": "2",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-10-13 13:55:37.723037",
+ "modified_by": "Administrator",
+ "module": "Examination",
+ "name": "Exam Marks",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

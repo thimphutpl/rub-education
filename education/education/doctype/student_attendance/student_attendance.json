@@ -10,6 +10,7 @@
   "naming_series",
   "student",
   "student_name",
+  "module",
   "student_mobile_number",
   "course_schedule",
   "student_group",
@@ -18,7 +19,9 @@
   "status",
   "leave_application",
   "amended_from",
-  "link_nvfk"
+  "link_nvfk",
+  "academic_year",
+  "academic_term"
  ],
  "fields": [
   {
@@ -62,7 +65,7 @@
    "in_global_search": 1,
    "in_standard_filter": 1,
    "label": "Student Group",
-   "options": "Student Group"
+   "options": "Student Section"
   },
   {
    "allow_on_submit": 1,
@@ -110,12 +113,33 @@
    "fieldtype": "Link",
    "label": "Program",
    "options": "Program"
+  },
+  {
+   "fieldname": "module",
+   "fieldtype": "Link",
+   "label": "Module",
+   "options": "Module",
+   "reqd": 1
+  },
+  {
+   "fieldname": "academic_term",
+   "fieldtype": "Link",
+   "label": "Academic Term",
+   "options": "Academic Term",
+   "reqd": 1
+  },
+  {
+   "fieldname": "academic_year",
+   "fieldtype": "Link",
+   "label": "Academic Year",
+   "options": "Academic Year",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-05-23 17:14:36.280419",
+ "modified": "2025-10-07 22:05:19.223530",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student Attendance",
@@ -149,6 +173,7 @@
    "write": 1
   }
  ],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [

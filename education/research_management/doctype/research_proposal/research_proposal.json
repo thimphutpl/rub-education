@@ -1,0 +1,433 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "RPD.YY.MM.#####",
+ "creation": "2025-07-29 10:29:38.669676",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_zawl",
+  "topic_of_the_research_call",
+  "project_period",
+  "research_type",
+  "grant_type",
+  "grant_amount",
+  "column_break_cotb",
+  "posting_date",
+  "academic_year",
+  "research_resubmission_deadline",
+  "section_break_soay",
+  "research_title",
+  "researcher_details",
+  "attach_gboc",
+  "proposer_remarks_section",
+  "proposer_remarks",
+  "section_break_nsjn",
+  "amended_from",
+  "column_break_iufo",
+  "research_project_description_tab",
+  "abstract_section",
+  "abstract",
+  "background_and_problem_statement_section",
+  "bg_and_prb_statement",
+  "research_questions_or_hypotheses_section",
+  "res_q_or_hypo",
+  "research_objectives_section",
+  "research_objectives",
+  "literature_review_section",
+  "literature_review",
+  "methodology_section",
+  "research_design",
+  "sampling_design",
+  "data_collection_tools_and_procedures",
+  "data_analysis_tools_and_procedures",
+  "data_presentation",
+  "ethical_cosideration",
+  "statement_on_health_and_safety",
+  "subject_research",
+  "other_animal_research",
+  "protection_of_environment",
+  "statement_on_conflict_of_interest",
+  "statement_on_potential_conflict_of_interest",
+  "conflict_of_interest_attachment",
+  "role_of_collaborators_section",
+  "role_of_collaborators",
+  "data_dessemination_plan_section",
+  "data_dissemination_plan",
+  "research_impact_section",
+  "research_impact",
+  "intellectual_property_section",
+  "intellectual_property",
+  "references_section",
+  "references",
+  "timeline_and_budget_tab",
+  "timelinemilestones_section",
+  "research_proposal_milestone_details",
+  "total_expenses",
+  "reviewers_section_tab",
+  "reviewers_comments_section",
+  "long_text_ncjr",
+  "marks"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_zawl",
+   "fieldtype": "Section Break",
+   "max_height": "px"
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Posting Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_cotb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_soay",
+   "fieldtype": "Section Break",
+   "width": "px"
+  },
+  {
+   "fieldname": "researcher_details",
+   "fieldtype": "Table",
+   "label": "Researcher Details ",
+   "options": "Researcher Details"
+  },
+  {
+   "fieldname": "attach_gboc",
+   "fieldtype": "Attach"
+  },
+  {
+   "fieldname": "section_break_nsjn",
+   "fieldtype": "Section Break",
+   "max_height": "px"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Research Proposal",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "column_break_iufo",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "research_project_description_tab",
+   "fieldtype": "Tab Break",
+   "label": "Research Project Description"
+  },
+  {
+   "description": "It should include a brief background justifying the study followed by research objectives, methodology and the expected outcomes. Description of the methodology should include the research design, sampling method and sample size, study area and any instruments that will be used. ",
+   "fieldname": "abstract_section",
+   "fieldtype": "Section Break",
+   "label": "1. Abstract (250-300 words)"
+  },
+  {
+   "fieldname": "abstract",
+   "fieldtype": "Text Editor"
+  },
+  {
+   "description": "This provides the necessary context for the research problem. It briefly highlights the current status of the field and any major gaps in knowledge that need additional research. First, the research question should be placed in the context of a current, focused, and active research area (or if it\u2019s an older area, explain why that is still a viable research topic). Second, provide some historical background, if any. Thirdly, discuss the modern context, wherein the research will be central. Finally, refer briefly to the most significant recent publications (the full literature review is separate).\nThe problem statement, which may be in the introduction in an appropriate place, serves to: (1) Introduce the reader to the importance of the problem. The reader is oriented to the significance of the study and the research questions or hypotheses to follow; (2) Place the problem in a context; (3) Provide the framework for reporting the results; and (4) Indicate what is probably necessary to conduct the study and explain how the findings will present this information.     \n",
+   "fieldname": "background_and_problem_statement_section",
+   "fieldtype": "Section Break",
+   "label": "2. Background and Problem Statement (250-300 words):  "
+  },
+  {
+   "fieldname": "bg_and_prb_statement",
+   "fieldtype": "Text Editor"
+  },
+  {
+   "description": "List the specific research questions you intend to address or the hypotheses you plan to test. ",
+   "fieldname": "research_questions_or_hypotheses_section",
+   "fieldtype": "Section Break",
+   "label": "3. Research Questions or Hypotheses (50-100 words): "
+  },
+  {
+   "fieldname": "res_q_or_hypo",
+   "fieldtype": "Text Editor"
+  },
+  {
+   "description": "Should answer the question: \u201cWhat am I going to do?\u201d Think high level, but make each aim an achievable objective, not a best effort, one with clear endpoints peer reviewers can easily assess. Objectives should be somewhat independent of each other. Check that: (1) My Specific Objectives can test my hypothesis; (2) They are doable within the grant period I am requesting. (3)The objectives are concrete and well- focused. (4) I can define endpoints my peer reviewers will be able to assess.",
+   "fieldname": "research_objectives_section",
+   "fieldtype": "Section Break",
+   "label": "4. Research Objectives: "
+  },
+  {
+   "fieldname": "research_objectives",
+   "fieldtype": "Text Editor"
+  },
+  {
+   "description": "This demonstrates to yourself and reviewers that you understand your field, and you have the background knowledge to move forward. Most research is incremental: if you cannot find literature on research that is very similar to yours, you have not looked hard enough. Give historical context, but keep the bulk of this section focused on recent advances (less than 10 years old). Sum up this section with a brief statement of the unknowns in this field, and hint at how your research will address these gaps. ",
+   "fieldname": "literature_review_section",
+   "fieldtype": "Section Break",
+   "label": "5. Literature Review (500-600 words)"
+  },
+  {
+   "fieldname": "literature_review",
+   "fieldtype": "Text Editor"
+  },
+  {
+   "fieldname": "methodology_section",
+   "fieldtype": "Section Break",
+   "label": "6. Methodology (1000 words)"
+  },
+  {
+   "description": "Discuss the fundamental framework and guiding principle(s) that shape the researcher's philosophical perspective, methodology choices, and approach to understanding and investigating the particular subject or phenomenon.",
+   "fieldname": "research_design",
+   "fieldtype": "Text Editor",
+   "label": "6.1. Research Design:"
+  },
+  {
+   "description": "Describe the sampling method to be employed including the selection of research site(s), sampling methods, inclusion criteria and inclusion criteria, sample size and analysis tools with adequate justification.",
+   "fieldname": "sampling_design",
+   "fieldtype": "Text Editor",
+   "label": "6.2 Sampling Design"
+  },
+  {
+   "description": "Explain the systematic process for gathering the data required to address research questions or achieve objectives.",
+   "fieldname": "data_collection_tools_and_procedures",
+   "fieldtype": "Text Editor",
+   "label": "6.3 Data Collection Tools and Procedures"
+  },
+  {
+   "description": "Explain the systematic data analysis procedures including how the analysis tools/tests will be used.",
+   "fieldname": "data_analysis_tools_and_procedures",
+   "fieldtype": "Text Editor",
+   "label": "6.4\tData Analysis Tools and Procedures"
+  },
+  {
+   "description": "Explain how the research results and findings will be presented to communicate the key insights (e.g., graphs, tables, etc.). ",
+   "fieldname": "data_presentation",
+   "fieldtype": "Text Editor",
+   "label": "6.5 Data Presentation"
+  },
+  {
+   "description": "Statement on the ethical conduct of the research \u2013 Indicate any and all potential ethical issues you may encounter. Give plans to avoid ethical dilemmas, or if they are encountered, how you will overcome them.",
+   "fieldname": "ethical_cosideration",
+   "fieldtype": "Section Break",
+   "label": "7. Ethical Consideration"
+  },
+  {
+   "description": "Plan to ensure the health and safety of members of the research team for work proposed which may be hazardous. Attach Health and Safety Forms",
+   "fieldname": "statement_on_health_and_safety",
+   "fieldtype": "Text Editor",
+   "label": "7.1. Statement on health and safety considerations, if necessary "
+  },
+  {
+   "description": "Explicitly state how you will follow best practices in your field (e.g., informed consent and anonymity). Attach the Research Ethics Clearance Form and the Informed Consent Forms.",
+   "fieldname": "subject_research",
+   "fieldtype": "Text Editor",
+   "label": "7.2 Subject research"
+  },
+  {
+   "description": "Typically needs to document evidence that you will meet specific requirements for ethical conduct of animal research cognizant of Bhutanese values.",
+   "fieldname": "other_animal_research",
+   "fieldtype": "Text Editor",
+   "label": "7.3. Other animal research "
+  },
+  {
+   "fieldname": "protection_of_environment",
+   "fieldtype": "Text Editor",
+   "label": "7.4 Protection of Environment (if relevant)."
+  },
+  {
+   "description": "Full disclosure of any potential conflicts of interest and plan to manage them (made in consultation with the CRC), or a statement that there are none. ",
+   "fieldname": "statement_on_conflict_of_interest",
+   "fieldtype": "Section Break",
+   "label": "8.\tStatement on potential conflict of interest "
+  },
+  {
+   "fieldname": "statement_on_potential_conflict_of_interest",
+   "fieldtype": "Text Editor"
+  },
+  {
+   "fieldname": "conflict_of_interest_attachment",
+   "fieldtype": "Data",
+   "label": "Declaration of Conflict-of-Interest Form"
+  },
+  {
+   "description": "If collaborating partners are involved, the involvement, relative contribution, and plan for credit- sharing shall be given.",
+   "fieldname": "role_of_collaborators_section",
+   "fieldtype": "Section Break",
+   "label": "9. Role of collaborators and credit-sharing agreement (if any) "
+  },
+  {
+   "fieldname": "role_of_collaborators",
+   "fieldtype": "Text Editor"
+  },
+  {
+   "description": "Describe how the research findings shall be disseminated to key stakeholders and the broader scientific community, e.g., through journal publication, stakeholders\u2019 presentations, conferences, seminars, or other means appropriate to your field. \n",
+   "fieldname": "data_dessemination_plan_section",
+   "fieldtype": "Section Break",
+   "label": "10. Data Dissemination Plan: "
+  },
+  {
+   "fieldname": "data_dissemination_plan",
+   "fieldtype": "Text Editor"
+  },
+  {
+   "description": "Provide an overview of the expected outcomes, innovation and contributions in relation to knowledge, policy and practices. \n",
+   "fieldname": "research_impact_section",
+   "fieldtype": "Section Break",
+   "label": "11. Research Impact (50-100 words):"
+  },
+  {
+   "fieldname": "research_impact",
+   "fieldtype": "Text Editor"
+  },
+  {
+   "description": "Mention if the project has research outcomes (product and services) that can be applied for IP.\n",
+   "fieldname": "intellectual_property_section",
+   "fieldtype": "Section Break",
+   "label": "12. Intellectual Property:"
+  },
+  {
+   "fieldname": "intellectual_property",
+   "fieldtype": "Text Editor"
+  },
+  {
+   "fieldname": "references_section",
+   "fieldtype": "Section Break",
+   "label": "15. References: follow APA referencing style."
+  },
+  {
+   "fieldname": "references",
+   "fieldtype": "Text Editor"
+  },
+  {
+   "description": "Provide a breakdown of the expected costs associated with the research project. Include items such as research materials, participant compensation, travel, and any other relevant expenses and  indicate the overall time-frame for the research as well as phase-wise goal deadlines.",
+   "fieldname": "timeline_and_budget_tab",
+   "fieldtype": "Tab Break",
+   "label": "Timeline and Budget"
+  },
+  {
+   "fieldname": "timelinemilestones_section",
+   "fieldtype": "Section Break",
+   "label": "Timeline/Milestones"
+  },
+  {
+   "fieldname": "total_expenses",
+   "fieldtype": "Currency",
+   "label": "Total Budget Proposed"
+  },
+  {
+   "fieldname": "reviewers_section_tab",
+   "fieldtype": "Tab Break",
+   "label": "Reviewer's Section"
+  },
+  {
+   "fieldname": "reviewers_comments_section",
+   "fieldtype": "Section Break",
+   "label": "Reviewer's Comments"
+  },
+  {
+   "fieldname": "long_text_ncjr",
+   "fieldtype": "Text Editor"
+  },
+  {
+   "fieldname": "proposer_remarks_section",
+   "fieldtype": "Section Break",
+   "label": "Proposer Remarks",
+   "max_height": "px"
+  },
+  {
+   "fieldname": "proposer_remarks",
+   "fieldtype": "Text",
+   "max_height": "200px"
+  },
+  {
+   "fieldname": "research_title",
+   "fieldtype": "Data",
+   "label": "Research Title (Should be clear and concise) "
+  },
+  {
+   "fieldname": "research_resubmission_deadline",
+   "fieldtype": "Date",
+   "label": "Research Resubmission Deadline",
+   "mandatory_depends_on": "eval doc.status == \"resubmit\""
+  },
+  {
+   "fieldname": "research_proposal_milestone_details",
+   "fieldtype": "Table",
+   "options": "Research Proposal Milestone Details"
+  },
+  {
+   "fieldname": "topic_of_the_research_call",
+   "fieldtype": "Data",
+   "label": "Project Title"
+  },
+  {
+   "fieldname": "marks",
+   "fieldtype": "Data",
+   "label": "Marks"
+  },
+  {
+   "fieldname": "academic_year",
+   "fieldtype": "Link",
+   "label": "Academic Year",
+   "options": "Fiscal Year"
+  },
+  {
+   "fieldname": "research_type",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Research Type",
+   "options": "Research Type"
+  },
+  {
+   "fieldname": "grant_type",
+   "fieldtype": "Link",
+   "label": "Grant Type",
+   "options": "Grant Type"
+  },
+  {
+   "fieldname": "grant_amount",
+   "fieldtype": "Currency",
+   "label": "Grant Amount"
+  },
+  {
+   "fieldname": "project_period",
+   "fieldtype": "Data",
+   "label": "Project Period"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-12-18 13:26:42.725982",
+ "modified_by": "Administrator",
+ "module": "Research Management",
+ "name": "Research Proposal",
+ "naming_rule": "Expression (old style)",
+ "owner": "kalden.dorji@thimphutechpark.bt",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

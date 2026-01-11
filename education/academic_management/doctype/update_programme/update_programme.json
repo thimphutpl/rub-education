@@ -8,7 +8,6 @@
  "field_order": [
   "section_break_krke",
   "old_programme",
-  "programme_leader",
   "column_break_wyhr",
   "new_programme_name",
   "new_programme_abbraviation",
@@ -18,7 +17,7 @@
   "column_break_vqbw",
   "new_programme_apmr_date",
   "sb_colleges",
-  "table_rziz",
+  "colleges",
   "section_break_kwuf",
   "mode_of_study",
   "new_programme_description",
@@ -72,13 +71,6 @@
    "fieldname": "more_information_section",
    "fieldtype": "Section Break",
    "label": "More Information"
-  },
-  {
-   "fieldname": "programme_leader",
-   "fieldtype": "Link",
-   "label": "Programme Leader",
-   "options": "Employee",
-   "read_only": 1
   },
   {
    "fieldname": "new_programme_duration_section",
@@ -141,7 +133,8 @@
    "label": "Colleges"
   },
   {
-   "fieldname": "table_rziz",
+   "allow_bulk_edit": 1,
+   "fieldname": "colleges",
    "fieldtype": "Table",
    "options": "Colleges"
   }
@@ -150,8 +143,8 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-09-25 17:54:15.679554",
- "modified_by": "Administrator",
+ "modified": "2026-01-11 16:41:49.492400",
+ "modified_by": "kalden.dorji@thimphutechpark.bt",
  "module": "Academic Management",
  "name": "Update Programme",
  "naming_rule": "Expression (old style)",

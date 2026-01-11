@@ -13,5 +13,13 @@ frappe.ui.form.on("Programme Master", {
             callback: function(r){
             }
         });
+
+		frm.set_query("programme_leader", "colleges", function (doc, cdt, cdn) {
+            var row = locals[cdt][cdn];
+			return {
+				filters: { company: row.company, status: "Active" },
+			};
+		});
     }
 });
+

@@ -7,8 +7,6 @@
  "engine": "InnoDB",
  "field_order": [
   "programme_name",
-  "programme_leader",
-  "column_break_yvlq",
   "abbreviation",
   "sb_colleges",
   "colleges",
@@ -33,16 +31,6 @@
    "label": "Programme Name",
    "reqd": 1,
    "unique": 1
-  },
-  {
-   "fieldname": "programme_leader",
-   "fieldtype": "Link",
-   "label": "Programme Leader",
-   "options": "Employee"
-  },
-  {
-   "fieldname": "column_break_yvlq",
-   "fieldtype": "Column Break"
   },
   {
    "fieldname": "abbreviation",
@@ -130,8 +118,8 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-10-21 09:57:22.029192",
- "modified_by": "sonam.norbu@thimphutechpark.bt",
+ "modified": "2026-01-11 15:46:28.157468",
+ "modified_by": "kalden.dorji@thimphutechpark.bt",
  "module": "Academic Management",
  "name": "Programme Master",
  "naming_rule": "By fieldname",

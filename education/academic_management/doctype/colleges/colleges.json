@@ -43,6 +43,7 @@
   {
    "fieldname": "programme_leader",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Programme Leader",
    "options": "Employee",
    "reqd": 1
@@ -59,8 +60,8 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-01-09 15:15:48.659992",
- "modified_by": "Administrator",
+ "modified": "2026-01-11 16:39:42.195528",
+ "modified_by": "kalden.dorji@thimphutechpark.bt",
  "module": "Academic Management",
  "name": "Colleges",
  "owner": "Administrator",

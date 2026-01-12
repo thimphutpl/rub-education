@@ -8,20 +8,29 @@
  "field_order": [
   "section_break_krke",
   "old_programme",
+  "old_programme_name",
+  "old_programme_abbreviation",
   "column_break_wyhr",
   "new_programme_name",
-  "new_programme_abbraviation",
+  "new_programme_abbreviation",
   "new_programme_duration_section",
+  "old_programme_approval_date",
   "new_programme_approval_date",
+  "old_programme_ccr_date",
   "new_programme_ccr_date",
   "column_break_vqbw",
+  "old_programme_apmr_date",
   "new_programme_apmr_date",
   "sb_colleges",
   "colleges",
+  "new_colleges",
   "section_break_kwuf",
   "mode_of_study",
+  "new_mode_of_study",
+  "old_programme_description",
   "new_programme_description",
   "sb_attachment",
+  "old_approved_dpd",
   "upload_approved_dpd",
   "more_information_section",
   "amended_from"
@@ -58,13 +67,6 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "New Programme Name",
-   "reqd": 1
-  },
-  {
-   "fieldname": "new_programme_abbraviation",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "New Programme Abbreviation",
    "reqd": 1
   },
   {
@@ -106,10 +108,12 @@
    "fieldtype": "Section Break"
   },
   {
+   "fetch_from": "old_programme.mode_of_study",
    "fieldname": "mode_of_study",
    "fieldtype": "Select",
    "label": "Mode of Study",
-   "options": "Full Time Campus\nContinued Education"
+   "options": "\nFull Time Campus\nContinued Education",
+   "read_only": 1
   },
   {
    "fieldname": "new_programme_description",
@@ -136,15 +140,88 @@
    "allow_bulk_edit": 1,
    "fieldname": "colleges",
    "fieldtype": "Table",
+   "label": "Old Details",
+   "options": "Colleges",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "old_programme.programme_name",
+   "fetch_if_empty": 1,
+   "fieldname": "old_programme_name",
+   "fieldtype": "Data",
+   "label": "Old Programme Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "old_programme.abbreviation",
+   "fetch_if_empty": 1,
+   "fieldname": "old_programme_abbreviation",
+   "fieldtype": "Data",
+   "label": "Old Programme Abbreviation",
+   "read_only": 1
+  },
+  {
+   "fieldname": "new_colleges",
+   "fieldtype": "Table",
+   "label": "New Details",
    "options": "Colleges"
+  },
+  {
+   "fetch_from": "old_programme.programme_description",
+   "fieldname": "old_programme_description",
+   "fieldtype": "Long Text",
+   "label": "Old Programme Description",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "old_programme.upload_approved_dpd",
+   "fieldname": "old_approved_dpd",
+   "fieldtype": "Attach",
+   "label": "Old Approved DPD",
+   "read_only": 1
+  },
+  {
+   "fieldname": "new_mode_of_study",
+   "fieldtype": "Select",
+   "label": "New Mode of Study",
+   "options": "\nFull Time Campus\nContinued Education",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "old_programme.programme_approval_date",
+   "fetch_if_empty": 1,
+   "fieldname": "old_programme_approval_date",
+   "fieldtype": "Date",
+   "label": "Old Programme Approval Date"
+  },
+  {
+   "fetch_from": "old_programme.programme_ccr_date",
+   "fetch_if_empty": 1,
+   "fieldname": "old_programme_ccr_date",
+   "fieldtype": "Date",
+   "label": "Old Programme CCR Date"
+  },
+  {
+   "fetch_from": "old_programme.programme_apmr_date",
+   "fetch_if_empty": 1,
+   "fieldname": "old_programme_apmr_date",
+   "fieldtype": "Date",
+   "label": "Old Programme APMR Date"
+  },
+  {
+   "fieldname": "new_programme_abbreviation",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "New Programme Abbreviation",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-01-11 16:41:49.492400",
- "modified_by": "kalden.dorji@thimphutechpark.bt",
+ "modified": "2026-01-12 15:57:24.589871",
+ "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Update Programme",
  "naming_rule": "Expression (old style)",

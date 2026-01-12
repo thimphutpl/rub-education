@@ -46,7 +46,7 @@
   {
    "fieldname": "student_group_name",
    "fieldtype": "Data",
-   "label": "Student Group Name",
+   "label": "Student Section Name",
    "reqd": 1,
    "unique": 1
   },
@@ -113,11 +113,12 @@
    "fieldname": "students",
    "fieldtype": "Table",
    "label": "Students",
-   "options": "Student Group Student"
+   "options": "Student Section Student"
   },
   {
    "fieldname": "section_break_12",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Instructors"
   },
   {
@@ -141,7 +142,7 @@
   }
  ],
  "links": [],
- "modified": "2025-10-14 14:30:48.970869",
+ "modified": "2026-01-12 16:25:08.868150",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student Section",

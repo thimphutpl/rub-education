@@ -5,5 +5,5 @@
 from frappe.tests.utils import FrappeTestCase
 
 
-class TestStudentGroupCreationTool(FrappeTestCase):
+class TestStudentSectionCreationTool(FrappeTestCase):
 	pass

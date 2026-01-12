@@ -12,5 +12,15 @@ frappe.ui.form.on("Update Programme", {
                 filters: { company: row.company, status: "Active" },
             };
         });
+    },
+    old_programme: function(frm){
+        frappe.call({
+            method: "get_old_programme_details",
+            doc: frm.doc,
+            callback: function(r){
+                frm.refresh_fields();
+            }
+        })
     }
+    
 });

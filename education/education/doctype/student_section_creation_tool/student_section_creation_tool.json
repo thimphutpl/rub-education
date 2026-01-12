@@ -2,7 +2,7 @@
  "actions": [],
  "allow_import": 1,
  "allow_rename": 1,
- "autoname": "field:student_group_name",
+ "autoname": "STSCT.YY.MM.#####",
  "creation": "2025-10-28 16:38:07.377540",
  "doctype": "DocType",
  "document_type": "Document",
@@ -17,7 +17,6 @@
   "academic_term",
   "program",
   "batch",
-  "student_category",
   "course",
   "disabled",
   "section_break_6",
@@ -48,7 +47,8 @@
    "fieldtype": "Link",
    "in_global_search": 1,
    "label": "Programme",
-   "options": "Programme"
+   "options": "Programme",
+   "reqd": 1
   },
   {
    "fieldname": "college",
@@ -61,14 +61,14 @@
    "fieldname": "group_based_on",
    "fieldtype": "Select",
    "in_list_view": 1,
-   "label": "Group Based on",
+   "label": "Section Based on",
    "options": "\nBatch\nCourse\nActivity",
    "reqd": 1
   },
   {
    "fieldname": "student_group_name",
    "fieldtype": "Data",
-   "label": "Student Group Name",
+   "label": "Student Section Name",
    "reqd": 1,
    "unique": 1
   },
@@ -83,17 +83,12 @@
    "fieldtype": "Column Break"
   },
   {
+   "depends_on": "eval:doc.group_based_on == \"Batch\";",
    "fieldname": "batch",
    "fieldtype": "Link",
    "in_global_search": 1,
    "label": "Batch",
    "options": "Student Batch Name"
-  },
-  {
-   "fieldname": "student_category",
-   "fieldtype": "Link",
-   "label": "Student Category",
-   "options": "Student Category"
   },
   {
    "depends_on": "eval:doc.group_based_on == 'Course'",
@@ -108,10 +103,10 @@
    "default": "0",
    "fieldname": "disabled",
    "fieldtype": "Check",
+   "hidden": 1,
    "label": "Disabled"
   },
   {
-   "depends_on": "eval:!doc.__islocal",
    "fieldname": "section_break_6",
    "fieldtype": "Section Break",
    "label": "Students"
@@ -126,11 +121,12 @@
    "fieldname": "students",
    "fieldtype": "Table",
    "label": "Students",
-   "options": "Student Group Student"
+   "options": "Student Section Student"
   },
   {
    "fieldname": "section_break_12",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Instructors"
   },
   {
@@ -141,11 +137,11 @@
   }
  ],
  "links": [],
- "modified": "2025-10-28 16:38:07.377540",
+ "modified": "2026-01-12 23:01:31.648807",
  "modified_by": "Administrator",
  "module": "Education",
- "name": "Student Group Creation Tool",
- "naming_rule": "By fieldname",
+ "name": "Student Section Creation Tool",
+ "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [
   {

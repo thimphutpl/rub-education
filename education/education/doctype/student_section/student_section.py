@@ -115,32 +115,32 @@ class StudentSection(Document):
 			fields=["name", "student_name"],
 		 )
 		return students
-# @frappe.whitelist()
-# def get_students(
-# 	academic_year,
-# 	group_based_on,
-# 	academic_term=None,
-# 	program=None,
-# 	batch=None,
-# 	student_category=None,
-# 	course=None,
-# ):
-# 	enrolled_students = get_program_enrollment(
-# 		academic_year, academic_term, program, batch, student_category, course
-# 	)
+@frappe.whitelist()
+def get_students(
+	academic_year,
+	group_based_on,
+	academic_term=None,
+	program=None,
+	batch=None,
+	student_category=None,
+	course=None,
+):
+	enrolled_students = get_program_enrollment(
+		academic_year, academic_term, program, batch, student_category, course
+	)
 
-# 	if enrolled_students:
-# 		student_list = []
-# 		for s in enrolled_students:
-# 			if frappe.db.get_value("Student", s.student, "enabled"):
-# 				s.update({"active": 1})
-# 			else:
-# 				s.update({"active": 0})
-# 			student_list.append(s)
-# 		return student_list
-# 	else:
-# 		frappe.msgprint(_("No students found"))
-# 		return []
+	if enrolled_students:
+		student_list = []
+		for s in enrolled_students:
+			if frappe.db.get_value("Student", s.student, "enabled"):
+				s.update({"active": 1})
+			else:
+				s.update({"active": 0})
+			student_list.append(s)
+		return student_list
+	else:
+		frappe.msgprint(_("No students found"))
+		return []
 
 
 def get_program_enrollment(

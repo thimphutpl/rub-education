@@ -133,7 +133,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2025-10-14 11:35:23.260670",
+ "modified": "2026-01-13 12:19:50.736055",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Module Enrollment Tool",
@@ -150,6 +150,7 @@
    "report": 1,
    "role": "Academics User",
    "share": 1,
+   "submit": 1,
    "write": 1
   },
   {

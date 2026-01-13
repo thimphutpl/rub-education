@@ -40,10 +40,11 @@ class ModuleEnrollmentTool(Document):
 					"doctype": "Module Enrollment",
 					"student": d.student,
 					"student_name": d.student_name,
-					"module": self.course,
+					"course": self.course,
 					"academic_term": self.academic_term,
 					"college": self.college,
 					"enrollment_date": self.enrollment_date,
+					"semester": self.semester,
 					"academic_year": self.academic_year,
 					"programme": self.programme,
 					"batch": self.batch,
@@ -53,13 +54,12 @@ class ModuleEnrollmentTool(Document):
 				}
 			)
 			module_enrollment.insert()
-			module_enrollment.submit()
 			frappe.msgprint(
 				_("{0} enrolled successfully in {1}").format(d.student_name, self.course)
 			)
 
 	@frappe.whitelist()
-	def get_students(self, programme, course, college, semester, batch=None):
+	def get_students(self, programme, course, college, semester, student_section=None, batch=None):
 		self.set("students", [])
 		if not (programme and course and college and semester):
 			frappe.throw(_("Please select all the mandatory fields"))
@@ -74,20 +74,47 @@ class ModuleEnrollmentTool(Document):
 			},
 			fields=["student"],
 		)
-		enrolled_student_list = [d.student for d in enrolled_students]
+		section_student_list = []
+		if student_section:
+			section_students = frappe.db.sql("""
+				select sss.student from `tabStudent Section Student` sss, `tabStudent Section` ss
+				where sss.parent = ss.name
+				and ss.name = '{}'
+			""".format(student_section), as_dict = 1)
+			enrolled_student_list = [d.student for d in enrolled_students]
+		else:
+			section_students = ""
+		if section_students:
+			for a in section_students:
+				section_student_list.append(a.student)
 
-		students = frappe.get_all(
-			"Student",
-			filters={
-				"programme": programme,
-				"company": college,
-				"semester": semester,
-				"student_batch": batch,
-				"status": 'Active',
-				"name": ["not in", enrolled_student_list]
-			},
-			fields=["name", "student_name"],
-		 )
+		if self.student_section:
+			students = frappe.get_all(
+				"Student",
+				filters={
+					"programme": programme,
+					"company": college,
+					"semester": semester,
+					"student_batch": batch,
+					"status": 'Active',
+					"name": ["not in", enrolled_student_list],
+					"name": ["in", section_student_list]
+				},
+				fields=["name", "student_name"],
+			)
+		else:
+			students = frappe.get_all(
+				"Student",
+				filters={
+					"programme": programme,
+					"company": college,
+					"semester": semester,
+					"student_batch": batch,
+					"status": 'Active',
+					"name": ["not in", enrolled_student_list],
+				},
+				fields=["name", "student_name"],
+			)
 		return students
 
 @frappe.whitelist()
@@ -106,7 +133,7 @@ def get_programme(doctype, txt, searchfield, start, page_len, filters):
 	return frappe.db.sql(
 		"""select m.name, m.abbreviation, mc.company as college from `tabProgramme` m, `tabColleges` mc
         where  m.name = mc.parent and mc.company = %(college)s and m.name like %(txt)s
-		and %(date)s >= m.from_date and %(date)s <= m.to_date
+		and %(date)s >= mc.from_date and %(date)s <= mc.to_date
         order by
             if(locate(%(_txt)s, m.name), locate(%(_txt)s, m.name), 99999),
             m.name asc

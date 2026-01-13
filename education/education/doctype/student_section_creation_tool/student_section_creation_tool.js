@@ -1,7 +1,7 @@
 frappe.ui.form.on('Student Section Creation Tool', 'refresh', function (frm) {
   // frm.disable_save()
   if (!frm.doc.__islocal) {
-    frm.page.set_primary_action(__('Create Student Groups'), function () {
+    frm.page.set_primary_action(__('Create Student Section'), function () {
       frappe.call({
         method: 'create_student_groups',
         doc: frm.doc,

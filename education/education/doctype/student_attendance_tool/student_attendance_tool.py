@@ -12,7 +12,7 @@ class StudentAttendanceTool(Document):
 
 @frappe.whitelist()
 def get_student_attendance_records(
-	based_on, date=None, student_group=None, course_schedule=None
+	based_on, date=None, student_group=None, course_schedule=None, course =None
 ):
 	student_list = []
 	student_attendance_list = []
@@ -23,7 +23,7 @@ def get_student_attendance_records(
 		)
 		if student_group:
 			student_list = frappe.get_all(
-				"Student Group Student",
+				"Student Section Student",
 				fields=["student", "student_name", "group_roll_number"],
 				filters={"parent": student_group, "active": 1},
 				order_by="group_roll_number",
@@ -31,7 +31,7 @@ def get_student_attendance_records(
 
 	if not student_list:
 		student_list = frappe.get_all(
-			"Student Group Student",
+			"Student Section Student",
 			fields=["student", "student_name", "group_roll_number"],
 			filters={"parent": student_group, "active": 1},
 			order_by="group_roll_number",

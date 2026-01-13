@@ -32,7 +32,7 @@ class StudentAttendance(Document):
 		if not (self.student_group or self.course_schedule):
 			frappe.throw(
 				_("{0} or {1} is mandatory").format(
-					frappe.bold("Student Group"), frappe.bold("Course Schedule")
+					frappe.bold("Student Section"), frappe.bold("Course Schedule")
 				),
 				title=_("Mandatory Fields"),
 			)
@@ -43,7 +43,7 @@ class StudentAttendance(Document):
 
 		if self.student_group:
 			academic_year = frappe.db.get_value(
-				"Student Group", self.student_group, "academic_year"
+				"Student Section", self.student_group, "academic_year"
 			)
 			if academic_year:
 				year_start_date, year_end_date = frappe.db.get_value(
@@ -76,9 +76,9 @@ class StudentAttendance(Document):
 			d.student for d in get_student_group_students(student_group)
 		]
 		if student_group and self.student not in student_group_students:
-			student_group_doc = get_link_to_form("Student Group", student_group)
+			student_group_doc = get_link_to_form("Student Section", student_group)
 			frappe.throw(
-				_("Student {0}: {1} does not belong to Student Group {2}").format(
+				_("Student {0}: {1} does not belong to Student Section {2}").format(
 					frappe.bold(self.student), self.student_name, frappe.bold(student_group_doc)
 				)
 			)

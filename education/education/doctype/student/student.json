@@ -307,6 +307,7 @@
   {
    "fieldname": "company",
    "fieldtype": "Link",
+   "in_standard_filter": 1,
    "label": "College",
    "options": "Company",
    "reqd": 1
@@ -359,6 +360,7 @@
   {
    "fieldname": "programme",
    "fieldtype": "Link",
+   "in_standard_filter": 1,
    "label": "Programme",
    "options": "Programme Master"
   },
@@ -385,6 +387,7 @@
   {
    "fieldname": "student_batch",
    "fieldtype": "Link",
+   "in_standard_filter": 1,
    "label": "Student Batch",
    "options": "Student Batch Name",
    "reqd": 1
@@ -455,7 +458,7 @@
    "link_fieldname": "student"
   }
  ],
- "modified": "2025-10-28 11:02:54.892203",
+ "modified": "2026-01-13 10:29:03.208343",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student",

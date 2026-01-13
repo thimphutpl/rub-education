@@ -53,10 +53,11 @@ class ExaminationReviewApplication(Document):
 				ON em.parent = eme.name WHERE      
 				em.marks_verified < eme.passing_marks 
 				and em.student=%s
-				and examination_registration=%s;
+				and eme.examination_registration=%s;
 			""", 
 			(self.student,self.examination_registration),
 			as_dict=True)
+
 			if not failed_exam:
 				frappe.throw(
 					"Application not needed as you passed for {} module {}".format(self.assessment_component,self.module)
@@ -79,4 +80,4 @@ class ExaminationReviewApplication(Document):
 		if exam_registration:
 			self.examination_registration = exam_registration[0].get('name')
 		else:
-			frappe.throw(_("No Regular Examination Registration found for {0}").format(self.assessment_component))
+			frappe.throw("No Regular Examination Registration found for {0}").format(self.assessment_component)

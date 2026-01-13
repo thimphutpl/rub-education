@@ -30,7 +30,7 @@ frappe.ui.form.on('Student Attendance Tool', {
   },
 
   based_on: function (frm) {
-    if (frm.doc.based_on == 'Student Group') {
+    if (frm.doc.based_on == 'Student Section') {
       frm.set_value('course_schedule', '')
     } else {
       frm.set_value('student_group', '')
@@ -44,7 +44,6 @@ frappe.ui.form.on('Student Attendance Tool', {
         .html(`<div style='padding: 2rem 0'>Fetching...</div>`)
       var method =
         'education.education.doctype.student_attendance_tool.student_attendance_tool.get_student_attendance_records'
-
       frappe.call({
         method: method,
         args: {
@@ -52,6 +51,7 @@ frappe.ui.form.on('Student Attendance Tool', {
           student_group: frm.doc.student_group,
           date: frm.doc.date,
           course_schedule: frm.doc.course_schedule,
+          course: frm.doc.course
         },
         callback: function (r) {
           frm.events.get_students(frm, r.message)
@@ -171,6 +171,7 @@ education.StudentsEditor = class StudentsEditor {
                   student_group: frm.doc.student_group,
                   course_schedule: frm.doc.course_schedule,
                   date: frm.doc.date,
+                  course: cur_frm.doc.course,
                 },
                 callback: function (r) {
                   $(me.wrapper.find('.btn-mark-att')).attr('disabled', false)

@@ -15,8 +15,8 @@ class StudentSectionCreationTool(Document):
 
 	def validate_existing(self):
 		if self.batch:
-			if frappe.exists("Student Section Creation Tool", {"college": self.college, "academic_term": self.academic_term, "batch": self.batch, "name": ["!=", self.name]}):
-				frappe.throw("Student Section Creation Tool alraedy exists for: Student Batch: {}\nAcademic Term: {}\nCollege: {}\nExisting Doc: {}".format(self.student_batch, self.academic_term, self.college, frappe.db.get_value("Student Section Creation Tool", {"college": self.college, "academic_term": self.academic_term, "batch": self.batch, "name": ["!=", self.name]}, "name")))
+			if frappe.db.exists("Student Section Creation Tool", {"college": self.college, "academic_term": self.academic_term, "batch": self.batch, "name": ["!=", self.name]}):
+				frappe.throw("Student Section Creation Tool alraedy exists for: Student Batch: {}\nAcademic Term: {}\nCollege: {}\nExisting Doc: {}".format(self.batch, self.academic_term, self.college, frappe.db.get_value("Student Section Creation Tool", {"college": self.college, "academic_term": self.academic_term, "batch": self.batch, "name": ["!=", self.name]}, "name")))
 
 
 	@frappe.whitelist()
@@ -91,6 +91,8 @@ class StudentSectionCreationTool(Document):
 			order_by="student_name",
 			fields=["name", "student_name"],
 		 )
+		if not students or len(students) == 0:
+			frappe.throw("No Student record for the selected filters.")
 		return students
 
 	@frappe.whitelist()
@@ -143,15 +145,17 @@ class StudentSectionCreationTool(Document):
 		# if not self.courses:
 		# 	frappe.throw(_("""No Student Section created."""))
 
-		l = len(self.courses)
+		# l = len(self.courses)
 		sections = {}
+		section_created = 0
 		for d in self.students:
 			if d.section_name not in sections:
-				sections.update(d.section_name)
+				sections.update({d.section_name:{}})
 		for d in sections:
 			student_group = frappe.new_doc("Student Section")
 			student_group.student_group_name = d
 			student_group.group_based_on = self.group_based_on
+			student_group.college = self.college
 			student_group.program = self.program
 			student_group.course = self.course
 			student_group.batch = self.batch
@@ -159,9 +163,15 @@ class StudentSectionCreationTool(Document):
 			student_group.academic_term = self.academic_term
 			student_group.academic_year = self.academic_year
 			student_list = []
+			count = 1
 			for student in self.students:
 				if student.section_name == d:
-					student_group.append("students", student)
+					row = student_group.append("students", student)
+					row.company = self.college
+					row.idx = count
+					count += 1
 			student_group.save()
+			section_created = 1
 
-		frappe.msgprint(_("{0} Student Sections created.").format(l))
+			frappe.msgprint(_("{0} Student Sections created.").format(student_group))
+		self.student_sections_created = 1

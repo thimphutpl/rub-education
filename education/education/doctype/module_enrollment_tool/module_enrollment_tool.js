@@ -50,6 +50,7 @@ frappe.ui.form.on("Module Enrollment Tool", {
 	},
     academic_term: function(frm){
         frm.set_value('semester', '');
+        frm.set_value('student_section', '');
         if(frm.doc.academic_term){
             frappe.db.get_value('Academic Term', frm.doc.academic_term, 'academic_session', (r) => {
                 frm.set_query('semester', function () {
@@ -80,6 +81,7 @@ frappe.ui.form.on("Module Enrollment Tool", {
                 college: frm.doc.college,
                 course: frm.doc.course,
                 semester: frm.doc.semester,
+                student_section: frm.doc.student_section,
                 batch: frm.doc.batch
             },
             callback: function(r) {

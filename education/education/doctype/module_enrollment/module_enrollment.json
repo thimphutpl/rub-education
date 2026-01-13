@@ -28,7 +28,6 @@
    "hidden": 1,
    "label": "Programme Enrollment",
    "options": "Program Enrollment",
-   "read_only": 1,
    "set_only_once": 1
   },
   {
@@ -37,22 +36,19 @@
    "in_standard_filter": 1,
    "label": "Student",
    "options": "Student",
-   "read_only": 1,
    "reqd": 1
   },
   {
    "fieldname": "enrollment_date",
    "fieldtype": "Date",
    "label": "Enrollment Date",
-   "read_only": 1,
    "reqd": 1
   },
   {
    "fetch_from": "student.student_name",
    "fieldname": "student_name",
    "fieldtype": "Data",
-   "label": "Student Name",
-   "read_only": 1
+   "label": "Student Name"
   },
   {
    "fieldname": "column_break_uisg",
@@ -63,52 +59,45 @@
    "fetch_from": "student.programme",
    "fieldname": "program",
    "fieldtype": "Data",
-   "label": "Programme",
-   "read_only": 1
+   "label": "Programme"
   },
   {
    "fetch_from": "student.company",
    "fieldname": "college",
    "fieldtype": "Link",
    "label": "College",
-   "options": "Company",
-   "read_only": 1
+   "options": "Company"
   },
   {
    "fieldname": "academic_term",
    "fieldtype": "Link",
    "label": "Academic Term",
-   "options": "Academic Term",
-   "read_only": 1
+   "options": "Academic Term"
   },
   {
    "fieldname": "semester",
    "fieldtype": "Link",
    "label": "Semester",
-   "options": "Semester",
-   "read_only": 1
+   "options": "Semester"
   },
   {
    "fieldname": "academic_year",
    "fieldtype": "Link",
    "label": "Academic Year",
-   "options": "Academic Year",
-   "read_only": 1
+   "options": "Academic Year"
   },
   {
    "fieldname": "tutor",
    "fieldtype": "Link",
    "label": "Tutor",
    "options": "Employee",
-   "read_only": 1,
    "reqd": 1
   },
   {
    "fetch_from": "tutor.employee_name",
    "fieldname": "tutor_name",
    "fieldtype": "Data",
-   "label": "Tutor Name",
-   "read_only": 1
+   "label": "Tutor Name"
   },
   {
    "fieldname": "course",
@@ -116,19 +105,17 @@
    "in_list_view": 1,
    "label": "Module",
    "options": "Module",
-   "read_only": 1,
    "reqd": 1
   },
   {
    "fieldname": "student_section",
    "fieldtype": "Link",
    "label": "Student Section",
-   "options": "Student Section",
-   "read_only": 1
+   "options": "Student Section"
   }
  ],
  "links": [],
- "modified": "2025-10-14 15:51:40.117091",
+ "modified": "2026-01-12 23:53:52.887768",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Module Enrollment",

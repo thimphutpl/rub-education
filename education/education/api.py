@@ -88,7 +88,7 @@ def check_attendance_records_exist(course_schedule=None, student_group=None, dat
 
 @frappe.whitelist()
 def mark_attendance(
-	students_present, students_absent, course_schedule=None, student_group=None, date=None
+	students_present, students_absent, course_schedule=None, student_group=None, date=None, course = None
 ):
 	"""Creates Multiple Attendance Records.
 
@@ -99,7 +99,7 @@ def mark_attendance(
 	:param date: Date.
 	"""
 	if student_group:
-		academic_year = frappe.db.get_value("Student Group", student_group, "academic_year")
+		academic_year = frappe.db.get_value("Student Section", student_group, "academic_year")
 		if academic_year:
 			year_start_date, year_end_date = frappe.db.get_value(
 				"Academic Year", academic_year, ["year_start_date", "year_end_date"]
@@ -116,20 +116,20 @@ def mark_attendance(
 
 	for d in present:
 		make_attendance_records(
-			d["student"], d["student_name"], "Present", course_schedule, student_group, date
+			d["student"], d["student_name"], "Present", course_schedule, student_group, date, course=course
 		)
 
 	for d in absent:
 		make_attendance_records(
-			d["student"], d["student_name"], "Absent", course_schedule, student_group, date
+			d["student"], d["student_name"], "Absent", course_schedule, student_group, date, course=course
 		)
 
 	frappe.db.commit()
 	frappe.msgprint(_("Attendance has been marked successfully."))
 
-
+@frappe.whitelist()
 def make_attendance_records(
-	student, student_name, status, course_schedule=None, student_group=None, date=None
+	student, student_name, status, course_schedule=None, student_group=None, date=None, course=None
 ):
 	"""Creates/Update Attendance Record.
 
@@ -155,6 +155,8 @@ def make_attendance_records(
 	student_attendance.student_group = student_group
 	student_attendance.date = date
 	student_attendance.status = status
+	if course:
+		student_attendance.module = course
 	student_attendance.save()
 	student_attendance.submit()
 
@@ -179,14 +181,14 @@ def get_student_group_students(student_group, include_inactive=0):
 	"""
 	if include_inactive:
 		students = frappe.get_all(
-			"Student Group Student",
+			"Student Section Student",
 			fields=["student", "student_name"],
 			filters={"parent": student_group},
 			order_by="group_roll_number",
 		)
 	else:
 		students = frappe.get_all(
-			"Student Group Student",
+			"Student Section Student",
 			fields=["student", "student_name"],
 			filters={"parent": student_group, "active": 1},
 			order_by="group_roll_number",

@@ -19,6 +19,7 @@
   "batch",
   "course",
   "disabled",
+  "student_sections_created",
   "section_break_6",
   "get_students",
   "students",
@@ -134,10 +135,17 @@
    "fieldtype": "Table",
    "label": "Instructors",
    "options": "Student Group Instructor"
+  },
+  {
+   "default": "0",
+   "fieldname": "student_sections_created",
+   "fieldtype": "Check",
+   "label": "Student Sections Created",
+   "read_only": 1
   }
  ],
  "links": [],
- "modified": "2026-01-12 23:01:31.648807",
+ "modified": "2026-01-13 11:43:30.322411",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student Section Creation Tool",

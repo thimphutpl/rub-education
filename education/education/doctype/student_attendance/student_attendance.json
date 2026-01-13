@@ -64,7 +64,7 @@
    "fieldtype": "Link",
    "in_global_search": 1,
    "in_standard_filter": 1,
-   "label": "Student Group",
+   "label": "Student Section",
    "options": "Student Section"
   },
   {
@@ -112,7 +112,7 @@
    "fieldname": "link_nvfk",
    "fieldtype": "Link",
    "label": "Program",
-   "options": "Program"
+   "options": "Programme"
   },
   {
    "fieldname": "module",
@@ -139,7 +139,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-10-07 22:05:19.223530",
+ "modified": "2026-01-13 12:32:14.982790",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student Attendance",

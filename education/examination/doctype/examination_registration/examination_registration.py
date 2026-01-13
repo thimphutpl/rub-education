@@ -38,6 +38,7 @@ class ExaminationRegistration(Document):
 				AND company = %s
 				AND assessment_component = %s
 				AND tutor = %s
+				and docstatus = 1
 				order by posting_date DESC limit 1
 			""", 
 			(self.module, self.semester, self.academic_term, self.company, self.assessment_component, self.tutor),

@@ -79,27 +79,28 @@ class ExaminationMarksEntry(Document):
 				""", 
 				(self.module, self.semester, self.academic_term, self.college, self.assessment_component, self.tutor),
 				as_dict=True)
-			else:
-				exam_registration = frappe.db.sql("""
-					SELECT name 
-					FROM `tabExamination Registration`
-					WHERE module = %s
-					AND semester = %s
-					AND academic_term = %s
-					AND company = %s
-					AND assessment_component = %s
-					AND tutor = %s
-					order by posting_date DESC limit 1
-				""", 
-				(self.module, self.semester, self.academic_term, self.college, self.assessment_component, self.tutor),
-				as_dict=True)
-			
+		else:
+			# frappe.throw('hih')
+			exam_registration = frappe.db.sql("""
+				SELECT name 
+				FROM `tabExamination Registration`
+				WHERE module = %s
+				AND semester = %s
+				AND academic_term = %s
+				AND company = %s
+				AND assessment_component = %s
+				AND tutor = %s
+				order by posting_date DESC limit 1
+			""", 
+			(self.module, self.semester, self.academic_term, self.college, self.assessment_component, self.tutor),
+			as_dict=True)
+		
 
 
-			if exam_registration:
-				self.examination_registration = exam_registration[0].get('name')
-			else:
-				frappe.throw("Examination Registration not found for {}".format(self.assessment_component))
+		if exam_registration:
+			self.examination_registration = exam_registration[0].get('name')
+		else:
+			frappe.throw("Examination Registration not found for {}".format(self.assessment_component))
 	def check_duplicate_marks_entry(self):
 		duplicate = frappe.db.exists("Examination Marks Entry",{"exam_type":self.exam_type,"examination_registration":self.examination_registration,"academic_term":self.academic_term,"tutor":self.tutor,"docstatus":1})
 	
@@ -195,7 +196,7 @@ class ExaminationMarksEntry(Document):
 def get_students(examination_registration, doc):
 	# Step 1: Get students enrolled in the given term & module
 	doc = json.loads(doc)
-	# frappe.throw(frappe.as_json(doc['college']))
+	# frappe.throw(frappe.as_json(doc))
 	if not examination_registration:
 		frappe.throw("Please Add Examination Registration")
 

@@ -16,9 +16,15 @@ frappe.ui.form.on("Events", {
     onload: function (frm) {
         frm.set_df_property("external_participant", "hidden", 1);
         frm.set_df_property("external_participant", "reqd", 0);
-        frm.set_df_property("full_paper", "hidden", 1);
-        frm.set_df_property("full_paper", "reqd", 0);
-
+        frm.trigger("event_type");
+        frm.trigger("type");
+        forward_to_filter(frm);
+        room_filter(frm);
+        student_filter(frm);
+        employee_filter(frm);
+        faculty_register_filter(frm);
+        student_register_filter(frm);
+        setup_equipment_filter(frm);
     },
     refresh(frm) {
         frm.call("has_attendance").then((r) => {
@@ -43,14 +49,90 @@ frappe.ui.form.on("Events", {
             }
 
         });
-        toggle_culture_agenda(frm);
+        // toggle_agenda(frm);
+        // toggle_full_paper(frm);
+
+        if (frm.fields_dict["student_filter"]) {
+            frm.fields_dict["student_filter"].grid.get_field("programme").get_query =
+                function (doc, cdt, cdn) {
+                    if (!frm.doc.college) {
+                        return { filters: { name: ["=", ""] } };
+                    }
+                    return {
+                        query: "education.event_management.doctype.events.events.get_programmes_by_college",
+                        filters: { college: frm.doc.college }
+                    };
+                };
+        }
 
 
 
     },
+    college(frm) {
+        if (!frm.doc.college) {
+            frm.set_value("room", null);
+            frm.set_value("forward_to", null);
+            frm.set_value("event_equipment", null);
+            frm.set_value("employee", null);
+            frm.set_value("student", null);
+            frm.clear_table("faculty_register", null);
+            frm.clear_table("student_register", null);
+
+        }
+
+        setup_equipment_filter(frm);
+        employee_filter(frm);
+        student_filter(frm);
+        forward_to_filter(frm);
+        room_filter(frm);
+        employee_filter(frm);
+        student_filter(frm);
+        faculty_register_filter(frm);
+        student_register_filter(frm);
+
+        if (frm.fields_dict.event_equipment) {
+            frm.fields_dict.event_equipment.grid.refresh();
+        }
+        if (frm.fields_dict.faculty_register) {
+            frm.fields_dict.faculty_register.grid.refresh();
+        }
+        if (frm.fields_dict.student_register) {
+            frm.fields_dict.student_register.grid.refresh();
+        }
+    },
+    type: function (frm) {
+        frm.set_df_property("student", "hidden", 1);
+        frm.set_df_property("employee", "hidden", 1);
+        frm.set_df_property("student", "reqd", 0);
+        frm.set_df_property("employee", "reqd", 0);
+        if (frm.doc.type === "Student") {
+            frm.set_df_property("employee", "hidden", 1);
+            frm.set_df_property("student", "hidden", 0);
+            frm.set_df_property("student", "reqd", 1);
+            frm.set_df_property("forward_to", "reqd", 1);
+        } else if (frm.doc.type === "Employee") {
+            frm.set_df_property("student", "hidden", 1);
+            frm.set_df_property("employee", "hidden", 0);
+            frm.set_df_property("employee", "reqd", 1);
+            frm.set_df_property("forward_to", "reqd", 1);
+        }
+    },
     event_type: function (frm) {
-        toggle_culture_agenda(frm);
-        toggle_full_paper(frm)
+        if (frm.doc.event_type === "Conference") {
+            frm.set_df_property("event_agenda", "hidden", 1);
+            frm.set_df_property("registration_type", "hidden", 1);
+
+            frm.set_df_property("conference_theme", "hidden", 0);
+            frm.set_df_property("conference_theme", "reqd", 1);
+
+        } else {
+            // For any other Event Type
+            frm.set_df_property("event_agenda", "hidden", 0);
+            frm.set_df_property("registration_type", "hidden", 0);
+
+            frm.set_df_property("conference_theme", "hidden", 1);
+            frm.set_df_property("conference_theme", "reqd", 0);
+        }
     },
 
 
@@ -90,26 +172,28 @@ frappe.ui.form.on("Events", {
         }
         frm.refresh_field("external_participant");
     },
-
     get_all_faculty(frm) {
+        if (!frm.doc.college) {
+            frappe.msgprint("Please select College first.");
+            return;
+        }
+
         frappe.dom.freeze("Please wait. Fetching Faculty...", true);
+
         frappe.call({
-            method: "frappe.client.get_list",
-            args: {
-                doctype: "User",
-                fields: ["name", "email", "full_name"],
-            },
+            method: "education.event_management.doctype.events.events.get_faculty_by_college",
+            args: { college: frm.doc.college },
             callback: function (r) {
                 if (r.message && r.message.length) {
                     frm.doc._all_faculty = r.message;
                     reload_faculty_rows(frm);
+                } else {
+                    frappe.msgprint("No faculty found for the selected college.");
                 }
             },
             always: function () {
-                setTimeout(() => {
-                    frappe.dom.unfreeze();
-                }, 500);
-            },
+                setTimeout(() => frappe.dom.unfreeze(), 500);
+            }
         });
     },
 
@@ -144,59 +228,77 @@ frappe.ui.form.on("Events", {
             return;
         }
 
-        // Clear previous _all_student array and student_register
         frm.doc._all_student = [];
         frm.clear_table("student_register");
 
-        // Count how many rows to process
-        let rows_to_process = frm.doc.student_filter.length;
-        let processed_rows = 0;
-
-        frm.doc.student_filter.forEach(function (row) {
-            if (row.programme && row.year && row.semester) {
-                let programme_list = Array.isArray(row.programme) ? row.programme : row.programme.split(",");
-
-                frappe.call({
-                    method: "frappe.client.get_list",
-                    args: {
-                        doctype: "Student",
-                        filters: [
-                            ["programme", "in", programme_list],
-                            ["year", "=", row.year],
-                            ["semester", "=", row.semester],
-                            ["status", "=", "Active"]
-                        ],
-                        fields: ["name", "student_email_id", "first_name", "last_name"]
-                    },
-                    callback: function (r) {
-                        if (r.message && r.message.length) {
-                            frm.doc._all_student = frm.doc._all_student.concat(r.message);
-                        }
-
-                        // After processing all rows, reload student_register
-                        processed_rows++;
-                        if (processed_rows === rows_to_process) {
-                            reload_student_rows(frm);
-                        }
-                    },
-                    always: function () {
-                        setTimeout(() => {
-                            frappe.dom.unfreeze();
-                        }, 500);
-                    },
-                });
-            } else {
-                frappe.msgprint("Please select Programme(s), Year, and Semester in all filter rows.");
-                frappe.dom.unfreeze();
-                processed_rows++;
+        frappe.call({
+            method: "education.event_management.doctype.events.events.get_students_by_filters",
+            args: {
+                filters: frm.doc.student_filter,
+            },
+            callback: function (r) {
+                if (r.message && r.message.length) {
+                    frm.doc._all_student = r.message;
+                    reload_student_rows(frm);
+                } else {
+                    frappe.msgprint("No students found with the selected filters.");
+                }
+            },
+            always: function () {
+                setTimeout(() => {
+                    frappe.dom.unfreeze();
+                }, 500);
             }
         });
     }
 
 });
 
+function setup_equipment_filter(frm) {
+    if (!frm.doc.college) return;
 
+    frm.set_query("equipment", "event_equipment", function (doc, cdt, cdn) {
+        return {
+            filters: {
+                company: frm.doc.college
+            }
+        };
+    });
+}
+function faculty_register_filter(frm) {
+    if (!frm.doc.college) return;
 
+    frm.set_query("faculty_email", "faculty_register", function (doc, cdt, cdn) {
+        return {
+            filters: {
+                company: frm.doc.college
+            }
+        };
+    });
+}
+
+function employee_filter(frm) {
+    if (!frm.doc.college) return;
+
+    frm.set_query("faculty_email", "faculty_register", function (doc, cdt, cdn) {
+        return {
+            filters: {
+                company: frm.doc.college
+            }
+        };
+    });
+}
+function student_filter(frm) {
+    if (!frm.doc.college) return;
+
+    frm.set_query("student", "student_register", function (doc, cdt, cdn) {
+        return {
+            filters: {
+                company: frm.doc.college
+            }
+        };
+    });
+}
 function reload_faculty_rows(frm) {
     frm.clear_table("faculty_register");
     let faculty_to_show = frm.doc._all_faculty.slice(0);
@@ -224,38 +326,55 @@ function reload_student_rows(frm) {
     frm.refresh_field("student_register");
 }
 
-function toggle_culture_agenda(frm) {
-    if (frm.doc.event_type === "Cultural") {
-        frm.toggle_display('culture_agenda', true);
-        frm.toggle_display('event_agenda', false)
-    } else {
-        frm.toggle_display('event_agenda', true)
-        frm.toggle_display('culture_agenda', false);
-    }
-}
-function toggle_full_paper(frm) {
-    if (frm.doc.event_type === "Conference") {
-        frm.set_df_property("agenda_section", "hidden", 1);
-        frm.set_df_property("culture_agenda", "hidden", 1);
-        frm.set_df_property("registration_type", "hidden", 1);
-        frm.set_df_property("full_paper", "hidden", 0)
-        frm.set_df_property("full_paper", "reqd", 1)
-    } else if (frm.doc.event_type === "Cultural") {
-        frm.set_df_property("event_agenda", "hidden", 1);
-        frm.set_df_property("culture_agenda", "hidden", 0);
-        frm.set_df_property("registration_type", "hidden", 0);
-        frm.set_df_property("full_paper", "hidden", 1);
-        frm.set_df_property("full_paper", "reqd", 0);
-    } else {
-        frm.set_df_property("event_agenda", "hidden", 0);
-        frm.set_df_property("culture_agenda", "hidden", 1);
-        frm.set_df_property("registration_type", "hidden", 0);
-        frm.set_df_property("full_paper", "hidden", 1);
-        frm.set_df_property("full_paper", "reqd", 0);
-    }
+
+function forward_to_filter(frm) {
+    if (!frm.doc.college) return;
+    frm.set_query("forward_to", function () {
+        return {
+            filters: {
+                company: frm.doc.college
+            }
+        };
+    });
 }
 
-
-
-
-
+function room_filter(frm) {
+    if (!frm.doc.college) return;
+    frm.set_query("room", function () {
+        return {
+            filters: {
+                company: frm.doc.college
+            }
+        };
+    });
+}
+function student_filter(frm) {
+    if (!frm.doc.college) return;
+    frm.set_query("student", function () {
+        return {
+            filters: {
+                company: frm.doc.college
+            }
+        };
+    });
+}
+function employee_filter(frm) {
+    if (!frm.doc.college) return;
+    frm.set_query("employee", function () {
+        return {
+            filters: {
+                company: frm.doc.college
+            }
+        };
+    });
+}
+function student_register_filter(frm) {
+    if (!frm.doc.college) return;
+    frm.set_query("student", "student_register", function (doc, cdt, cdn) {
+        return {
+            filters: {
+                company: frm.doc.college
+            }
+        };
+    });
+}

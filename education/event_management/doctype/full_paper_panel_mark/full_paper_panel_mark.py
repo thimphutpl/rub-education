@@ -14,26 +14,29 @@ class FullPaperPanelMark(Document):
 				"conference": self.conference
 			},
 			limit=1,
-			fields=["name"]
+			fields=["name","theme"]
 		)
 
 		if not papers:
 			frappe.throw(f"No Full Paper found for Conference {self.conference} and participant {self.email}")
 
 		parent = frappe.get_doc("Full Paper", papers[0].name)
+		parent_theme = parent.theme
 
 		# Now you can continue processing marks
 		full_paper_panel_marks = frappe.get_all(
 			"Full Paper Panel Mark",
 			filters={"conference": self.conference, "docstatus": 1},
-			fields=["name"]
+			fields=["name","theme"]
 		)
 
 		# Aggregate marks as you already have
 		criteria_dict = {}
 		for pm in full_paper_panel_marks:
+			if pm.theme != parent_theme:
+				continue
 			doc = frappe.get_doc("Full Paper Panel Mark", pm.name)
-			for row in doc.evaluation_criteria_full_paper:
+			for row in doc.full_paper_evaluation_criteria_full_paper:
 				crit = row.criteria
 				if crit not in criteria_dict:
 					criteria_dict[crit] = {
@@ -113,38 +116,38 @@ class FullPaperPanelMark(Document):
 # 	}
 @frappe.whitelist()
 def get_conference_info(source_doctype, source_name):
-    # Check if current user already has a mark for this paper
-    existing = frappe.db.get_value(
-        "Full Paper Panel Mark",
-        {
-            "source_doctype": source_doctype,
-            "source_name": source_name,
-            "owner": frappe.session.user  # <-- only fetch this user's mark
-        },
-        "name"
-    )
+	# Check if current user already has a mark for this paper
+	existing = frappe.db.get_value(
+		"Full Paper Panel Mark",
+		{
+			"source_doctype": source_doctype,
+			"source_name": source_name,
+			"owner": frappe.session.user  # <-- only fetch this user's mark
+		},
+		"name"
+	)
 
-    if existing:
-        return {
-            "doctype": "Full Paper Panel Mark",
-            "name": existing
-        }
+	if existing:
+		return {
+			"doctype": "Full Paper Panel Mark",
+			"name": existing
+		}
 
-    # If not exists, create a new document for the current user
-    full_paper_panel_mark = frappe.new_doc("Full Paper Panel Mark")
-    full_paper_panel_mark.source_doctype = source_doctype
-    full_paper_panel_mark.source_name = source_name
+	# If not exists, create a new document for the current user
+	full_paper_panel_mark = frappe.new_doc("Full Paper Panel Mark")
+	full_paper_panel_mark.source_doctype = source_doctype
+	full_paper_panel_mark.source_name = source_name
 
-    if source_doctype == "Full Paper":
-        paper = frappe.get_doc("Full Paper", source_name)
-        full_paper_panel_mark.full_paper = paper.name
-        full_paper_panel_mark.theme = paper.theme
+	if source_doctype == "Full Paper":
+		paper = frappe.get_doc("Full Paper", source_name)
+		full_paper_panel_mark.full_paper = paper.name
+		full_paper_panel_mark.theme = paper.theme
 
-    full_paper_panel_mark.insert(ignore_permissions=True)
-    return {
-        "doctype": "Full Paper Panel Mark",
-        "name": full_paper_panel_mark.name
-    }
+	full_paper_panel_mark.insert(ignore_permissions=True)
+	return {
+		"doctype": "Full Paper Panel Mark",
+		"name": full_paper_panel_mark.name
+	}
 
 @frappe.whitelist()
 def get_permission_query_conditions(user):

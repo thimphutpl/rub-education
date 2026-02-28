@@ -15,10 +15,10 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Email",
-   "options": "User"
+   "options": "Employee"
   },
   {
-   "fetch_from": "faculty_email.full_name",
+   "fetch_from": "faculty_email.employee_name",
    "fieldname": "faculty_name",
    "fieldtype": "Read Only",
    "in_list_view": 1,
@@ -29,7 +29,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-10-13 14:58:11.931556",
+ "modified": "2026-02-20 11:08:35.522408",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "Faculty Registration",

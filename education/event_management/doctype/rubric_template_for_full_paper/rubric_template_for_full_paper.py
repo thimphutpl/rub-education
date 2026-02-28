@@ -23,12 +23,12 @@ def get_full_paper_rubric(theme_name):
     criteria_rows = frappe.get_all(
         "Evaluation Criteria Full Paper",
         filters={"parent": rubric_name},
-        fields=["criteria", "weight_marks", "remark"],
+        fields=["criteria","score","weight_marks", "remark"],
         order_by="idx asc"
     )
 
     for row in criteria_rows:
-        for key in ["criteria", "weight_marks", "remark"]:
+        for key in ["criteria","score","weight_marks", "remark"]:
             if key not in row or not row[key]:
                 row[key] = ""
 

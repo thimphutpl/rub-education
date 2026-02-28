@@ -6,10 +6,14 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "college",
+  "type",
+  "section_break_hqjt",
+  "employee",
+  "student",
   "section_break_imeu",
   "amended_from",
   "event_title",
-  "college",
   "event_type",
   "conference_theme",
   "event_description",
@@ -22,7 +26,10 @@
   "color",
   "agenda_section",
   "event_agenda",
-  "culture_agenda",
+  "section_break_zimd",
+  "forward_to",
+  "column_break_bkxt",
+  "forward_name",
   "equipment_tab",
   "equipment_section",
   "event_equipment",
@@ -168,12 +175,6 @@
    "options": "Student Filter"
   },
   {
-   "fieldname": "culture_agenda",
-   "fieldtype": "Table",
-   "label": "Culture Agenda",
-   "options": "Culture Agenda"
-  },
-  {
    "fieldname": "college",
    "fieldtype": "Link",
    "label": "College",
@@ -251,13 +252,56 @@
    "fieldtype": "Link",
    "label": "Conference Theme",
    "options": "Conference Theme"
+  },
+  {
+   "fieldname": "section_break_zimd",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "forward_to",
+   "fieldtype": "Link",
+   "label": "Forward To",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "column_break_bkxt",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "forward_to.employee_name",
+   "fieldname": "forward_name",
+   "fieldtype": "Data",
+   "label": "Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_hqjt",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "type",
+   "fieldtype": "Select",
+   "label": "Type",
+   "options": "\nEmployee\nStudent"
+  },
+  {
+   "fieldname": "student",
+   "fieldtype": "Link",
+   "label": "Student",
+   "options": "Student"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-12-23 16:06:37.207267",
+ "modified": "2026-02-26 10:42:22.027213",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "Events",

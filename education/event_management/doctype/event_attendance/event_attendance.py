@@ -15,6 +15,7 @@ def create_attendance(dt, dn):
         frappe.throw(_("Cannot create attendance - Student Register is empty. Please add students first."))    
     attendance = frappe.new_doc("Event Attendance")
     attendance.event = event.name
+    attendance.college = event.college
     attendance.attendance_date = event.start_date.date() if event.start_date else frappe.utils.today()
     for row in event.student_register:
         if not row.student_email:
@@ -22,6 +23,7 @@ def create_attendance(dt, dn):
         attendance.append("attendance_list", {
             "student": row.student,
             "student_name": row.student_name,
+            
          
         })
     attendance.insert(ignore_permissions=True)

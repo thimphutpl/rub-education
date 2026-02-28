@@ -54,11 +54,6 @@ function displayFullPaperInfo(response) {
                 <div class="full-paper-detail">
                     <p>Name: ${full_paper_info.name}</p>
                     <p class="status-text badge-${badgeColor}"> ${full_paper_info.workflow_state || 'N/A'}</p>
-                   ${full_paper_info.workflow_state === 'Approved' ? `
-                    <div class="d-flex justify-content-center mt-auto">
-                        <button class="full-button" onclick="applyFullPaper('${full_paper_info.name}')">Apply Full Paper</button>
-                        
-                    </div>` : ''}
                 </div>
             </div>
             `;

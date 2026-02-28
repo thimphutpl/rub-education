@@ -130,12 +130,13 @@ frappe.ready(function () {
 				// ],
 				// conference: conference,
 				email: email,
-				name: frappe.web_form.doc.name
+				theme: theme
 				// fields: ["name"],
 				// limit: 1
 			},
 			callback: function (r) {
-				console.log('Duplicate check result:', r.message);
+
+
 
 				if (r.message.exists) {
 					console.log('Blocking submission - duplicate found');

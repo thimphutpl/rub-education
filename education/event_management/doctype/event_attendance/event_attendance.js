@@ -8,15 +8,23 @@ frappe.ui.form.on("Event Attendance", {
     refresh(frm) {
         if (frm.doc.docstatus === 0) {
             frm.add_custom_button(__('Mark Attendance'), function () {
+                let existing_students = frm.doc.attendance_list.map(d => d.student);
 
-                // Show popup
                 frappe.prompt([
                     {
                         label: 'Student',
                         fieldname: 'student',
                         fieldtype: 'Link',
                         options: 'Student',
-                        reqd: 1
+                        reqd: 1,
+                        get_query: function () {
+                            return {
+                                filters: {
+                                    name: ['in', existing_students],
+                                    company: frm.doc.college
+                                }
+                            };
+                        }
                     },
                     {
                         label: 'Status',
@@ -27,7 +35,7 @@ frappe.ui.form.on("Event Attendance", {
                     }
                 ],
                     function (values) {
-                        let row = frm.doc.attendance_list.find(d => d.student === values.student);
+                        let row = frm.doc.attendance_list.find(d => String(d.student).trim() === String(values.student).trim());
                         if (row) {
                             row.status = values.status;
                             frm.refresh_field("attendance_list");

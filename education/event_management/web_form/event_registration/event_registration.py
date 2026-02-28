@@ -23,6 +23,33 @@ def get_user_full_name(email):
     if user:
         return user[0].full_name
     return ""
+
+@frappe.whitelist(allow_guest=True)
+def check_already_registered(event, faculty_email):
+    """
+    Check if email already registered for the event
+    """
+
+    if not event or not faculty_email:
+        return {"status": "error", "message": "Missing event or email"}
+
+    exists = frappe.db.exists(
+        "Event Registration",
+        {
+            "event": event,
+            "faculty_email": faculty_email,
+            "docstatus": ["!=", 2]  # ignore cancelled
+        }
+    )
+
+    if exists:
+        return {
+            "status": "duplicate",
+            "message": f"{faculty_email} is already registered for this event."
+        }
+
+    return {"status": "ok"}
+
 def after_insert(doc, method=None):
     """
     Auto-submit Event Registration after insert and check duplicate email
@@ -32,15 +59,29 @@ def after_insert(doc, method=None):
 
     # Fetch the Event document
     event_doc = frappe.get_doc("Events", doc.event)
-
-    # Check if the email is already registered
-    already_registered = any(
-        row.faculty_email == doc.faculty_email
-        for row in getattr(event_doc, "faculty_register", [])
+    already_registered = frappe.db.exists(
+        "Event Registration",
+        {
+            "event": doc.event,
+            "faculty_email": doc.faculty_email,
+            "docstatus": ["!=", 2]
+        }
     )
 
-    if already_registered:
-        frappe.throw(_("⚠️ {0} is already registered for this event.").format(doc.faculty_email))
+    # If exists and not this same document
+    if already_registered and already_registered != doc.name:
+        frappe.throw(
+            _("{0} is already registered for this event.").format(doc.faculty_email)
+        )
+
+    # # Check if the email is already registered
+    # already_registered = any(
+    #     row.faculty_email == doc.faculty_email
+    #     for row in getattr(event_doc, "faculty_register", [])
+    # )
+
+    # if already_registered:
+    #     frappe.throw(_("{0} is already registered for this event.").format(doc.faculty_email))
 
     # Add the user to the Event's child table
     event_doc.append("faculty_register", {

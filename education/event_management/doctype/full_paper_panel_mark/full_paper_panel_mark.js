@@ -47,6 +47,7 @@ function load_rubric_based_on_theme(frm) {
                 r.message.forEach(row => {
 
                     let child = frm.add_child("full_paper_evaluation_criteria_full_paper");
+                    child.score = row.score;
                     child.criteria = row.criteria;
                     child.weight_marks = row.weight_marks;
                     child.remark = row.remark;

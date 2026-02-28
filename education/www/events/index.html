@@ -36,24 +36,29 @@
 
 <style>
     #events-list {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        display: flex;
+        flex-wrap: wrap;
         gap: 15px;
-        margin-top: 15px;
-        justify-content: center;
+        width: 100%;
     }
 
+    /* 👇 Control column width HERE */
+    .event-item {
+        flex: 0 0 calc(25% - 15px);
+        max-width: calc(25% - 15px);
+        display: flex;
+        flex-direction: column;
+    }
 
-
+    /* 👇 Card takes full width inside item */
     .event-card {
+        width: 100%;
+        margin-top: 10px;
         background-color: #fff;
         border: 1px solid #ddd;
         border-radius: 8px;
         padding: 10px;
-        height: 350px;
-        display: flex;
-        flex-direction: column;
-        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+        height: 400px;
     }
 
     .event-image {
@@ -206,6 +211,10 @@
         border-radius: 8px;
         border-color: #92c5f7;
         box-shadow: 0 4px 8px rgba(146, 197, 247, 0.4);
+    }
+
+    .alertcontainer {
+        margin-top: 10px;
     }
 </style>
 

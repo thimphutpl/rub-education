@@ -5,7 +5,6 @@ import frappe
 from frappe.model.document import Document
 
 class CallForPaperPanelMark(Document):
-	
 	def on_submit(self):
 		papers = frappe.get_all(
 			"Call For Paper",

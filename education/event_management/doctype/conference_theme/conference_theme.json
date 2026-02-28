@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "Theme-.####",
+ "autoname": "field:theme",
  "creation": "2025-11-24 13:30:20.205004",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -14,7 +14,8 @@
   {
    "fieldname": "theme",
    "fieldtype": "Data",
-   "label": "Theme"
+   "label": "Theme",
+   "unique": 1
   },
   {
    "fieldname": "panel_member_section",
@@ -31,11 +32,11 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-12-19 19:53:55.938790",
+ "modified": "2026-02-07 13:02:24.940077",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "Conference Theme",
- "naming_rule": "Expression (old style)",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {

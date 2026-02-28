@@ -338,13 +338,13 @@
    "label": "Full paper"
   },
   {
-   "depends_on": "eval:doc.have_you_publsihed_your_work=='Yes'",
+   "depends_on": "eval:doc.have_you_published_your_work=='Yes'",
    "fieldname": "yes",
    "fieldtype": "Small Text",
    "label": "If yes, mention the detials of the pulication"
   },
   {
-   "depends_on": "eval:doc.have_you_publsihed_your_work=='No'\r\n",
+   "depends_on": "eval:doc.have_you_published_your_work=='No'\r\n",
    "fieldname": "not",
    "fieldtype": "Select",
    "label": "If not, would you like to publish in Bhutan Journal of Research and Development?",
@@ -433,7 +433,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-12-30 14:36:21.593307",
+ "modified": "2026-02-24 14:09:59.472538",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "Full Paper",

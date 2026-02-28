@@ -1,74 +1,3 @@
-
-
-// function getEventsInfo() {
-//     frappe.call({
-//         method: "education.www.events.index.get_events_info",
-//         callback: function (r) {
-//             console.log("Python response:", r.message);
-//             if (!r.message || !r.message.events_info || r.message.events_info.length === 0) {
-//                 document.getElementById("events-list").innerHTML = '<p>No Events Announcement records found</p>';
-//                 return;
-//             }
-//             displayEventsInfo(r.message.events_info);
-//         }
-//     });
-
-//     frappe.call({
-
-//         method: "education.www.events.index.get_college",
-//         callback: function (r) {
-//             if (r.message && r.message.college) {
-//                 const select = document.getElementById("college");
-//                 r.message.college.forEach(function (c) {
-//                     const option = document.createElement("option");
-//                     option.value = c.name;
-//                     option.text = c.name;
-//                     select.appendChild(option);
-//                 });
-//             }
-//         }
-//     });
-// }
-// function displayEventsInfo(events_info) {
-//     var container = document.getElementById("events-list");
-//     var html = '';
-
-//     events_info.forEach(function (c) {
-//         html += '<div class="event-card">' +
-//             (c.event_banner
-//                 ? '<img src="' + c.event_banner + '" class="event-image" />'
-//                 : '<div class="event-image-placeholder">No Image</div>') +
-//             '<div class="event-title">Title' + (c.event_title || 'N/A') + '</div>' +
-//             '<div class="event-title">Event Type' + (c.event_type || 'N/A') + '</div>' +
-//             '<div class="event-start-date">🗓️' + (c.start_date || 'N/A') + '</div>' +
-//             '<div class="event-end-date">🗓️' + (c.end_date || 'N/A') + '</div>' +
-//             '<div class="event-location">Event Venue:' + (c.event_venue || 'N/A') + '</div>' +
-//             '<button class="register-btn" onclick="registerConference(\'' + c.name + '\')"> Register</button>' +
-//             '</div>';
-
-//     });
-
-//     container.innerHTML = html;
-// }
-
-// frappe.ready(function () {
-//     let inputField = document.querySelector("input[name='college']");
-//     let college = inputField.value;
-
-//     if (college && college.trim() !== "") {
-//         getEventsInfo(college);
-//     }
-//     getEventsInfo();
-// });
-
-
-
-// function registerConference(conferenceName) {
-//     const decodedName = decodeURIComponent(conferenceName);
-//     const route_options = { conference: decodedName };
-//     window.location.href = `/conference-registration/new?route_options=${encodeURIComponent(JSON.stringify(route_options))}`;
-// }
-
 frappe.ready(function () {
     // 1️⃣ Populate college dropdown
     frappe.call({
@@ -109,12 +38,14 @@ function getEventsInfo(college = '') {
             container.style.alignItems = "center";
 
             if (!r.message || !r.message.events_info || r.message.events_info.length === 0) {
-                container.innerHTML =
-                    ` <div class="no-events-wrapper">
+                container.innerHTML = `
+            
+            <div class="alertcontainer">     
             <div class="alert alert-info text-center">
                 <p>No Events records found</p>
             </div>
-        </div>`;
+            </div>
+       `;
                 return;
             }
 
@@ -135,6 +66,7 @@ function displayEventsInfo(events) {
             registrationUrl = `/event-registration/new?route_options=${encodeURIComponent(JSON.stringify({ event: c.name }))}`;
         }
         html += `
+          <div class="event-item">
         <div class="event-card">
             ${c.event_banner ? `<img src="${c.event_banner}" class="event-image"/>`
                 : `<div class="event-image-placeholder">No Image</div>`}
@@ -144,7 +76,9 @@ function displayEventsInfo(events) {
             <div class="event-end-date">🗓️ End: ${c.end_date || 'N/A'}</div>
             <div class="event-location">Venue: ${c.room || 'N/A'}</div>
             <div class="event-location">Capacity: ${c.capacity || 'N/A'}</div>
-           <button class="register-btn" onclick="registerEvent('${c.name}', '${c.event_type}')">Register</button>
+       
+           </div>
+               <button class="register-btn" onclick="registerEvent('${c.name}', '${c.event_type}')">Register</button>
            </div>
         `;
     });

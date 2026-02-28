@@ -25,4 +25,39 @@ frappe.ready(function () {
 			}
 		});
 	});
+
+	let is_submitting = false;
+
+	$('form button[type="submit"]').on('click', function (e) {
+
+		if (is_submitting) return;
+
+		e.preventDefault();
+
+		is_submitting = true;
+
+		let event = frappe.web_form.get_value("event");
+		let email = frappe.web_form.get_value("faculty_email");
+
+		frappe.call({
+			method: "education.event_management.web_form.event_registration.event_registration.check_already_registered",
+			args: {
+				event: event,
+				faculty_email: email
+			}
+		}).then(r => {
+
+			if (r.message && r.message.status === "duplicate") {
+				frappe.msgprint(" " + r.message.message);
+				is_submitting = false;
+			} else {
+				$('form').submit();
+				setTimeout(function () {
+					window.location.href = '/events';
+				}, 1000);
+			}
+
+		});
+
+	});
 });

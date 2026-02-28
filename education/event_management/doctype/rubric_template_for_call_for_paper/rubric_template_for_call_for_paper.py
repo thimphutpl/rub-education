@@ -7,16 +7,11 @@ class RubricTemplateForCallForPaper(Document):
 	pass
 @frappe.whitelist()
 def get_abstract_rubric(theme_name):
-    """
-    Fetch active abstract rubric rows based on theme.
-    """
     rubric_docs = frappe.get_list(
         "Rubric Template For Call For Paper",
         filters={"theme": theme_name, "docstatus": 1},
         fields=["name"]
     )
-
-
     if not rubric_docs:
         return []
 

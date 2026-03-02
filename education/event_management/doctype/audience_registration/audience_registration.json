@@ -13,7 +13,7 @@
   "organisation",
   "country_of_your_current_location",
   "column_break_rcna",
-  "first_nama",
+  "first_name",
   "nationality",
   "current_position",
   "column_break_bbdf",
@@ -63,7 +63,7 @@
   {
    "fieldname": "salutation",
    "fieldtype": "Link",
-   "label": "salutation",
+   "label": "Salutation",
    "options": "Salutation"
   },
   {
@@ -80,11 +80,6 @@
   {
    "fieldname": "column_break_rcna",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "first_nama",
-   "fieldtype": "Data",
-   "label": "First Nama"
   },
   {
    "fieldname": "nationality",
@@ -235,13 +230,18 @@
    "fieldname": "consent_for_recording_and_use_of_media",
    "fieldtype": "Check",
    "label": "Consent for Recording and Use of Media"
+  },
+  {
+   "fieldname": "first_name",
+   "fieldtype": "Data",
+   "label": "First Name"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-03-03 01:38:52.373419",
+ "modified": "2026-03-03 01:47:55.391749",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "Audience Registration",

@@ -53,7 +53,7 @@ function displayConferenceInfo(response) {
             <div class="conference-card mb-4 p-3 shadow-sm">
                 <div class="conference-detail">
                     <p>Name: ${conferences_info.name1}</p>
-                    <p>Name: ${conferences_info.theme}</p>
+                    <p>Theme: ${conferences_info.theme}</p>
                     
                     <p class="status-text badge-${badgeColor}"> ${conferences_info.workflow_state || 'N/A'}</p>
                    ${conferences_info.workflow_state === 'Approved' ? `

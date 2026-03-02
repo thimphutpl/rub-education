@@ -30,9 +30,18 @@
   "column_break_ewtw",
   "test",
   "institutional__professional_information_tab",
-  "test2",
+  "affiliation__organisation_name",
+  "position__designation",
+  "column_break_iavs",
+  "country_of_organisation",
   "logistics_information_tab",
-  "test1"
+  "will_you_require_an_official_invitation_letter",
+  "column_break_zfkw",
+  "dietary_requirements",
+  "section_break_cxjz",
+  "medical__other_please_specify",
+  "section_break_uuos",
+  "consent_for_recording_and_use_of_media"
  ],
  "fields": [
   {
@@ -172,21 +181,67 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "test2",
+   "fieldname": "affiliation__organisation_name",
    "fieldtype": "Data",
-   "label": "Test2"
+   "label": "Affiliation / Organisation Name"
   },
   {
-   "fieldname": "test1",
+   "fieldname": "position__designation",
    "fieldtype": "Data",
-   "label": "Test1"
+   "label": "Position / Designation"
+  },
+  {
+   "fieldname": "column_break_iavs",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "country_of_organisation",
+   "fieldtype": "Link",
+   "label": "Country of Organisation",
+   "options": "Country"
+  },
+  {
+   "fieldname": "will_you_require_an_official_invitation_letter",
+   "fieldtype": "Select",
+   "label": "Will you require an official invitation letter?",
+   "options": "\nYes\nNo"
+  },
+  {
+   "fieldname": "column_break_zfkw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "dietary_requirements",
+   "fieldtype": "Select",
+   "label": "Dietary Requirements",
+   "options": "\nNone\nVegetarian\nVegan\nHalal"
+  },
+  {
+   "fieldname": "section_break_cxjz",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "medical__other_please_specify",
+   "fieldtype": "Small Text",
+   "label": "Medical / Other (please specify)"
+  },
+  {
+   "fieldname": "section_break_uuos",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "description": "I consent that my participation, images, audio, and video recordings taken during the conference may be used for documentation, reporting, and shared through RUB and conference partners\u2019 websites and social media platforms.",
+   "fieldname": "consent_for_recording_and_use_of_media",
+   "fieldtype": "Check",
+   "label": "Consent for Recording and Use of Media"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-12-23 16:27:05.509309",
+ "modified": "2026-03-03 01:38:52.373419",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "Audience Registration",

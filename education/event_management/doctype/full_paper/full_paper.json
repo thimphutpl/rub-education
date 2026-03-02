@@ -6,6 +6,7 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "details_tab",
   "section_break_obzu",
   "theme",
   "section_break_xglx",
@@ -427,13 +428,19 @@
    "fieldtype": "Select",
    "label": "Have you Publishedyour work?",
    "options": "\nYes\nNo"
+  },
+  {
+   "depends_on": "eval:frappe.user.has_role([\"Panel Member\"])",
+   "fieldname": "details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Details"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-02-24 14:09:59.472538",
+ "modified": "2026-03-03 01:17:27.438913",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "Full Paper",

@@ -38,12 +38,14 @@ frappe.ready(function () {
 
 		let event = frappe.web_form.get_value("event");
 		let email = frappe.web_form.get_value("faculty_email");
+		let name = frappe.web_form.get_value("faculty_name");
 
 		frappe.call({
 			method: "education.event_management.web_form.event_registration.event_registration.check_already_registered",
 			args: {
 				event: event,
-				faculty_email: email
+				faculty_email: email,
+				faculty_name: name
 			}
 		}).then(r => {
 

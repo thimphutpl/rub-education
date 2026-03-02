@@ -3,29 +3,39 @@
 
 from frappe.model.document import Document
 import frappe
+from frappe.utils import flt
 class RubricTemplateForCallForPaper(Document):
-	pass
+	def validate(self):
+		self.validate_rub()
+
+	@frappe.whitelist()
+	def validate_rub(self):
+		total = 0
+		for a in self.evaluation_criteria_full_paper:
+			total += flt(a.score)
+		if flt(total) != 100:
+			frappe.throw("Total Score must be 100%")
 @frappe.whitelist()
 def get_abstract_rubric(theme_name):
-    rubric_docs = frappe.get_list(
-        "Rubric Template For Call For Paper",
-        filters={"theme": theme_name, "docstatus": 1},
-        fields=["name"]
-    )
-    if not rubric_docs:
-        return []
+	rubric_docs = frappe.get_list(
+		"Rubric Template For Call For Paper",
+		filters={"theme": theme_name, "docstatus": 1},
+		fields=["name"]
+	)
+	if not rubric_docs:
+		return []
 
-    rubric_name = rubric_docs[0].name
-    criteria_rows = frappe.get_all(
-        "Evaluation Criteria Call For Paper",
-        filters={"parent": rubric_name},
-        fields=["criteria","score"],
-        order_by="idx asc"
-    )
+	rubric_name = rubric_docs[0].name
+	criteria_rows = frappe.get_all(
+		"Evaluation Criteria Call For Paper",
+		filters={"parent": rubric_name},
+		fields=["criteria","score"],
+		order_by="idx asc"
+	)
 
-    for row in criteria_rows:
-        for key in ["criteria","score","weight_marks"]:
-            if key not in row or not row[key]:
-                row[key] = ""
+	for row in criteria_rows:
+		for key in ["criteria","score","weight_marks"]:
+			if key not in row or not row[key]:
+				row[key] = ""
 
-    return criteria_rows
+	return criteria_rows

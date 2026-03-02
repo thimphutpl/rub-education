@@ -22,10 +22,9 @@
   {
    "fetch_from": "faculty.email",
    "fieldname": "faculty_email",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Email",
-   "options": "User"
+   "label": "Email"
   },
   {
    "fieldname": "event",
@@ -48,7 +47,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-10-15 14:56:23.701199",
+ "modified": "2026-03-02 23:23:33.120524",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "Event Registration",

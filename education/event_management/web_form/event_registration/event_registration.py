@@ -56,34 +56,7 @@ def after_insert(doc, method=None):
     """
     if not doc.event:
         frappe.throw(_("Please select an Event before submitting."))
-
-    # Fetch the Event document
     event_doc = frappe.get_doc("Events", doc.event)
-    # already_registered = frappe.db.exists(
-    #     "Event Registration",
-    #     {
-    #         "event": doc.event,
-    #         "faculty_email": doc.faculty_email,
-    #         "docstatus": ["!=", 2]
-    #     }
-    # )
-
-    # # If exists and not this same document
-    # if already_registered and already_registered != doc.name:
-    #     frappe.throw(
-    #         _("{0} is already registered for this event.").format(doc.faculty_email)
-    #     )
-
-    # # Check if the email is already registered
-    # already_registered = any(
-    #     row.faculty_email == doc.faculty_email
-    #     for row in getattr(event_doc, "faculty_register", [])
-    # )
-
-    # if already_registered:
-    #     frappe.throw(_("{0} is already registered for this event.").format(doc.faculty_email))
-
-    # Add the user to the Event's child table
     event_doc.append("faculty_register", {
         "faculty_email": doc.faculty_email,
         "faculty_name": doc.faculty_name
@@ -91,10 +64,10 @@ def after_insert(doc, method=None):
 
     # Save Event doc
     event_doc.save(ignore_permissions=True)
-    frappe.db.commit()
+    # frappe.db.commit()
 
     # Auto-submit the Event Registration if still draft
-    if doc.docstatus == 0:
-        doc.submit()
+    # if doc.docstatus == 0:
+    #     doc.submit()
 
-    frappe.msgprint(_("✅ {0} has successfully registered to the event.").format(doc.faculty_name))
+    frappe.msgprint(_("✅ {0} has successfully registered to the event.").format(doc.faculty_email))

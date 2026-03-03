@@ -49,7 +49,7 @@ frappe.ready(function () {
 			}
 		}).then(r => {
 
-			if (r.message && r.message.status === "duplicate") {
+			if (r.message.status === "duplicate") {
 				frappe.msgprint(" " + r.message.message);
 				is_submitting = false;
 			} else {

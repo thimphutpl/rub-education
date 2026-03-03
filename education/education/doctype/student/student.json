@@ -322,14 +322,13 @@
   {
    "fieldname": "bank_account_number",
    "fieldtype": "Data",
-   "label": "Bank Account Number",
-   "reqd": 1
+   "label": "Bank Account Number"
   },
   {
    "fieldname": "catering_type",
    "fieldtype": "Select",
    "label": "Catering Type",
-   "options": "\nMess Services\nSelf-Catering",
+   "options": "\nMess Services\nSelf-Catering\nDay Scholar",
    "reqd": 1
   },
   {
@@ -389,8 +388,7 @@
    "fieldtype": "Link",
    "in_standard_filter": 1,
    "label": "Student Batch",
-   "options": "Student Batch Name",
-   "reqd": 1
+   "options": "Student Batch Name"
   },
   {
    "fieldname": "extra_curricular_activities_tab",
@@ -415,9 +413,9 @@
   },
   {
    "fieldname": "hostel_status",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "label": "Hostel Status",
-   "options": "Day Scholar\nHostel"
+   "read_only": 1
   }
  ],
  "image_field": "image",
@@ -458,8 +456,8 @@
    "link_fieldname": "student"
   }
  ],
- "modified": "2026-01-13 10:29:03.208343",
- "modified_by": "Administrator",
+ "modified": "2026-02-16 16:19:17.338374",
+ "modified_by": "03230337.gcbs@rub.edu.bt",
  "module": "Education",
  "name": "Student",
  "naming_rule": "By \"Naming Series\" field",

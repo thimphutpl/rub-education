@@ -8,7 +8,7 @@ from frappe.utils import flt
 
 class ProgrammeMaster(Document):
 	def validate(self):
-		if len(self.programme_record) == 0:
+		if not frappe.db.exists("Programme Record History", {"parent": self.name, "programme_name": self.programme_name+ " - " + str(self.programme_approval_date).split("-")[0]}):
 			self.update_programme_record()
 		self.sync_programme_history()
 
@@ -23,22 +23,24 @@ class ProgrammeMaster(Document):
 			
 
 	def update_programme_record(self):
-		if not frappe.db.exists("Programme Record History", {"parent": self.name, "programme_name": self.programme_name}):
-			self.append(
-				"programme_record",
-				{
-					"programme_name": self.programme_name,
-					"approval_date": self.programme_approval_date,
-					"abbreviation": self.abbreviation,
-					"apmr_date": self.programme_apmr_date,
-					"ccr_date": self.programme_ccr_date,
-					"programme_description": self.programme_description,
-				},
-			)
+		self.append(
+			"programme_record",
+			{
+				"programme_name": self.programme_name+ " - " + str(self.programme_approval_date).split("-")[0],
+				"programme_master": self.name,
+				"approval_date": self.programme_approval_date,
+				"abbreviation": self.abbreviation,
+				"apmr_date": self.programme_apmr_date,
+				"ccr_date": self.programme_ccr_date,
+				"programme_description": self.programme_description,
+			},
+		)
 
 	@frappe.whitelist()
 	def sync_programme_history(self, update = False):
 		for prog in self.programme_record:
+			if prog.programme_link and not frappe.db.exists("Programme", prog.programme_link):
+				prog.programme_link = None
 			if not prog.programme_link:
 				if frappe.db.exists("Programme", {"name": prog.programme_name}):
 					prog.programme_link = prog.programme_name
@@ -46,11 +48,12 @@ class ProgrammeMaster(Document):
 					programme = frappe.new_doc("Programme")
 					programme.programme_name = prog.programme_name
 					programme.abbreviation = prog.abbreviation
+					programme.child_ref = prog.name
 					programme.programme_approval_date = prog.approval_date
 					programme.programme_apmr_date = prog.apmr_date
 					programme.programme_ccr_date = prog.ccr_date
 					programme.programme_description = prog.programme_description
-					if self.name == programme.name:
+					if self.name+ " - " + str(self.programme_approval_date).split("-")[0] == programme.name:
 						for c in self.colleges:
 							if not frappe.db.exists("Colleges", {"parent": programme.name, "parenttype": "Programme"}):
 								row = programme.append("colleges", {})
@@ -71,7 +74,7 @@ class ProgrammeMaster(Document):
 					# for a in self.
 					prog.programme_link = programme.name
 			else:
-				if self.name == prog.programme_link:
+				if self.name+ " - " + str(self.programme_approval_date).split("-")[0] == prog.programme_link:
 					old = self.get_doc_before_save()
 					if old:
 						if (old.abbreviation != self.abbreviation) or not prog.abbreviation:
@@ -93,6 +96,7 @@ class ProgrammeMaster(Document):
 							programme = frappe.get_doc("Programme", prog.programme_link)
 							programme.abbreviation = prog.abbreviation
 							programme.programme_approval_date = prog.approval_date
+							programme.child_ref = prog.name
 							# programme.programme_leader = prog.programme_leader
 							programme.programme_apmr_date = prog.apmr_date
 							programme.programme_ccr_date = prog.ccr_date

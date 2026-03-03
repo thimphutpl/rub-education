@@ -11,6 +11,7 @@
   "old_programme_name",
   "old_programme_abbreviation",
   "column_break_wyhr",
+  "new_programme",
   "new_programme_name",
   "new_programme_abbreviation",
   "new_programme_duration_section",
@@ -214,13 +215,20 @@
    "in_list_view": 1,
    "label": "New Programme Abbreviation",
    "reqd": 1
+  },
+  {
+   "fieldname": "new_programme",
+   "fieldtype": "Link",
+   "label": "New Programme",
+   "options": "Programme Master",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-01-12 15:57:24.589871",
+ "modified": "2026-02-22 16:28:34.353662",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Update Programme",

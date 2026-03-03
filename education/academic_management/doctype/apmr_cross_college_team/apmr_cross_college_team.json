@@ -1,0 +1,72 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-02-25 16:25:38.240001",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "college",
+  "column_break_unka",
+  "programme",
+  "column_break_pidf",
+  "tutor",
+  "tutor_name"
+ ],
+ "fields": [
+  {
+   "fieldname": "college",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "College",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_unka",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "programme",
+   "fieldtype": "Link",
+   "ignore_user_permissions": 1,
+   "in_list_view": 1,
+   "label": "Programme",
+   "options": "Programme",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_pidf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "tutor",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Tutor",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "tutor.employee_name",
+   "fieldname": "tutor_name",
+   "fieldtype": "Data",
+   "label": "Tutor Name",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-02-25 17:29:56.324194",
+ "modified_by": "Administrator",
+ "module": "Academic Management",
+ "name": "APMR Cross College Team",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

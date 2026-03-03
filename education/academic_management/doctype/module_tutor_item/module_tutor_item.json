@@ -44,14 +44,17 @@
   {
    "fieldname": "semester",
    "fieldtype": "Link",
+   "hidden": 1,
+   "in_list_view": 1,
    "label": "Semester",
    "options": "Semester"
   },
   {
    "fieldname": "student_group",
    "fieldtype": "Link",
+   "hidden": 1,
    "in_list_view": 1,
-   "label": "Student Group",
+   "label": "Student Section",
    "options": "Student Section"
   }
  ],
@@ -59,7 +62,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-10-20 12:28:42.990298",
+ "modified": "2026-03-02 13:56:17.589127",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Module Tutor Item",

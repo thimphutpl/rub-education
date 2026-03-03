@@ -1,0 +1,269 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:APMR-{college_abbreviation}-{module_code}-{YY}-{#####}",
+ "creation": "2026-02-04 15:57:17.723250",
+ "doctype": "DocType",
+ "document_type": "Document",
+ "engine": "InnoDB",
+ "field_order": [
+  "apmr_type",
+  "college",
+  "college_abbreviation",
+  "module",
+  "module_code",
+  "academic_term",
+  "academic_year",
+  "academic_session",
+  "column_break_2",
+  "note_date",
+  "forward_to",
+  "type",
+  "permitted_users",
+  "to",
+  "sb_attachments",
+  "attachments",
+  "sb_reviewers_approvers",
+  "cross_college_team",
+  "pqc",
+  "academic_board",
+  "recommendation_text",
+  "sb_references",
+  "module_level_ref",
+  "programme_level_ref",
+  "college_level_ref",
+  "section_break_wvsw",
+  "workflow_state",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Today",
+   "fieldname": "note_date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "forward_to",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Approver",
+   "no_copy": 1,
+   "options": "User"
+  },
+  {
+   "depends_on": "eval:doc.category ==\"Note Sheet\"",
+   "fieldname": "type",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Type",
+   "options": "\nProcess\nPayment"
+  },
+  {
+   "fieldname": "college",
+   "fieldtype": "Link",
+   "label": "College",
+   "options": "Company"
+  },
+  {
+   "fieldname": "module",
+   "fieldtype": "Link",
+   "label": "Module",
+   "options": "Module"
+  },
+  {
+   "fetch_from": "academic_term.academic_year",
+   "fieldname": "academic_year",
+   "fieldtype": "Link",
+   "label": "Academic Year",
+   "options": "Academic Year",
+   "read_only": 1
+  },
+  {
+   "fieldname": "academic_term",
+   "fieldtype": "Link",
+   "label": "Academic Term",
+   "options": "Academic Term"
+  },
+  {
+   "fetch_from": "academic_term.academic_session",
+   "fieldname": "academic_session",
+   "fieldtype": "Link",
+   "label": "Academic Session",
+   "options": "Academic Session",
+   "read_only": 1
+  },
+  {
+   "fieldname": "apmr_type",
+   "fieldtype": "Select",
+   "label": "APMR Type",
+   "options": "\nModule Level Input\nProgramme Level Compilation (APMR Development)\nCollege Level Review\nUniversity Level Review & Recommendation",
+   "reqd": 1
+  },
+  {
+   "depends_on": "eval:doc.apmr_type != \"University Level Review & Recommendation\"",
+   "fieldname": "to",
+   "fieldtype": "Table MultiSelect",
+   "label": "To",
+   "mandatory_depends_on": "eval:doc.apmr_type != \"University Level Review & Recommendation\"",
+   "options": "APMR To Users"
+  },
+  {
+   "fieldname": "sb_references",
+   "fieldtype": "Section Break",
+   "label": "References"
+  },
+  {
+   "fieldname": "module_level_ref",
+   "fieldtype": "Link",
+   "label": "Module Level Review Reference",
+   "options": "Annual Programme Monitoring Report",
+   "read_only": 1
+  },
+  {
+   "fieldname": "programme_level_ref",
+   "fieldtype": "Link",
+   "label": "Programme Level Review Reference",
+   "options": "Annual Programme Monitoring Report",
+   "read_only": 1
+  },
+  {
+   "fieldname": "college_level_ref",
+   "fieldtype": "Link",
+   "label": "College Level Review Reference",
+   "options": "Annual Programme Monitoring Report",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "college.abbr",
+   "fieldname": "college_abbreviation",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "in_list_view": 1,
+   "label": "College Abbreviation",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "module.module_code",
+   "fieldname": "module_code",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "in_list_view": 1,
+   "label": "Module Code",
+   "read_only": 1
+  },
+  {
+   "fieldname": "permitted_users",
+   "fieldtype": "Table MultiSelect",
+   "label": "Permitted Users",
+   "no_copy": 1,
+   "options": "APMR To Users",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb_attachments",
+   "fieldtype": "Section Break",
+   "label": "Attachments"
+  },
+  {
+   "fieldname": "attachments",
+   "fieldtype": "Table",
+   "options": "APMR Attachments"
+  },
+  {
+   "depends_on": "eval:doc.apmr_type == \"University Level Review & Recommendation\"",
+   "fieldname": "sb_reviewers_approvers",
+   "fieldtype": "Section Break",
+   "label": "Reviewing/Approving Authorities"
+  },
+  {
+   "depends_on": "eval:doc.apmr_type == \"University Level Review & Recommendation\";",
+   "fieldname": "cross_college_team",
+   "fieldtype": "Table",
+   "label": "Cross College Review Team",
+   "mandatory_depends_on": "eval:doc.apmr_type == \"University Level Review & Recommendation\" && (doc.workflow_state == \"Draft\" || doc.workflow_state == \"Rejected\" || doc.__islocal) ;",
+   "options": "APMR Cross College Team",
+   "read_only_depends_on": "eval:(doc.workflow_state != \"Draft\" || doc.workflow_state != \"Rejected\") && doc.__islocal == 0;"
+  },
+  {
+   "depends_on": "eval:doc.apmr_type == \"University Level Review & Recommendation\"",
+   "fieldname": "pqc",
+   "fieldtype": "Table",
+   "label": "Programme Quality Committee",
+   "mandatory_depends_on": "eval:doc.apmr_type == \"University Level Review & Recommendation\" && doc.workflow_state == \"Forwarded to CCR Team\";",
+   "options": "APMR Users",
+   "read_only_depends_on": "eval:doc.workflow_state != \"Forwarded to CCR Team\";"
+  },
+  {
+   "depends_on": "eval:doc.apmr_type == \"University Level Review & Recommendation\";",
+   "fieldname": "academic_board",
+   "fieldtype": "Table",
+   "label": "Academic Board",
+   "mandatory_depends_on": "eval:doc.apmr_type == \"University Level Review & Recommendation\" && doc.workflow_state == \"Forwarded to PQC\";",
+   "options": "APMR Users",
+   "read_only_depends_on": "eval:doc.workflow_state != \"Forwarded to PQC\""
+  },
+  {
+   "depends_on": "eval:doc.apmr_type == \"University Level Review & Recommendation\" && doc.workflow_state == \"Forwarded to Academic Board\";",
+   "fieldname": "recommendation_text",
+   "fieldtype": "Text Editor",
+   "label": "Recommendation Text",
+   "mandatory_depends_on": "eval:doc.apmr_type == \"University Level Review & Recommendation\" && doc.workflow_state == \"Forwarded to Academic Board\";"
+  },
+  {
+   "fieldname": "section_break_wvsw",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "workflow_state",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Workflow State",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Annual Programme Monitoring Report",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "icon": "fa fa-file-text",
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-02-26 12:29:30.078325",
+ "modified_by": "Administrator",
+ "module": "Academic Management",
+ "name": "Annual Programme Monitoring Report",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "All",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "ASC",
+ "states": [],
+ "title_field": "apmr_type",
+ "track_changes": 1,
+ "track_seen": 1
+}

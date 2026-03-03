@@ -1,0 +1,176 @@
+{
+ "actions": [],
+ "autoname": "MAC.YY.MM.DD.#####",
+ "creation": "2026-02-27 14:31:28.360107",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "ubcollege_and_module_detailsbu_section",
+  "college",
+  "academic_term",
+  "programme",
+  "tutor",
+  "tutor_name",
+  "column_break_xltf",
+  "academic_year",
+  "academic_session",
+  "module",
+  "section_break_ewie",
+  "assessment_item",
+  "amended_from",
+  "sb_approver",
+  "approver",
+  "column_break_hzje",
+  "approver_name"
+ ],
+ "fields": [
+  {
+   "description": "<i>*Note: Assessment criteria should sum up to 100%.</i>",
+   "fieldname": "section_break_ewie",
+   "fieldtype": "Section Break",
+   "label": "<u><b>Assessment Criteria<b></b></b></u>"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Module Assessment Criteria",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "college",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "College",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "academic_term",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Academic Term",
+   "options": "Academic Term",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_xltf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "academic_term.academic_year",
+   "fieldname": "academic_year",
+   "fieldtype": "Link",
+   "label": "Academic Year",
+   "options": "Academic Year",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fetch_from": "academic_term.academic_session",
+   "fieldname": "academic_session",
+   "fieldtype": "Link",
+   "label": "Academic Session",
+   "options": "Academic Session",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "programme",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Programme",
+   "options": "Programme",
+   "reqd": 1
+  },
+  {
+   "fieldname": "module",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Module",
+   "options": "Module",
+   "reqd": 1
+  },
+  {
+   "fieldname": "ubcollege_and_module_detailsbu_section",
+   "fieldtype": "Section Break",
+   "label": "<u><b>College and Module Details<b></b></b></u>"
+  },
+  {
+   "fieldname": "assessment_item",
+   "fieldtype": "Table",
+   "options": "Module Assessment Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "tutor",
+   "fieldtype": "Link",
+   "label": "Tutor",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "tutor.employee_name",
+   "fieldname": "tutor_name",
+   "fieldtype": "Data",
+   "label": "Tutor Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb_approver",
+   "fieldtype": "Section Break",
+   "label": "<u><b>Approver Details<b></b></b></u>"
+  },
+  {
+   "fieldname": "approver",
+   "fieldtype": "Link",
+   "label": "Approver",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_hzje",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "approver.full_name",
+   "fieldname": "approver_name",
+   "fieldtype": "Data",
+   "label": "Approver Name",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-03-02 16:36:35.870903",
+ "modified_by": "Administrator",
+ "module": "Academic Management",
+ "name": "Module Assessment Criteria",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "college"
+}

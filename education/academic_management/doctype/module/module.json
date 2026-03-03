@@ -20,10 +20,7 @@
   "module_description",
   "tb_tutor_allocation",
   "tutor_details_section",
-  "tutors",
-  "tb_assessment",
-  "sb_assessment",
-  "assessment_item"
+  "tutors"
  ],
  "fields": [
   {
@@ -50,14 +47,14 @@
    "fieldname": "module_type",
    "fieldtype": "Select",
    "label": "Module Type",
-   "options": "Compulsory\nElective"
+   "options": "Compulsory\nElective\nInternational Students"
   },
   {
    "fieldname": "module_credit",
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Module Credit",
-   "options": "\n12\n24",
+   "options": "\n12\n15\n24\n30\n35\n36\n45\n48\n60\n240\n120\n0\nAudited\n135",
    "reqd": 1
   },
   {
@@ -85,23 +82,6 @@
    "label": "Module Description"
   },
   {
-   "fieldname": "tb_assessment",
-   "fieldtype": "Tab Break",
-   "label": "Assessment"
-  },
-  {
-   "fieldname": "sb_assessment",
-   "fieldtype": "Section Break",
-   "label": "Assessment Criteria"
-  },
-  {
-   "description": "*Note: Assessment criteria should sum up to 100%.",
-   "fieldname": "assessment_item",
-   "fieldtype": "Table",
-   "label": "Assesment",
-   "options": "Module Assessment Item"
-  },
-  {
    "fieldname": "tb_tutor_allocation",
    "fieldtype": "Tab Break",
    "label": "Tutor Allocation"
@@ -127,7 +107,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-10-27 15:21:01.448864",
+ "modified": "2026-02-27 14:59:15.688343",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Module",

@@ -145,7 +145,8 @@
    "fieldname": "college",
    "fieldtype": "Link",
    "label": "College",
-   "options": "Company"
+   "options": "Company",
+   "reqd": 1
   },
   {
    "fieldname": "get_students",
@@ -194,7 +195,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-11-04 11:08:47.626998",
+ "modified": "2026-03-02 11:43:10.090369",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Continuous Assessment Entry",

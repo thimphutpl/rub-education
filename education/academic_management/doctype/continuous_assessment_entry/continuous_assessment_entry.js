@@ -2,6 +2,53 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on("Continuous Assessment Entry", {
+    setup(frm){
+        frm.set_query("college", function () {
+            return {
+                filters: {
+                    is_group: 0,
+            name: ["!=", "Office of Vice Chancellor"]
+                },
+            };
+        });
+        frm.set_query('programme', function () {
+            return {
+                query:
+                'education.education.doctype.module_enrollment_tool.module_enrollment_tool.get_programme',
+              filters: {
+                college: frm.doc.college,
+                date: frm.doc.posting_date,
+                validate: 1
+              },
+            }
+        })
+        frm.set_query('tutor', function () {
+            return {
+                query:
+                'erpnext.controllers.queries.filter_module_tutors',
+                filters: {
+                // program: frm.doc.programme,
+                college: frm.doc.college,
+                programme: frm.doc.programme,
+                module: frm.doc.module,
+                },
+            }
+        })
+        frm.set_query('assessment_component', function () {
+            return {
+                query:
+                'erpnext.controllers.queries.filter_assessment_component',
+                filters: {
+                // program: frm.doc.programme,
+                college: frm.doc.college,
+                programme: frm.doc.programme,
+                module: frm.doc.module,
+                tutor: frm.doc.tutor,
+                academic_term: frm.doc.academic_term,
+                },
+            }
+        })
+    },
 	refresh(frm) {
         frm.set_query('course', function () {
             return {

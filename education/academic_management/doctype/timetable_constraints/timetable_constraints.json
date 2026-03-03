@@ -1,0 +1,142 @@
+{
+ "actions": [],
+ "autoname": "format:TTC-{college_abbreviation}-{academic_year}-{academic_session}",
+ "creation": "2026-02-23 19:22:55.501606",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "college",
+  "college_abbreviation",
+  "academic_year",
+  "column_break_ojck",
+  "academic_term",
+  "academic_session",
+  "sb_non_academic_periods",
+  "periods",
+  "sb_tutor_constraints",
+  "max_hours_tutor",
+  "max_hour_per_session"
+ ],
+ "fields": [
+  {
+   "fieldname": "college",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "College",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "academic_term.academic_year",
+   "fieldname": "academic_year",
+   "fieldtype": "Link",
+   "label": "Academic Year",
+   "options": "Academic Year",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_ojck",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "academic_term",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Academic Term",
+   "options": "Academic Term",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "academic_term.academic_session",
+   "fieldname": "academic_session",
+   "fieldtype": "Link",
+   "label": "Academic Session",
+   "options": "Academic Session",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb_non_academic_periods",
+   "fieldtype": "Section Break",
+   "label": "Non Academic Periods"
+  },
+  {
+   "fetch_from": "college.abbr",
+   "fieldname": "college_abbreviation",
+   "fieldtype": "Data",
+   "label": "College Abbreviation",
+   "read_only": 1
+  },
+  {
+   "fieldname": "periods",
+   "fieldtype": "Table",
+   "options": "Timetable Constraint Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "sb_tutor_constraints",
+   "fieldtype": "Section Break",
+   "label": "Tutor Constraints"
+  },
+  {
+   "fieldname": "max_hours_tutor",
+   "fieldtype": "Float",
+   "label": "Maximum Hours for Tutor in a Day",
+   "reqd": 1
+  },
+  {
+   "fieldname": "max_hour_per_session",
+   "fieldtype": "Float",
+   "label": "Maximum Teaching Hours Per Session",
+   "reqd": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-02-23 20:13:41.479447",
+ "modified_by": "Administrator",
+ "module": "Academic Management",
+ "name": "Timetable Constraints",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Academics User",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Academic Dean",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

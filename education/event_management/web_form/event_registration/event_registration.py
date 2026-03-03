@@ -38,7 +38,7 @@ def check_already_registered(event, faculty_email):
         {
             "event": event,
             "faculty_email": faculty_email,
-            "docstatus": ["!=", 2]  # ignore cancelled
+            "docstatus": ["!=", 2] 
         }
     )
 
@@ -59,14 +59,14 @@ def after_insert(doc, method=None):
 
     # Fetch the Event document
     event_doc = frappe.get_doc("Events", doc.event)
-    already_registered = frappe.db.exists(
-        "Event Registration",
-        {
-            "event": doc.event,
-            "faculty_email": doc.faculty_email,
-            "docstatus": ["!=", 2]
-        }
-    )
+    # already_registered = frappe.db.exists(
+    #     "Event Registration",
+    #     {
+    #         "event": doc.event,
+    #         "faculty_email": doc.faculty_email,
+    #         "docstatus": ["!=", 2]
+    #     }
+    # )
 
     # # If exists and not this same document
     # if already_registered and already_registered != doc.name:

@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "hash",
+ "autoname": "format:AL-{YYYY}-{###}",
  "creation": "2025-10-07 15:13:59.577468",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -114,16 +114,14 @@
    "fieldtype": "Link",
    "label": "Tutor",
    "options": "Employee",
-   "read_only": 1,
-   "reqd": 1
+   "read_only": 1
   },
   {
    "fetch_from": "tutor.employee_name",
    "fieldname": "tutor_name",
    "fieldtype": "Data",
    "label": "Tutor Name",
-   "read_only": 1,
-   "reqd": 1
+   "read_only": 1
   },
   {
    "fieldname": "passing_marks",
@@ -202,11 +200,11 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-10-17 14:28:24.079953",
+ "modified": "2026-03-02 15:54:22.429189",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Assessment Ledger",
- "naming_rule": "Random",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {

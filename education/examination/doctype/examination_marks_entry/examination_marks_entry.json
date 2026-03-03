@@ -12,6 +12,7 @@
   "posting_date",
   "module",
   "assessment_component",
+  "assessment_role",
   "section_break_ptbh",
   "academic_year",
   "semester",
@@ -107,12 +108,12 @@
    "reqd": 1
   },
   {
+   "depends_on": "eval:doc.assessment_role==\"Tutor\"",
    "fetch_from": "examination_registration.tutor",
    "fieldname": "tutor",
    "fieldtype": "Link",
    "label": "Tutor",
-   "options": "Employee",
-   "reqd": 1
+   "options": "Employee"
   },
   {
    "fieldname": "section_break_jygm",
@@ -136,11 +137,11 @@
    "options": "Company"
   },
   {
+   "depends_on": "eval:doc.assessment_role==\"Tutor\"",
    "fetch_from": "tutor.employee_name",
    "fieldname": "tutor_name",
    "fieldtype": "Data",
-   "label": "Tutor Name",
-   "reqd": 1
+   "label": "Tutor Name"
   },
   {
    "fieldname": "weightage",
@@ -169,13 +170,21 @@
    "fieldtype": "Date",
    "label": "Posting Date",
    "reqd": 1
+  },
+  {
+   "fetch_from": "assessment_component.assessment_role",
+   "fieldname": "assessment_role",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Assessment Role",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-10-17 11:15:32.345396",
+ "modified": "2026-02-27 15:23:26.198224",
  "modified_by": "Administrator",
  "module": "Examination",
  "name": "Examination Marks Entry",

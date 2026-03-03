@@ -8,6 +8,10 @@
  "field_order": [
   "assessment_name",
   "examination_assesment",
+  "attendance_included",
+  "credit_clearance_included",
+  "disciplinary_included",
+  "assessment_role",
   "column_break_ewym",
   "assessment_component_type"
  ],
@@ -36,12 +40,37 @@
    "label": "Assessment Component Type",
    "options": "Assessment Component Type",
    "reqd": 1
+  },
+  {
+   "fieldname": "assessment_role",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Assessment Role",
+   "options": "\nTutor\nExam Cell"
+  },
+  {
+   "default": "0",
+   "fieldname": "attendance_included",
+   "fieldtype": "Check",
+   "label": "Attendance Included"
+  },
+  {
+   "default": "0",
+   "fieldname": "credit_clearance_included",
+   "fieldtype": "Check",
+   "label": "Credit Clearance Included"
+  },
+  {
+   "default": "0",
+   "fieldname": "disciplinary_included",
+   "fieldtype": "Check",
+   "label": "Disciplinary Included"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-10-07 15:11:48.571574",
+ "modified": "2026-02-21 12:22:18.315935",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Assessment Component",

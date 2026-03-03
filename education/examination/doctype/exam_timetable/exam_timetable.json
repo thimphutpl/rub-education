@@ -24,7 +24,8 @@
   "exam_module",
   "section_break_jfzp",
   "get_student",
-  "exam_timetable_student"
+  "exam_timetable_student",
+  "amended_from"
  ],
  "fields": [
   {
@@ -135,12 +136,23 @@
    "fieldname": "get_student",
    "fieldtype": "Button",
    "label": "Get Student"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Exam Timetable",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
+ "is_submittable": 1,
  "links": [],
- "modified": "2025-10-31 16:47:55.100619",
+ "modified": "2026-02-27 11:43:59.847953",
  "modified_by": "Administrator",
  "module": "Examination",
  "name": "Exam Timetable",

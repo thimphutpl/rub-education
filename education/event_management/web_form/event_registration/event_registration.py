@@ -68,11 +68,11 @@ def after_insert(doc, method=None):
         }
     )
 
-    # If exists and not this same document
-    if already_registered and already_registered != doc.name:
-        frappe.throw(
-            _("{0} is already registered for this event.").format(doc.faculty_email)
-        )
+    # # If exists and not this same document
+    # if already_registered and already_registered != doc.name:
+    #     frappe.throw(
+    #         _("{0} is already registered for this event.").format(doc.faculty_email)
+    #     )
 
     # # Check if the email is already registered
     # already_registered = any(

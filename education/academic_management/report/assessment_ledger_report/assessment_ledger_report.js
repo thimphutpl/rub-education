@@ -18,6 +18,12 @@ frappe.query_reports["Assessment Ledger Report"] = {
             "options": "Academic Year"
         },
         {
+            "fieldname": "semester",
+            "label": "Semester",
+            "fieldtype": "Link",
+            "options": "Semester"
+        },
+        {
             "fieldname": "academic_term",
             "label": "Academic Term",
             "fieldtype": "Link",

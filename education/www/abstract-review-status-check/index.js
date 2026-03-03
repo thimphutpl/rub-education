@@ -49,10 +49,15 @@ function displayConferenceInfo(response) {
                     badgeColor = 'warning';
                     break;
             }
+            let full_name = [
+                conferences_info.first_name,
+                conferences_info.middle_name,
+                conferences_info.last_name
+            ].filter(Boolean).join(" ");
             html += `
             <div class="conference-card mb-4 p-3 shadow-sm">
                 <div class="conference-detail">
-                    <p>Name: ${conferences_info.name1}</p>
+                    <p>Name: ${full_name}  </p>
                     <p>Theme: ${conferences_info.theme}</p>
                     
                     <p class="status-text badge-${badgeColor}"> ${conferences_info.workflow_state || 'N/A'}</p>

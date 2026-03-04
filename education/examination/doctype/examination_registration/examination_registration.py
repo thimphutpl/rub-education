@@ -328,7 +328,7 @@ def get_regular_students(academic_year, academic_term, module, company, tutor, a
                 student, 
                 student_name,
                 "Course Enrollment" as datatype
-            FROM `tabModule Enrollment`
+            FROM `tabModule Enrolment`
             WHERE academic_term = %s
                 AND course = %s
                 AND academic_year = %s
@@ -342,7 +342,7 @@ def get_regular_students(academic_year, academic_term, module, company, tutor, a
                 student, 
                 student_name,
                 "Course Enrollment" as datatype
-            FROM `tabModule Enrollment`
+            FROM `tabModule Enrolment`
             WHERE academic_term = %s
                 AND course = %s
                 AND academic_year = %s
@@ -389,7 +389,7 @@ def get_students_with_low_attendance(module, academic_term, company):
         FROM `tabStudent Attendance`
         WHERE student IN (
             SELECT student 
-            FROM `tabModule Enrollment` 
+            FROM `tabModule Enrolment` 
             WHERE course = %s
                 AND academic_term = %s
                 AND college = %s
@@ -411,7 +411,7 @@ def get_students_with_disciplinary_actions(company, academic_term):
             AND decision="Terminate"
             AND student_code IN (
                 SELECT student 
-                FROM `tabModule Enrollment` 
+                FROM `tabModule Enrolment` 
                 WHERE academic_term = %s
                 AND college = %s
             )
@@ -429,7 +429,7 @@ def get_students_with_unpaid_credit_clearance(company, academic_term):
             WHERE status = 'Unpaid'
                 AND student_code IN (
                     SELECT student 
-                    FROM `tabModule Enrollment` 
+                    FROM `tabModule Enrolment` 
                     WHERE academic_term = %s
                     AND college = %s
                 )

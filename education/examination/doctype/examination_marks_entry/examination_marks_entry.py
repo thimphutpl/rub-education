@@ -67,6 +67,7 @@ class ExaminationMarksEntry(Document):
                         AND semester = %s
                         AND academic_term = %s
                         AND company = %s
+                        AND docstatus = 1  
                         AND assessment_component = %s
                         AND reassesment=0
                     """, 
@@ -80,6 +81,7 @@ class ExaminationMarksEntry(Document):
                         AND semester = %s
                         AND academic_term = %s
                         AND company = %s
+                        AND docstatus = 1  
                         AND assessment_component = %s
                         AND tutor = %s
                         AND reassesment=0
@@ -96,6 +98,7 @@ class ExaminationMarksEntry(Document):
                         AND semester = %s
                         AND academic_term = %s
                         AND company = %s
+                        AND docstatus = 1  
                         AND assessment_component = %s
                         AND reassesment=1 
                         order by posting_date DESC limit 1
@@ -109,6 +112,7 @@ class ExaminationMarksEntry(Document):
                         WHERE module = %s
                         AND semester = %s
                         AND academic_term = %s
+                        AND docstatus = 1  
                         AND company = %s
                         AND assessment_component = %s
                         AND tutor = %s
@@ -124,6 +128,7 @@ class ExaminationMarksEntry(Document):
                         FROM `tabExamination Registration`
                         WHERE module = %s
                         AND semester = %s
+                        AND docstatus = 1  
                         AND academic_term = %s
                         AND company = %s
                         AND assessment_component = %s
@@ -137,6 +142,7 @@ class ExaminationMarksEntry(Document):
                         FROM `tabExamination Registration`
                         WHERE module = %s
                         AND semester = %s
+                        AND docstatus = 1  
                         AND academic_term = %s
                         AND company = %s
                         AND assessment_component = %s

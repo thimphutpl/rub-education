@@ -24,7 +24,8 @@ class UpdateProgramme(Document):
 	def update_programme_master(self, cancel=False):
 		old_name = self.old_programme
 		new_name = self.new_programme_name if not cancel else self.old_programme_name
-		frappe.rename_doc("Programme Master", old_name, new_name)
+		if new_name != old_name:
+			frappe.rename_doc("Programme Master", old_name, new_name)
 		programme_master = frappe.get_doc("Programme Master", new_name)
 		programme_master.abbreviation = self.new_programme_abbreviation if not cancel else self.old_programme_abbreviation
 		programme_master.programme_description = self.new_programme_description if not cancel else self.old_programme_description

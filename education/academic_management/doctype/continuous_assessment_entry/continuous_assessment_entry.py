@@ -193,8 +193,6 @@ class ContinuousAssessmentEntry(Document):
 
 	def create_assessment_ledger(self):
 		for i in self.items:
-			programme= frappe.get_value("Student",{"name":i.student},"programme")
-			
 			doc = frappe.get_doc({
 				"doctype": "Assessment Ledger",
 				"student": i.student,
@@ -210,7 +208,7 @@ class ContinuousAssessmentEntry(Document):
 				"reference_name": self.name,
 				"has_reassessment": 0,
 				"college": self.college,
-				"programme": programme,
+				"programme": self.programme,
 				"module": self.module,
 				"assessment_component": self.assessment_component,
 				"tutor": self.tutor,

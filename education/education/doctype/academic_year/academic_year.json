@@ -56,7 +56,7 @@
   },
   {
    "group": "Student",
-   "link_doctype": "Student Group",
+   "link_doctype": "Student Section",
    "link_fieldname": "academic_year"
   },
   {
@@ -95,24 +95,41 @@
    "link_fieldname": "academic_year"
   }
  ],
- "modified": "2025-09-09 10:37:29.204816",
- "modified_by": "sonam.bomjan@thimphutechpark.bt",
+ "modified": "2026-02-25 17:26:20.848073",
+ "modified_by": "Administrator",
  "module": "Education",
  "name": "Academic Year",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {
-   "create": 1,
-   "delete": 1,
    "email": 1,
    "export": 1,
    "print": 1,
    "read": 1,
    "report": 1,
    "role": "Academics User",
+   "share": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Academic Dean",
    "share": 1,
    "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Student",
+   "share": 1
   }
  ],
  "quick_entry": 1,

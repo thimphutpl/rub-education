@@ -39,20 +39,80 @@ def get_columns():
     return columns
 
 
+# def get_data(filters):
+#     # Fetch all halls (filtered if room is specified)
+#     hall_conditions = ""
+#     if filters and filters.get("room"):
+#         hall_conditions = f"WHERE room = '{filters.get('room')}'"
+
+#     halls = frappe.db.sql(f"""
+#         SELECT DISTINCT room, capacity
+#         FROM `tabExam Timetable`
+#         {hall_conditions}
+#         ORDER BY room
+#     """, as_dict=True)
+
+#     # Fetch timetable entries with joined child tables
+#     timetables = frappe.db.sql(f"""
+#         SELECT 
+#             et.name AS exam_id,
+#             et.room AS exam_hall,
+#             et.start_time,
+#             et.end_time,
+#             et.capacity AS exam_capacity,
+#             et.exam_date,
+#             GROUP_CONCAT(DISTINCT em.module SEPARATOR ', ') AS modules,
+#             COUNT(DISTINCT ets.student) AS total_students,
+#             GROUP_CONCAT(DISTINCT ei.invigilator_name SEPARATOR ', ') AS invigilators
+#         FROM `tabExam Timetable` et
+#         LEFT JOIN `tabExam Module` em ON em.parent = et.name
+#         LEFT JOIN `tabExam Timetable Student` ets ON ets.parent = et.name
+#         LEFT JOIN `tabExam Invigilator` ei ON ei.parent = et.name
+#         WHERE 1=1
+#         {get_conditions(filters)}
+#         GROUP BY et.name
+#         ORDER BY et.start_time
+#     """, as_dict=True)
+
+#     # Build hall-wise matrix
+#     data = []
+#     time_slots = sorted(list(set((t['start_time'], t['end_time']) for t in timetables)))
+#     for hall in halls:
+#         row = {
+#             "hall": hall['room'],
+#             "capacity": hall.get('capacity', 0)
+#         }
+#         for slot in time_slots:
+#             exams = [et for et in timetables if et['exam_hall'] == hall['room']
+#                      and et['start_time'] == slot[0] and et['end_time'] == slot[1]]
+#             cell_content = []
+#             for e in exams:
+#                 cell_content.append(
+#                     f"Modules: {e['modules']} ({e['total_students']} students) <br>"
+#                     f"Invigilators: {e['invigilators']}"
+#                 )
+#             col_name = f"{format_time(slot[0])}-{format_time(slot[1])}"
+#             row[col_name] = "<br>".join(cell_content) if cell_content else "-"
+#         data.append(row)
+
+#     return data
+
 def get_data(filters):
     # Fetch all halls (filtered if room is specified)
     hall_conditions = ""
     if filters and filters.get("room"):
-        hall_conditions = f"WHERE room = '{filters.get('room')}'"
+        hall_conditions = f"AND room = '{filters.get('room')}'"
 
+    # Only fetch halls from submitted timetables
     halls = frappe.db.sql(f"""
         SELECT DISTINCT room, capacity
         FROM `tabExam Timetable`
+        WHERE docstatus = 1  -- Only submitted timetables
         {hall_conditions}
         ORDER BY room
     """, as_dict=True)
 
-    # Fetch timetable entries with joined child tables
+    # Fetch timetable entries with joined child tables - only submitted
     timetables = frappe.db.sql(f"""
         SELECT 
             et.name AS exam_id,
@@ -68,7 +128,7 @@ def get_data(filters):
         LEFT JOIN `tabExam Module` em ON em.parent = et.name
         LEFT JOIN `tabExam Timetable Student` ets ON ets.parent = et.name
         LEFT JOIN `tabExam Invigilator` ei ON ei.parent = et.name
-        WHERE 1=1
+        WHERE et.docstatus = 1  
         {get_conditions(filters)}
         GROUP BY et.name
         ORDER BY et.start_time
@@ -77,6 +137,7 @@ def get_data(filters):
     # Build hall-wise matrix
     data = []
     time_slots = sorted(list(set((t['start_time'], t['end_time']) for t in timetables)))
+    
     for hall in halls:
         row = {
             "hall": hall['room'],
@@ -96,7 +157,6 @@ def get_data(filters):
         data.append(row)
 
     return data
-
 
 def get_conditions(filters):
     conditions = ""

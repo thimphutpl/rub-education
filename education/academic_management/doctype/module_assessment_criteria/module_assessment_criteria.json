@@ -15,6 +15,7 @@
   "academic_year",
   "academic_session",
   "module",
+  "semester",
   "section_break_ewie",
   "assessment_item",
   "amended_from",
@@ -100,6 +101,7 @@
    "label": "<u><b>College and Module Details<b></b></b></u>"
   },
   {
+   "allow_bulk_edit": 1,
    "fieldname": "assessment_item",
    "fieldtype": "Table",
    "options": "Module Assessment Item",
@@ -141,13 +143,20 @@
    "fieldtype": "Data",
    "label": "Approver Name",
    "read_only": 1
+  },
+  {
+   "fieldname": "semester",
+   "fieldtype": "Link",
+   "label": "Semester",
+   "options": "Semester",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-03-02 16:36:35.870903",
+ "modified": "2026-03-04 01:03:58.213325",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Module Assessment Criteria",

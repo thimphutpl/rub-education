@@ -60,13 +60,15 @@ def upload_excel(file_url, docname):
 
 # Get Students Function
 @frappe.whitelist()
-def get_students(academic_year, academic_term, module, company, docname=None):
+def get_students(academic_year, academic_term,assessment_component, module, company, docname=None):
 	"""
 	Fetches students from Examination Registration and refreshes
 	the ExamTimetable child table (no duplicates).
 	"""
 	if not academic_year:
 		frappe.throw("Please select Academic Year")
+	if not assessment_component:
+		frappe.throw("Please select Assessment Component")
 	if not academic_term:
 		frappe.throw("Please select Academic Term")
 	if not module:
@@ -80,6 +82,7 @@ def get_students(academic_year, academic_term, module, company, docname=None):
 			"company": company,
 			"academic_year": academic_year,
 			"academic_term": academic_term,
+			"assessment_component":assessment_component,
 			"module": module,
 			"docstatus": 1
 		},

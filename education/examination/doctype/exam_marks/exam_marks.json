@@ -8,6 +8,8 @@
  "field_order": [
   "student",
   "student_name",
+  "programme",
+  "weightage",
   "column_break_jqwd",
   "marks_obtained",
   "marks_verified",
@@ -54,13 +56,25 @@
    "label": "Weightage Achieved",
    "precision": "2",
    "read_only": 1
+  },
+  {
+   "fieldname": "weightage",
+   "fieldtype": "Float",
+   "label": "Weightage",
+   "precision": "2"
+  },
+  {
+   "fieldname": "programme",
+   "fieldtype": "Link",
+   "label": "Programme",
+   "options": "Programme"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-10-13 13:55:37.723037",
+ "modified": "2026-03-02 22:59:19.169212",
  "modified_by": "Administrator",
  "module": "Examination",
  "name": "Exam Marks",

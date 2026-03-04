@@ -10,7 +10,15 @@ frappe.ui.form.on("Module Assessment Criteria", {
           name: ["!=", "Office of Vice Chancellor"]
 				},
 			};
+      
 		});
+    frm.set_query('semester', function () {
+      return {
+      filters: {
+          session: frm.doc.academic_session,
+      },
+      }
+    })
     frm.set_query('tutor', function () {
         return {
             query:
@@ -66,7 +74,7 @@ frappe.ui.form.on("Module Assessment Criteria", {
               },
             }
           })
-        update_refs(frm)
+        // update_refs(frm)
 	},
     college(frm){
         frm.set_value("programme", undefined);

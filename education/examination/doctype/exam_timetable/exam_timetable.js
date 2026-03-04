@@ -53,6 +53,7 @@ frappe.ui.form.on("Exam Timetable", {
         const company = frm.doc.college;
         const academic_year = frm.doc.academic_year;
         const academic_term = frm.doc.academic_term;
+        const assessment_component= frm.doc.assessment_component;
 
         // Collect all modules from child table exam_module
         const modules = (frm.doc.exam_module || [])
@@ -88,6 +89,7 @@ frappe.ui.form.on("Exam Timetable", {
                     academic_year: academic_year,
                     academic_term: academic_term,
                     module: module,
+                    assessment_component:assessment_component,
                     docname: frm.doc.name
                 },
                 freeze: true,

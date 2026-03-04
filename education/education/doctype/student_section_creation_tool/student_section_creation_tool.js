@@ -123,13 +123,13 @@ frappe.ui.form.on('Student Section Creation Tool', 'setup', function (frm) {
         },
       }
     })
-    frm.set_query('batch', function () {
-      return {
-        filters: {
-          college: frm.doc.college,
-        },
-      }
-    })
+    // frm.set_query('batch', function () {
+    //   return {
+    //     filters: {
+    //       college: frm.doc.college,
+    //     },
+    //   }
+    // })
 })
 
 frappe.ui.form.on('Student Section Creation Tool', 'get_courses', function (frm) {

@@ -28,17 +28,17 @@
   {
    "fieldname": "college",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "College",
-   "options": "Company",
-   "reqd": 1
+   "options": "Company"
   },
   {
    "fetch_from": "academic_term.academic_session",
    "fieldname": "academic_session",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Academic Session",
-   "options": "Academic Session",
-   "reqd": 1
+   "options": "Academic Session"
   },
   {
    "fieldname": "column_break_ianb",
@@ -47,28 +47,28 @@
   {
    "fieldname": "programme",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Programme",
-   "options": "Programme",
-   "reqd": 1
+   "options": "Programme"
   },
   {
    "fetch_from": "academic_term.academic_year",
    "fieldname": "academic_year",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Academic Year",
-   "options": "Academic Year",
-   "reqd": 1
+   "options": "Academic Year"
   },
   {
    "fieldname": "academic_term",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Academic Term",
-   "options": "Academic Term",
-   "reqd": 1
+   "options": "Academic Term"
   }
  ],
  "links": [],
- "modified": "2026-01-13 10:33:00.091570",
+ "modified": "2026-03-04 18:52:33.489933",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student Batch Name",

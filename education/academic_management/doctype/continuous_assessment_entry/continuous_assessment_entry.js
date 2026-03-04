@@ -152,7 +152,6 @@ frappe.ui.form.on("Continuous Assessment Entry", {
         frappe.call({
             method: "education.academic_management.doctype.continuous_assessment_entry.continuous_assessment_entry.get_students",
             args: {
-                examination_registration: frm.doc.examination_registration,
                 doc: frm.doc
                
                 // doc : frm.doc

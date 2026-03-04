@@ -1,0 +1,213 @@
+{
+ "actions": [],
+ "autoname": "ME.YYYY.MM.DD.######",
+ "creation": "2018-10-15 15:35:39.375161",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "ubkey_detailsbu_section",
+  "module_enrollment_key",
+  "column_break_xiqs",
+  "enrollment_date",
+  "ubenrolment_detailsbu_section",
+  "student_batch",
+  "student",
+  "student_name",
+  "program",
+  "college",
+  "column_break_uisg",
+  "student_section",
+  "academic_term",
+  "academic_year",
+  "semester",
+  "course",
+  "ubtutor_detailsbuubbu_section",
+  "tutors",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "student",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Student",
+   "options": "Student",
+   "reqd": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "enrollment_date",
+   "fieldtype": "Date",
+   "label": "Enrolment Date",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fetch_from": "student.student_name",
+   "fieldname": "student_name",
+   "fieldtype": "Data",
+   "label": "Student Name"
+  },
+  {
+   "fieldname": "column_break_uisg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fetch_from": "student.programme",
+   "fieldname": "program",
+   "fieldtype": "Data",
+   "label": "Programme",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "student.company",
+   "fieldname": "college",
+   "fieldtype": "Link",
+   "label": "College",
+   "options": "Company"
+  },
+  {
+   "fetch_from": "module_enrollment_key.academic_term",
+   "fieldname": "academic_term",
+   "fieldtype": "Link",
+   "label": "Academic Term",
+   "options": "Academic Term"
+  },
+  {
+   "fetch_from": "student.semester",
+   "fieldname": "semester",
+   "fieldtype": "Link",
+   "label": "Semester",
+   "options": "Semester",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "academic_term.academic_year",
+   "fieldname": "academic_year",
+   "fieldtype": "Link",
+   "label": "Academic Year",
+   "options": "Academic Year"
+  },
+  {
+   "fetch_from": "module_enrollment_key.module",
+   "fieldname": "course",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Module",
+   "options": "Module",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fetch_from": "module_enrollment_key.student_section",
+   "fieldname": "student_section",
+   "fieldtype": "Link",
+   "label": "Student Section",
+   "options": "Student Section",
+   "read_only": 1
+  },
+  {
+   "fieldname": "ubkey_detailsbu_section",
+   "fieldtype": "Section Break",
+   "label": "<u><b>Key Details<b><u></u></b></b></u>"
+  },
+  {
+   "fieldname": "module_enrollment_key",
+   "fieldtype": "Link",
+   "label": "Module Enrolment Key",
+   "options": "Module Enrolment Key",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_xiqs",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ubenrolment_detailsbu_section",
+   "fieldtype": "Section Break",
+   "label": "<u><b>Enrolment Details<b><u></u></b></b></u>"
+  },
+  {
+   "fetch_from": "module_enrollment_key.student_batch",
+   "fieldname": "student_batch",
+   "fieldtype": "Link",
+   "label": "Student Batch",
+   "options": "Student Batch Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "ubtutor_detailsbuubbu_section",
+   "fieldtype": "Section Break",
+   "label": "<u><b>Tutor Details<b><u></u></b></b></u>"
+  },
+  {
+   "fieldname": "tutors",
+   "fieldtype": "Table",
+   "label": "Tutors",
+   "options": "Module Enrolment Tutor",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Module Enrolment",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-03-04 13:54:24.815914",
+ "modified_by": "Administrator",
+ "module": "Education",
+ "name": "Module Enrolment",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Academics User",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Instructor",
+   "share": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Student",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

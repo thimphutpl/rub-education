@@ -439,7 +439,6 @@ def get_students_with_unpaid_credit_clearance(company, academic_term):
                     FROM `tabModule Enrolment` 
                     WHERE academic_term = %s
                     AND college = %s
-                    AND docstatus= 1
                 )
         """, (academic_term, company), as_dict=True)
     except Exception as e:
@@ -477,7 +476,6 @@ def get_credit_clearance_details(student_code, company):
             FROM `tabCredit Clearance Details`
             WHERE student_code = %s
                 AND status = 'Unpaid'
-                AND docstatus= 1
             ORDER BY creation DESC
             LIMIT 1
         """, (student_code,), as_dict=True)

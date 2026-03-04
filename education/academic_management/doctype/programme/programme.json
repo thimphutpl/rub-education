@@ -180,6 +180,7 @@
    "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "child_ref",
    "fieldtype": "Data",
    "hidden": 1,
@@ -191,7 +192,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-02-25 17:27:48.665646",
+ "modified": "2026-03-05 02:18:19.445314",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Programme",

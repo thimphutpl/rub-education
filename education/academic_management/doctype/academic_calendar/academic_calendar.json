@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "ACL.YYYY.MM.DD.####",
  "creation": "2025-09-30 15:27:13.137210",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -71,10 +72,11 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-01-09 16:49:34.760032",
- "modified_by": "sonam.norbu@thimphutechpark.bt",
+ "modified": "2026-03-05 02:11:08.681086",
+ "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Academic Calendar",
+ "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [
   {

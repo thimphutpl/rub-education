@@ -238,14 +238,28 @@ def count_tutor_total(doc, tutor):
 def remove_module_entries(doc, module):
 	doc.items = [r for r in doc.items if r.module != module]
 
+# def is_valid_slot(doc, constraint, module, day, slot):
+# 	blocked_map = build_blocked_slots(constraint)
+# 	if day in blocked_map:
+# 		for b in blocked_map[day]:
+# 			if times_overlap(slot["from"], slot["to"], b["from"], b["to"]):
+# 				return False
+# 	# Also check if slot already taken in timetable
+# 	return is_slot_available(doc, day, slot)
 def is_valid_slot(doc, constraint, module, day, slot):
-	blocked_map = build_blocked_slots(constraint)
-	if day in blocked_map:
-		for b in blocked_map[day]:
-			if times_overlap(slot["from"], slot["to"], b["from"], b["to"]):
-				return False
-	# Also check if slot already taken in timetable
-	return is_slot_available(doc, day, slot)
+    blocked_map = build_blocked_slots(constraint)
+
+    # Check blocked periods from constraints
+    if day in blocked_map:
+        for b in blocked_map[day]:
+            if times_overlap(slot["from"], slot["to"], b["from"], b["to"]):
+                return False
+
+    # Skip slots already used by any module
+    if not is_slot_available(doc, day, slot):
+        return False
+
+    return True
 
 def is_adjacent_day(doc, module, day):
 	# Checks if same module was scheduled previous or next day
@@ -281,8 +295,18 @@ def times_overlap(start1, end1, start2, end2):
 	e2 = datetime.strptime(end2, fmt)
 	return max(s1, s2) < min(e1, e2)
 
+# def is_slot_available(doc, day, slot):
+# 	for r in doc.items:
+# 		if r.day == day and r.from_time == slot["from"]:
+# 			return False
+# 	return True
 def is_slot_available(doc, day, slot):
-	for r in doc.items:
-		if r.day == day and r.from_time == slot["from"]:
-			return False
-	return True
+    """
+    Returns True if the given slot is free for the given day, i.e.,
+    it doesn't overlap with any previously assigned module/tutor/room.
+    """
+    for r in doc.items:
+        if r.day == day:
+            if times_overlap(slot["from"], slot["to"], r.from_time, r.to_time):
+                return False
+    return True

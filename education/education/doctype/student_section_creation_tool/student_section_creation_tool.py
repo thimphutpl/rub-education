@@ -4,6 +4,7 @@
 
 import frappe
 from frappe import _
+from frappe.utils import today
 from frappe.model.document import Document
 
 from education.education.doctype.student_section.student_section import get_students
@@ -18,7 +19,14 @@ class StudentSectionCreationTool(Document):
 			if frappe.db.exists("Student Section Creation Tool", {"college": self.college, "academic_term": self.academic_term, "batch": self.batch, "name": ["!=", self.name]}):
 				frappe.throw("Student Section Creation Tool alraedy exists for: Student Batch: {}\nAcademic Term: {}\nCollege: {}\nExisting Doc: {}".format(self.batch, self.academic_term, self.college, frappe.db.get_value("Student Section Creation Tool", {"college": self.college, "academic_term": self.academic_term, "batch": self.batch, "name": ["!=", self.name]}, "name")))
 
-
+	@frappe.whitelist()
+	def get_current_academic_year(self):
+		current_academic_term = frappe.db.sql("select name from `tabAcademic Term` where '{0}' >= term_start_date and '{0}' <= term_end_date".format(today()),as_dict=1)
+		if len(current_academic_term) > 0:
+			current_academic_term = current_academic_term[0].name
+		else:
+			current_academic_term = ''
+		return current_academic_term
 	@frappe.whitelist()
 	def get_courses(self):
 		group_list = []

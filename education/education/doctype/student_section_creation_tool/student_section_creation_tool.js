@@ -123,6 +123,16 @@ frappe.ui.form.on('Student Section Creation Tool', 'setup', function (frm) {
         },
       }
     })
+    frappe.call({
+      method: "get_current_academic_year",
+      doc: frm.doc,
+      callback: function(r){
+        if(r.message){
+          frm.set_value("academic_term", r.message);
+          frm.refresh_field("academic_term");
+        }
+      }
+    })
 
 })
 

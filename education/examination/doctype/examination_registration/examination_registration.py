@@ -339,7 +339,6 @@ def get_regular_students(academic_year, academic_term, module, company, tutor, a
         #         AND tutor = %s
         # """, (academic_term, module, academic_year, company, tutor), as_dict=True)
 
-        
         return frappe.db.sql("""
             select student, student_name,
             "Course Enrolment" as datatype 

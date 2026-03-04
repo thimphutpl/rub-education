@@ -152,9 +152,8 @@ frappe.ui.form.on("Continuous Assessment Entry", {
         frappe.call({
             method: "education.academic_management.doctype.continuous_assessment_entry.continuous_assessment_entry.get_students",
             args: {
-                doc: frm.doc
-               
-                // doc : frm.doc
+                doc: frm.doc,
+                module_enrolment_key : frm.doc.module_enrolment_key
             },
             callback: function(r) {
                 if (r.message) {

@@ -186,61 +186,22 @@ class ContinuousAssessmentEntry(Document):
 		
 
 @frappe.whitelist()
-def get_students(examination_registration, doc):
+def get_students(doc, module_enrolment_key):
 	# Step 1: Get students enrolled in the given term & module
+	if not module_enrolment_key:
+		frappe.throw("Please select Module Enrolment Key")
 	doc = json.loads(doc)
 	# frappe.throw(frappe.as_json(doc['college']))
-	if not examination_registration:
-		frappe.throw("Please Add Examination Registration")
 
-	if doc['exam_type']=='Exam Recheck' or doc['exam_type']=='Exam Re-Evaluation':
-		# frappe.throw("""
-		# 	select student, student_name
-		# 	from 
-		# 	`tabExamination Review Application`
-		# 	WHERE academic_term='{}'
-		# 	AND module='{}'
-		# 	AND college='{}'
-		# 	AND tutor='{}'
-		# 	AND assesment_component = '{}'
-		# 	AND exam_review_type='{}'
-		# 	AND docstatus=1
-		# 	""".format(doc["academic_term"], doc["module"], doc["college"], doc["tutor"],doc["assessment_component"],doc["exam_type"])
-		# )
-		data = frappe.db.sql(
-			"""
-			select student, student_name
-			from 
-			`tabExamination Review Application`
-			WHERE academic_term=%s
-			AND module=%s
-			AND college=%s
-			AND tutor=%s
-			AND assessment_component = %s
-			AND exam_review_type=%s
-			AND docstatus=1
-			""",
-			(doc["academic_term"], doc["module"], doc["college"], doc["tutor"],doc["assessment_component"],doc["exam_type"]),
-			as_dict=True
-		)
-		
-		
-	else:
-		data = frappe.db.sql(
-			"""
-			select student, student_name 
-			from `tabExam Students` where parent=%s
+	data = frappe.db.sql(
+		"""
+		select student, student_name
+		from `tabModule Enrolment` where module_enrolment_key=%s
 
-			union
-
-			select student, student_name from `tabNon Eligible Exam Students` 
-			where consider_attendance=1 and parent=%s;
-
-
-			""",
-			(examination_registration,examination_registration),
-			as_dict=True
-		)
+		""",
+		(module_enrolment_key),
+		as_dict=True
+	)
 
 	# Step 2: For each student, calculate attendance percentage
 	

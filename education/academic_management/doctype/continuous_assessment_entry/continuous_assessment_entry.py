@@ -196,8 +196,7 @@ def get_students(doc, module_enrolment_key):
 	data = frappe.db.sql(
 		"""
 		select student, student_name
-		from `tabModule Enrolment` where module_enrolment_key=%s
-
+		from `tabModule Enrolment` where module_enrollment_key=%s
 		""",
 		(module_enrolment_key),
 		as_dict=True

@@ -3,6 +3,16 @@
 
 frappe.ui.form.on("Continuous Assessment Entry", {
     setup(frm){
+        frm.set_query('module_enrollment_key', function () {
+            return {
+              filters: {
+                // program: frm.doc.programme,
+                academic_term: frm.doc.academic_term,
+                module: frm.doc.enrollment_date,
+                docstatus: 1,
+              },
+            }
+          })
         frm.set_query("college", function () {
             return {
                 filters: {

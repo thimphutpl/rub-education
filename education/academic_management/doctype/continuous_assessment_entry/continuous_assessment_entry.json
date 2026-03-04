@@ -6,10 +6,10 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "posting_date",
   "exam_type",
   "weightage",
   "column_break_xvsj",
-  "posting_date",
   "section_break_ptbh",
   "college",
   "programme",
@@ -42,6 +42,7 @@
   {
    "fieldname": "weightage",
    "fieldtype": "Float",
+   "hidden": 1,
    "label": "Weightage",
    "precision": "2",
    "read_only": 1
@@ -203,7 +204,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-03-05 04:51:06.642269",
+ "modified": "2026-03-05 05:07:20.540122",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Continuous Assessment Entry",

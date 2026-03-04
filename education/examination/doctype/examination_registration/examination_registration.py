@@ -306,7 +306,7 @@ def get_reassessment_students(academic_term, module, company, tutor, assessment_
 
 
 def get_regular_students(academic_year, academic_term, module, company, tutor, assessment_role):
-    """Get students from Module Enrollment for regular assessment"""
+    """Get students from Module Enrolment for regular assessment"""
 
     # frappe.throw("hi")
     
@@ -315,8 +315,8 @@ def get_regular_students(academic_year, academic_term, module, company, tutor, a
         #     SELECT 
         #         student, 
         #         student_name,
-        #         "Course Enrollment" as datatype
-        #     FROM `tabModule Enrollment`
+        #         "Course Enrolment" as datatype
+        #     FROM `tabModule Enrolment`
         #     WHERE academic_term = '{}'
         #         AND course = '{}'
         #         AND academic_year = '{}'
@@ -327,12 +327,13 @@ def get_regular_students(academic_year, academic_term, module, company, tutor, a
             SELECT 
                 student, 
                 student_name,
-                "Course Enrollment" as datatype
+                "Course Enrolment" as datatype
             FROM `tabModule Enrolment`
             WHERE academic_term = %s
                 AND course = %s
                 AND academic_year = %s
                 AND college = %s
+                AND docstatus= 1
                 AND tutor = %s
         """, (academic_term, module, academic_year, company, tutor), as_dict=True)
     else:
@@ -341,11 +342,12 @@ def get_regular_students(academic_year, academic_term, module, company, tutor, a
             SELECT 
                 student, 
                 student_name,
-                "Course Enrollment" as datatype
+                "Course Enrolment" as datatype
             FROM `tabModule Enrolment`
             WHERE academic_term = %s
                 AND course = %s
                 AND academic_year = %s
+                AND docstatus= 1
                 AND college = %s
         """, (academic_term, module, academic_year, company), as_dict=True)
 
@@ -366,6 +368,7 @@ def calculate_attendance_percentage(students):
             ) as attendance_percentage
         FROM `tabStudent Attendance`
         WHERE student IN %s
+        AND docstatus= 1
         GROUP BY student
     """, [student_ids], as_dict=True)
     
@@ -393,6 +396,7 @@ def get_students_with_low_attendance(module, academic_term, company):
             WHERE course = %s
                 AND academic_term = %s
                 AND college = %s
+                AND docstatus= 1
         )
         GROUP BY student
         HAVING attendance_percentage < 75
@@ -414,6 +418,7 @@ def get_students_with_disciplinary_actions(company, academic_term):
                 FROM `tabModule Enrolment` 
                 WHERE academic_term = %s
                 AND college = %s
+                AND docstatus= 1
             )
     """, (company, academic_term, company), as_dict=True)
     
@@ -432,6 +437,7 @@ def get_students_with_unpaid_credit_clearance(company, academic_term):
                     FROM `tabModule Enrolment` 
                     WHERE academic_term = %s
                     AND college = %s
+                    AND docstatus= 1
                 )
         """, (academic_term, company), as_dict=True)
     except Exception as e:
@@ -469,6 +475,7 @@ def get_credit_clearance_details(student_code, company):
             FROM `tabCredit Clearance Details`
             WHERE student_code = %s
                 AND status = 'Unpaid'
+                AND docstatus= 1
             ORDER BY creation DESC
             LIMIT 1
         """, (student_code,), as_dict=True)

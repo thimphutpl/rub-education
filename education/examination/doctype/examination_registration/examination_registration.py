@@ -471,7 +471,7 @@ def get_credit_clearance_details(student_code, company):
     try:
         credit_details = frappe.db.sql("""
             SELECT 
-                SUM(amount),
+                sum(amount) as amount,
                 status
             FROM `tabCredit Clearance Details`
             WHERE student_code = %s

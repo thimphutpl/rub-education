@@ -238,7 +238,7 @@ class ContinuousAssessmentEntry(Document):
 			# Optionally submit if needed
 			doc.submit()
 
-		frappe.msgprint(f"Assessment Ledger created and submitted for {self.examination_registration}")
+		frappe.msgprint(f"Assessment Ledger created and submitted for {self.assessment_component}")
 
 		
 

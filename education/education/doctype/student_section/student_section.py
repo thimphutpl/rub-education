@@ -166,7 +166,7 @@ def get_program_enrollment(
 	# 	condition1 += " and s.student_category = %(student_category)s"
 	if course:
 		condition1 += " and s.name = me.student and me.course = %(course)s"
-		condition2 = ", `tabModule Enrollment` me"
+		condition2 = ", `tabModule Enrolment` me"
 
 	# return frappe.db.sql(
 	# 	"""

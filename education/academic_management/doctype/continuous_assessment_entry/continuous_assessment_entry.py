@@ -99,7 +99,7 @@ class ContinuousAssessmentEntry(Document):
 			else:
 				frappe.throw("Examination Registration not found for {}".format(self.assessment_component))
 	def check_duplicate_marks_entry(self):
-		duplicate = frappe.db.exists("Continuous Assessment Entry",{"college":self.college, "programme":self.programme, "module": self.module, "academic_term":self.academic_term,"tutor":self.tutor,"docstatus":["!=", 2], "assessment_component": self.assessment_component})
+		duplicate = frappe.db.exists("Continuous Assessment Entry",{"college":self.college, "programme":self.programme, "module": self.module, "academic_term":self.academic_term,"tutor":self.tutor,"docstatus":["!=", 2], "assessment_component": self.assessment_component, "name": ["!=", self.name]})
 		if duplicate:
 			frappe.throw("CA Entry already exists.<br> Existing Entry: {}".format(", ".join(str(idx+1)+". "+a.name for idx, a in enumerate(frappe.get_all("Continuous Assessment Entry",{"college":self.college, "programme":self.programme, "module": self.module, "academic_term":self.academic_term,"tutor":self.tutor,"docstatus":["!=", 2], "assessment_component": self.assessment_component})))))
 	def check_assesment_component(self):

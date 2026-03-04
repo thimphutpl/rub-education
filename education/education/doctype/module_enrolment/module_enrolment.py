@@ -129,3 +129,22 @@ def check_activity_exists(enrollment, content_type, content):
 		return activity[0].name
 	else:
 		return None
+
+def get_permission_query_conditions(user):
+	if not user: user = frappe.session.user
+	user_roles = frappe.get_roles(user)
+	if "Administrator" in user_roles:
+		return
+	if "Academic Dean" in user_roles:
+		return
+	if "Student" in user_roles:
+		return """(
+			name in (select s.name
+				from `tabStudent` as s
+				where s.name = `tabModule Enrolment`.student
+				and s.user= '{user}')
+		)""".format(user=user)
+	else:
+		return """(
+		`tabModule Enrolment`.owner = '{user}'
+		)""".format(user=user)

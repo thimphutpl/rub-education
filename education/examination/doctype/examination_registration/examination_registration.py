@@ -348,7 +348,7 @@ def get_regular_students(academic_year, academic_term, module, company, tutor, a
                 AND course = %s
                 AND academic_year = %s
                 AND college = %s
-                AND docstatus= 1
+                AND me.docstatus= 1
                 AND tutor = %s
             ;
         """, (academic_term, module, academic_year, company, tutor), as_dict=True)

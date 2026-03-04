@@ -471,13 +471,12 @@ def get_credit_clearance_details(student_code, company):
     try:
         credit_details = frappe.db.sql("""
             SELECT 
-                amount,
+                SUM(amount),
                 status
             FROM `tabCredit Clearance Details`
             WHERE student_code = %s
                 AND status = 'Unpaid'
             ORDER BY creation DESC
-            LIMIT 1
         """, (student_code,), as_dict=True)
     except Exception as e:
         frappe.log_error(f"Error fetching credit clearance details: {str(e)}")

@@ -188,7 +188,22 @@ class ExaminationMarksEntry(Document):
             frappe.throw("The Marks entry done already for examination {}".format(self.examination_registration))
             
     def check_assesment_component(self):
-        ass_com = frappe.db.exists("Module Assessment Item",{"parent":self.module,"assessment_name":self.assessment_component})
+        # ass_com = frappe.db.exists("Module Assessment Item",{"module":self.module,"assessment_name":self.assessment_component,"college":self.college,"":self.academic_term})
+        ass_com = frappe.db.sql("""
+                SELECT 1 
+                FROM `tabModule Assessment Item` mai
+                INNER JOIN `tabModule Assessment Criteria` mac 
+                    ON mai.parent = mac.name
+                WHERE mac.module = %s
+                    AND mai.assessment_name = %s
+                    AND mac.academic_term = %s
+                    AND mac.college = %s
+            """, (
+                self.module,
+                self.assessment_component,
+                self.academic_term,
+                self.college
+            ))
     
         if not ass_com:
             frappe.throw("The component {} dont exist for module {}".format(self.assessment_component,self.module))

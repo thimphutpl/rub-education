@@ -10,7 +10,7 @@ from frappe.utils import flt
 class ProgrammeMaster(Document):
 	def validate(self):
 		if self.__islocal() == 1:
-			if not bool(re.match(r'^[A-Za-z0-9-]+$', self.programme_name)):
+			if not bool(re.match(r'^[A-Za-z0-9\- ]+$', self.programme_name)):
 				frappe.throw("Special Characters not allowed in Programme Name.")
 
 		if not frappe.db.exists("Programme Record History", {"parent": self.name, "programme_name": self.programme_name+ " - " + str(self.programme_approval_date).split("-")[0]}):

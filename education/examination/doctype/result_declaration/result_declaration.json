@@ -6,8 +6,9 @@
  "engine": "InnoDB",
  "field_order": [
   "section_break_sb5e",
-  "amended_from",
   "college",
+  "academic_term",
+  "amended_from",
   "column_break_segp"
  ],
  "fields": [
@@ -34,13 +35,19 @@
   {
    "fieldname": "column_break_segp",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "academic_term",
+   "fieldtype": "Link",
+   "label": "Academic Term",
+   "options": "Academic Term"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-03-04 13:16:37.906629",
+ "modified": "2026-03-04 21:23:15.444417",
  "modified_by": "Administrator",
  "module": "Examination",
  "name": "Result Declaration",

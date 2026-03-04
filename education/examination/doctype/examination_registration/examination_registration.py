@@ -325,18 +325,32 @@ def get_regular_students(academic_year, academic_term, module, company, tutor, a
         # """.format(academic_term, module, academic_year, company, tutor))
 
         
+        # return frappe.db.sql("""
+        #     SELECT 
+        #         student, 
+        #         student_name,
+        #         "Course Enrolment" as datatype
+        #     FROM `tabModule Enrolment`
+        #     WHERE academic_term = %s
+        #         AND course = %s
+        #         AND academic_year = %s
+        #         AND college = %s
+        #         AND docstatus= 1
+        #         AND tutor = %s
+        # """, (academic_term, module, academic_year, company, tutor), as_dict=True)
         return frappe.db.sql("""
-            SELECT 
-                student, 
-                student_name,
-                "Course Enrolment" as datatype
+            select student, student_name,
+            "Course Enrolment" as datatype 
             FROM `tabModule Enrolment`
+            me inner join `tabModule Enrolment Tutor` 
+            met on me.name=met.parent
             WHERE academic_term = %s
                 AND course = %s
                 AND academic_year = %s
                 AND college = %s
                 AND docstatus= 1
                 AND tutor = %s
+            ;
         """, (academic_term, module, academic_year, company, tutor), as_dict=True)
     else:
         # Exam Cell - get all students without tutor filter

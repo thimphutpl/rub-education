@@ -15,7 +15,21 @@ frappe.ui.form.on("Module", {
   //         },
   //     }
   // })
-  },
+  frm.set_query('programme', 'colleges', function (cdt, cdn) {
+    // let college = [];
+    // frm.doc.colleges.forEach(function(item) {
+    //     college.push(item.college);
+    // });
+    return {
+      // query:
+      // 'erpnext.controllers.queries.filter_college_programme_module_tutors',
+      filters: {
+        // program: frm.doc.progr name,
+        docstatus: 1,
+      },
+  }
+})
+},
 	refresh(frm) {
         frm.set_query('tutor', 'tutors', function (cdt, cdn) {
           let college = [];

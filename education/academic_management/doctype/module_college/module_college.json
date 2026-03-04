@@ -9,8 +9,7 @@
   "college",
   "module_semester",
   "column_break_fnyv",
-  "programme",
-  "module_year"
+  "programme"
  ],
  "fields": [
   {
@@ -34,12 +33,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "module_year",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Module Year"
-  },
-  {
    "fieldname": "programme",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -52,8 +45,8 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-09-25 15:47:57.721453",
- "modified_by": "sangay.choden@thimphutechpark.bt",
+ "modified": "2026-03-05 03:19:40.226017",
+ "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Module College",
  "owner": "Administrator",

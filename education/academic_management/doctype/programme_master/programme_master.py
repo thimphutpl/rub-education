@@ -9,7 +9,7 @@ from frappe.utils import flt
 
 class ProgrammeMaster(Document):
 	def validate(self):
-		if self.__islocal() == 1:
+		if self.get("__islocal") == 1:
 			if not bool(re.match("^[A-Za-z0-9]+$", self.programme_name)):
 				frappe.throw("Special Characters not allowed in Programme Name.")
 

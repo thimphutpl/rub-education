@@ -1,22 +1,23 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "format:TTS-{college_abbreviation}-{programme_abbreviation}-{module_code}-{academic_year}-{academic_session}",
+ "autoname": "format:TTS-{college_abbreviation}-{programme_abbreviation}-{academic_year}-{academic_session}",
  "creation": "2026-02-23 20:23:04.461488",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "ubdetailsbu_section",
   "college",
   "college_abbreviation",
   "programme",
   "programme_abbreviation",
-  "module",
-  "module_code",
+  "constraint",
   "column_break_tgod",
   "academic_term",
   "academic_year",
   "academic_session",
   "sb_schedule_details",
+  "generate",
   "items",
   "section_break_im0z",
   "amended_from"
@@ -97,35 +98,39 @@
    "read_only": 1
   },
   {
-   "fieldname": "module",
-   "fieldtype": "Link",
-   "label": "Module",
-   "options": "Module",
-   "reqd": 1
-  },
-  {
-   "fetch_from": "module.module_code",
-   "fieldname": "module_code",
-   "fieldtype": "Data",
-   "label": "Module Code",
-   "read_only": 1
-  },
-  {
    "fieldname": "sb_schedule_details",
    "fieldtype": "Section Break",
-   "label": "Schedule Details"
+   "label": "<u><b>Schedule Details<b><u></u></b></b></u>"
   },
   {
    "fieldname": "items",
    "fieldtype": "Table",
-   "options": "Time Table Schedule Item"
+   "options": "Time Table Schedule Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "constraint",
+   "fieldtype": "Link",
+   "label": "Timetable Constraint",
+   "options": "Timetable Constraints",
+   "reqd": 1
+  },
+  {
+   "fieldname": "ubdetailsbu_section",
+   "fieldtype": "Section Break",
+   "label": "<u><b>Details<b><u></u></b></b></u>"
+  },
+  {
+   "fieldname": "generate",
+   "fieldtype": "Button",
+   "label": "Generate Time Table"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-02-23 20:42:38.435528",
+ "modified": "2026-03-05 00:46:53.071014",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Time Table Schedule",

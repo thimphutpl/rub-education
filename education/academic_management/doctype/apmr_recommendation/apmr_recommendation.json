@@ -1,0 +1,103 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-03-05 00:59:42.800566",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "details_section",
+  "good_practices",
+  "recommendations",
+  "timeline",
+  "column_break_bvsp",
+  "major_issues",
+  "responsibility",
+  "priority",
+  "for_college_use_section",
+  "evidence_writtenpictorial",
+  "column_break_yiju",
+  "status_datedescription"
+ ],
+ "fields": [
+  {
+   "fieldname": "details_section",
+   "fieldtype": "Section Break",
+   "label": "Details"
+  },
+  {
+   "fieldname": "good_practices",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Good Practices"
+  },
+  {
+   "fieldname": "recommendations",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Recommendations"
+  },
+  {
+   "fieldname": "timeline",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Timeline"
+  },
+  {
+   "fieldname": "column_break_bvsp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "major_issues",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Major Issues"
+  },
+  {
+   "fieldname": "responsibility",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Responsibility"
+  },
+  {
+   "fieldname": "priority",
+   "fieldtype": "Select",
+   "label": "Priority",
+   "options": "Critical\nHigh\nMedium\nLow\nLowest",
+   "reqd": 1
+  },
+  {
+   "fieldname": "for_college_use_section",
+   "fieldtype": "Section Break",
+   "label": "For College Use"
+  },
+  {
+   "fieldname": "evidence_writtenpictorial",
+   "fieldtype": "Text Editor",
+   "label": "Evidence (Written/Pictorial)"
+  },
+  {
+   "fieldname": "column_break_yiju",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "status_datedescription",
+   "fieldtype": "Small Text",
+   "label": "Status (Date/Description)"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-03-05 01:09:57.705778",
+ "modified_by": "Administrator",
+ "module": "Academic Management",
+ "name": "APMR Recommendation",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -11,8 +11,11 @@
   "column_break_ojck",
   "academic_term",
   "academic_session",
+  "weekly_off_days",
   "sb_non_academic_periods",
   "periods",
+  "sb_academic",
+  "academic_periods",
   "sb_tutor_constraints",
   "max_hours_tutor",
   "max_hour_per_session"
@@ -88,12 +91,30 @@
    "fieldtype": "Float",
    "label": "Maximum Teaching Hours Per Session",
    "reqd": 1
+  },
+  {
+   "fieldname": "sb_academic",
+   "fieldtype": "Section Break",
+   "label": "Academic Periods"
+  },
+  {
+   "fieldname": "academic_periods",
+   "fieldtype": "Table",
+   "options": "Timetable Constraint Academic Periods",
+   "reqd": 1
+  },
+  {
+   "fieldname": "weekly_off_days",
+   "fieldtype": "Table",
+   "label": "Weekly Off Days",
+   "options": "Weekly Off Days",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-02-23 20:13:41.479447",
+ "modified": "2026-03-04 20:40:56.118864",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Timetable Constraints",

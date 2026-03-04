@@ -27,7 +27,7 @@
   "cross_college_team",
   "pqc",
   "academic_board",
-  "recommendation_text",
+  "recommendation",
   "sb_references",
   "module_level_ref",
   "programme_level_ref",
@@ -194,25 +194,18 @@
    "fieldname": "pqc",
    "fieldtype": "Table",
    "label": "Programme Quality Committee",
-   "mandatory_depends_on": "eval:doc.apmr_type == \"University Level Review & Recommendation\" && doc.workflow_state == \"Forwarded to CCR Team\";",
+   "mandatory_depends_on": "eval:doc.apmr_type == \"University Level Review & Recommendation\" && (doc.workflow_state == \"Draft\" || doc.workflow_state == \"Rejected\" || doc.__islocal) ;",
    "options": "APMR Users",
-   "read_only_depends_on": "eval:doc.workflow_state != \"Forwarded to CCR Team\";"
+   "read_only_depends_on": "eval:(doc.workflow_state != \"Draft\" || doc.workflow_state != \"Rejected\") && doc.__islocal == 0;"
   },
   {
    "depends_on": "eval:doc.apmr_type == \"University Level Review & Recommendation\";",
    "fieldname": "academic_board",
    "fieldtype": "Table",
    "label": "Academic Board",
-   "mandatory_depends_on": "eval:doc.apmr_type == \"University Level Review & Recommendation\" && doc.workflow_state == \"Forwarded to PQC\";",
+   "mandatory_depends_on": "eval:doc.apmr_type == \"University Level Review & Recommendation\" && (doc.workflow_state == \"Draft\" || doc.workflow_state == \"Rejected\" || doc.__islocal) ;",
    "options": "APMR Users",
-   "read_only_depends_on": "eval:doc.workflow_state != \"Forwarded to PQC\""
-  },
-  {
-   "depends_on": "eval:doc.apmr_type == \"University Level Review & Recommendation\" && doc.workflow_state == \"Forwarded to Academic Board\";",
-   "fieldname": "recommendation_text",
-   "fieldtype": "Text Editor",
-   "label": "Recommendation Text",
-   "mandatory_depends_on": "eval:doc.apmr_type == \"University Level Review & Recommendation\" && doc.workflow_state == \"Forwarded to Academic Board\";"
+   "read_only_depends_on": "eval:(doc.workflow_state != \"Draft\" || doc.workflow_state != \"Rejected\") && doc.__islocal == 0;"
   },
   {
    "fieldname": "section_break_wvsw",
@@ -234,12 +227,21 @@
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
+  },
+  {
+   "depends_on": "eval:doc.apmr_type == \"University Level Review & Recommendation\";",
+   "fieldname": "recommendation",
+   "fieldtype": "Table",
+   "label": "Recommendation",
+   "mandatory_depends_on": "eval:doc.apmr_type == \"University Level Review & Recommendation\" && doc.workflow_state == \"Forwarded to CCR Team\";",
+   "options": "APMR Recommendation",
+   "read_only_depends_on": "eval:doc.workflow_state != \"Forwarded to CCR Team\";"
   }
  ],
  "icon": "fa fa-file-text",
  "is_submittable": 1,
  "links": [],
- "modified": "2026-02-26 12:29:30.078325",
+ "modified": "2026-03-05 01:20:51.088103",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Annual Programme Monitoring Report",

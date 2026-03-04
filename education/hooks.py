@@ -77,7 +77,7 @@ global_search_doctypes = {
 		{"doctype": "Course Activity", "index": 13},
 		{"doctype": "Quiz Activity", "index": 14},
 		{"doctype": "Course Enrollment", "index": 15},
-		{"doctype": "Program Enrollment", "index": 16},
+		{"doctype": "Program Enrolment", "index": 16},
 		{"doctype": "Student Language", "index": 17},
 		{"doctype": "Student Applicant", "index": 18},
 		{"doctype": "Assessment Result", "index": 19},

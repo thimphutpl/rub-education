@@ -91,7 +91,7 @@ def get_program_module(doctype, txt, searchfield, start, page_len, filters):
 		# if not filters.get("semester"):
 		# 	frappe.msgprint(_("Please select a Semester."))
 		# 	return []
-	# frappe.throw(str(txt))
+
 
 	doctype = "Module"
 	return frappe.db.sql(

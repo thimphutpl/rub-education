@@ -10,7 +10,8 @@ class UpdateProgramme(Document):
 		self.validate_fields()
 
 	def validate_fields(self):
-		pass
+		if not bool(re.match("^[A-Za-z0-9]+$", self.new_programme_name)):
+			frappe.throw("Special Characters not allowed in New Programme Name.")
 
 	def on_submit(self):
 		self.update_programme_master()

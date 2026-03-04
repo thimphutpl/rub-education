@@ -52,7 +52,7 @@ frappe.ui.form.on("Continuous Assessment Entry", {
         frm.set_query('course', function () {
             return {
                 query:
-                'education.education.doctype.program_enrolment.program_enrolment.get_program_courses',
+                'education.education.doctype.program_enrollment.program_enrollment.get_program_courses',
               filters: {
                 program: frm.doc.programme,
                 college: frm.doc.college,
@@ -64,7 +64,7 @@ frappe.ui.form.on("Continuous Assessment Entry", {
           frm.set_query('module', function () {
             return {
                 query:
-                'education.education.doctype.program_enrolment.program_enrolment.get_program_courses',
+                'education.education.doctype.program_enrollment.program_enrollment.get_program_courses',
               filters: {
                 program: frm.doc.programme,
                 college: frm.doc.college,
@@ -89,7 +89,7 @@ frappe.ui.form.on("Continuous Assessment Entry", {
         frm.set_query('course', function () {
             return {
                 query:
-                'education.education.doctype.program_enrolment.program_enrolment.get_program_courses',
+                'education.education.doctype.program_enrollment.program_enrollment.get_program_courses',
               filters: {
                 program: frm.doc.programme,
                 college: frm.doc.college,

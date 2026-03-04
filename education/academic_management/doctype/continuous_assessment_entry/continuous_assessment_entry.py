@@ -101,7 +101,7 @@ class ContinuousAssessmentEntry(Document):
 	def check_duplicate_marks_entry(self):
 		duplicate = frappe.db.exists("Continuous Assessment Entry",{"college":self.college, "programme":self.programme, "module": self.module, "academic_term":self.academic_term,"tutor":self.tutor,"docstatus":["!=", 2], "assessment_component": self.assessment_component})
 		if duplicate:
-			frappe.throw("CA Entry already exists.<br> Existing Entry: {}".format(", ".join(str(idx+1)+". "+a for idx, a in enumerate(frappe.get_all("Continuous Assessment Entry",{"college":self.college, "programme":self.programme, "module": self.module, "academic_term":self.academic_term,"tutor":self.tutor,"docstatus":["!=", 2], "assessment_component": self.assessment_component})))))
+			frappe.throw("CA Entry already exists.<br> Existing Entry: {}".format(", ".join(str(idx+1)+". "+a.name for idx, a in enumerate(frappe.get_all("Continuous Assessment Entry",{"college":self.college, "programme":self.programme, "module": self.module, "academic_term":self.academic_term,"tutor":self.tutor,"docstatus":["!=", 2], "assessment_component": self.assessment_component})))))
 	def check_assesment_component(self):
 		# ass_com = frappe.db.exists("Module Assessment Item",{"module":self.module,"assessment_name":self.assessment_component,"college":self.college,"":self.academic_term})
 		ass_com = frappe.db.sql("""

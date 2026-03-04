@@ -17,7 +17,7 @@ class ProgrammeMaster(Document):
 			self.update_programme_record()
 		self.sync_programme_history()
 
-	
+
 	# @frappe.whitelist()
 	# def validate_assessment(self):
 	# 	total = 0

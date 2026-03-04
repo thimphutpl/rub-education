@@ -9,6 +9,7 @@
   "programme_name",
   "programme_leader",
   "child_ref",
+  "programme_name_display",
   "column_break_yvlq",
   "abbreviation",
   "programme_master",
@@ -186,13 +187,18 @@
    "hidden": 1,
    "label": "Child Ref",
    "read_only": 1
+  },
+  {
+   "fieldname": "programme_name_display",
+   "fieldtype": "Data",
+   "label": "Programme Name(For Display)"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-03-05 02:18:19.445314",
+ "modified": "2026-03-05 02:31:56.462876",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Programme",
@@ -239,5 +245,6 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
+ "title_field": "programme_name_display",
  "track_changes": 1
 }

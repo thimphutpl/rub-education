@@ -52,6 +52,7 @@ class ProgrammeMaster(Document):
 				else:
 					programme = frappe.new_doc("Programme")
 					programme.programme_name = prog.programme_name
+					programme.programme_name_display = prog.programme_name
 					programme.abbreviation = prog.abbreviation
 					programme.child_ref = prog.name
 					programme.programme_approval_date = prog.approval_date

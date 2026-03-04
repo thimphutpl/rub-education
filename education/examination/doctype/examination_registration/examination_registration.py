@@ -96,20 +96,38 @@ class ExaminationRegistration(Document):
                 frappe.throw(f"You cannot create the reassessment for '{self.examination_registration}' unless you create an examination entry for it first")
 
     def check_assessment_component(self):
-        # Check if the assessment component exists in Module Assessment Item
-        ass_com = frappe.db.exists(
-            "Module Assessment Item",
-            {
-                "parent": self.module,
-                "assessment_name": self.assessment_component
-            }
-        )
+        ass_com = frappe.db.sql("""
+            SELECT 1 
+            FROM `tabModule Assessment Item` mai
+            INNER JOIN `tabModule Assessment Criteria` mac 
+                ON mai.parent = mac.name
+            WHERE mac.module = %s
+                AND mai.assessment_name = %s
+                AND mac.academic_term = %s
+                AND mac.college = %s
+        """, (
+            self.module,
+            self.assessment_component,
+            self.academic_term,
+            self.college
+        ))
 
         if not ass_com:
-            frappe.throw(
-                f"The Assessment Component '{self.assessment_component}' "
-                f"does not exist for module '{self.module}'"
-            )
+            frappe.throw("The component {} dont exist for module {}".format(self.assessment_component,self.module))
+        # Check if the assessment component exists in Module Assessment Item
+        # ass_com = frappe.db.exists(
+        #     "Module Assessment Item",
+        #     {
+        #         "parent": self.module,
+        #         "assessment_name": self.assessment_component
+        #     }
+        # )
+
+        # if not ass_com:
+        #     frappe.throw(
+        #         f"The Assessment Component '{self.assessment_component}' "
+        #         f"does not exist for module '{self.module}'"
+        #     )
 
     def check_duplicate_ass_component(self):
         if int(self.reassesment) == 0:

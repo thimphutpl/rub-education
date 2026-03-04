@@ -346,11 +346,11 @@ def get_regular_students(academic_year, academic_term, module, company, tutor, a
             me inner join `tabModule Enrolment Tutor` 
             met on me.name=met.parent
             WHERE academic_term = %s
-                AND course = %s
-                AND academic_year = %s
-                AND college = %s
+                AND me.course = %s
+                AND me.academic_year = %s
+                AND me.college = %s
                 AND me.docstatus= 1
-                AND tutor = %s
+                AND met.tutor = %s
             ;
         """, (academic_term, module, academic_year, company, tutor), as_dict=True)
     else:

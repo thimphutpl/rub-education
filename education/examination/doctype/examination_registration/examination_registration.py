@@ -109,7 +109,7 @@ class ExaminationRegistration(Document):
             self.module,
             self.assessment_component,
             self.academic_term,
-            self.college
+            self.company
         ))
 
         if not ass_com:

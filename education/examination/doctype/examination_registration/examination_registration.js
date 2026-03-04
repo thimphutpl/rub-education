@@ -45,6 +45,8 @@ frappe.ui.form.on("Examination Registration", {
                     frappe.msgprint(__("Please select Tutor"));
                     return;
                 }
+
+                
                 
                 if (frm.doc.reassesment === undefined || frm.doc.reassesment === null) {
                     frappe.msgprint(__("Please select Reassessment option"));

@@ -186,9 +186,23 @@ class ContinuousAssessmentEntry(Document):
 			)
 
 	def fetch_weightage(self):
-		if self.assessment_component:
-			weightage= frappe.get_value("Module Assessment Item",{"assessment_name":self.assessment_component,"parent":self.module},"weightage")
-	
+		condition = ""
+		if self.tutor:
+			condition = f" AND mac.tutor = '{self.tutor}'"
+		weightage= frappe.db.sql(f"""
+			SELECT mai.weightage
+			FROM `tabModule Assessment Item` mai
+			INNER JOIN `tabModule Assessment Criteria` mac 
+				ON mai.parent = mac.name
+			WHERE mac.college = '{self.college}'
+			AND mac.academic_term = '{self.academic_term}'
+			AND mac.programme = '{self.programme}'
+			AND mac.module = '{self.module}'
+			AND mai.assessment_name = '{self.assessment_component}'
+			{condition}
+		""", as_dict=1)
+		if len(weightage) > 0:
+			weightage = weightage[0].weightage
 		self.weightage = weightage
 
 	def create_assessment_ledger(self):

@@ -16,7 +16,7 @@ class ProgrammeMaster(Document):
 		if not frappe.db.exists("Programme Record History", {"parent": self.name, "programme_name": self.programme_name+ " - " + str(self.programme_approval_date).split("-")[0]}):
 			self.update_programme_record()
 		self.sync_programme_history()
-
+ 
 
 	# @frappe.whitelist()
 	# def validate_assessment(self):

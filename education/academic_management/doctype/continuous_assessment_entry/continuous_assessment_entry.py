@@ -165,7 +165,7 @@ class ContinuousAssessmentEntry(Document):
 					ON mai.parent = mac.name
 				WHERE mac.college = '{self.college}'
 				AND mac.academic_term = '{self.academic_term}'
-				AND mac.programme = '{i.programme}'
+				AND mac.programme = '{self.programme}'
 				AND mac.module = '{self.module}'
 				AND mai.assessment_name = '{self.assessment_component}'
 				{condition}

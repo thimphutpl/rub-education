@@ -149,11 +149,41 @@ class ContinuousAssessmentEntry(Document):
 	# 	frappe.db.commit()
 			
 
-
 	def calculate_weightage_achieved(self):
 		for i in self.items:
-			if i.marks_verified and self.total_marks and self.weightage:
-				i.weightage_achieved = float(float(i.marks_verified/self.total_marks)*self.weightage)
+			if not (i.marks_verified and self.total_marks):
+				continue
+
+			condition = ""
+			if self.tutor:
+				condition = f" AND mac.tutor = '{self.tutor}'"
+
+			query = f"""
+				SELECT mai.weightage
+				FROM `tabModule Assessment Item` mai
+				INNER JOIN `tabModule Assessment Criteria` mac 
+					ON mai.parent = mac.name
+				WHERE mac.college = '{self.college}'
+				AND mac.academic_term = '{self.academic_term}'
+				AND mac.programme = '{i.programme}'
+				AND mac.module = '{self.module}'
+				AND mai.assessment_name = '{self.assessment_component}'
+				{condition}
+			"""
+
+			# frappe.throw(str(query))
+
+			result = frappe.db.sql(query)
+
+			if not result:
+				frappe.throw("Weightage not defined for this configuration")
+
+			weightage = result[0][0] or 0
+
+			i.weightage = weightage
+			i.weightage_achieved = (
+				(i.marks_verified / self.total_marks) * weightage
+			)
 
 	def fetch_weightage(self):
 		if self.assessment_component:

@@ -11,6 +11,7 @@
   "weightage",
   "column_break_xvsj",
   "section_break_ptbh",
+  "module_enrolment_key",
   "college",
   "programme",
   "semester",
@@ -24,7 +25,6 @@
   "academic_term",
   "tutor",
   "tutor_name",
-  "module_enrolment_key",
   "get_students",
   "section_break_jygm",
   "items",
@@ -58,12 +58,13 @@
    "reqd": 1
   },
   {
-   "fetch_from": "examination_registration.module",
+   "fetch_from": "module_enrolment_key.module",
    "fieldname": "module",
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Module",
    "options": "Module",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -80,11 +81,12 @@
    "fieldtype": "Section Break"
   },
   {
-   "fetch_from": "examination_registration.academic_year",
+   "fetch_from": "academic_term.academic_year",
    "fieldname": "academic_year",
    "fieldtype": "Link",
    "label": "Academic Year",
    "options": "Academic Year",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -92,6 +94,7 @@
    "fieldtype": "Link",
    "label": "Semester",
    "options": "Semester",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -120,15 +123,15 @@
    "fieldtype": "Column Break"
   },
   {
-   "fetch_from": "examination_registration.academic_term",
+   "fetch_from": "module_enrolment_key.academic_term",
    "fieldname": "academic_term",
    "fieldtype": "Link",
    "label": "Academic Term",
    "options": "Academic Term",
+   "read_only": 1,
    "reqd": 1
   },
   {
-   "fetch_from": "examination_registration.tutor",
    "fieldname": "tutor",
    "fieldtype": "Link",
    "label": "Tutor",
@@ -143,11 +146,12 @@
    "reqd": 1
   },
   {
-   "fetch_from": "examination_registration.company",
+   "fetch_from": "module_enrolment_key.college",
    "fieldname": "college",
    "fieldtype": "Link",
    "label": "College",
    "options": "Company",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -186,10 +190,12 @@
    "search_index": 1
   },
   {
+   "fetch_from": "module_enrolment_key.programme",
    "fieldname": "programme",
    "fieldtype": "Link",
    "label": "Programme",
    "options": "Programme",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -204,7 +210,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-03-05 05:07:20.540122",
+ "modified": "2026-03-05 12:08:16.893928",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Continuous Assessment Entry",

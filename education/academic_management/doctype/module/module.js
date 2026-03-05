@@ -3,30 +3,38 @@
 
 frappe.ui.form.on("Module", {
   setup(frm){
-  //   frm.set_query('student_group', 'tutors', function () {
-  //     return {
-  //         query:
-  //         'erpnext.controllers.queries.filter_college_programme_student_section',
-  //         filters: {
-  //         // program: frm.doc.programme,
-  //         college: frm.doc.college,
-  //         programme: frm.doc.programme,
-  //         module: frm.doc.module,
-  //         },
-  //     }
-  // })
-  frm.set_query('programme', 'colleges', function (cdt, cdn) {
+    frm.set_query('student_group', 'tutors', function () {
+      return {
+          query:
+          'erpnext.controllers.queries.filter_college_programme_student_section',
+          filters: {
+          // program: frm.doc.programme,
+          college: frm.doc.college,
+          programme: frm.doc.programme,
+          module: frm.doc.module,
+          },
+      }
+  })
+  frm.set_query('programme', 'colleges', function (frm, cdt, cdn) {
+    var row = locals[cdt][cdn];
     // let college = [];
     // frm.doc.colleges.forEach(function(item) {
     //     college.push(item.college);
     // });
+  //   return {
+  //     // query:
+  //     // 'erpnext.controllers.queries.filter_college_programme_module_tutors',
+  //     filters: {
+  //       // program: frm.doc.progr name,
+  //       docstatus: 1,
+  //     },
+  // }
     return {
-      // query:
-      // 'erpnext.controllers.queries.filter_college_programme_module_tutors',
-      filters: {
-        // program: frm.doc.progr name,
-        docstatus: 1,
-      },
+      query:
+      'erpnext.controllers.queries.get_college_programme',
+    filters: {
+      college: row.college,
+    },
   }
 })
 },

@@ -2,19 +2,20 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on("Module", {
-  setup(frm){
-    frm.set_query('student_group', 'tutors', function () {
-      return {
-          query:
-          'erpnext.controllers.queries.filter_college_programme_student_section',
-          filters: {
-          // program: frm.doc.programme,
-          college: frm.doc.college,
-          programme: frm.doc.programme,
-          module: frm.doc.module,
-          },
-      }
-  })
+   setup(frm){
+  //   frm.set_query('student_group', 'tutors', function () {
+  //     return {
+  //         query:
+  //         'erpnext.controllers.queries.filter_college_programme_student_section',
+  //         filters: {
+  //         // program: frm.doc.programme,
+  //         college: frm.doc.college,
+  //         programme: frm.doc.programme,
+  //         module: frm.doc.module,
+  //         },
+  //     }
+  // }
+  // )
   frm.set_query('programme', 'colleges', function (frm, cdt, cdn) {
     var row = locals[cdt][cdn];
     // let college = [];

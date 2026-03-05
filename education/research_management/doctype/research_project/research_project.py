@@ -52,14 +52,17 @@ def make_payment_entry(source_name, target_doc=None):
         target.payment_type = "Pay"
         if source.researcher_details and len(source.researcher_details) > 0:
             researcher = source.researcher_details[0]
-            if researcher.is_student:
+            if researcher.type =="Student":
                 target.party_type = "Student"
                 target.party = researcher.student
                 target.party_name = researcher.first_name
-            else:
+            elif researcher.type =="Employee":
                 target.party_type = "Employee"
                 target.party = researcher.employee
                 target.party_name = researcher.employee_name
+            else:
+                target.party_type = "Other"
+                target.party = researcher.external_name
 
             target.company = researcher.college
             target.call_for_research = source.name

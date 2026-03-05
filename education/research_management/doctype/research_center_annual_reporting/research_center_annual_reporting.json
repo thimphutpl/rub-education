@@ -72,7 +72,8 @@
   },
   {
    "fieldname": "section_break_brji",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "hidden": 1
   },
   {
    "fieldname": "table_rjff",
@@ -156,8 +157,8 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-12-15 16:01:32.376709",
- "modified_by": "Administrator",
+ "modified": "2026-01-15 15:02:29.328070",
+ "modified_by": "rohan.gurung@thimphutechpark.bt",
  "module": "Research Management",
  "name": "Research Center Annual Reporting",
  "naming_rule": "Expression (old style)",

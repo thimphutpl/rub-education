@@ -1,0 +1,29 @@
+{
+ "add_total_row": 1,
+ "add_translate_data": 0,
+ "columns": [],
+ "creation": "2026-03-06 04:28:04.489822",
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [],
+ "idx": 0,
+ "is_standard": "Yes",
+ "letter_head": "rub_defaut",
+ "letterhead": null,
+ "modified": "2026-03-06 04:28:04.489822",
+ "modified_by": "Administrator",
+ "module": "Research Management",
+ "name": "Research Projecct Report",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "ref_doctype": "Research Project",
+ "report_name": "Research Projecct Report",
+ "report_type": "Script Report",
+ "roles": [
+  {
+   "role": "System Manager"
+  }
+ ],
+ "timeout": 0
+}

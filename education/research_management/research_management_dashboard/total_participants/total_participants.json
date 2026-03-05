@@ -1,0 +1,21 @@
+{
+ "cards": [],
+ "charts": [
+  {
+   "chart": "Gender Participant Ratio",
+   "width": "Half"
+  }
+ ],
+ "creation": "2026-01-14 16:28:34.425640",
+ "dashboard_name": "Total Participants",
+ "docstatus": 0,
+ "doctype": "Dashboard",
+ "idx": 0,
+ "is_default": 1,
+ "is_standard": 1,
+ "modified": "2026-01-14 16:36:43.047660",
+ "modified_by": "Administrator",
+ "module": "Research Management",
+ "name": "Total Participants",
+ "owner": "Administrator"
+}

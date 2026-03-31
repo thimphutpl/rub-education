@@ -8,9 +8,8 @@
  "field_order": [
   "college",
   "type",
-  "section_break_hqjt",
-  "employee",
   "student",
+  "employee",
   "section_break_imeu",
   "amended_from",
   "event_title",
@@ -184,7 +183,7 @@
    "fieldname": "room",
    "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "Room",
+   "label": "Venue",
    "options": "Room"
   },
   {
@@ -260,6 +259,7 @@
   {
    "fieldname": "forward_to",
    "fieldtype": "Link",
+   "ignore_user_permissions": 1,
    "label": "Forward To",
    "options": "Employee"
   },
@@ -275,16 +275,6 @@
    "read_only": 1
   },
   {
-   "fieldname": "section_break_hqjt",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "employee",
-   "fieldtype": "Link",
-   "label": "Employee",
-   "options": "Employee"
-  },
-  {
    "fieldname": "type",
    "fieldtype": "Select",
    "label": "Type",
@@ -295,13 +285,19 @@
    "fieldtype": "Link",
    "label": "Student",
    "options": "Student"
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-03-03 00:01:04.729400",
+ "modified": "2026-03-12 09:29:09.688756",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "Events",

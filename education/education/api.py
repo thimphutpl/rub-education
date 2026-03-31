@@ -54,7 +54,7 @@ def enroll_student(source_name):
 		["student_category", "program", "academic_year"],
 		as_dict=True,
 	)
-	program_enrollment = frappe.new_doc("Program Enrollment")
+	program_enrollment = frappe.new_doc("Program Enrolment")
 	program_enrollment.student = student.name
 	program_enrollment.student_category = student_applicant.student_category
 	program_enrollment.student_name = student.student_name
@@ -481,7 +481,7 @@ def get_current_enrollment(student, academic_year=None):
 			name as program_enrollment, student_name, program, student_batch_name as student_batch,
 			student_category, academic_term, academic_year
 		from
-			`tabProgram Enrollment`
+			`tabProgram Enrolment`
 		where
 			student = %s and academic_year = %s
 		order by creation""",
@@ -539,7 +539,7 @@ def get_student_info():
 def get_student_programs(student):
 	# student = 'EDU-STU-2023-00043'
 	programs = frappe.db.get_list(
-		"Program Enrollment",
+		"Program Enrolment",
 		fields=["program", "name"],
 		filters={"docstatus": 1, "student": student},
 	)

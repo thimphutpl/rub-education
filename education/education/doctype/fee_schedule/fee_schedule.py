@@ -321,7 +321,7 @@ def get_students(
 	students = frappe.db.sql(
 		"""
         select pe.student, pe.student_name, pe.program, pe.student_batch_name, pe.name as enrollment
-        from `tabStudent Group Student` sgs, `tabProgram Enrollment` pe
+        from `tabStudent Group Student` sgs, `tabProgram Enrolment` pe
         where
             pe.docstatus = 1 and pe.student = sgs.student and pe.academic_year = %s
             and sgs.parent = %s and sgs.active = 1

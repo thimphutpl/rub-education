@@ -10,6 +10,7 @@
   "research_center_name",
   "year",
   "reporting_type",
+  "sub_reporting_type",
   "policy_briefs_section",
   "policy_briefs_title",
   "publisher_policy_brief",
@@ -434,13 +435,19 @@
    "fieldtype": "Table MultiSelect",
    "label": "Principal Investigator",
    "options": "Research Article Employees"
+  },
+  {
+   "fieldname": "sub_reporting_type",
+   "fieldtype": "Link",
+   "label": "Sub Reporting Type",
+   "options": "Sub Reporting Type"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-12-19 12:45:37.706958",
+ "modified": "2026-03-23 16:14:59.081043",
  "modified_by": "Administrator",
  "module": "Research Management",
  "name": "Research Center Reporting Items",

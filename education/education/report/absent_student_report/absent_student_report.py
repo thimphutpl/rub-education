@@ -119,7 +119,7 @@ def get_transportation_details(date, student_list):
 		return {}
 
 	transportation_details = frappe.get_all(
-		"Program Enrollment",
+		"Program Enrolment",
 		fields=["student", "mode_of_transportation", "vehicle_no"],
 		filters={
 			"student": ("in", student_list),

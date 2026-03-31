@@ -5,7 +5,7 @@ frappe.query_reports["Assessment Ledger Report"] = {
 	"filters": [
         {
             "fieldname": "company",
-            "label": "Company",
+            "label": "College",
             "fieldtype": "Link",
             "options": "Company",
             "default": frappe.defaults.get_user_default("Company"),

@@ -37,7 +37,7 @@ class ProgramEnrollment(Document):
 
 	def validate_duplication(self):
 		enrollment = frappe.db.exists(
-			"Program Enrollment",
+			"Program Enrolment",
 			{
 				"student": self.student,
 				"program": self.program,
@@ -51,7 +51,7 @@ class ProgramEnrollment(Document):
 			frappe.throw(_("Student is already enrolled."))
 
 	def update_student_joining_date(self):
-		table = frappe.qb.DocType("Program Enrollment")
+		table = frappe.qb.DocType("Program Enrolment")
 		date = (
 			frappe.qb.from_(table)
 			.select(Min(table.enrollment_date).as_("enrollment_date"))
@@ -137,7 +137,7 @@ def get_program_courses(doctype, txt, searchfield, start, page_len, filters):
 
 	doctype = "Module"
 	return frappe.db.sql(
-		"""select m.name as course, m.module_title as course_name from `tabModule` m, `tabModule College` mc
+		"""select m.name as course, m.module_title as course_name, m.module_code from `tabModule` m, `tabModule College` mc
         where  m.name = mc.parent and mc.programme = %(program)s and m.name like %(txt)s and mc.college = %(college)s
 		and mc.module_semester = %(semester)s
         order by
@@ -190,7 +190,7 @@ def get_students(doctype, txt, searchfield, start, page_len, filters):
 		filters["academic_year"] = frappe.defaults.get_defaults().academic_year
 
 	enrolled_students = frappe.get_list(
-		"Program Enrollment",
+		"Program Enrolment",
 		filters={
 			"academic_term": filters.get("academic_term"),
 			"academic_year": filters.get("academic_year"),

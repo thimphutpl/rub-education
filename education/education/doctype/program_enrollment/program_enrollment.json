@@ -112,7 +112,7 @@
    "fieldname": "courses",
    "fieldtype": "Table",
    "label": "Courses",
-   "options": "Program Enrollment Course"
+   "options": "Program Enrolment Course"
   },
   {
    "fieldname": "section_break_7",
@@ -172,11 +172,11 @@
  "links": [
   {
    "group": "Enrollment",
-   "link_doctype": "Course Enrollment",
+   "link_doctype": "Module Enrolment",
    "link_fieldname": "program_enrollment"
   }
  ],
- "modified": "2025-10-06 11:38:28.026917",
+ "modified": "2026-03-03 21:42:49.723052",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Program Enrollment",

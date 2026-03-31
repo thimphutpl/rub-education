@@ -6,152 +6,92 @@ import json
 from frappe.model.document import Document
 from frappe import _
 
+
 class ExaminationRegistration(Document):
     def validate(self):
         self.check_assessment_component()
         self.check_duplicate_ass_component()
-        self.check_duplicate_ra()
-        self.fetch_exam_registration()
         
     def on_submit(self):
-        self.check_exam_marks_entry()
+        pass
         
-    def check_duplicate_ra(self):
-        duplicate = frappe.db.get_value(
-            "Examination Registration",
-            {
-                "reassesment": 1,
-                "examination_registration": self.examination_registration,
-                "docstatus": 1
-            },
-            "name"
+    def check_assessment_component(self):
+        # Get assessment role first
+        assessment_role = frappe.db.get_value(
+            "Assessment Component",
+            self.assessment_component,
+            "assessment_role"
         )
         
-        if duplicate:
-            frappe.throw(
-                f"Reassessment already registered for the regular exam <b>{self.examination_registration}</b>. "
-                f"The Registered Number is <a href='/app/examination-registration/{duplicate}' target='_blank'>{duplicate}</a>",
-                title="Duplicate Reassessment Found"
-            )
+        # For Exam Cell, module is optional - skip the module validation
+        if assessment_role == "Exam Cell":
+            # Only validate that the assessment component exists without module
+            ass_com = frappe.db.sql("""
+                SELECT 1 
+                FROM `tabModule Assessment Item` mai
+                INNER JOIN `tabModule Assessment Criteria` mac 
+                    ON mai.parent = mac.name
+                WHERE mac.academic_term = %s
+                    AND mac.college = %s
+                    AND mai.assessment_name = %s
+            """, (
+                self.academic_term,
+                self.company,
+                self.assessment_component
+            ))
+        else:
+            # For Tutor role, validate with module
+            if not self.module:
+                frappe.throw(_("Module is required for Tutor assessment component"))
                 
-    def fetch_exam_registration(self):
-        if self.reassesment:
-            # Get assessment component to check role
-            assessment_component = frappe.db.get_value(
-                "Assessment Component",
+            ass_com = frappe.db.sql("""
+                SELECT 1 
+                FROM `tabModule Assessment Item` mai
+                INNER JOIN `tabModule Assessment Criteria` mac 
+                    ON mai.parent = mac.name
+                WHERE mac.module = %s
+                    AND mai.assessment_name = %s
+                    AND mac.academic_term = %s
+                    AND mac.college = %s
+            """, (
+                self.module,
                 self.assessment_component,
-                "assessment_role"
-            )
-            
-            # Build query based on assessment role
-            if assessment_component == "Exam Cell":
-                exam_registration = frappe.db.sql("""
-                    SELECT name 
-                    FROM `tabExamination Registration`
-                    WHERE module = %s
-                    AND semester = %s
-                    AND academic_term = %s
-                    AND company = %s
-                    AND assessment_component = %s
-                    AND docstatus = 1
-                    ORDER BY posting_date DESC 
-                    LIMIT 1
-                """, 
-                (self.module, self.semester, self.academic_term, self.company, 
-                 self.assessment_component),
-                as_dict=True)
-            else:
-                exam_registration = frappe.db.sql("""
-                    SELECT name 
-                    FROM `tabExamination Registration`
-                    WHERE module = %s
-                    AND semester = %s
-                    AND academic_term = %s
-                    AND company = %s
-                    AND assessment_component = %s
-                    AND tutor = %s
-                    AND docstatus = 1
-                    ORDER BY posting_date DESC 
-                    LIMIT 1
-                """, 
-                (self.module, self.semester, self.academic_term, self.company, 
-                 self.assessment_component, self.tutor),
-                as_dict=True)
-
-            if exam_registration:
-                self.examination_registration = exam_registration[0].get('name')
-            else:
-                frappe.throw(f"Examination Registration not found for {self.assessment_component}")
-                
-    def check_exam_marks_entry(self):
-        if int(self.reassesment) == 1: 
-            exam_registration = frappe.db.exists(
-                "Examination Marks Entry",
-                {
-                    "examination_registration": self.examination_registration,
-                    "docstatus": 1
-                }
-            )
-            if not exam_registration:
-                frappe.throw(f"You cannot create the reassessment for '{self.examination_registration}' unless you create an examination entry for it first")
-
-    def check_assessment_component(self):
-        ass_com = frappe.db.sql("""
-            SELECT 1 
-            FROM `tabModule Assessment Item` mai
-            INNER JOIN `tabModule Assessment Criteria` mac 
-                ON mai.parent = mac.name
-            WHERE mac.module = %s
-                AND mai.assessment_name = %s
-                AND mac.academic_term = %s
-                AND mac.college = %s
-        """, (
-            self.module,
-            self.assessment_component,
-            self.academic_term,
-            self.company
-        ))
+                self.academic_term,
+                self.company
+            ))
 
         if not ass_com:
-            frappe.throw("The component {} dont exist for module {}".format(self.assessment_component,self.module))
-        # Check if the assessment component exists in Module Assessment Item
-        # ass_com = frappe.db.exists(
-        #     "Module Assessment Item",
-        #     {
-        #         "parent": self.module,
-        #         "assessment_name": self.assessment_component
-        #     }
-        # )
-
-        # if not ass_com:
-        #     frappe.throw(
-        #         f"The Assessment Component '{self.assessment_component}' "
-        #         f"does not exist for module '{self.module}'"
-        #     )
+            if assessment_role == "Exam Cell":
+                frappe.throw("The component {} doesn't exist for this academic term and college".format(self.assessment_component))
+            else:
+                frappe.throw("The component {} doesn't exist for module {}".format(self.assessment_component, self.module))
 
     def check_duplicate_ass_component(self):
         if int(self.reassesment) == 0:
             # Get assessment component to check role
-            assessment_component = frappe.db.get_value(
+            assessment_role = frappe.db.get_value(
                 "Assessment Component",
                 self.assessment_component,
                 "assessment_role"
             )
             
             # Build query based on assessment role
-            if assessment_component == "Exam Cell":
+            if assessment_role == "Exam Cell":
                 duplicate = frappe.db.exists(
                     "Examination Registration",
                     {
                         "company": self.company,
                         "assessment_component": self.assessment_component,
-                        "module": self.module,
                         "academic_term": self.academic_term,
                         "docstatus": 1
                     }
                 )
                 tutor_msg = ""
             else:
+                # For Tutor role, module is required
+                if not self.module:
+                    frappe.throw(_("Module is required for Tutor assessment component"))
+                    
                 duplicate = frappe.db.exists(
                     "Examination Registration",
                     {
@@ -175,16 +115,17 @@ class ExaminationRegistration(Document):
 
 @frappe.whitelist()
 def get_students(academic_year, academic_term, module, company, tutor, reassesment, assessment_component):
-    """Get students for examination registration with attendance percentage"""
+    """Get students for reassessment from Examination Review Application"""
+    
+    # Only process reassessment
+    if int(reassesment) != 1:
+        frappe.throw(_("This function is only for reassessment purposes"))
     
     # Validate required fields
     required_fields = {
         "assessment_component": "Assessment Component",
-        "academic_year": "Academic Year",
         "academic_term": "Academic Term", 
-        "module": "Module",
         "company": "College",
-        "reassesment": "Reassessment"
     }
     
     for field, label in required_fields.items():
@@ -208,15 +149,19 @@ def get_students(academic_year, academic_term, module, company, tutor, reassesme
     credit_clearance_included = assessment_component_settings.get("credit_clearance_included", 0)
     
     # Validate tutor only for Tutor role
-    if assessment_role == "Tutor" and not tutor:
-        frappe.throw(_("Please select Tutor for this assessment component"))
+    if assessment_role == "Tutor":
+        if not tutor:
+            frappe.throw(_("Please select Tutor for this assessment component"))
+        if not module:
+            frappe.throw(_("Please select Module for this assessment component"))
     
-    if int(reassesment) == 1:
-        all_students = get_reassessment_students(academic_term, module, company, tutor, assessment_component, assessment_role)
-    else:
-        all_students = get_regular_students(academic_year, academic_term, module, company, tutor, assessment_role)
+    # Get students from Examination Review Application for reassessment
+    all_students = get_reassessment_students(
+        academic_term, module, company, tutor, assessment_component, assessment_role
+    )
     
-    all_students = calculate_attendance_percentage(all_students)
+    # Calculate attendance percentage for all students
+    all_students = calculate_attendance_percentage(all_students, academic_term, company, module, assessment_role)
     
     non_eligible_students = []
     eligible_students = []
@@ -225,18 +170,20 @@ def get_students(academic_year, academic_term, module, company, tutor, reassesme
     low_attendance_students = {}
     disciplinary_student_ids = set()
     unpaid_student_ids = set()
+    
     if attendance_included:
-        low_attendance_students = get_students_with_low_attendance(module, academic_term, company)
+        low_attendance_students = get_students_with_low_attendance(module, academic_term, company, assessment_role)
     
     if disciplinary_included:
-        disciplinary_student_ids = get_students_with_disciplinary_actions(company, academic_term)
+        disciplinary_student_ids = get_students_with_disciplinary_actions(company, academic_term, module, assessment_role)
     
     if credit_clearance_included:
-        unpaid_student_ids = get_students_with_unpaid_credit_clearance(company, academic_term)
+        unpaid_student_ids = get_students_with_unpaid_credit_clearance(company, academic_term, module, assessment_role)
     
     for student in all_students:
         student_id = student["student"]
         exclusion_reasons = []
+        
         if attendance_included and student_id in low_attendance_students:
             exclusion_reasons.append(f"Low Attendance ({low_attendance_students[student_id]}%)")
             student["attendance_issue"] = 1
@@ -291,121 +238,94 @@ def get_students(academic_year, academic_term, module, company, tutor, reassesme
 def get_reassessment_students(academic_term, module, company, tutor, assessment_component, assessment_role):
     """Get students from Examination Review Application for reassessment"""
     
-    if assessment_role == "Tutor":
-        return frappe.db.sql("""
-            SELECT 
-                student, 
-                student_name,
-                "Review" as datatype
-            FROM `tabExamination Review Application`
-            WHERE academic_term = %s
-                AND module = %s
-                AND college = %s
-                AND tutor = %s
-                AND assessment_component = %s
-                AND exam_review_type = "Exam Re-Assessment"
-                AND docstatus = 1
-        """, (academic_term, module, company, tutor, assessment_component), as_dict=True)
-    else:
-        # Exam Cell - get all students without tutor filter
-        return frappe.db.sql("""
-            SELECT 
-                student, 
-                student_name,
-                "Review" as datatype
-            FROM `tabExamination Review Application`
-            WHERE academic_term = %s
-                AND module = %s
-                AND college = %s
-                AND assessment_component = %s
-                AND exam_review_type = "Exam Re-Assessment"
-                AND docstatus = 1
-        """, (academic_term, module, company, assessment_component), as_dict=True)
-
-
-def get_regular_students(academic_year, academic_term, module, company, tutor, assessment_role):
-    """Get students from Module Enrolment for regular assessment"""
-
-    # frappe.throw("hi")
+    # Base query with correct field names from Examination Review Application
+    query = """
+        SELECT 
+            era.student as student,
+            era.student_name as student_name,
+            "Examination Review Application" as datatype,
+            era.module,
+            era.assessment_component,
+            era.semester,
+            era.academic_term,
+            era.college,
+            era.tutor,
+            era.amount_paid,
+            era.journal_entry
+        FROM `tabExamination Review Application` era
+        WHERE era.academic_term = %s
+            AND era.college = %s
+            AND era.assessment_component = %s
+            AND era.exam_review_type = "Exam Re-Assessment"
+            AND era.docstatus = 1
+    """
     
-    if assessment_role == "Tutor":
-        # frappe.throw("""
-        #     SELECT 
-        #         student, 
-        #         student_name,
-        #         "Course Enrolment" as datatype
-        #     FROM `tabModule Enrolment`
-        #     WHERE academic_term = '{}'
-        #         AND course = '{}'
-        #         AND academic_year = '{}'
-        #         AND college = '{}'
-        #         AND tutor = '{}'
-        # """.format(academic_term, module, academic_year, company, tutor))
+    params = [academic_term, company, assessment_component]
+    
+    if module:
+        query += " AND era.module = %s"
+        params.append(module)
 
-        
-        # return frappe.db.sql("""
-        #     SELECT 
-        #         student, 
-        #         student_name,
-        #         "Course Enrolment" as datatype
-        #     FROM `tabModule Enrolment`
-        #     WHERE academic_term = %s
-        #         AND course = %s
-        #         AND academic_year = %s
-        #         AND college = %s
-        #         AND docstatus= 1
-        #         AND tutor = %s
-        # """, (academic_term, module, academic_year, company, tutor), as_dict=True)
-
-        return frappe.db.sql("""
-            select student, student_name,
-            "Course Enrolment" as datatype 
-            FROM `tabModule Enrolment`
-            me inner join `tabModule Enrolment Tutor` 
-            met on me.name=met.parent
-            WHERE academic_term = %s
-                AND me.course = %s
-                AND me.academic_year = %s
-                AND me.college = %s
-                AND me.docstatus= 1
-                AND met.tutor = %s
-            ;
-        """, (academic_term, module, academic_year, company, tutor), as_dict=True)
-    else:
-        # Exam Cell - get all students without tutor filter
-        return frappe.db.sql("""
-            SELECT 
-                student, 
-                student_name,
-                "Course Enrolment" as datatype
-            FROM `tabModule Enrolment`
-            WHERE academic_term = %s
-                AND course = %s
-                AND academic_year = %s
-                AND docstatus= 1
-                AND college = %s
-        """, (academic_term, module, academic_year, company), as_dict=True)
+    if assessment_role == "Tutor" and tutor:
+        query += " AND era.tutor = %s"
+        params.append(tutor)
+    
+    query += " ORDER BY era.student_name"
+    
+    students = frappe.db.sql(query, params, as_dict=True)
+    
+    if not students:
+        frappe.msgprint(_("No reassessment applications found for the given criteria"))
+    
+    return students
 
 
-def calculate_attendance_percentage(students):
+def calculate_attendance_percentage(students, academic_term, company, module=None, assessment_role=None):
     """Calculate attendance percentage for each student"""
     if not students:
         return students
     
     # Get all student IDs
     student_ids = [student["student"] for student in students]
-    attendance_data = frappe.db.sql("""
-        SELECT 
-            student,
-            ROUND(
-                (SUM(CASE WHEN status = 'Present' THEN 1 ELSE 0 END) / COUNT(*)) * 100,
-                2
-            ) as attendance_percentage
-        FROM `tabStudent Attendance`
-        WHERE student IN %s
-        AND docstatus= 1
-        GROUP BY student
-    """, [student_ids], as_dict=True)
+    
+    if not student_ids:
+        return students
+    
+    # Build query based on role
+    if assessment_role == "Exam Cell" or not module:
+        # For Exam Cell, get attendance for all students
+        attendance_data = frappe.db.sql("""
+            SELECT 
+                student,
+                ROUND(
+                    (SUM(CASE WHEN status = 'Present' THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                    2
+                ) as attendance_percentage
+            FROM `tabStudent Attendance`
+            WHERE student IN %s
+            AND docstatus = 1
+            GROUP BY student
+        """, [student_ids], as_dict=True)
+    else:
+        # For Tutor role, filter by module
+        attendance_data = frappe.db.sql("""
+            SELECT 
+                sa.student,
+                ROUND(
+                    (SUM(CASE WHEN sa.status = 'Present' THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                    2
+                ) as attendance_percentage
+            FROM `tabStudent Attendance` sa
+            INNER JOIN `tabModule Enrolment` me 
+                ON me.student = sa.student 
+                AND me.course = %s 
+                AND me.academic_term = %s 
+                AND me.college = %s
+                AND me.docstatus = 1
+            WHERE sa.student IN %s
+            AND sa.docstatus = 1
+            GROUP BY sa.student
+        """, (module, academic_term, company, student_ids), as_dict=True)
     
     attendance_dict = {item["student"]: item["attendance_percentage"] for item in attendance_data}
     
@@ -415,65 +335,105 @@ def calculate_attendance_percentage(students):
     return students
 
 
-def get_students_with_low_attendance(module, academic_term, company):
+def get_students_with_low_attendance(module, academic_term, company, assessment_role=None):
     """Get students with attendance below 75%"""
-    low_attendance_students = frappe.db.sql("""
-        SELECT 
-            student,
-            ROUND(
-                (SUM(CASE WHEN status = 'Present' THEN 1 ELSE 0 END) / COUNT(*)) * 100,
-                2
-            ) as attendance_percentage
-        FROM `tabStudent Attendance`
-        WHERE student IN (
-            SELECT student 
-            FROM `tabModule Enrolment` 
-            WHERE course = %s
-                AND academic_term = %s
-                AND college = %s
-                AND docstatus= 1
-        )
-        GROUP BY student
-        HAVING attendance_percentage < 75
-    """, (module, academic_term, company), as_dict=True)
+    if assessment_role == "Exam Cell" or not module:
+        # For Exam Cell, get low attendance across all modules
+        low_attendance_students = frappe.db.sql("""
+            SELECT 
+                student,
+                ROUND(
+                    (SUM(CASE WHEN status = 'Present' THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                    2
+                ) as attendance_percentage
+            FROM `tabStudent Attendance`
+            WHERE docstatus = 1
+            GROUP BY student
+            HAVING attendance_percentage < 75
+        """, [], as_dict=True)
+    else:
+        # For Tutor role, filter by module
+        low_attendance_students = frappe.db.sql("""
+            SELECT 
+                student,
+                ROUND(
+                    (SUM(CASE WHEN status = 'Present' THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                    2
+                ) as attendance_percentage
+            FROM `tabStudent Attendance`
+            WHERE student IN (
+                SELECT student 
+                FROM `tabModule Enrolment` 
+                WHERE course = %s
+                    AND academic_term = %s
+                    AND college = %s
+                    AND docstatus = 1
+            )
+            AND docstatus = 1
+            GROUP BY student
+            HAVING attendance_percentage < 75
+        """, (module, academic_term, company), as_dict=True)
     
     return {item["student"]: item["attendance_percentage"] for item in low_attendance_students}
 
 
-def get_students_with_disciplinary_actions(company, academic_term):
+def get_students_with_disciplinary_actions(company, academic_term, module=None, assessment_role=None):
     """Get list of student IDs who have disciplinary actions"""
-    disciplinary_students = frappe.db.sql("""
-        SELECT DISTINCT student_code as student
-        FROM `tabDisciplinary Action`
-        WHERE company = %s
-            AND docstatus = 1
-            AND decision="Terminate"
-            AND student_code IN (
-                SELECT student 
-                FROM `tabModule Enrolment` 
-                WHERE academic_term = %s
-                AND college = %s
-                AND docstatus= 1
-            )
-    """, (company, academic_term, company), as_dict=True)
+    if assessment_role == "Exam Cell" or not module:
+        # For Exam Cell, get all students with disciplinary actions
+        disciplinary_students = frappe.db.sql("""
+            SELECT DISTINCT student_code as student
+            FROM `tabDisciplinary Action`
+            WHERE company = %s
+                AND docstatus = 1
+                AND decision = "Terminate"
+        """, (company,), as_dict=True)
+    else:
+        # For Tutor role, filter by module
+        disciplinary_students = frappe.db.sql("""
+            SELECT DISTINCT student_code as student
+            FROM `tabDisciplinary Action`
+            WHERE company = %s
+                AND docstatus = 1
+                AND decision = "Terminate"
+                AND student_code IN (
+                    SELECT student 
+                    FROM `tabModule Enrolment` 
+                    WHERE course = %s
+                    AND academic_term = %s
+                    AND college = %s
+                    AND docstatus = 1
+                )
+        """, (company, module, academic_term, company), as_dict=True)
     
     return {student["student"] for student in disciplinary_students}
 
 
-def get_students_with_unpaid_credit_clearance(company, academic_term):
+def get_students_with_unpaid_credit_clearance(company, academic_term, module=None, assessment_role=None):
     """Get list of student IDs who have unpaid credit clearance"""
     try:
-        unpaid_students = frappe.db.sql("""
-            SELECT DISTINCT student_code as student
-            FROM `tabCredit Clearance Details`
-            WHERE status = 'Unpaid'
-                AND student_code IN (
-                    SELECT student 
-                    FROM `tabModule Enrolment` 
-                    WHERE academic_term = %s
-                    AND college = %s
-                )
-        """, (academic_term, company), as_dict=True)
+        if assessment_role == "Exam Cell" or not module:
+            # For Exam Cell, get all students with unpaid credit clearance
+            unpaid_students = frappe.db.sql("""
+                SELECT DISTINCT student_code as student
+                FROM `tabCredit Clearance Details`
+                WHERE status = 'Unpaid'
+            """, (), as_dict=True)
+        else:
+            # For Tutor role, filter by module
+            unpaid_students = frappe.db.sql("""
+                SELECT DISTINCT student_code as student
+                FROM `tabCredit Clearance Details`
+                WHERE status = 'Unpaid'
+                    AND student_code IN (
+                        SELECT student 
+                        FROM `tabModule Enrolment` 
+                        WHERE course = %s
+                        AND academic_term = %s
+                        AND college = %s
+                        AND docstatus = 1
+                    )
+            """, (module, academic_term, company), as_dict=True)
     except Exception as e:
         frappe.log_error(f"Error fetching unpaid credit clearance: {str(e)}")
         unpaid_students = []
@@ -486,12 +446,13 @@ def get_disciplinary_details(student_code, company):
     disciplinary_details = frappe.db.sql("""
         SELECT 
             da.disciplinary_issue_type,
+            da.issue_description,
             da.date_of_the_issue
         FROM `tabDisciplinary Action` da
-        LEFT JOIN `tabDisciplinary Issue Type` dit ON da.disciplinary_issue_type = dit.name
         WHERE da.student_code = %s
             AND da.company = %s
             AND da.docstatus = 1
+            AND da.decision = "Terminate"
         ORDER BY da.date_of_the_issue DESC
         LIMIT 1
     """, (student_code, company), as_dict=True)
@@ -504,12 +465,12 @@ def get_credit_clearance_details(student_code, company):
     try:
         credit_details = frappe.db.sql("""
             SELECT 
-                sum(amount) as amount,
+                SUM(amount) as amount,
                 status
             FROM `tabCredit Clearance Details`
             WHERE student_code = %s
                 AND status = 'Unpaid'
-            ORDER BY creation DESC
+            GROUP BY student_code
         """, (student_code,), as_dict=True)
     except Exception as e:
         frappe.log_error(f"Error fetching credit clearance details: {str(e)}")

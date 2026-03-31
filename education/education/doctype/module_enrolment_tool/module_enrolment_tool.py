@@ -148,8 +148,8 @@ def get_programme(doctype, txt, searchfield, start, page_len, filters):
 		},
 	)
 
+
 @frappe.whitelist()
-@frappe.validate_and_sanitize_search_inputs
 def filter_student_section(doctype, txt, searchfield, start, page_len, filters):
 	if filters.get("validate") == 1:
 		if not filters.get("college"):

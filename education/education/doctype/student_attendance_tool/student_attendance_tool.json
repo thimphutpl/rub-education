@@ -9,10 +9,10 @@
   "based_on",
   "group_based_on",
   "column_break_2",
+  "academic_term",
   "student_group",
   "academic_year",
   "course",
-  "academic_term",
   "course_schedule",
   "date",
   "attendance",
@@ -75,7 +75,7 @@
    "label": "Students HTML"
   },
   {
-   "fetch_from": "student_group.academic_year",
+   "fetch_from": "academic_term.academic_year",
    "fieldname": "academic_year",
    "fieldtype": "Link",
    "label": "Academic Year",
@@ -88,7 +88,7 @@
    "fieldtype": "Link",
    "label": "Academic Term",
    "options": "Academic Term",
-   "read_only": 1
+   "reqd": 1
   },
   {
    "fieldname": "course",
@@ -101,7 +101,7 @@
  "hide_toolbar": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-01-13 12:36:43.739448",
+ "modified": "2026-03-05 03:44:31.556415",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student Attendance Tool",

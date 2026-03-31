@@ -156,7 +156,7 @@ def create_program_enrollment(
 	enrollment_date="2023-04-01",
 	submit=False,
 ):
-	program_enrollment = frappe.new_doc("Program Enrollment")
+	program_enrollment = frappe.new_doc("Program Enrolment")
 	program_enrollment.student = student_name
 	program_enrollment.program = program
 	program_enrollment.academic_year = academic_year

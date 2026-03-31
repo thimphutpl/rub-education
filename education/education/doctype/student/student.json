@@ -19,6 +19,8 @@
   "programme",
   "year",
   "semester",
+  "is_existing_student",
+  "old_student_id",
   "column_break_4",
   "naming_series",
   "joining_date",
@@ -28,6 +30,7 @@
   "catering_type",
   "image",
   "status",
+  "date_of_graudation",
   "hostel_status",
   "section_break_7",
   "student_email_id",
@@ -68,7 +71,19 @@
   "extra_curricular_activities_tab",
   "extra_curricular_activities_details",
   "disciplinary_action_tab",
-  "disciplinary_action_details"
+  "disciplinary_action_details",
+  "student_research_tab",
+  "research_articles",
+  "section_break_ypbn",
+  "journals",
+  "section_break_vpyt",
+  "conference_seminar_paper",
+  "section_break_josa",
+  "book_chapters",
+  "section_break_ilnj",
+  "knowledge_transfer_and_community_service",
+  "section_break_xiiq",
+  "research_event_organized"
  ],
  "fields": [
   {
@@ -361,13 +376,13 @@
    "fieldtype": "Link",
    "in_standard_filter": 1,
    "label": "Programme",
-   "options": "Programme Master"
+   "options": "Programme"
   },
   {
    "fieldname": "year",
    "fieldtype": "Link",
    "label": "Year",
-   "options": "Fiscal Year"
+   "options": "Year"
   },
   {
    "fieldname": "semester",
@@ -380,7 +395,7 @@
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "Active\nInactive\nLeft",
+   "options": "Active\nInactive\nSuspended\nGraduated\nLeft",
    "search_index": 1
   },
   {
@@ -416,6 +431,88 @@
    "fieldtype": "Data",
    "label": "Hostel Status",
    "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "is_existing_student",
+   "fieldtype": "Check",
+   "label": "Is Existing Student"
+  },
+  {
+   "depends_on": "eval:doc.is_existing_student;",
+   "fieldname": "old_student_id",
+   "fieldtype": "Data",
+   "label": "Old Student ID",
+   "mandatory_depends_on": "eval:doc.is_existing_student;"
+  },
+  {
+   "depends_on": "eval:doc.status == \"Graduated\";",
+   "fieldname": "date_of_graudation",
+   "fieldtype": "Date",
+   "label": "Date of Graudation",
+   "mandatory_depends_on": "eval:doc.status == \"Graduated\";",
+   "read_only_depends_on": "eval:doc.status != \"Graduated\";"
+  },
+  {
+   "fieldname": "student_research_tab",
+   "fieldtype": "Tab Break",
+   "label": "Student Research"
+  },
+  {
+   "fieldname": "research_articles",
+   "fieldtype": "Table",
+   "label": "Research Articles",
+   "options": "Employee Research Item"
+  },
+  {
+   "fieldname": "section_break_ypbn",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "journals",
+   "fieldtype": "Table",
+   "label": "Journals",
+   "options": "Journals Item"
+  },
+  {
+   "fieldname": "section_break_vpyt",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "conference_seminar_paper",
+   "fieldtype": "Table",
+   "label": "Conference Seminar Paper",
+   "options": "Conference Seminar Paper Item"
+  },
+  {
+   "fieldname": "section_break_josa",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "book_chapters",
+   "fieldtype": "Table",
+   "label": "Book Chapters",
+   "options": "Book Chapters Item"
+  },
+  {
+   "fieldname": "section_break_ilnj",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "knowledge_transfer_and_community_service",
+   "fieldtype": "Table",
+   "label": "Knowledge Transfer and Community Service",
+   "options": "Knowledge Transfer and Community Service"
+  },
+  {
+   "fieldname": "section_break_xiiq",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "research_event_organized",
+   "fieldtype": "Table",
+   "label": "Research Event Organized",
+   "options": "Research Event Organized Item"
   }
  ],
  "image_field": "image",
@@ -427,7 +524,7 @@
   },
   {
    "group": "Admission",
-   "link_doctype": "Module Enrollment",
+   "link_doctype": "Module Enrolment",
    "link_fieldname": "student"
   },
   {
@@ -456,8 +553,8 @@
    "link_fieldname": "student"
   }
  ],
- "modified": "2026-02-16 16:19:17.338374",
- "modified_by": "03230337.gcbs@rub.edu.bt",
+ "modified": "2026-03-31 09:00:10.838621",
+ "modified_by": "Administrator",
  "module": "Education",
  "name": "Student",
  "naming_rule": "By \"Naming Series\" field",

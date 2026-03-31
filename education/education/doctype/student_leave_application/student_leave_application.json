@@ -24,14 +24,15 @@
   "column_break_bbyz",
   "approver_designation",
   "sb_attachment",
-  "attach_zqhy",
+  "attachment",
   "joining_details_section",
   "rejoining_date",
   "approved_by_sso",
   "cb",
   "reason_for_late_rejoining",
   "section_break_vccc",
-  "amended_from"
+  "amended_from",
+  "workflow_state"
  ],
  "fields": [
   {
@@ -76,7 +77,8 @@
   {
    "fieldname": "reason",
    "fieldtype": "Text",
-   "label": "Reason"
+   "label": "Reason",
+   "reqd": 1
   },
   {
    "fieldname": "amended_from",
@@ -122,11 +124,6 @@
    "label": "<u>Attachments</u>"
   },
   {
-   "fieldname": "attach_zqhy",
-   "fieldtype": "Attach",
-   "reqd": 1
-  },
-  {
    "fieldname": "sb_approver",
    "fieldtype": "Section Break",
    "label": "<u>Approver Details</u>"
@@ -157,27 +154,33 @@
    "read_only": 1
   },
   {
+   "depends_on": "eval:frappe.datetime.get_today() > doc.to_date && doc.workflow_state == \"Approved\";",
    "fieldname": "joining_details_section",
    "fieldtype": "Section Break",
    "label": "<u>Joining Details</u>"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "rejoining_date",
    "fieldtype": "Date",
-   "label": "Rejoining Date"
+   "label": "Rejoining Date",
+   "read_only_depends_on": "eval:doc.workflow_state != \"Approved\";"
   },
   {
    "fieldname": "cb",
    "fieldtype": "Column Break"
   },
   {
-   "depends_on": "eval:doc.rejoining_date > doc.to_date;",
+   "allow_on_submit": 1,
+   "depends_on": "eval:frappe.datetime.get_today() > doc.to_date;",
    "fieldname": "reason_for_late_rejoining",
    "fieldtype": "Small Text",
    "label": "Reason for Late Rejoining",
-   "mandatory_depends_on": "eval:doc.rejoining_date > doc.to_date;"
+   "mandatory_depends_on": "eval:frappe.datetime.get_today() > doc.to_date && doc.workflow_state == \"Approved\";",
+   "read_only_depends_on": "eval:doc.workflow_state != \"Approved\";"
   },
   {
+   "allow_on_submit": 1,
    "default": "0",
    "fieldname": "approved_by_sso",
    "fieldtype": "Check",
@@ -195,12 +198,26 @@
    "label": "Leave Type",
    "options": "Student Leave Type",
    "reqd": 1
+  },
+  {
+   "fieldname": "attachment",
+   "fieldtype": "Attach",
+   "label": "Supporting Documents",
+   "mandatory_depends_on": "eval:doc.workflow_state == \"Approved\";"
+  },
+  {
+   "fieldname": "workflow_state",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Workflow State",
+   "options": "Workflow State",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2025-12-01 12:10:45.279202",
- "modified_by": "sangay.choden@thimphutechpark.bt",
+ "modified": "2026-03-23 15:55:06.009093",
+ "modified_by": "Administrator",
  "module": "Education",
  "name": "Student Leave Application",
  "naming_rule": "Expression (old style)",

@@ -89,7 +89,7 @@ class ProgramEnrolmentTool(Document):
 		total = len(self.students)
 		for i, stud in enumerate(self.students):
 			frappe.publish_realtime(
-				"program_enrolment_tool", dict(progress=[i + 1, total]), user=frappe.session.user
+				"program_enrollment_tool", dict(progress=[i + 1, total]), user=frappe.session.user
 			)
 			if stud.student:
 				prog_enrollment = frappe.new_doc("Program Enrolment")

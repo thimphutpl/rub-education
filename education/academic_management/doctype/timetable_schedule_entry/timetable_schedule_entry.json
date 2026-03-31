@@ -1,0 +1,257 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "TSE.YY.MM.DD.######",
+ "creation": "2026-03-17 16:14:44.303707",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "ubdetailsbu_section",
+  "college",
+  "college_abbreviation",
+  "academic_year",
+  "programme",
+  "programme_abbreviation",
+  "tutor",
+  "tutor_name",
+  "constraint",
+  "class_type",
+  "column_break_ovju",
+  "academic_term",
+  "academic_session",
+  "module",
+  "module_code",
+  "class_room",
+  "student_section",
+  "timetable_schedule_id",
+  "room_name",
+  "ubschedule_detailsbu_section",
+  "from_time",
+  "day",
+  "column_break_zxes",
+  "to_time"
+ ],
+ "fields": [
+  {
+   "fieldname": "college",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "College",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "academic_term",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Academic Term",
+   "options": "Academic Term",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "academic_term.academic_year",
+   "fieldname": "academic_year",
+   "fieldtype": "Link",
+   "label": "Academic Year",
+   "options": "Academic Year",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "academic_term.academic_session",
+   "fieldname": "academic_session",
+   "fieldtype": "Link",
+   "label": "Academic Session",
+   "options": "Academic Session",
+   "read_only": 1
+  },
+  {
+   "fieldname": "programme",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Programme",
+   "options": "Programme",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "module",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Module",
+   "options": "Module",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "class_room",
+   "fieldtype": "Link",
+   "label": "Class Room",
+   "options": "Room",
+   "reqd": 1
+  },
+  {
+   "fieldname": "tutor",
+   "fieldtype": "Link",
+   "label": "Tutor",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "tutor.employee_name",
+   "fieldname": "tutor_name",
+   "fieldtype": "Data",
+   "label": "Tutor Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "ubdetailsbu_section",
+   "fieldtype": "Section Break",
+   "label": "<u><b>Details</b><u></u></u>"
+  },
+  {
+   "fieldname": "column_break_ovju",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "student_section",
+   "fieldtype": "Link",
+   "label": "Student Section",
+   "options": "Student Section"
+  },
+  {
+   "fieldname": "timetable_schedule_id",
+   "fieldtype": "Link",
+   "label": "Timetable Schedule ID",
+   "options": "Time Table Schedule",
+   "read_only": 1
+  },
+  {
+   "fieldname": "ubschedule_detailsbu_section",
+   "fieldtype": "Section Break",
+   "label": "<u><b>Schedule Details</b><u></u></u>"
+  },
+  {
+   "fieldname": "from_time",
+   "fieldtype": "Time",
+   "label": "From Time"
+  },
+  {
+   "fieldname": "column_break_zxes",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "to_time",
+   "fieldtype": "Time",
+   "label": "To Time"
+  },
+  {
+   "fieldname": "day",
+   "fieldtype": "Select",
+   "label": "Day",
+   "options": "\nMonday\nTuesday\nWednesday\nThursday\nFriday\nSaturday\nSunday",
+   "reqd": 1
+  },
+  {
+   "fieldname": "constraint",
+   "fieldtype": "Link",
+   "label": "Timetable Constraint",
+   "options": "Timetable Constraints",
+   "read_only": 1
+  },
+  {
+   "fieldname": "class_type",
+   "fieldtype": "Select",
+   "label": "Class Type",
+   "options": "\nTheory\nPractical",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "module.module_code",
+   "fieldname": "module_code",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Module Code",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "programme.abbreviation",
+   "fieldname": "programme_abbreviation",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Programme Abbreviation",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "college.abbr",
+   "fieldname": "college_abbreviation",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "in_list_view": 1,
+   "label": "College Abbreviation",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "class_room.room_name",
+   "fieldname": "room_name",
+   "fieldtype": "Data",
+   "label": "Room Name",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-03-23 16:07:34.346513",
+ "modified_by": "Administrator",
+ "module": "Academic Management",
+ "name": "Timetable Schedule Entry",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Academic Dean",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Academics User",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Student",
+   "share": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "search_fields": "college, programme, module",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

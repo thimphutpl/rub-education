@@ -1,0 +1,47 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-03-25 23:58:50.140150",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "semester",
+  "column_break_cjrb",
+  "weightage"
+ ],
+ "fields": [
+  {
+   "fieldname": "semester",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Semester",
+   "options": "Semester"
+  },
+  {
+   "fieldname": "column_break_cjrb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "weightage",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Weightage",
+   "precision": "0"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-03-26 00:01:53.274830",
+ "modified_by": "Administrator",
+ "module": "Academic Management",
+ "name": "Academic Weightage Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

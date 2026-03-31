@@ -16,7 +16,7 @@ def execute(filters=None):
 	columns = get_columns()
 
 	program_enrollments = frappe.get_list(
-		"Program Enrollment",
+		"Program Enrolment",
 		fields=["student", "student_name"],
 		filters={
 			"academic_year": academic_year,

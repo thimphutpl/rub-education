@@ -9,10 +9,13 @@
   "college",
   "programme",
   "academic_term",
+  "academic_year",
+  "academic_session",
   "module",
   "column_break_zhjy",
   "student_batch",
   "student_section",
+  "posting_date",
   "ubdeadline_settingsbu_section",
   "deadline",
   "section_break_yceo",
@@ -100,13 +103,35 @@
    "fieldtype": "Date",
    "label": "Deadline",
    "reqd": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "academic_term.academic_year",
+   "fieldname": "academic_year",
+   "fieldtype": "Link",
+   "label": "Academic Year",
+   "options": "Academic Year",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "academic_term.academic_session",
+   "fieldname": "academic_session",
+   "fieldtype": "Link",
+   "label": "Academic Session",
+   "options": "Academic Session"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-03-04 15:14:09.952542",
+ "modified": "2026-03-30 13:10:46.035629",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Module Enrolment Key",

@@ -2,6 +2,16 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on("Module Enrolment Tool", {
+    // setup(frm){
+    //     frm.set_query("college", function () {
+    //         return {
+    //             filters: {
+    //                 is_group: 0,
+    //         name: ["!=", "Office of Vice Chancellor"]
+    //             },
+    //         };
+    //     });
+    // },
 	refresh(frm) {
         frm.set_query('course', function () {
             return {
@@ -18,7 +28,7 @@ frappe.ui.form.on("Module Enrolment Tool", {
           frm.set_query('programme', function () {
             return {
                 query:
-                'education.education.doctype.module_enrollment_tool.module_enrollment_tool.get_programme',
+                'education.education.doctype.module_enrolment_tool.module_enrolment_tool.get_programme',
               filters: {
                 college: frm.doc.college,
                 date: frm.doc.enrollment_date,
@@ -29,7 +39,7 @@ frappe.ui.form.on("Module Enrolment Tool", {
           frm.set_query('student_section', function () {
             return {
                 query:
-                'education.education.doctype.module_enrollment_tool.module_enrollment_tool.filter_student_section',
+                'education.education.doctype.module_enrolment_tool.module_enrolment_tool.filter_student_section',
               filters: {
                 college: frm.doc.college,
                 programme: frm.doc.programme,

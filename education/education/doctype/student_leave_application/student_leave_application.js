@@ -33,7 +33,8 @@ frappe.ui.form.on('Student Leave Application', {
     if (frm.doc.from_date && frm.doc.to_date) {
       frappe.call({
         method:
-          'education.education.doctype.student_leave_application.student_leave_application.calculate_leave_days',
+          'calculate_leave_days',
+        doc: frm.doc,
         args: {
           from_date: frm.doc.from_date,
           to_date: frm.doc.to_date,

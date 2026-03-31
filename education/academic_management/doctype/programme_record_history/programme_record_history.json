@@ -9,6 +9,7 @@
  "field_order": [
   "programme_name",
   "abbreviation",
+  "programme_years",
   "approval_date",
   "ccr_date",
   "from_date",
@@ -128,13 +129,20 @@
    "fieldtype": "Data",
    "label": "Programme Name Display",
    "read_only": 1
+  },
+  {
+   "fieldname": "programme_years",
+   "fieldtype": "Link",
+   "label": "Programme Years",
+   "options": "Year",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-03-05 02:38:25.169016",
+ "modified": "2026-03-25 12:35:38.672864",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Programme Record History",

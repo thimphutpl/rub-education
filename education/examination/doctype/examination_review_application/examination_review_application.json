@@ -12,18 +12,19 @@
   "student_name",
   "college",
   "academic_term",
-  "examination_registration",
   "column_break_ovjl",
   "programme",
   "module",
   "semester",
   "assessment_component",
+  "assessment_role",
   "tutor",
   "section_break_esjd",
   "journal_entry",
   "column_break_fxnd",
   "amount_paid",
   "section_break_nikz",
+  "posting_date",
   "amended_from"
  ],
  "fields": [
@@ -132,33 +133,38 @@
    "reqd": 1
   },
   {
+   "depends_on": "assessment_role==\"Tutor\"",
    "fieldname": "tutor",
    "fieldtype": "Link",
    "label": "Tutor",
-   "options": "Employee",
-   "reqd": 1
-  },
-  {
-   "description": "The Examination Registration of the assesment Component the student failed",
-   "fieldname": "examination_registration",
-   "fieldtype": "Link",
-   "label": "Examination Registration",
-   "options": "Examination Registration",
-   "read_only": 1
+   "options": "Employee"
   },
   {
    "fieldname": "assessment_component",
    "fieldtype": "Link",
-   "label": "Assesment Component",
+   "label": "Assessment Component",
    "options": "Assessment Component",
    "reqd": 1
+  },
+  {
+   "fetch_from": "assessment_component.assessment_role",
+   "fieldname": "assessment_role",
+   "fieldtype": "Data",
+   "label": "Assessment Role",
+   "options": "Assessment Component"
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date",
+   "options": "Examination Review Application"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-10-16 23:43:16.517402",
+ "modified": "2026-03-31 15:21:11.842933",
  "modified_by": "Administrator",
  "module": "Examination",
  "name": "Examination Review Application",

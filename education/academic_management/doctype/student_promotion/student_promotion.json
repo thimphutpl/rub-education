@@ -1,0 +1,191 @@
+{
+ "actions": [],
+ "autoname": "SPR.YYYY.MM.DD.#######",
+ "creation": "2026-03-25 12:10:40.341022",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "student",
+  "student_name",
+  "programme",
+  "status",
+  "column_break_3",
+  "promotion_date",
+  "college",
+  "academic_term",
+  "academic_year",
+  "academic_session",
+  "details_section",
+  "promotion_details",
+  "promotion_entry",
+  "salary_details_section",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "promotion_date",
+   "fieldtype": "Date",
+   "label": "Promotion Date",
+   "reqd": 1
+  },
+  {
+   "description": "Set the properties that should be updated in the Employee master on promotion submission",
+   "fieldname": "details_section",
+   "fieldtype": "Section Break",
+   "label": "Student Promotion Details"
+  },
+  {
+   "fieldname": "promotion_details",
+   "fieldtype": "Table",
+   "options": "Student Property History"
+  },
+  {
+   "fieldname": "promotion_entry",
+   "fieldtype": "Link",
+   "label": "Student Promotion Entry",
+   "options": "Student Promotion Entry"
+  },
+  {
+   "fieldname": "salary_details_section",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Student Promotion",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Student Promotion",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "student",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Student",
+   "options": "Student",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "student.student_name",
+   "fieldname": "student_name",
+   "fieldtype": "Data",
+   "label": "Student Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.department",
+   "fieldname": "programme",
+   "fieldtype": "Link",
+   "label": "Programme",
+   "options": "Programme",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.company",
+   "fieldname": "college",
+   "fieldtype": "Link",
+   "label": "College",
+   "options": "Company"
+  },
+  {
+   "fieldname": "academic_term",
+   "fieldtype": "Link",
+   "label": "Academic Term",
+   "options": "Academic Term",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "academic_term.academic_year",
+   "fieldname": "academic_year",
+   "fieldtype": "Link",
+   "label": "Academic Year",
+   "options": "Academic Year",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "academic_term.academic_session",
+   "fieldname": "academic_session",
+   "fieldtype": "Link",
+   "label": "Academic Session",
+   "options": "Academic Session",
+   "read_only": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "\nPromoted\nGraduated",
+   "reqd": 1
+  }
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-03-25 12:29:13.327895",
+ "modified_by": "Administrator",
+ "module": "Academic Management",
+ "name": "Student Promotion",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Employee",
+   "share": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR User",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "student_name",
+ "track_changes": 1
+}

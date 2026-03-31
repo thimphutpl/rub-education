@@ -1,0 +1,211 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:{company_abbr}-{academic_year}-{YY}-{MM}-{###}",
+ "creation": "2026-03-25 10:14:30.556270",
+ "default_view": "List",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_lbn5",
+  "company",
+  "company_abbr",
+  "semester",
+  "get_students",
+  "assessment_component",
+  "assessment_role",
+  "column_break_uyam",
+  "academic_year",
+  "academic_term",
+  "posting_date",
+  "module",
+  "module_code",
+  "section_break_sdrw",
+  "total_eligible_student",
+  "eligible_students",
+  "section_break_rndh",
+  "non_eligible_students",
+  "more_information_section",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_lbn5",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "College",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "company.abbr",
+   "fieldname": "company_abbr",
+   "fieldtype": "Data",
+   "label": "Company Abbr",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "assessment_component",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Assessment Component",
+   "options": "Assessment Component"
+  },
+  {
+   "fetch_from": "assessment_component.assessment_role",
+   "fieldname": "assessment_role",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "in_list_view": 1,
+   "label": "Assessment Role",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_uyam",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date",
+   "reqd": 1
+  },
+  {
+   "depends_on": "eval:doc.assessment_role==\"Tutor\"",
+   "fieldname": "module",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "in_list_view": 1,
+   "label": "Module",
+   "mandatory_depends_on": "eval:doc.assessment_role==\"Tutor\"",
+   "options": "Module"
+  },
+  {
+   "depends_on": "eval:doc.assessment_role==\"Tutor\"",
+   "fetch_from": "module.module_code",
+   "fieldname": "module_code",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "in_list_view": 1,
+   "label": "Module Code",
+   "mandatory_depends_on": "eval:doc.assessment_role==\"Tutor\"",
+   "read_only": 1
+  },
+  {
+   "fieldname": "semester",
+   "fieldtype": "Link",
+   "label": "Semester",
+   "options": "Semester",
+   "reqd": 1
+  },
+  {
+   "fieldname": "academic_year",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Academic Year",
+   "options": "Academic Year",
+   "reqd": 1
+  },
+  {
+   "fieldname": "academic_term",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Academic Term",
+   "options": "Academic Term",
+   "reqd": 1
+  },
+  {
+   "fieldname": "get_students",
+   "fieldtype": "Button",
+   "label": "Get Students"
+  },
+  {
+   "fieldname": "section_break_sdrw",
+   "fieldtype": "Section Break",
+   "label": "Eligible Students"
+  },
+  {
+   "fieldname": "total_eligible_student",
+   "fieldtype": "Data",
+   "label": "Total Eligible Student"
+  },
+  {
+   "depends_on": "reassesment",
+   "fieldname": "eligible_students",
+   "fieldtype": "Table",
+   "label": "Students",
+   "options": "Exam Students"
+  },
+  {
+   "fieldname": "section_break_rndh",
+   "fieldtype": "Section Break",
+   "label": "Ineligible Students"
+  },
+  {
+   "fieldname": "non_eligible_students",
+   "fieldtype": "Table",
+   "label": "Non Eligible",
+   "options": "Non Eligible Exam Students"
+  },
+  {
+   "fieldname": "more_information_section",
+   "fieldtype": "Section Break",
+   "label": "More Information"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Examination Registration",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Examination Registration",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-03-25 11:00:02.686662",
+ "modified_by": "Administrator",
+ "module": "Examination",
+ "name": "Ineligible Student",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "search_fields": "module,module_code,assessment_component,academic_term",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

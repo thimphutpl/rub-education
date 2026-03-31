@@ -13,6 +13,7 @@
   "column_break_zele",
   "deadline_for_submission",
   "organization",
+  "research_call_for",
   "research_details_section",
   "research_description",
   "file_upload"
@@ -79,12 +80,18 @@
    "fieldname": "grant_amount",
    "fieldtype": "Data",
    "label": "Grant Amount"
+  },
+  {
+   "fieldname": "research_call_for",
+   "fieldtype": "Select",
+   "label": "Research Call For",
+   "options": "\nStudent\nFaculty"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-10-21 22:07:30.723453",
+ "modified": "2026-03-23 17:01:04.527572",
  "modified_by": "Administrator",
  "module": "Research Management",
  "name": "Call for Research",

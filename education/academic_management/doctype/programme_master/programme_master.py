@@ -36,6 +36,7 @@ class ProgrammeMaster(Document):
 				"programme_master": self.name,
 				"approval_date": self.programme_approval_date,
 				"abbreviation": self.abbreviation,
+				"programme_years": self.programme_years,
 				"apmr_date": self.programme_apmr_date,
 				"ccr_date": self.programme_ccr_date,
 				"programme_description": self.programme_description,
@@ -55,6 +56,7 @@ class ProgrammeMaster(Document):
 					programme.programme_name = prog.programme_name
 					programme.programme_name_display = prog.programme_name_display
 					programme.abbreviation = prog.abbreviation
+					programme.programme_years = prog.programme_years
 					programme.child_ref = prog.name
 					programme.programme_approval_date = prog.approval_date
 					programme.programme_apmr_date = prog.apmr_date
@@ -86,6 +88,8 @@ class ProgrammeMaster(Document):
 					if old:
 						if (old.abbreviation != self.abbreviation) or not prog.abbreviation:
 							prog.abbreviation = self.abbreviation
+						if (old.programme_years != self.programme_years) or not prog.programme_years:
+							prog.programme_years = self.programme_years
 						if (old.programme_approval_date != self.programme_approval_date) or not prog.approval_date:
 							prog.approval_date = self.programme_approval_date
 						# if (old.programme_leader != self.programme_leader) or not prog.programme_leader:
@@ -102,6 +106,7 @@ class ProgrammeMaster(Document):
 						if frappe.db.exists("Programme", {"name": prog.programme_link}):
 							programme = frappe.get_doc("Programme", prog.programme_link)
 							programme.abbreviation = prog.abbreviation
+							programme.programme_years = prog.programme_years
 							programme.programme_approval_date = prog.approval_date
 							programme.child_ref = prog.name
 							# programme.programme_leader = prog.programme_leader

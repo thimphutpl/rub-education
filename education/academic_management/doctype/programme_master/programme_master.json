@@ -8,6 +8,8 @@
  "field_order": [
   "programme_name",
   "abbreviation",
+  "column_break_cmcs",
+  "programme_years",
   "sb_colleges",
   "colleges",
   "section_break_emfb",
@@ -113,12 +115,23 @@
    "fieldname": "programme_ccr_date",
    "fieldtype": "Date",
    "label": "Programme CCR date"
+  },
+  {
+   "fieldname": "column_break_cmcs",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "programme_years",
+   "fieldtype": "Link",
+   "label": "Programme Years",
+   "options": "Year",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-01-12 14:25:20.873240",
+ "modified": "2026-03-25 12:34:57.239276",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Programme Master",

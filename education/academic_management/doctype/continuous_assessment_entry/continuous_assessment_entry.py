@@ -151,7 +151,7 @@ class ContinuousAssessmentEntry(Document):
 
 	def calculate_weightage_achieved(self):
 		for i in self.items:
-			if not (i.marks_verified and self.total_marks):
+			if not (i.marks_obtained and self.total_marks):
 				continue
 
 			condition = ""
@@ -182,7 +182,7 @@ class ContinuousAssessmentEntry(Document):
 
 			i.weightage = weightage
 			i.weightage_achieved = (
-				(i.marks_verified / self.total_marks) * weightage
+				(i.marks_obtained / self.total_marks) * weightage
 			)
 
 	def fetch_weightage(self):
@@ -214,7 +214,7 @@ class ContinuousAssessmentEntry(Document):
 				"student_name": i.student_name,
 				"academic_year": self.academic_year,
 				"academic_term": self.academic_term,
-				"marks_obtained": i.marks_verified,
+				"marks_obtained": i.marks_obtained,
 				"semester":self.semester,
 				"passing_marks": self.passing_marks,
 				"total_marks": self.total_marks,

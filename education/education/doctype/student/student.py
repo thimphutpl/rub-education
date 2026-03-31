@@ -14,6 +14,20 @@ from education.education.utils import check_content_completion, check_quiz_compl
 
 
 class Student(Document):
+	def autoname(self):
+		year = str(self.joining_date).split("-")[0][2:]
+		# from erpnext.accounts.utils import get_autoname_with_number
+		from frappe.model.naming import make_autoname
+		college_code = frappe.db.get_value("Company", self.company, "college_code")
+		if not college_code:
+			frappe.throw("College Code is not set in Company {}".format(self.company))
+		if self.is_existing_student == 0:
+			self.name = make_autoname(college_code+year+".####")
+		else:
+			if not self.old_student_id:
+				self.name = old_student_id
+
+
 	def validate(self):
 		self.set_title()
 		self.validate_dates()
@@ -168,7 +182,7 @@ class Student(Document):
 	def get_program_enrollments(self):
 		"""Returns a list of course enrollments linked with the current student"""
 		program_enrollments = frappe.get_all(
-			"Program Enrollment", filters={"student": self.name}, fields=["program"]
+			"Program Enrolment", filters={"student": self.name}, fields=["program"]
 		)
 		if not program_enrollments:
 			return None
@@ -213,7 +227,7 @@ class Student(Document):
 		try:
 			enrollment = frappe.get_doc(
 				{
-					"doctype": "Program Enrollment",
+					"doctype": "Program Enrolment",
 					"student": self.name,
 					"academic_year": frappe.get_last_doc("Academic Year").name,
 					"program": program_name,
@@ -223,9 +237,9 @@ class Student(Document):
 			enrollment.save(ignore_permissions=True)
 		except frappe.exceptions.ValidationError:
 			enrollment_name = frappe.get_list(
-				"Program Enrollment", filters={"student": self.name, "Program": program_name}
+				"Program Enrodlment", filters={"student": self.name, "Program": program_name}
 			)[0].name
-			return frappe.get_doc("Program Enrollment", enrollment_name)
+			return frappe.get_doc("Program Enrolment", enrollment_name)
 		else:
 			enrollment.submit()
 			return enrollment

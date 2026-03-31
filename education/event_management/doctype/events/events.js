@@ -49,6 +49,33 @@ frappe.ui.form.on("Events", {
             }
 
         });
+
+        frm.call("has_faculty_attendance").then((r) => {
+            if (frappe.user.has_role("Student")) {
+                return;
+            }
+
+            if (!r.message.has_faculty_attendance) {
+                if (frm.doc.docstatus === 1) {
+                    frm.add_custom_button(
+                        __("Create Faculty Attendance"),
+                        function () {
+                            frm.events.create_faculty_attendace(frm);
+                        },
+                    );
+
+                }
+            } else {
+                if (frm.doc.name) {
+                    frm.add_custom_button(__('View Faculty Attendance'), function () {
+                        frappe.set_route('List', 'Faculty Attendance', {
+                            student: frm.doc.name
+                        });
+                    });
+                }
+            }
+
+        });
         // toggle_agenda(frm);
         // toggle_full_paper(frm);
 
@@ -65,7 +92,28 @@ frappe.ui.form.on("Events", {
                 };
         }
 
+        if (frappe.user.has_role("Employee")) {
 
+            if (!frm.doc.college) { // only set if empty
+                frappe.db.get_value('Employee', { user_id: frappe.session.user }, ['company'])
+                    .then(r => {
+                        if (r.message && r.message.company) {
+                            frm.set_value('college', r.message.company);
+                            frm.set_df_property('college', 'read_only', 1);
+                        }
+                    });
+            }
+
+        } else if (frappe.user.has_role("Student")) {
+
+            frappe.db.get_value('Student', { user: frappe.session.user }, ['company'])
+                .then(r => {
+                    if (r.message && r.message.company) {
+                        frm.set_value('college', r.message.company);
+                    }
+                });
+
+        }
 
     },
     college(frm) {
@@ -85,8 +133,6 @@ frappe.ui.form.on("Events", {
         student_filter(frm);
         forward_to_filter(frm);
         room_filter(frm);
-        employee_filter(frm);
-        student_filter(frm);
         faculty_register_filter(frm);
         student_register_filter(frm);
 
@@ -160,6 +206,32 @@ frappe.ui.form.on("Events", {
             }
         });
     },
+
+    create_faculty_attendace: function (frm) {
+        let method = "education.event_management.doctype.faculty_attendance.faculty_attendance.create_attendance";
+        frappe.dom.freeze("Please wait. Creating Faculty Attendance...", true);
+        return frappe.call({
+            method: method,
+            args: {
+                dt: frm.doc.doctype,
+                dn: frm.doc.name,
+            },
+            callback: function (r) {
+                if (r.message && r.message.attendance_name) {
+                    frappe.msgprint("Successfully Attendance created.");
+                    frappe.set_route("List", "Faculty Attendance", r.message.attendance_name);
+                } else {
+                    frappe.msgprint("No attendance records created.");
+                }
+            },
+            always: function () {
+                setTimeout(() => {
+                    frappe.dom.unfreeze();
+                }, 500);
+            }
+        });
+    },
+
 
     guest__external_participant: function (frm) {
         if (frm.doc.guest__external_participant) {
@@ -276,18 +348,6 @@ function faculty_register_filter(frm) {
         };
     });
 }
-
-function employee_filter(frm) {
-    if (!frm.doc.college) return;
-
-    frm.set_query("faculty_email", "faculty_register", function (doc, cdt, cdn) {
-        return {
-            filters: {
-                company: frm.doc.college
-            }
-        };
-    });
-}
 function student_filter(frm) {
     if (!frm.doc.college) return;
 
@@ -332,7 +392,8 @@ function forward_to_filter(frm) {
     frm.set_query("forward_to", function () {
         return {
             filters: {
-                company: frm.doc.college
+                company: frm.doc.college,
+                // role: "Event Approval"
             }
         };
     });

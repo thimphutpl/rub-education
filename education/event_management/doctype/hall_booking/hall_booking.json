@@ -1,0 +1,248 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-03-12 16:06:52.962799",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "hall_booking_reservation_form_section",
+  "amended_from",
+  "venue",
+  "section_break_kaqg",
+  "company",
+  "section_break_aerw",
+  "branch",
+  "column_break_anba",
+  "cost_center",
+  "section_break_zcts",
+  "email",
+  "section_break_x94i",
+  "name1",
+  "column_break_ysvf",
+  "designation",
+  "section_break_pkds",
+  "country",
+  "column_break_gjxz",
+  "dzongkhag",
+  "column_break_ocyr",
+  "organization",
+  "section_break_zznl",
+  "purpose",
+  "section_break_hcql",
+  "from_date",
+  "from_time",
+  "column_break_jdri",
+  "to_date",
+  "to_time",
+  "section_break_niif",
+  "amount",
+  "column_break_drag",
+  "total_days",
+  "column_break_ukyy",
+  "total_amount"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_x94i",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Hall Booking",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "name1",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_ysvf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "designation",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Designation",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_pkds",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "country",
+   "fieldtype": "Link",
+   "label": "Country",
+   "options": "Country"
+  },
+  {
+   "fieldname": "column_break_gjxz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "dzongkhag",
+   "fieldtype": "Link",
+   "label": "District/Dzongkhag",
+   "options": "Dzongkhag"
+  },
+  {
+   "fieldname": "column_break_ocyr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "organization",
+   "fieldtype": "Data",
+   "label": "Ministry/Organization"
+  },
+  {
+   "fieldname": "section_break_zznl",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "purpose",
+   "fieldtype": "Small Text",
+   "label": "Purpose",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_hcql",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From Date"
+  },
+  {
+   "fieldname": "from_time",
+   "fieldtype": "Time",
+   "label": "From Time"
+  },
+  {
+   "fieldname": "column_break_jdri",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date"
+  },
+  {
+   "fieldname": "to_time",
+   "fieldtype": "Time",
+   "label": "To Time"
+  },
+  {
+   "fieldname": "venue",
+   "fieldtype": "Data",
+   "label": "Venue"
+  },
+  {
+   "description": "Please Complete form below.\nYour reservation will be confirmed upon complete payment of hall charge in advance upon confirmation of availability.",
+   "fieldname": "hall_booking_reservation_form_section",
+   "fieldtype": "Section Break",
+   "label": "Hall Booking Reservation  Form"
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Email"
+  },
+  {
+   "fieldname": "section_break_kaqg",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section_break_niif",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "label": "Per Day/Per Event"
+  },
+  {
+   "fieldname": "column_break_drag",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_days",
+   "fieldtype": "Data",
+   "label": "Total Days"
+  },
+  {
+   "fieldname": "column_break_ukyy",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_amount",
+   "fieldtype": "Currency",
+   "label": "Total Amount"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Data",
+   "label": "Company",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_aerw",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Data",
+   "label": "Branch"
+  },
+  {
+   "fieldname": "column_break_anba",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cost_center",
+   "fieldtype": "Data",
+   "label": "Cost Center"
+  },
+  {
+   "fieldname": "section_break_zcts",
+   "fieldtype": "Section Break"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-03-19 15:54:28.562253",
+ "modified_by": "Administrator",
+ "module": "Event Management",
+ "name": "Hall Booking",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

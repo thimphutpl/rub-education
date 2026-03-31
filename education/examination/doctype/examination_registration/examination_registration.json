@@ -75,6 +75,7 @@
   {
    "fieldname": "section_break_rndh",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Ineligible Students"
   },
   {
@@ -105,13 +106,14 @@
    "reqd": 1
   },
   {
+   "depends_on": "eval:doc.assessment_role==\"Tutor\"",
    "fetch_from": "module.module_code",
    "fieldname": "module_code",
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Module Code",
-   "read_only": 1,
-   "reqd": 1
+   "mandatory_depends_on": "eval:doc.assessment_role==\"Tutor\"",
+   "read_only": 1
   },
   {
    "fetch_from": "company.abbr",
@@ -129,12 +131,13 @@
    "reqd": 1
   },
   {
+   "depends_on": "eval:doc.assessment_role==\"Tutor\"",
    "fieldname": "module",
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Module",
-   "options": "Module",
-   "reqd": 1
+   "mandatory_depends_on": "eval:doc.assessment_role==\"Tutor\"",
+   "options": "Module"
   },
   {
    "depends_on": "reassesment",
@@ -150,9 +153,11 @@
    "options": "Non Eligible Exam Students"
   },
   {
+   "depends_on": "eval:doc.assessment_role==\"Tutor\"",
    "fieldname": "tutor",
    "fieldtype": "Link",
    "label": "Tutor",
+   "mandatory_depends_on": "eval:doc.assessment_role==\"Tutor\"",
    "options": "Employee"
   },
   {
@@ -184,6 +189,7 @@
   {
    "fieldname": "total_eligible_student",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "Total Eligible Student"
   },
   {
@@ -199,7 +205,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-02-26 14:47:13.706251",
+ "modified": "2026-03-26 14:41:46.886549",
  "modified_by": "Administrator",
  "module": "Examination",
  "name": "Examination Registration",

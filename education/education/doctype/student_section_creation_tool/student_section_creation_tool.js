@@ -24,7 +24,7 @@ frappe.ui.form.on('Student Section Creation Tool', 'refresh', function (frm) {
 frappe.ui.form.on('Student Section Creation Tool', 'get_students', function (frm) {
   if (
     frm.doc.group_based_on == 'Batch' ||
-    frm.doc.group_based_on == 'Course'
+    frm.doc.group_based_on == 'Semester'
   ) {
     var student_list = []
     var max_roll_no = 0
@@ -52,25 +52,56 @@ frappe.ui.form.on('Student Section Creation Tool', 'get_students', function (frm
             },
             callback: function(r) {
                 if(r.message){
-                    console.log(r.message)
-                    let students = r.message;
-                    let roll_no = 1
-                    let section_count = 0
-                    let student_count = 1
-                    students.forEach(student => {
-                        let row = frm.add_child("students");
-                        row.student = student.name;
-                        row.student_name = student.student_name;
-                        row.group_roll_number = roll_no;
-                        row.section_name = frm.doc.student_group_name+" "+String.fromCharCode(65 + section_count);
-                        roll_no += 1;
-                        if(student_count%frm.doc.max_strength == 0){
-                          section_count += 1
-                          roll_no = 1
-                        }
-                        student_count += 1
-                    })
-                    frm.refresh_field("students");
+                  frm.clear_table("students");
+
+                  let students = r.message;
+                  let max = frm.doc.max_strength;
+                  
+                  let total = students.length;
+                  
+                  // Step 1: minimum sections needed
+                  let section_count = Math.ceil(total / max);
+                  
+                  // Step 2: try reducing sections if possible
+                  while (section_count > 1) {
+                      let avg = Math.ceil(total / (section_count - 1));
+                  
+                      // allow exceeding max to balance (your requirement)
+                      if (avg <= max + 5) {  // tolerance (adjust if needed)
+                          section_count -= 1;
+                      } else {
+                          break;
+                      }
+                  }
+                  
+                  // Step 3: even distribution
+                  let base = Math.floor(total / section_count);
+                  let remainder = total % section_count;
+                  
+                  let student_index = 0;
+                  
+                  for (let sec = 0; sec < section_count; sec++) {
+                      let roll_no = 1;
+                  
+                      // top-down distribution
+                      let size = base + (sec < remainder ? 1 : 0);
+                  
+                      for (let i = 0; i < size; i++) {
+                          let student = students[student_index];
+                  
+                          let row = frm.add_child("students");
+                          row.student = student.name;
+                          row.student_name = student.student_name;
+                          row.group_roll_number = roll_no;
+                          row.section_name =
+                              frm.doc.student_group_name + " " + String.fromCharCode(65 + sec);
+                  
+                          roll_no++;
+                          student_index++;
+                      }
+                  }
+                  
+                  frm.refresh_field("students");
                 }
             }
         });       
@@ -107,10 +138,6 @@ frappe.ui.form.on('Student Section Creation Tool', 'get_students', function (frm
       //   },
       // })
     }
-  } else {
-    frappe.msgprint(
-      __('Select students manually for the Activity based Group')
-    )
   }
 })
 frappe.ui.form.on('Student Section Creation Tool', 'setup', function (frm) {
@@ -123,17 +150,39 @@ frappe.ui.form.on('Student Section Creation Tool', 'setup', function (frm) {
         },
       }
     })
-    frappe.call({
-      method: "get_current_academic_year",
-      doc: frm.doc,
-      callback: function(r){
-        if(r.message){
-          frm.set_value("academic_term", r.message);
-          frm.refresh_field("academic_term");
+    if(frm.doc.__islocal){
+      let college = ""
+      frappe.call({
+        method: "education.academic_management.utils.get_signed_in_user_college",
+        args: {"user": frappe.session.user},
+        async: false,
+        callback: function(r){
+          if(r.message){
+            frm.set_value("college", r.message)
+            frm.refresh_field('college');
+            college = r.message
+          }
         }
-      }
-    })
-
+      })
+      frappe.call({
+        method: "get_current_academic_term",
+        doc: frm.doc,
+        args: {"college": college},
+        callback: function(r){
+          if(r.message){
+            frm.set_value("academic_term", r.message);
+            frm.refresh_field("academic_term");
+          }
+        }
+      })
+      frm.set_query('semester', function () {
+        return {
+        filters: {
+            session: frm.doc.academic_session,
+        },
+        }
+      })
+    }
 })
 
 frappe.ui.form.on('Student Section Creation Tool', 'get_courses', function (frm) {
@@ -155,7 +204,8 @@ frappe.ui.form.on('Student Section Creation Tool', 'onload', function (frm) {
   cur_frm.set_query('academic_term', function () {
     return {
       filters: {
-        academic_year: frm.doc.academic_year,
+        // academic_year: frm.doc.academic_year,
+        college: frm.doc.college,
       },
     }
   })

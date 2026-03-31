@@ -1,14 +1,30 @@
+# Copyright (c) 2025, Frappe Technologies Pvt. Ltd. and contributors
+# For license information, please see license.txt
+
 from __future__ import unicode_literals
 import frappe
 from frappe import _
+from datetime import datetime
 
 def execute(filters=None):
     columns, data = get_columns(), get_data(filters)
     return columns, data
 
 
+def get_weekday(date_str):
+    """Return weekday name for a given date"""
+    if not date_str:
+        return ""
+    try:
+        date_obj = datetime.strptime(str(date_str), '%Y-%m-%d')
+        return date_obj.strftime('%A')  # Returns full weekday name (Monday, Tuesday, etc.)
+    except:
+        return ""
+
+
 def get_columns():
     return [
+	    _("Day") + ":Data:100",
 	    _("Exam Date") + ":Date:120",
   		_("Start Time") + ":Time:100",
         _("End Time") + ":Time:100",
@@ -18,6 +34,7 @@ def get_columns():
         _("Academic Term") + ":Link/Academic Term:120",
         _("Assessment Component") + ":Link/Assessment Component:150",      
         _("Invigilators") + "::200",
+        _("Total Students") + ":Int:120",
     ]
 
 
@@ -36,7 +53,7 @@ def get_data(filters):
             et.exam_date,
             et.start_time,
             et.end_time,
-            GROUP_CONCAT(DISTINCT ei.invigilator_name SEPARATOR ', ') AS invigilators,
+            GROUP_CONCAT(DISTINCT ei.invigilator SEPARATOR ', ') AS invigilators,
             COUNT(DISTINCT ets.student) AS total_students
         FROM `tabExam Timetable` et
         LEFT JOIN `tabRoom` r ON r.name = et.room
@@ -46,6 +63,10 @@ def get_data(filters):
         GROUP BY et.name
         ORDER BY et.exam_date, et.start_time
     """, as_dict=True)
+
+    # Add Day column to each row
+    for row in data:
+        row['day'] = get_weekday(row.get('exam_date'))
 
     return data
 
@@ -63,5 +84,7 @@ def get_conditions(filters):
         conditions += f" AND et.exam_date = '{filters.get('exam_date')}'"
     if filters.get("room"):
         conditions += f" AND et.room = '{filters.get('room')}'"
+    if filters.get("student"):
+        conditions += f" AND ets.student = '{filters.get('student')}'"
 
     return conditions

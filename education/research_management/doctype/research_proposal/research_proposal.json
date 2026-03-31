@@ -64,6 +64,8 @@
   "timelinemilestones_section",
   "research_proposal_milestone_details",
   "total_expenses",
+  "crcs_comment_tab",
+  "crcs_comment",
   "reviewers_section_tab",
   "reviewers_comments_section",
   "long_text_ncjr",
@@ -322,12 +324,12 @@
   {
    "fieldname": "reviewers_section_tab",
    "fieldtype": "Tab Break",
-   "label": "Reviewer's Section"
+   "label": "OVC's Comment"
   },
   {
    "fieldname": "reviewers_comments_section",
    "fieldtype": "Section Break",
-   "label": "Reviewer's Comments"
+   "label": "OVC's Comments"
   },
   {
    "fieldname": "long_text_ncjr",
@@ -398,13 +400,23 @@
    "fieldname": "project_period",
    "fieldtype": "Data",
    "label": "Project Period"
+  },
+  {
+   "fieldname": "crcs_comment_tab",
+   "fieldtype": "Tab Break",
+   "label": "CRC's Comment"
+  },
+  {
+   "fieldname": "crcs_comment",
+   "fieldtype": "Text",
+   "label": "CRC's Comment"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-12-18 13:26:42.725982",
+ "modified": "2026-03-23 16:46:56.530357",
  "modified_by": "Administrator",
  "module": "Research Management",
  "name": "Research Proposal",

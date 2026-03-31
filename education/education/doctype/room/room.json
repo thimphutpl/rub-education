@@ -9,8 +9,10 @@
   "room_name",
   "room_number",
   "seating_capacity",
+  "amount",
   "column_break_lhtm",
   "company",
+  "branch",
   "cost_center",
   "exam_room"
  ],
@@ -38,6 +40,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "fetch_from": "branch.cost_center",
    "fieldname": "cost_center",
    "fieldtype": "Link",
    "label": "Cost Center",
@@ -56,10 +59,22 @@
    "fieldname": "exam_room",
    "fieldtype": "Check",
    "label": "Exam Room"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "label": "Per Event/Per Day"
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Branch",
+   "options": "Branch",
+   "reqd": 1
   }
  ],
  "links": [],
- "modified": "2025-10-28 15:50:03.527575",
+ "modified": "2026-03-19 15:33:59.043806",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Room",

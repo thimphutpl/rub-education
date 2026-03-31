@@ -10,6 +10,7 @@
  "field_order": [
   "college",
   "academic_year",
+  "academic_session",
   "group_based_on",
   "student_group_name",
   "max_strength",
@@ -17,6 +18,7 @@
   "academic_term",
   "program",
   "batch",
+  "semester",
   "course",
   "disabled",
   "student_sections_created",
@@ -28,11 +30,13 @@
  ],
  "fields": [
   {
+   "fetch_from": "academic_term.academic_year",
    "fieldname": "academic_year",
    "fieldtype": "Link",
    "in_standard_filter": 1,
    "label": "Academic Year",
    "options": "Academic Year",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -63,7 +67,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Section Based on",
-   "options": "\nBatch\nCourse\nActivity",
+   "options": "\nBatch\nSemester",
    "reqd": 1
   },
   {
@@ -142,10 +146,26 @@
    "fieldtype": "Check",
    "label": "Student Sections Created",
    "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.group_based_on == \"Semester\";",
+   "fieldname": "semester",
+   "fieldtype": "Link",
+   "label": "Semester",
+   "mandatory_depends_on": "eval:doc.group_based_on == \"Semester\";",
+   "options": "Semester"
+  },
+  {
+   "fetch_from": "academic_term.academic_session",
+   "fieldname": "academic_session",
+   "fieldtype": "Link",
+   "label": "Academic Session",
+   "options": "Academic Session",
+   "read_only": 1
   }
  ],
  "links": [],
- "modified": "2026-01-13 11:43:30.322411",
+ "modified": "2026-03-25 16:52:52.100124",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student Section Creation Tool",

@@ -7,6 +7,41 @@ from datetime import datetime, time, timedelta
 from frappe.model.document import Document
 
 class TimeTableSchedule(Document):
+	def on_submit(self):
+		self.validate_duplicate()
+		self.make_tts_entry()
+
+	def on_cancel(self):
+		self.remove_tts_entry()
+
+	def validate_duplicate(self):
+		if frappe.db.exists("Time Table Schedule", {"college": self.college, "academic_term": self.academic_term, "programme": self.programme, "constraint": self.constraint, "docstatus": ["!=",2], "name": ["!=", self.name]}):
+			frappe.throw("Time Table Schedule already exists for the selected filters.")
+
+	def make_tts_entry(self):
+		for tts in self.items:
+			doc = frappe.new_doc("Timetable Schedule Entry")
+			doc.flags.ignore_permissions = 1
+			doc.college = self.college
+			doc.academic_term = self.academic_term
+			doc.programme = self.programme
+			doc.module = tts.module
+			doc.constraint = self.constraint
+			doc.class_type = tts.class_type
+			doc.tutor = tts.tutor
+			doc.tutor_name = tts.tutor_name
+			doc.class_room = tts.class_room
+			doc.room_name = tts.room_name
+			doc.day = tts.day
+			doc.from_time = tts.from_time
+			doc.to_time = tts.to_time
+			doc.timetable_schedule_id = self.name
+			doc.insert()
+	
+	def remove_ttds_entry(self):
+		frape.db.sql("delete from `tabTimetable Schedule Entry` where timetable_schdule_id = '{}'".format(self.name))
+		frappe.msgprint("Removed Timetable Schedule Entries linked to this Time Table Schedule")
+
 	@frappe.whitelist()
 	def generate_timetable(self):
 		# Get constraints
@@ -18,9 +53,10 @@ class TimeTableSchedule(Document):
 		working_days = get_working_days(constraint)
 		time_slots = get_time_slots(constraint)
 		modules = build_module_workload(constraint)
-
+		# frappe.throw(str(modules))
 		# Assign modules recursively
-		success = assign_modules(self, constraint, modules, working_days, time_slots, 0)
+		for idx, m in enumerate(modules):
+			success = assign_modules(self, constraint, modules, working_days, time_slots, index = idx)
 
 		if not success:
 			frappe.throw("Unable to generate timetable with given constraints")
@@ -71,7 +107,7 @@ def build_module_workload(constraint):
 		modules.append({
 			"module": m.module,
 			"class_type": m.class_type,
-			"room": m.class_room,
+			"class_room": m.class_room,
 			"max_per_week": m.max_hours_per_week,
 			"max_per_day": m.max_hours_per_day,
 		})
@@ -82,20 +118,45 @@ def get_working_days(constraint):
 	off_days = [d.day for d in constraint.weekly_off_days]
 	return [d for d in all_days if d not in off_days]
 
+# def get_time_slots(constraint):
+# 	# Example slots; adapt if needed
+# 	slots = [
+# 		{"from": "09:00:00", "to": "10:00:00"},
+# 		{"from": "10:00:00", "to": "11:00:00"},
+# 		{"from": "11:00:00", "to": "12:00:00"},
+# 		{"from": "13:00:00", "to": "14:00:00"},
+# 		{"from": "14:00:00", "to": "15:00:00"},
+# 		{"from": "15:00:00", "to": "16:00:00"},
+# 		{"from": "16:00:00", "to": "17:00:00"},
+# 	]
+# 	# Remove non-academic periods
+# 	blocked = [(p.from_time, p.to_time) for p in constraint.periods]
+# 	return [s for s in slots if (s["from"], s["to"]) not in blocked]
+
 def get_time_slots(constraint):
-	# Example slots; adapt if needed
-	slots = [
-		{"from": "09:00:00", "to": "10:00:00"},
-		{"from": "10:00:00", "to": "11:00:00"},
-		{"from": "11:00:00", "to": "12:00:00"},
-		{"from": "13:00:00", "to": "14:00:00"},
-		{"from": "14:00:00", "to": "15:00:00"},
-		{"from": "15:00:00", "to": "16:00:00"},
-		{"from": "16:00:00", "to": "17:00:00"},
-	]
-	# Remove non-academic periods
-	blocked = [(p.from_time, p.to_time) for p in constraint.periods]
-	return [s for s in slots if (s["from"], s["to"]) not in blocked]
+	start_time = datetime.strptime("09:00:00", "%H:%M:%S")
+	end_time = datetime.strptime("17:00:00", "%H:%M:%S")
+
+	slot_duration = 60  # minutes (make this configurable)
+
+	slots = []
+
+	current = start_time
+
+	while current < end_time:
+		slot_end = current + timedelta(minutes=slot_duration)
+
+		if slot_end > end_time:
+			break
+
+		slots.append({
+			"from": current.strftime("%H:%M:%S"),
+			"to": slot_end.strftime("%H:%M:%S")
+		})
+
+		current = slot_end
+
+	return slots
 
 def is_valid_slot(doc, constraint, module, day, slot):
 	blocked_map = build_blocked_slots(constraint)
@@ -109,7 +170,7 @@ def is_valid_slot(doc, constraint, module, day, slot):
 	#	 return False
 	# Block room conflicts
 	for r in doc.items:
-		if r.day == day and r.from_time == slot["from"] and r.room == module["room"]:
+		if r.day == day and r.from_time == slot["from"] and r.room == module["class_room"]:
 			return False
 	# Block same module adjacent day
 	# if is_adjacent_day(doc, module["module"], day):
@@ -143,10 +204,11 @@ def assign_modules(schedule_doc, constraint, modules, days, slots, index=0):
 	- adjacent day rules (optional)
 	"""
 
-	if index >= len(modules):
-		return True  # All modules assigned
+	# if index >= len(modules):
+	# 	return True  # All modules assigned
 
 	module_info = modules[index]
+	# frappe.msgprint(str(module_info))
 	module_doc = frappe.get_doc("Module", module_info["module"])
 	tutors = module_doc.get("tutors")  # Module Tutor Item child table
 	hours_needed = module_info.get("max_per_week", 0)
@@ -157,7 +219,7 @@ def assign_modules(schedule_doc, constraint, modules, days, slots, index=0):
 	random_slots = slots.copy()
 	random.shuffle(random_days)
 	random.shuffle(random_slots)
-
+	# frappe.throw(str(random_slots))
 	for day in random_days:
 		for slot in random_slots:
 
@@ -171,18 +233,20 @@ def assign_modules(schedule_doc, constraint, modules, days, slots, index=0):
 
 			# Try assigning to any tutor available
 			tutor_assigned = None
+			if not tutors or len(tutors) == 0:
+				frappe.throw("""Tutor is not allocated for module <b><a href="/app/module/{0}">{0}</a></b>""".format(module_info.get("module")))
 			for tutor_row in tutors:
 				tutor = tutor_row.tutor
 				tutor_type = tutor_row.tutor_type
 				class_type = tutor_row.class_type
 
 				# Check if tutor is available
-				if count_tutor_day(schedule_doc, tutor, day) >= module_info.get("tutor_max_per_day", hours_needed):
-					continue
-				if count_tutor_total(schedule_doc, tutor) >= module_info.get("tutor_max_per_week", hours_needed):
-					continue
+				# if count_tutor_day(schedule_doc, tutor, day) >= module_info.get("tutor_max_per_day", hours_needed):
+				# 	continue
+				# if count_tutor_total(schedule_doc, tutor) >= module_info.get("tutor_max_per_week", hours_needed):
+				# 	continue
 
-				# Check blocked periods
+				# # Check blocked periods
 				if not is_valid_slot(schedule_doc, constraint, module_info, day, slot):
 					continue
 
@@ -191,31 +255,34 @@ def assign_modules(schedule_doc, constraint, modules, days, slots, index=0):
 				# 	continue
 
 				tutor_assigned = tutor
-				break  # Found a valid tutor
+				# break  # Found a valid tutor
 
 			if tutor_assigned:
 				# Append row only if fully valid
 				row = schedule_doc.append("items", {})
 				row.day = day
-				row.module = module_info["module"]
-				row.class_type = class_type
+				row.module = module_info.get("module")
+				# row.class_type = class_type
+				row.class_type = module_info.get("class_type")
+				row.class_room = module_info.get("class_room")
 				row.from_time = slot["from"]
 				row.to_time = slot["to"]
-				row.room = module_info["room"]
 				row.tutor = tutor_assigned
+				row.tutor_name = frappe.db.get_value("Employee", tutor_assigned, "employee_name")
 				placed_hours += 1
+			random.shuffle(random_slots)
 
-		if placed_hours >= hours_needed:
-			break
+		# if placed_hours >= hours_needed:
+		# 	break
 
 	# Fail & backtrack if not all hours placed
-	if placed_hours < hours_needed:
-		remove_module_entries(schedule_doc, module_info["module"])
-		return False
+	# if placed_hours < hours_needed:
+	# 	remove_module_entries(schedule_doc, module_info["module"])
+	# 	return False
 
 	# Move to next module
-	if assign_modules(schedule_doc, constraint, modules, days, slots, index + 1):
-		return True
+	# if assign_modules(schedule_doc, constraint, modules, days, slots, index + 1):
+	return True
 
 	# Backtrack
 	# remove_module_entries(schedule_doc, module_info["module"])

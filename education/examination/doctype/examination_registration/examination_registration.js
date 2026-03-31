@@ -8,10 +8,7 @@ frappe.ui.form.on("Examination Registration", {
 
     get_students: function(frm){
         // Validate required fields
-        if (!frm.doc.assessment_component) {
-            frappe.msgprint(__("Please select Assessment Component first"));
-            return;
-        }
+      
         if (!frm.doc.academic_year) {
             frappe.msgprint(__("Please select Academic Year"));
             return;
@@ -20,16 +17,17 @@ frappe.ui.form.on("Examination Registration", {
             frappe.msgprint(__("Please select Academic Term"));
             return;
         }
-        if (!frm.doc.module) {
-            frappe.msgprint(__("Please select Module"));
-            return;
-        }
         if (!frm.doc.company) {
             frappe.msgprint(__("Please select College"));
             return;
         }
         
-        // Get assessment role first to conditionally validate tutor
+        if (frm.doc.reassesment === undefined || frm.doc.reassesment === null) {
+            frappe.msgprint(__("Please select Reassessment option"));
+            return;
+        }
+        
+        // Get assessment role first to conditionally validate module and tutor
         frappe.call({
             method: "frappe.client.get_value",
             args: {
@@ -41,16 +39,19 @@ frappe.ui.form.on("Examination Registration", {
                 const assessment_role = role_response.message ? role_response.message.assessment_role : "Tutor";
                 
                 // Validate tutor only if assessment_role is Tutor
-                if (assessment_role === "Tutor" && !frm.doc.tutor) {
-                    frappe.msgprint(__("Please select Tutor"));
-                    return;
-                }
-
-                
-                
-                if (frm.doc.reassesment === undefined || frm.doc.reassesment === null) {
-                    frappe.msgprint(__("Please select Reassessment option"));
-                    return;
+                if (assessment_role === "Tutor") {
+                    if (!frm.doc.tutor) {
+                        frappe.msgprint(__("Please select Tutor"));
+                        return;
+                    }
+                    // For Tutor role, module is required
+                    if (!frm.doc.module) {
+                        frappe.msgprint(__("Please select Module"));
+                        return;
+                    }
+                } else {
+                    // For Exam Cell role, module is optional - we can still pass it but won't be used in backend
+                    // No validation needed for module
                 }
                 
                 // Proceed with getting students
@@ -59,7 +60,7 @@ frappe.ui.form.on("Examination Registration", {
                     args: {
                         academic_year: frm.doc.academic_year,
                         academic_term: frm.doc.academic_term,
-                        module: frm.doc.module,
+                        module: frm.doc.module || "", // Send empty string if no module (for Exam Cell)
                         company: frm.doc.company,
                         tutor: frm.doc.tutor || "", // Send empty string if no tutor
                         reassesment: frm.doc.reassesment,
@@ -154,7 +155,7 @@ frappe.ui.form.on("Examination Registration", {
             frm.refresh_field('non_eligible_students');
             frm.refresh_field('total_eligible_student');
             
-            // Get assessment role to conditionally hide/show tutor field
+            // Get assessment role to conditionally hide/show fields
             frappe.call({
                 method: "frappe.client.get_value",
                 args: {
@@ -166,13 +167,28 @@ frappe.ui.form.on("Examination Registration", {
                     if (r.message) {
                         const assessment_role = r.message.assessment_role;
                         
-                        // Set tutor field as mandatory only for Tutor role
                         if (assessment_role === "Exam Cell") {
+                            // Exam Cell role: Tutor is optional, Module is also optional
                             frm.set_df_property('tutor', 'reqd', 0);
-                            frm.set_df_property('tutor', 'hidden', 0); // Keep visible but not mandatory
+                            frm.set_df_property('tutor', 'hidden', 0);
+                            frm.set_df_property('module', 'reqd', 0);
+                            frm.set_df_property('module', 'hidden', 0);
+                            
+                            // Optional: Add a hint that module is optional for Exam Cell
+                            frm.set_df_property('module', 'description', 'Optional for Exam Cell - all students will be fetched');
                         } else {
+                            // Tutor role: Both tutor and module are required
                             frm.set_df_property('tutor', 'reqd', 1);
                             frm.set_df_property('tutor', 'hidden', 0);
+                            frm.set_df_property('module', 'reqd', 1);
+                            frm.set_df_property('module', 'hidden', 0);
+                            frm.set_df_property('module', 'description', '');
+                        }
+                        
+                        // Also clear the module field if it was previously set and now optional
+                        if (assessment_role === "Exam Cell" && frm.doc.module) {
+                            // Optional: You can keep the module value or clear it
+                            // frm.set_value('module', ''); // Uncomment if you want to clear it
                         }
                     }
                 }

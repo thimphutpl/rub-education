@@ -20,8 +20,8 @@ class StudentSectionCreationTool(Document):
 				frappe.throw("Student Section Creation Tool alraedy exists for: Student Batch: {}\nAcademic Term: {}\nCollege: {}\nExisting Doc: {}".format(self.batch, self.academic_term, self.college, frappe.db.get_value("Student Section Creation Tool", {"college": self.college, "academic_term": self.academic_term, "batch": self.batch, "name": ["!=", self.name]}, "name")))
 
 	@frappe.whitelist()
-	def get_current_academic_year(self):
-		current_academic_term = frappe.db.sql("select name from `tabAcademic Term` where '{0}' >= term_start_date and '{0}' <= term_end_date".format(today()),as_dict=1)
+	def get_current_academic_term(self, college):
+		current_academic_term = frappe.db.sql("select name from `tabAcademic Term` where '{0}' >= term_start_date and '{0}' <= term_end_date and college ='{1}'".format(today(), college),as_dict=1)
 		if len(current_academic_term) > 0:
 			current_academic_term = current_academic_term[0].name
 		else:
@@ -100,7 +100,7 @@ class StudentSectionCreationTool(Document):
 			fields=["name", "student_name"],
 		 )
 		if not students or len(students) == 0:
-			frappe.throw("No Student record for the selected filters.")
+			frappe.throw("No student record for the selected filters.")
 		return students
 
 	@frappe.whitelist()

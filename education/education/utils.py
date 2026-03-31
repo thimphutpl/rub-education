@@ -102,12 +102,12 @@ def get_enrollment(master, document, student):
 	"""
 	if master == "program":
 		enrollments = frappe.get_all(
-			"Program Enrollment",
+			"Program Enrolment",
 			filters={"student": student, "program": document, "docstatus": 1},
 		)
 	if master == "course":
 		enrollments = frappe.get_all(
-			"Course Enrollment", filters={"student": student, "course": document}
+			"Course Enrolment", filters={"student": student, "course": document}
 		)
 
 	if enrollments:
@@ -432,3 +432,18 @@ def check_quiz_completion(quiz, enrollment_name):
 		if result == "Pass":
 			status = True
 	return status, score, result, time_taken
+
+def get_homepage_by_role(user=None):
+    # Default to current session user
+    user = user or frappe.session.user
+
+    # Get all roles of the user
+    roles = frappe.get_roles(user)
+
+    # Redirect based on role
+    if "Student" in roles:
+        return "/student-dashboard"   # URL of Student Dashboard
+    elif "Tutor" in roles:
+        return "/tutor-dashboard"     # URL of Tutor Dashboard
+    else:
+        return "/desk"  

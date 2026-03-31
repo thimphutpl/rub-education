@@ -1,7 +1,7 @@
 // Copyright (c) 2016, Frappe and contributors
 // For license information, please see license.txt
 
-frappe.ui.form.on('Program Enrollment', {
+frappe.ui.form.on('Program Enrolment', {
   refresh: function (frm) {
     frm.set_query('program', function () {
       return {
@@ -83,7 +83,7 @@ frappe.ui.form.on('Program Enrollment', {
   },
 
   student_category: function () {
-    frappe.ui.form.trigger('Program Enrollment', 'program')
+    frappe.ui.form.trigger('Program Enrolment', 'program')
   },
 
   get_courses: function (frm) {
@@ -102,7 +102,7 @@ frappe.ui.form.on('Program Enrollment', {
   },
 })
 
-frappe.ui.form.on('Program Enrollment Course', {
+frappe.ui.form.on('Program Enrolment Course', {
   courses_add: function (frm) {
     // frm.fields_dict['courses'].grid.get_field('course').get_query = function (
     //   doc

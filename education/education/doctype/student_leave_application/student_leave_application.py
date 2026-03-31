@@ -44,20 +44,19 @@ class StudentLeaveApplication(Document):
 		total_leave_days: DF.Float
 	# end: auto-generated types
 	def validate(self):
-		validate_workflow_states()
+		validate_workflow_states(self)
 		self.validate_holiday_list()
 		self.validate_duplicate()
 		self.validate_from_to_dates("from_date", "to_date")
 		if self.workflow_state != "Approved":
-			notify_workflow_states()
+			notify_workflow_states(self)
 
 	def on_submit(self):
 		self.update_attendance()
-		notify_workflow_states
+		notify_workflow_states(self)
 
 	def on_cancel(self):
 		self.cancel_attendance()
-		notify_workflow_states()
 
 	def validate_duplicate(self):
 		data = frappe.db.sql(
@@ -94,7 +93,7 @@ class StudentLeaveApplication(Document):
 		return total_leave_days
 
 	def validate_holiday_list(self):
-		holiday_list = get_holiday_list()
+		holiday_list = get_holiday_list(self.college)
 		self.total_leave_days = get_number_of_leave_days(
 			self.from_date, self.to_date, holiday_list
 		)
@@ -111,7 +110,7 @@ class StudentLeaveApplication(Document):
 			fields=["name"],
 		)
 
-		holiday_list = get_holiday_list()
+		holiday_list = get_holiday_list(self.college)
 
 		for dt in daterange(getdate(self.from_date), getdate(self.to_date)):
 			date = dt.strftime("%Y-%m-%d")
@@ -193,7 +192,7 @@ def get_number_of_leave_days(from_date, to_date, holiday_list):
 @frappe.whitelist()
 def get_student_groups(student):
 	student_group = frappe.db.get_all(
-		"Student Group Student",
+		"Student Section Student",
 		pluck="parent",
 		filters={"student": student},
 	)

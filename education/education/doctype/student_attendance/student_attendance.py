@@ -118,7 +118,7 @@ class StudentAttendance(Document):
 			)
 
 	def validate_is_holiday(self):
-		holiday_list = get_holiday_list()
+		holiday_list = get_holiday_list(frappe.db.get_value("Student", self.student, "company"))
 		if is_holiday(holiday_list, self.date):
 			frappe.throw(
 				_("Attendance cannot be marked for {0} as it is a holiday.").format(

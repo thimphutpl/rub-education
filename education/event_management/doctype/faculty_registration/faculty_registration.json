@@ -6,13 +6,14 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "faculty",
   "faculty_email",
   "faculty_name"
  ],
  "fields": [
   {
    "fieldname": "faculty_email",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Email",
    "options": "Employee"
@@ -23,13 +24,20 @@
    "fieldtype": "Read Only",
    "in_list_view": 1,
    "label": "Name"
+  },
+  {
+   "fieldname": "faculty",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Faculty",
+   "options": "Employee"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-02-20 11:08:35.522408",
+ "modified": "2026-03-18 10:37:19.325000",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "Faculty Registration",

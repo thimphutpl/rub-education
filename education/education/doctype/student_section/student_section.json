@@ -22,9 +22,7 @@
   "disabled",
   "section_break_6",
   "get_students",
-  "students",
-  "section_break_12",
-  "instructors"
+  "students"
  ],
  "fields": [
   {
@@ -40,7 +38,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Group Based on",
-   "options": "\nBatch\nCourse\nActivity",
+   "options": "\nBatch\nProgramme and Semester\nActivity",
    "reqd": 1
   },
   {
@@ -116,18 +114,6 @@
    "options": "Student Section Student"
   },
   {
-   "fieldname": "section_break_12",
-   "fieldtype": "Section Break",
-   "hidden": 1,
-   "label": "Instructors"
-  },
-  {
-   "fieldname": "instructors",
-   "fieldtype": "Table",
-   "label": "Instructors",
-   "options": "Student Group Instructor"
-  },
-  {
    "fieldname": "student_category",
    "fieldtype": "Link",
    "hidden": 1,
@@ -143,7 +129,7 @@
   }
  ],
  "links": [],
- "modified": "2026-03-05 03:41:07.915859",
+ "modified": "2026-03-25 17:03:50.159533",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student Section",

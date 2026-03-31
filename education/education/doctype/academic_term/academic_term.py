@@ -28,15 +28,15 @@ class AcademicTerm(Document):
 	def validate_duplication(self):
 		# Check if entry with same academic_year and the term_name already exists
 		term = frappe.db.sql(
-			"""select name from `tabAcademic Term` where academic_year= %s  and academic_session = %s
+			"""select name from `tabAcademic Term` where academic_year= %s  and academic_session = %s and college = %s
 		and docstatus<2 and name != %s""",
-			(self.academic_year, self.academic_session, self.name),
+			(self.academic_year, self.academic_session, self.college, self.name),
 		)
 		if term:
 			frappe.throw(
 				_(
-					"An academic term with this 'Academic Year' {0} and 'Academic Session' {1} already exists. Please modify these entries and try again."
-				).format(self.academic_year, self.academic_session)
+					"An academic term with this College {0}, Academic Year {1} and Academic Session {2} already exists. Please modify these entries and try again."
+				).format(self.college, self.academic_year, self.academic_session)
 			)
 
 	def validate_dates(self):

@@ -3,34 +3,35 @@ frappe.ui.form.on('Student Section', {
     frm.set_query('academic_term', function () {
       return {
         filters: {
-          academic_year: frm.doc.academic_year,
+          // academic_year: frm.doc.academic_year,
+          // college: frm.doc.college,
         },
       }
     })
     // if (!frm.__islocal) {
-      frm.set_query('student', 'students', function () {
-        // let filters = {
-        //   group_based_on: frm.doc.group_based_on,
-        // }
+      // frm.set_query('student', 'students', function () {
+      //   // let filters = {
+      //   //   group_based_on: frm.doc.group_based_on,
+      //   // }
 
-        // if (!(frm.doc.group_based_on === 'Activity')) {
-          let filters = {
-            // academic_year: frm.doc.academic_year,
-            academic_term: frm.doc.academic_term,
-            program: frm.doc.program,
-            batch: frm.doc.batch,
-            // student_category: frm.doc.student_category,
-            course: frm.doc.course,
-            // student_section: frm.doc.name,
-          // }
-        }
+      //   // if (!(frm.doc.group_based_on === 'Activity')) {
+      //     let filters = {
+      //       // academic_year: frm.doc.academic_year,
+      //       // academic_term: frm.doc.academic_term,
+      //       // program: frm.doc.program,
+      //       // batch: frm.doc.batch,
+      //       // // student_category: frm.doc.student_category,
+      //       // course: frm.doc.course,
+      //       // student_section: frm.doc.name,
+      //     // }
+      //   }
 
-        return {
-          query:
-            'education.education.doctype.student_section.student_section.fetch_students',
-          filters: filters,
-        }
-      })
+      //   return {
+      //     query:
+      //       'education.education.doctype.student_section.student_section.fetch_students',
+      //     filters: filters,
+      //   }
+      // })
     // }
   },
 

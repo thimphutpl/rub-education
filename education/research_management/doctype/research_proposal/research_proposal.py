@@ -1,6 +1,7 @@
 # Copyright (c) 2025, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
 
+import re
 import frappe
 from frappe.model.document import Document
 from frappe.model.mapper import get_mapped_doc
@@ -9,8 +10,115 @@ from frappe.model.mapper import get_mapped_doc
 class ResearchProposal(Document):
 
     def validate(self):
-        self.validate_milestone_percentage()
+        # self.validate_milestone_percentage()
         self.validate_budget_amount()
+        self.validate_word_count("abstract", "Abstract")
+        self.validate_word_count("bg_and_prb_statement", "Background and Problem Statement")
+        self.validate_word_count_hypothesis_impact("res_q_or_hypo", "Research Questions and Hypothesis")
+        self.validate_word_count_hypothesis_impact("Research Impact", "Research Impact")
+        # self.validate_research_question_word_count()
+        self.validate_literature_review_word_count() 
+
+        # #(max 1000 only)
+        # self.validate_max_words("research_design", "Research Design")
+        # self.validate_max_words("sampling_design", "Sampling Design")
+        # self.validate_max_words("data_collection_tools_and_procedures", "Data Collection Tools and Procedures")
+        # self.validate_max_words("data_analysis_tools_and_procedures", "Data Analysis Tools and Procedures")
+        # self.validate_max_words("data_presentation", "Data Presentation")
+
+        # total validation
+        self.validate_total_research_words()      
+
+    def on_submit(self):  
+        self.validate_milestone_percentage()
+
+    def validate_total_research_words(self):
+        fields = [
+            "research_design",
+            "sampling_design",
+            "data_collection_tools_and_procedures",
+            "data_analysis_tools_and_procedures",
+            "data_presentation"
+        ]
+
+        total_words = 0
+
+        for field in fields:
+            value = self.get(field)
+            if value:
+                clean_text = re.sub('<[^<]+?>', '', value)
+                words = clean_text.split()
+                total_words += len(words)
+
+        if total_words > 1000:
+            frappe.throw(
+                f"Total words for Research Sections cannot exceed 1000. Current: {total_words}"
+            )        
+
+    # def validate_max_words(self, fieldname, label):
+    #     value = self.get(fieldname)
+
+    #     if value:
+    #         clean_text = re.sub('<[^<]+?>', '', value)
+    #         words = clean_text.split()
+    #         word_count = len(words)
+
+    #         if word_count > 1000:
+    #             frappe.throw(
+    #                 f"{label} cannot exceed 1000 words. Current: {word_count}"
+    #             )              
+
+    def validate_research_question_word_count(self):
+        if self.res_q_or_hypo:
+            # remove HTML tags (Text Editor stores HTML)
+            clean_text = re.sub('<[^<]+?>', '', self.res_q_or_hypo)
+
+            words = clean_text.split()
+            word_count = len(words)
+
+            if word_count < 50 or word_count > 100:
+                frappe.throw(
+                    f"Research Questions and Hypothesis must be between 50 and 100 words. Current: {word_count}"
+                )  
+
+    def validate_literature_review_word_count(self):
+        if self.literature_review:
+            # remove HTML tags (Text Editor stores HTML)
+            clean_text = re.sub('<[^<]+?>', '', self.literature_review)
+
+            words = clean_text.split()
+            word_count = len(words)
+
+            if word_count < 500 or word_count > 600:
+                frappe.throw(
+                    f"Literature Review must be between 500 and 600 words. Current: {word_count}"
+                )                 
+
+    def validate_word_count(self, fieldname, label):
+        value = self.get(fieldname)
+
+        if value:
+            clean_text = re.sub('<[^<]+?>', '', value)
+            words = clean_text.split()
+            word_count = len(words)
+
+            if word_count < 250 or word_count > 300:
+                frappe.throw(
+                    f"{label} must be between 250 and 300 words. Current: {word_count}"
+                )  
+
+    def validate_word_count_hypothesis_impact(self, fieldname, label):
+        value = self.get(fieldname)
+
+        if value:
+            clean_text = re.sub('<[^<]+?>', '', value)
+            words = clean_text.split()
+            word_count = len(words)
+
+            if word_count < 50 or word_count > 100:
+                frappe.throw(
+                    f"{label} must be between 50 and 100 words. Current: {word_count}"
+                )                                
 
     def validate_milestone_percentage(self):
         total_percentage = 0

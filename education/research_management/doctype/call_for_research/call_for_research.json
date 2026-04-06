@@ -16,7 +16,8 @@
   "research_call_for",
   "research_details_section",
   "research_description",
-  "file_upload"
+  "file_upload",
+  "amended_from"
  ],
  "fields": [
   {
@@ -86,12 +87,23 @@
    "fieldtype": "Select",
    "label": "Research Call For",
    "options": "\nStudent\nFaculty"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Call for Research",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
+ "is_submittable": 1,
  "links": [],
- "modified": "2026-03-23 17:01:04.527572",
+ "modified": "2026-04-01 10:16:56.085080",
  "modified_by": "Administrator",
  "module": "Research Management",
  "name": "Call for Research",
@@ -108,6 +120,7 @@
    "report": 1,
    "role": "System Manager",
    "share": 1,
+   "submit": 1,
    "write": 1
   }
  ],

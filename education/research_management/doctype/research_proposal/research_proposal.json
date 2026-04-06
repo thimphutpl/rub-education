@@ -64,9 +64,9 @@
   "timelinemilestones_section",
   "research_proposal_milestone_details",
   "total_expenses",
-  "crcs_comment_tab",
+  "crc_comment",
   "crcs_comment",
-  "reviewers_section_tab",
+  "ovc_comment",
   "reviewers_comments_section",
   "long_text_ncjr",
   "marks"
@@ -322,11 +322,6 @@
    "label": "Total Budget Proposed"
   },
   {
-   "fieldname": "reviewers_section_tab",
-   "fieldtype": "Tab Break",
-   "label": "OVC's Comment"
-  },
-  {
    "fieldname": "reviewers_comments_section",
    "fieldtype": "Section Break",
    "label": "OVC's Comments"
@@ -402,21 +397,28 @@
    "label": "Project Period"
   },
   {
-   "fieldname": "crcs_comment_tab",
+   "fieldname": "crcs_comment",
+   "fieldtype": "Text",
+   "label": "CRC's Comment"
+  },
+  {
+   "depends_on": "eval:doc.workflow_state==\"Waiting for Review\"",
+   "fieldname": "crc_comment",
    "fieldtype": "Tab Break",
    "label": "CRC's Comment"
   },
   {
-   "fieldname": "crcs_comment",
-   "fieldtype": "Text",
-   "label": "CRC's Comment"
+   "depends_on": "eval:doc.workflow_state==\"Waiting for Approver\"",
+   "fieldname": "ovc_comment",
+   "fieldtype": "Tab Break",
+   "label": "OVC's Comment"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-03-23 16:46:56.530357",
+ "modified": "2026-04-03 14:41:25.190346",
  "modified_by": "Administrator",
  "module": "Research Management",
  "name": "Research Proposal",

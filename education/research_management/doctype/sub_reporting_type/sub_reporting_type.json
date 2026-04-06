@@ -6,6 +6,7 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "reporting_type",
   "sub_reporting_type"
  ],
  "fields": [
@@ -14,12 +15,18 @@
    "fieldtype": "Data",
    "label": "Sub Reporting Type",
    "unique": 1
+  },
+  {
+   "fieldname": "reporting_type",
+   "fieldtype": "Link",
+   "label": "Reporting Type",
+   "options": "Reporting Type"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-03-23 16:14:09.398806",
+ "modified": "2026-04-03 15:16:54.450041",
  "modified_by": "Administrator",
  "module": "Research Management",
  "name": "Sub Reporting Type",

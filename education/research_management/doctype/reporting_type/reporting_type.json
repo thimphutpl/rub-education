@@ -1,25 +1,30 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "field:reporting_name",
  "creation": "2026-03-23 16:15:27.671887",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "section_break_bqsi"
+  "reporting_name"
  ],
  "fields": [
   {
-   "fieldname": "section_break_bqsi",
-   "fieldtype": "Section Break"
+   "fieldname": "reporting_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Reporting Name",
+   "unique": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-03-23 16:15:27.671887",
+ "modified": "2026-04-03 15:24:19.634485",
  "modified_by": "Administrator",
  "module": "Research Management",
  "name": "Reporting Type",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {

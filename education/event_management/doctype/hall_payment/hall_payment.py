@@ -14,6 +14,9 @@ class HallPayment(Document):
 		gl_entries = []
 		default_bank_account = frappe.db.get_value("Company", self.company, "default_bank_account")
 		default_income_hall = frappe.db.get_value("Company", self.company,"default_income_hall")
+		if not default_bank_account or not default_income_hall:
+			frappe.throw("Please set Default Bank Account and Default Income Account for Hall in Company settings.")
+			return
 		gl_entries.append(
 			prepare_gl(self, {
 				"account":default_income_hall,

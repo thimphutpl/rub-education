@@ -1,19 +1,24 @@
 function getConferenceInfo() {
     let emailValue = document.querySelector("input[name='email']").value;
-    console.log("Email:", emailValue);
+    let cid = document.querySelector("input[name='cid']").value
+   
 
     if (!emailValue) {
         alert("Please enter your email address.");
         return;
     }
+    if (!cid){
+        alert("Please enter passport or CID number.")
+    }
 
     frappe.call({
         method: "education.www.abstract-review-status-check.index.get_conference",
         args: {
-            email: emailValue
+            email: emailValue,
+            cid:cid
         },
         callback: function (r) {
-            console.log("API Response:", r);
+            // console.log("API Response:", r);
             displayConferenceInfo(r.message);
         },
         error: function (err) {
@@ -25,11 +30,11 @@ function getConferenceInfo() {
 
 function displayConferenceInfo(response) {
     var infoContainer = document.getElementById("abstract-review-status-check");
-    console.log("Display response:", response);
+    // console.log("Display response:", response);
 
     // Use response.conferences (the data you're actually getting)
     if (response && response.conferences_info && response.conferences_info.length > 0) {
-        console.log("Found conferences:", response.conferences_info);
+        // console.log("Found conferences:", response.conferences_info);
 
         let html = '';
 
@@ -123,9 +128,14 @@ function applyFullPaper(conferenceName) {
 
 frappe.ready(function () {
     let inputField = document.querySelector("input[name='email']");
+    let cidField= document.querySelector("input[name='cid']")
     let email = inputField.value;
+    let cid = cidField.value;
 
     if (email && email.trim() !== "") {
         getConferenceInfo(email);
+    }
+    if (cid && cid.trim() !==""){
+        getConferenceInfo(cid)
     }
 });

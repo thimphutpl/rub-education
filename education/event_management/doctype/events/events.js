@@ -20,8 +20,8 @@ frappe.ui.form.on("Events", {
         frm.trigger("type");
         forward_to_filter(frm);
         room_filter(frm);
-        student_filter(frm);
-        employee_filter(frm);
+        // student_filter(frm);
+        // employee_filter(frm);
         faculty_register_filter(frm);
         student_register_filter(frm);
         setup_equipment_filter(frm);
@@ -51,9 +51,9 @@ frappe.ui.form.on("Events", {
         });
 
         frm.call("has_faculty_attendance").then((r) => {
-            if (frappe.user.has_role("Student")) {
-                return;
-            }
+            // if (frappe.user.has_role("Student")) {
+            //     return;
+            // }
 
             if (!r.message.has_faculty_attendance) {
                 if (frm.doc.docstatus === 1) {
@@ -116,6 +116,20 @@ frappe.ui.form.on("Events", {
         }
 
     },
+    setup:function(frm){
+        const filterByCollege=()=>{
+            if(!frm.doc.college){
+                alert("College is required")
+            }
+            return{
+                filters:{
+                    "company":frm.doc.college
+                }
+            }
+        };
+        frm.set_query("student",filterByCollege);
+        frm.set_query("employee",filterByCollege);
+    },
     college(frm) {
         if (!frm.doc.college) {
             frm.set_value("room", null);
@@ -129,8 +143,6 @@ frappe.ui.form.on("Events", {
         }
 
         setup_equipment_filter(frm);
-        employee_filter(frm);
-        student_filter(frm);
         forward_to_filter(frm);
         room_filter(frm);
         faculty_register_filter(frm);
@@ -156,7 +168,7 @@ frappe.ui.form.on("Events", {
             frm.set_df_property("student", "hidden", 0);
             frm.set_df_property("student", "reqd", 1);
             frm.set_df_property("forward_to", "reqd", 1);
-        } else if (frm.doc.type === "Employee") {
+        } else if (frm.doc.type === "Staff") {
             frm.set_df_property("student", "hidden", 1);
             frm.set_df_property("employee", "hidden", 0);
             frm.set_df_property("employee", "reqd", 1);
@@ -409,26 +421,26 @@ function room_filter(frm) {
         };
     });
 }
-function student_filter(frm) {
-    if (!frm.doc.college) return;
-    frm.set_query("student", function () {
-        return {
-            filters: {
-                company: frm.doc.college
-            }
-        };
-    });
-}
-function employee_filter(frm) {
-    if (!frm.doc.college) return;
-    frm.set_query("employee", function () {
-        return {
-            filters: {
-                company: frm.doc.college
-            }
-        };
-    });
-}
+// function student_filter(frm) {
+//     if (!frm.doc.college) return;
+//     frm.set_query("student", function () {
+//         return {
+//             filters: {
+//                 company: frm.doc.college
+//             }
+//         };
+//     });
+// }
+// function employee_filter(frm) {
+//     if (!frm.doc.college) return;
+//     frm.set_query("employee", function () {
+//         return {
+//             filters: {
+//                 company: frm.doc.college
+//             }
+//         };
+//     });
+// }
 function student_register_filter(frm) {
     if (!frm.doc.college) return;
     frm.set_query("student", "student_register", function (doc, cdt, cdn) {

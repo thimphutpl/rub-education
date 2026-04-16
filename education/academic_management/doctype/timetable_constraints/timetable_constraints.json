@@ -5,9 +5,12 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "sb_config",
   "college",
   "college_abbreviation",
   "academic_year",
+  "start_time",
+  "end_time",
   "column_break_ojck",
   "academic_term",
   "academic_session",
@@ -109,12 +112,29 @@
    "label": "Weekly Off Days",
    "options": "Weekly Off Days",
    "reqd": 1
+  },
+  {
+   "fieldname": "sb_config",
+   "fieldtype": "Section Break",
+   "label": "Main Config."
+  },
+  {
+   "fieldname": "start_time",
+   "fieldtype": "Time",
+   "label": "Academic Day Start Time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "end_time",
+   "fieldtype": "Time",
+   "label": "Academic Day End Time",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-03-04 20:40:56.118864",
+ "modified": "2026-04-06 16:40:24.569744",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Timetable Constraints",

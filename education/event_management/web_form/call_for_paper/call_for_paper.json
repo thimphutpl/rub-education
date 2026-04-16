@@ -18,7 +18,7 @@
  "list_columns": [],
  "login_required": 0,
  "max_attachment_size": 0,
- "modified": "2026-03-03 00:44:37.121457",
+ "modified": "2026-04-14 10:36:01.156494",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "call-for-paper",
@@ -219,7 +219,7 @@
    "max_value": 0,
    "precision": "",
    "read_only": 0,
-   "reqd": 0,
+   "reqd": 1,
    "show_in_filter": 0
   },
   {
@@ -319,7 +319,7 @@
    "max_value": 0,
    "precision": "",
    "read_only": 0,
-   "reqd": 0,
+   "reqd": 1,
    "show_in_filter": 0
   },
   {

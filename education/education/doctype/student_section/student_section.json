@@ -45,8 +45,7 @@
    "fieldname": "student_group_name",
    "fieldtype": "Data",
    "label": "Student Section Name",
-   "reqd": 1,
-   "unique": 1
+   "reqd": 1
   },
   {
    "description": "Set 0 for no limit",
@@ -129,7 +128,7 @@
   }
  ],
  "links": [],
- "modified": "2026-03-25 17:03:50.159533",
+ "modified": "2026-04-02 12:05:50.618549",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student Section",

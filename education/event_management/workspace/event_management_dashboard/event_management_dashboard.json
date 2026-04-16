@@ -1,0 +1,382 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"Fy7DLyCwso\",\"type\":\"custom_block\",\"data\":{\"custom_block_name\":\"Equipment Usage\",\"col\":12}},{\"id\":\"7YbnXP-4q3\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Event Management Dashboard</span>\",\"col\":12}},{\"id\":\"xctkYFrvUc\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Event\",\"col\":3}},{\"id\":\"uGu_NoIjwl\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Conference Announcement\",\"col\":3}},{\"id\":\"gAPSi1HXnH\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Call For Paper\",\"col\":3}},{\"id\":\"6FGLDbWQz4\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Full Paper\",\"col\":3}},{\"id\":\"A0Xa7S9aGN\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"d8jJWKiebP\",\"type\":\"card\",\"data\":{\"card_name\":\"Event Master Data\",\"col\":4}},{\"id\":\"iZeBGjDEeW\",\"type\":\"card\",\"data\":{\"card_name\":\"Conference Master Data\",\"col\":4}},{\"id\":\"Cx_DArOI8s\",\"type\":\"card\",\"data\":{\"card_name\":\"Rubric\",\"col\":4}},{\"id\":\"Mz1ohy2pAZ\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"gIR9hMPItv\",\"type\":\"card\",\"data\":{\"card_name\":\"Event\",\"col\":4}},{\"id\":\"_8pKy6IkCr\",\"type\":\"card\",\"data\":{\"card_name\":\"Conference\",\"col\":4}},{\"id\":\"7MxDa5dOYH\",\"type\":\"card\",\"data\":{\"card_name\":\"Hall Booking\",\"col\":4}}]",
+ "creation": "2025-10-10 17:26:54.086940",
+ "custom_blocks": [
+  {
+   "custom_block_name": "Equipment Usage",
+   "label": "Equipment Usage"
+  }
+ ],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "color-monthly-rank",
+ "idx": 0,
+ "indicator_color": "",
+ "is_hidden": 0,
+ "label": "Event Management Dashboard",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Full Paper",
+   "link_count": 0,
+   "link_to": "Full Paper",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Rubric Template  For Call For Paper",
+   "link_count": 0,
+   "link_to": "Rubric Template For Call For Paper",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Rubric Template  For Full Paper",
+   "link_count": 0,
+   "link_to": "Rubric Template For Full Paper",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Theme",
+   "link_count": 0,
+   "link_to": "Conference Theme",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Word Limit Settings",
+   "link_count": 0,
+   "link_to": "Word Limit Settings",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Conference Announcement",
+   "link_count": 0,
+   "link_to": "Conference Announcement",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Call For Paper",
+   "link_count": 0,
+   "link_to": "Call For Paper",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Full Paper",
+   "link_count": 0,
+   "link_to": "Full Paper",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Audience Registration",
+   "link_count": 0,
+   "link_to": "Audience Registration",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Hall Booking",
+   "link_count": 0,
+   "link_to": "Hall Booking",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Hall Payment",
+   "link_count": 0,
+   "link_to": "Hall Payment",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Event Master Data",
+   "link_count": 1,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Event Type",
+   "link_count": 0,
+   "link_to": "Event Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Conference Master Data",
+   "link_count": 2,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Conference Theme",
+   "link_count": 0,
+   "link_to": "Conference Theme",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Word Limit Settings",
+   "link_count": 0,
+   "link_to": "Word Limit Settings",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Rubric",
+   "link_count": 2,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Rubric Template For Call For Paper",
+   "link_count": 0,
+   "link_to": "Rubric Template For Call For Paper",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Rubric Template For Full Paper",
+   "link_count": 0,
+   "link_to": "Rubric Template For Full Paper",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Conference",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Conference Announcement",
+   "link_count": 0,
+   "link_to": "Conference Announcement",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Call For Paper",
+   "link_count": 0,
+   "link_to": "Call For Paper",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Full Paper",
+   "link_count": 0,
+   "link_to": "Full Paper",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Audience Registration",
+   "link_count": 0,
+   "link_to": "Audience Registration",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Hall Booking",
+   "link_count": 2,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Hall Booking",
+   "link_count": 0,
+   "link_to": "Hall Booking",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Hall Payment",
+   "link_count": 0,
+   "link_to": "Hall Payment",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Event",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Event",
+   "link_count": 0,
+   "link_to": "Events",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Event Attendance",
+   "link_count": 0,
+   "link_to": "Event Attendance",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Event Registration",
+   "link_count": 0,
+   "link_to": "Event Registration",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Faculty Attendance",
+   "link_count": 0,
+   "link_to": "Faculty Attendance",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2026-04-16 09:44:52.995173",
+ "modified_by": "Administrator",
+ "module": "Event Management",
+ "name": "Event Management Dashboard",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 45.0,
+ "shortcuts": [
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "label": "Event",
+   "link_to": "Events",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "label": "Conference Announcement",
+   "link_to": "Conference Announcement",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "label": "Call For Paper",
+   "link_to": "Call For Paper",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "label": "Full Paper",
+   "link_to": "Full Paper",
+   "stats_filter": "[]",
+   "type": "DocType"
+  }
+ ],
+ "title": "Event Management Dashboard"
+}

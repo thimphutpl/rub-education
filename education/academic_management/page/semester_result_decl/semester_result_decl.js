@@ -98,11 +98,105 @@ frappe.pages['semester-result-decl'].on_page_load = function(wrapper) {
 
 }
 
+// function load_results(container, college, programme, academic_term, student_section) {
+//     container.html("<p>Loading results...</p>");
+
+//     frappe.call({
+//         method: "education.academic_management.page.semester_result_decl.semester_result_decl.get_declared_results",
+//         args: {
+//             college,
+//             programme,
+//             academic_term,
+//             student_section
+//         },
+//         callback: function(r) {
+//             if (!r.message) {
+//                 container.html("<b>No data found</b>");
+//                 return;
+//             }
+
+//             let data = r.message;
+//             console.log(data)
+
+//             // 🔹 Build table with two-row header
+//             let html = `
+//             <style>
+//                 table, th, td {
+//                     border: 1px solid rgb(56, 56, 56);
+//                     border-collapse: collapse;
+//                 }
+//                 th, td {
+//                     padding: 5px;
+//                     text-align: center;
+//                     width: 47px;
+//                 }
+//                 thead tr {
+//                     background-color: #f3f3f3;
+//                 }
+            
+//                 /* Student rows */
+//                 tbody tr {
+//                     background-color: #ffffff;
+//                 }
+//             </style>
+
+//             <h3>Semester Result</h3>
+//             <table>
+//                 <thead>
+//                     <tr>   
+//                         <th rowspan="2" style="width:120px;">Student No</th>
+//                         <th rowspan="2" style="width:130px;">Name</th>
+//                         ${data.modules.map(m => `<th colspan="3">${m}</th>`).join("")}
+//                         <th rowspan="2">Total CV</th>
+//                         <th rowspan="2">Percentage Achieved</th>
+//                     </tr>
+//                     <tr>
+//                         ${data.modules.map(m => `<th>CA</th><th>SE</th><th>TL</th>`).join("")}
+//                     </tr>
+//                 </thead>
+//                 <tbody>
+//             `;
+
+
+//             data.students.forEach(stu => {
+//                 let total_cv = 0;           // Sum of TL across modules
+//                 let max_total = data.modules.length * 100; // Each module = 100
+            
+//                 html += `<tr>
+//                             <td>${stu.student_no}</td>
+//                             <td>${stu.student_name}</td>`;
+            
+//                 data.modules.forEach(m => {
+//                     let res = stu.results[m] || {ca: 0, se: 0, tl: 0};
+//                     html += `<td>${res.ca}</td><td>${res.se}</td><td>${res.tl}</td>`;
+            
+//                     // Add TL to total_cv
+//                     total_cv += Number(res.tl) || 0;
+//                 });
+            
+//                 // Percentage calculation
+//                 let percentage = max_total > 0 ? ((total_cv / max_total) * 100).toFixed(2) : 0;
+            
+//                 // Add new columns at the end
+//                 html += `<td>${total_cv}</td><td>${percentage}%</td>`;
+            
+//                 html += `</tr>`;
+//             });
+
+//             html += `
+//                 </tbody>
+//             </table>
+//             `;
+
+//             container.html(html);
+//         }
+//     });
+// }
 function load_results(container, college, programme, academic_term, student_section) {
     container.html("<p>Loading results...</p>");
 
     frappe.call({
-        method: "education.academic_management.page.semester_result_decl.semester_result_decl.get_results",
+        method: "education.academic_management.page.semester_result_decl.semester_result_decl.get_declared_results",
         args: {
             college,
             programme,
@@ -110,15 +204,14 @@ function load_results(container, college, programme, academic_term, student_sect
             student_section
         },
         callback: function(r) {
-            if (!r.message) {
+            if (!r.message || !r.message.students || r.message.students.length === 0) {
                 container.html("<b>No data found</b>");
                 return;
             }
 
             let data = r.message;
-            console.log(data)
+            // console.log(data);
 
-            // 🔹 Build table with two-row header
             let html = `
             <style>
                 table, th, td {
@@ -133,67 +226,95 @@ function load_results(container, college, programme, academic_term, student_sect
                 thead tr {
                     background-color: #f3f3f3;
                 }
-            
-                /* Student rows */
                 tbody tr {
                     background-color: #ffffff;
+                }
+                .pass {
+                    color: green;
+                    font-weight: bold;
+                }
+                .fail {
+                    color: red;
+                    font-weight: bold;
                 }
             </style>
 
             <h3>Semester Result</h3>
+
             <table>
                 <thead>
                     <tr>   
                         <th rowspan="2" style="width:120px;">Student No</th>
                         <th rowspan="2" style="width:130px;">Name</th>
-                        ${data.modules.map(m => `<th colspan="3">${m}</th>`).join("")}
+
+                        ${data.modules.map(m => `<th colspan="3">${m.module}</th>`).join("")}
+
                         <th rowspan="2">Total CV</th>
                         <th rowspan="2">Percentage Achieved</th>
+                        <th rowspan="2">Remarks</th>
                     </tr>
                     <tr>
-                        ${data.modules.map(m => `<th>CA</th><th>SE</th><th>TL</th>`).join("")}
+                        ${data.modules.map(m => `
+                            <th>CA (${m.ca_total || 0})</th>
+                            <th>SE (${m.semester_total || 0})</th>
+                            <th>TL</th>
+                        `).join("")}
                     </tr>
                 </thead>
+
                 <tbody>
             `;
 
-            // 🔹 Student data rows
-            // data.students.forEach(stu => {
-            //     html += `<tr>
-            //                 <td>${stu.student_no}</td>
-            //                 <td>${stu.student_name}</td>`;
-
-            //     data.modules.forEach(m => {
-            //         let res = stu.results[m] || {ca:'', se:'', tl:''};
-            //         html += `<td>${res.ca}</td><td>${res.se}</td><td>${res.tl}</td>`;
-            //     });
-
-            //     html += `</tr>`;
-            // });
-
             data.students.forEach(stu => {
-                let total_cv = 0;           // Sum of TL across modules
-                let max_total = data.modules.length * 100; // Each module = 100
-            
-                html += `<tr>
-                            <td>${stu.student_no}</td>
-                            <td>${stu.student_name}</td>`;
-            
+
+                let total_cv = 0;
+                let max_total = data.modules.length * 100;
+
+                // ✅ overall pass flag
+                let overall_pass = 1;
+
+                html += `
+                    <tr>
+                        <td>${stu.student_no}</td>
+                        <td>${stu.student_name}</td>
+                `;
+
                 data.modules.forEach(m => {
-                    let res = stu.results[m] || {ca: 0, se: 0, tl: 0};
-                    html += `<td>${res.ca}</td><td>${res.se}</td><td>${res.tl}</td>`;
-            
-                    // Add TL to total_cv
+
+                    let module_name = m.module;
+
+                    let res = (stu.results && stu.results[module_name]) 
+                        ? stu.results[module_name] 
+                        : { ca: 0, se: 0, tl: 0, passed: 0 };
+
+                    let cls = res.passed ? "pass" : "fail";
+
+                    // ❌ if any module failed → overall fail
+                    if (!res.passed) {
+                        overall_pass = 0;
+                    }
+
+                    html += `
+                        <td>${res.ca}</td>
+                        <td>${res.se}</td>
+                        <td class="${cls}">${res.tl}</td>
+                    `;
+
                     total_cv += Number(res.tl) || 0;
                 });
-            
-                // Percentage calculation
-                let percentage = max_total > 0 ? ((total_cv / max_total) * 100).toFixed(2) : 0;
-            
-                // Add new columns at the end
-                html += `<td>${total_cv}</td><td>${percentage}%</td>`;
-            
-                html += `</tr>`;
+
+                let percentage = max_total > 0 
+                    ? ((total_cv / max_total) * 100).toFixed(2) 
+                    : 0;
+
+                let remark_text = overall_pass ? "Pass" : "Fail";
+                let remark_class = overall_pass ? "pass" : "fail";
+
+                html += `
+                    <td><b>${total_cv}</b></td>
+                    <td><b>${percentage}%</b></td>
+                    <td class="${remark_class}">${remark_text}</td>
+                </tr>`;
             });
 
             html += `

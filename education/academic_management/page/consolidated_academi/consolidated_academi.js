@@ -252,6 +252,7 @@ function load_results(container, student) {
                         <tr>
                             <th>Semester</th>
                             <th>Module</th>
+                            <th>Year of Passing</th>
                             <th>Max. Marks</th>
                             <th>Marks Secured</th>
                             <th>Credit</th>
@@ -279,6 +280,7 @@ function load_results(container, student) {
                     : 0;
 
                 let semester_weightage = Number(rows[0].weighting) || 0;
+
                 let weighted_score = max_total > 0
                     ? ((total_marks / max_total) * semester_weightage).toFixed(2)
                     : 0;
@@ -288,19 +290,20 @@ function load_results(container, student) {
                 rows.forEach((d, index) => {
                     html += `<tr>`;
 
-                    // 🔹 Semester column (rowspan includes total row)
+                    // Semester column (rowspan includes total row)
                     if (index === 0) {
-                        html += `<td class="semester-cell" rowspan="${rows.length + 1}">${semester}</td>`;
+                        html += `<td class="semester-cell" rowspan="${rows.length}">${semester}</td>`;
                     }
 
                     html += `
                         <td>${d.module}</td>
+                        <td>${d.year_of_passing}</td>
                         <td>100</td>
                         <td>${d.total}</td>
                         <td>${d.credit || ""}</td>
                     `;
 
-                    // 🔹 Weighting & Remarks only once (NOT including total row)
+                    // Weighting & Remarks only once
                     if (index === 0) {
                         html += `
                             <td rowspan="${rows.length}">${semester_weightage}</td>
@@ -311,14 +314,15 @@ function load_results(container, student) {
                     html += `</tr>`;
                 });
 
-                // 🔹 TOTAL ROW (aligned correctly under columns)
+                // ✅ FIXED TOTAL ROW (correct alignment)
                 html += `
                     <tr class="total-row">
-                        <td>Total</td>
+                        <td colspan="2">Total</td>
+                        <td></td>
                         <td>${max_total}</td>
                         <td>${total_marks}</td>
                         <td>${total_credit}</td>
-                        <td>${weighted_score}</td> <!-- THIS is under Weighting -->
+                        <td>${weighted_score}</td>
                         <td></td>
                     </tr>
                 `;

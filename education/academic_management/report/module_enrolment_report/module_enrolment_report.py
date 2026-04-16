@@ -31,14 +31,14 @@ def get_columns(filters=None):
 	# Fetch all distinct time slots
 	cond = ""
 	if filters.get("module"):
-		cond = " and module = '{}'".format(filters.get("module"))
+		cond = " and parent = '{}'".format(filters.get("module"))
 	modules = frappe.db.sql("""
-		SELECT module
-		FROM `tabModule Enrolment Key`
-		WHERE docstatus = 1 and college = '{}' and
-		programme = '{}' and academic_term = '{}'
+		SELECT parent as module
+		FROM `tabModule College`
+		WHERE college = '{}' and
+		programme = '{}' and module_semester = '{}'
 		{}
-	""".format(filters.get("college"), filters.get("programme"), filters.get("academic_term"), cond), as_dict=True)
+	""".format(filters.get("college"), filters.get("programme"), filters.get("semester"), cond), as_dict=True)
 
 
 	columns =	[
@@ -118,14 +118,14 @@ def get_data(filters):
 
 	cond = ""
 	if filters.get("module"):
-		cond = " and module = '{}'".format(filters.get("module"))
+		cond = " and parent = '{}'".format(filters.get("module"))
 	modules = frappe.db.sql("""
-		SELECT module
-		FROM `tabModule Enrolment Key`
-		WHERE docstatus = 1 and college = '{}' and
-		programme = '{}' and academic_term = '{}'
+		SELECT parent as module
+		FROM `tabModule College`
+		WHERE college = '{}' and
+		programme = '{}' and module_semester = '{}'
 		{}
-	""".format(filters.get("college"), filters.get("programme"), filters.get("academic_term"),  cond), as_dict=True)
+	""".format(filters.get("college"), filters.get("programme"), filters.get("semester"), cond), as_dict=True)
 
 	# Build data rows
 	data = []

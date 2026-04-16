@@ -1,0 +1,72 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-04-09 12:15:47.826124",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "college",
+  "ca_passing_citeria",
+  "column_break_vqsy",
+  "se_passing_citeria",
+  "total_passing_citeria",
+  "column_break_klff",
+  "failed_module"
+ ],
+ "fields": [
+  {
+   "fieldname": "ca_passing_citeria",
+   "fieldtype": "Percent",
+   "in_list_view": 1,
+   "label": "CA Passing Citeria"
+  },
+  {
+   "fieldname": "column_break_vqsy",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_klff",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "college",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "College",
+   "options": "Company"
+  },
+  {
+   "fieldname": "se_passing_citeria",
+   "fieldtype": "Percent",
+   "in_list_view": 1,
+   "label": "SE Passing Citeria"
+  },
+  {
+   "fieldname": "total_passing_citeria",
+   "fieldtype": "Percent",
+   "in_list_view": 1,
+   "label": "Total Passing Citeria"
+  },
+  {
+   "fieldname": "failed_module",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Number of Failed Modules for Semester Repeat"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-04-12 21:58:09.156283",
+ "modified_by": "Administrator",
+ "module": "Academic Management",
+ "name": "Pass Criteria",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

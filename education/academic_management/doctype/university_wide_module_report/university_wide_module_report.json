@@ -1,57 +1,82 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "ENOTE.YY.MM.####",
- "creation": "2023-09-18 13:28:42.381307",
+ "autoname": "format:APMR-{college_abbreviation}-{module_code}-{YY}-{#####}",
+ "creation": "2026-03-31 16:16:36.933817",
  "doctype": "DocType",
  "document_type": "Document",
  "engine": "InnoDB",
  "field_order": [
-  "enote_format",
-  "title",
-  "category",
-  "enote_type",
-  "class",
-  "reviewer_required",
+  "college",
+  "college_abbreviation",
+  "module",
+  "module_code",
+  "academic_term",
+  "academic_year",
+  "academic_session",
   "column_break_2",
   "note_date",
-  "forward_to",
-  "enote_series",
   "type",
-  "permitted_user",
-  "copied",
-  "reviewers",
-  "section_break_21",
-  "content",
-  "seen_by_section",
-  "remark",
-  "workflow_state",
+  "permitted_users",
+  "to",
+  "sb_attachments",
+  "attachments",
+  "report_section",
+  "report",
   "amended_from"
  ],
  "fields": [
   {
-   "fieldname": "enote_format",
-   "fieldtype": "Data",
-   "label": "Dispatch Number",
-   "read_only": 1,
-   "unique": 1
-  },
-  {
-   "fieldname": "title",
-   "fieldtype": "Data",
-   "in_global_search": 1,
-   "in_list_view": 1,
-   "label": "Title",
-   "no_copy": 1,
-   "print_hide": 1,
-   "reqd": 1
-  },
-  {
-   "fieldname": "category",
+   "fieldname": "college",
    "fieldtype": "Link",
-   "label": "Category",
-   "options": "Report Category",
-   "reqd": 1
+   "label": "College",
+   "options": "Company"
+  },
+  {
+   "fetch_from": "college.abbr",
+   "fieldname": "college_abbreviation",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "in_list_view": 1,
+   "label": "College Abbreviation",
+   "read_only": 1
+  },
+  {
+   "fieldname": "module",
+   "fieldtype": "Link",
+   "label": "Module",
+   "options": "Module"
+  },
+  {
+   "fetch_from": "module.module_code",
+   "fieldname": "module_code",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "in_list_view": 1,
+   "label": "Module Code",
+   "read_only": 1
+  },
+  {
+   "fieldname": "academic_term",
+   "fieldtype": "Link",
+   "label": "Academic Term",
+   "options": "Academic Term"
+  },
+  {
+   "fetch_from": "academic_term.academic_year",
+   "fieldname": "academic_year",
+   "fieldtype": "Link",
+   "label": "Academic Year",
+   "options": "Academic Year",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "academic_term.academic_session",
+   "fieldname": "academic_session",
+   "fieldtype": "Link",
+   "label": "Academic Session",
+   "options": "Academic Session",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_2",
@@ -64,63 +89,49 @@
    "label": "Date"
   },
   {
-   "fieldname": "forward_to",
-   "fieldtype": "Link",
-   "label": "Approver",
-   "no_copy": 1,
-   "options": "User"
-  },
-  {
-   "fieldname": "permitted_user",
-   "fieldtype": "Link",
-   "label": "Permitted User",
-   "no_copy": 1,
-   "options": "User"
-  },
-  {
-   "allow_on_submit": 1,
-   "fieldname": "copied",
-   "fieldtype": "Table MultiSelect",
-   "ignore_user_permissions": 1,
-   "label": "Copy To",
-   "no_copy": 1,
-   "options": "Note Copy"
-  },
-  {
-   "fieldname": "section_break_21",
-   "fieldtype": "Section Break"
-  },
-  {
-   "bold": 1,
-   "description": "Help: To link to another record in the system, use \"/app/note/[Note Name]\" as the Link URL. (don't use \"http://\")",
-   "fetch_from": "category.template",
-   "fetch_if_empty": 1,
-   "fieldname": "content",
-   "fieldtype": "Text Editor",
-   "in_global_search": 1,
-   "label": "Content",
-   "no_copy": 1
-  },
-  {
-   "fieldname": "seen_by_section",
-   "fieldtype": "Section Break",
-   "label": "Action & Remark"
-  },
-  {
-   "fieldname": "remark",
-   "fieldtype": "Table",
-   "no_copy": 1,
-   "options": "Note Remark",
-   "read_only": 1
-  },
-  {
-   "fieldname": "workflow_state",
-   "fieldtype": "Link",
+   "depends_on": "eval:doc.category ==\"Note Sheet\"",
+   "fieldname": "type",
+   "fieldtype": "Select",
    "hidden": 1,
-   "label": "Workflow State",
+   "label": "Type",
+   "options": "\nProcess\nPayment"
+  },
+  {
+   "fieldname": "permitted_users",
+   "fieldtype": "Table MultiSelect",
+   "label": "Permitted Users",
    "no_copy": 1,
-   "options": "Workflow State",
+   "options": "APMR To Users",
    "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.apmr_type != \"University Level Review & Recommendation\"",
+   "fieldname": "to",
+   "fieldtype": "Table MultiSelect",
+   "label": "To",
+   "mandatory_depends_on": "eval:doc.apmr_type != \"University Level Review & Recommendation\"",
+   "options": "APMR To Users"
+  },
+  {
+   "fieldname": "sb_attachments",
+   "fieldtype": "Section Break",
+   "label": "Attachments"
+  },
+  {
+   "fieldname": "attachments",
+   "fieldtype": "Table",
+   "options": "APMR Attachments"
+  },
+  {
+   "fieldname": "report_section",
+   "fieldtype": "Section Break",
+   "label": "Report"
+  },
+  {
+   "fieldname": "report",
+   "fieldtype": "Text Editor",
+   "label": "Report",
+   "reqd": 1
   },
   {
    "fieldname": "amended_from",
@@ -129,59 +140,18 @@
    "no_copy": 1,
    "options": "University Wide Module Report",
    "print_hide": 1,
-   "read_only": 1
-  },
-  {
-   "fieldname": "enote_type",
-   "fieldtype": "Link",
-   "label": "Type",
-   "options": "Report Type",
-   "reqd": 1
-  },
-  {
-   "description": "*** It must be ended with /. Based on this series, it will generate your dispatch number after the eNote is approved.***",
-   "fieldname": "enote_series",
-   "fieldtype": "Link",
-   "label": "Dispatch/Reference Series",
-   "options": "Report Series",
-   "reqd": 1
-  },
-  {
-   "default": "0",
-   "fieldname": "reviewer_required",
-   "fieldtype": "Check",
-   "label": "Reviewer Required"
-  },
-  {
-   "depends_on": "eval:doc.reviewer_required == \"1\"",
-   "fieldname": "reviewers",
-   "fieldtype": "Table",
-   "label": "Reviewers",
-   "options": "eNote Reviewer"
-  },
-  {
-   "depends_on": "eval:doc.category == \"Note Sheet\"",
-   "fieldname": "class",
-   "fieldtype": "Select",
-   "label": "Class",
-   "options": "\nAdministration\nProcurement\nBudget\nEmployee\nGeneral\nMiscellaneous"
-  },
-  {
-   "depends_on": "eval:doc.category ==\"Note Sheet\"",
-   "fieldname": "type",
-   "fieldtype": "Select",
-   "label": "Type",
-   "options": "\nProcess\nPayment"
+   "read_only": 1,
+   "search_index": 1
   }
  ],
  "icon": "fa fa-file-text",
  "is_submittable": 1,
  "links": [],
- "modified": "2026-01-22 15:53:08.212487",
+ "modified": "2026-04-08 12:01:09.338403",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "University Wide Module Report",
- "naming_rule": "Expression (old style)",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {
@@ -201,8 +171,7 @@
  "sort_field": "modified",
  "sort_order": "ASC",
  "states": [],
- "title_field": "title",
+ "title_field": "module",
  "track_changes": 1,
- "track_seen": 1,
- "track_views": 1
+ "track_seen": 1
 }

@@ -16,7 +16,8 @@ def get_policy_briefs(research_center_name, posting_date):
         filters={
             "research_center_name": research_center_name,
             "posting_date": posting_date,
-            "reporting_type": "Policy Briefs",
+            "reporting_type": "Publications",
+            "sub_reporting_type": "Policy Briefs",
             "docstatus": 1
         },
         fields=[
@@ -40,7 +41,8 @@ def get_journals(research_center_name, posting_date):
         filters={
             "research_center_name": research_center_name,
             "posting_date": posting_date,
-            "reporting_type": "Journals",
+            "reporting_type": "Publications",
+            "sub_reporting_type": "Journals",
             "docstatus": 1
         },
         fields=[
@@ -67,7 +69,8 @@ def get_research_articles(research_center_name, posting_date):
         filters={
             "research_center_name": research_center_name,
             "posting_date": posting_date,
-            "reporting_type": "Research Articles",
+            "reporting_type": "Publications",
+            "sub_reporting_type": "Research Articles",
             "docstatus": 1
         },
         fields=[
@@ -128,7 +131,8 @@ def get_conference_seminar_paper(research_center_name, posting_date):
         filters={
             "research_center_name": research_center_name,
             "posting_date": posting_date,
-            "reporting_type": "Conference Seminar Paper",
+            "reporting_type": "Publications",
+            "sub_reporting_type": "Conference/seminar proceedings",
             "docstatus": 1
         },
         fields=[
@@ -136,7 +140,8 @@ def get_conference_seminar_paper(research_center_name, posting_date):
             "conference_seminar_paper_title",
             "conferenceseminar_title",
             "date",
-            "nationalinternational"
+            "nationalinternational",
+            "designation"
         ]
     )
 
@@ -187,7 +192,8 @@ def get_books_chapter(research_center_name, posting_date):
         filters={
             "research_center_name": research_center_name,
             "posting_date": posting_date,
-            "reporting_type": "Book Chapters",
+            "reporting_type": "Publications",
+            "sub_reporting_type": "Book Chapters",
             "docstatus": 1
         },
         fields=[
@@ -195,7 +201,8 @@ def get_books_chapter(research_center_name, posting_date):
             "book_chapter_title",
             "book_title",
             "publishers",
-            "website_link_books"
+            "website_link_books",
+            "author_employee"
         ]
     )
 
@@ -247,7 +254,8 @@ def get_training_workshop_organized(research_center_name, posting_date):
         filters={
             "research_center_name": research_center_name,
             "posting_date": posting_date,
-            "reporting_type": "Knowledge Transfer and Community Service",
+            "reporting_type": "Knowledge Transfer and Outreach",
+            "sub_reporting_type": "Training and workshop",
             "docstatus": 1
         },
         fields=[
@@ -307,7 +315,8 @@ def get_research_event_organized(research_center_name, posting_date):
         filters={
             "research_center_name": research_center_name,
             "posting_date": posting_date,
-            "reporting_type": "Research Event Organized",
+            "reporting_type": "Knowledge Transfer and Outreach",
+            "sub_reporting_type": "Research Event",
             "docstatus": 1
         },
         fields=[

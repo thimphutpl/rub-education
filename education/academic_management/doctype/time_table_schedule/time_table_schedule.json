@@ -19,6 +19,7 @@
   "sb_schedule_details",
   "generate",
   "items",
+  "non_allocated_modules",
   "section_break_im0z",
   "amended_from"
  ],
@@ -124,13 +125,20 @@
    "fieldname": "generate",
    "fieldtype": "Button",
    "label": "Generate Time Table"
+  },
+  {
+   "fieldname": "non_allocated_modules",
+   "fieldtype": "Table",
+   "label": "Non Allocated Modules",
+   "options": "Non Allocated Periods",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-03-05 00:46:53.071014",
+ "modified": "2026-04-06 15:38:23.274191",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Time Table Schedule",

@@ -101,16 +101,36 @@ def get_results(student):
     result = []
 
     for m in modules:
+        # marks = frappe.db.sql("""
+        #     SELECT 
+        #         SUM(al.weightage_achieved) AS total
+        #     FROM `tabAssessment Ledger` al
+        #     INNER JOIN `tabAssessment Component` ac 
+        #         ON al.assessment_component = ac.name
+        #     WHERE al.student = %s
+        #       AND al.module = %s
+        #       AND al.is_cancelled = 0
+
+            
+        # """, (student, m.course), as_dict=1)
+
         marks = frappe.db.sql("""
             SELECT 
-                SUM(al.weightage_achieved) AS total
-            FROM `tabAssessment Ledger` al
-            INNER JOIN `tabAssessment Component` ac 
-                ON al.assessment_component = ac.name
-            WHERE al.student = %s
-              AND al.module = %s
-              AND al.is_cancelled = 0
+            COALESCE(rea.weightage_obtained, 0) AS total,
+            rea.passed,
+            rea.academic_year
+
+        FROM `tabResult Entry Item` rea
+        INNER JOIN `tabResult Entry` re 
+            ON rea.parent = re.name
+
+        WHERE 
+            re.student = %s
+            AND rea.module = %s
+            
         """, (student, m.course), as_dict=1)
+
+        # frappe.throw(str(marks))
 
         weighting = frappe.db.sql("""
             SELECT awi.weightage as weightage from `tabProgram Weightage` 
@@ -119,6 +139,7 @@ def get_results(student):
         """, (m.semester), as_dict=1)
 
         total = marks[0].total or 0 if marks else 0
+        year_of_passing = marks[0].academic_year or 0 if marks else 'Not Defined'
         weightage = weighting[0].weightage or 0 if weighting else 0
 
 
@@ -127,10 +148,14 @@ def get_results(student):
             "module": m.course,
             "credit":m.credit,
             "weighting":weightage,
-            "total": total
+            "total": total,
+            "year_of_passing":year_of_passing
         })
+
+    # frappe.throw(frappe.as_json(result))
 
     return {
         "student": frappe.get_value("Student", student, "student_name"),
         "results": result
     }
+

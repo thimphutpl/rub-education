@@ -1,23 +1,28 @@
 function getFullPaperInfo() {
     let emailValue = document.querySelector("input[name='email']").value;
-    console.log("Email:", emailValue);
+    // console.log("Email:", emailValue);
+    let cidValue= document.querySelector("input[name='cid']").value
 
     if (!emailValue) {
         alert("Please enter your email address.");
         return;
     }
+    if (!cidValue){
+        alert("Please enter your cid.")
+    }
 
     frappe.call({
         method: "education.www.full-paper-review-status-check.index.get_full_paper",
         args: {
-            email: emailValue
+            email: emailValue,
+            cid:cidValue
         },
         callback: function (r) {
-            console.log("API Response:", r);
+            // console.log("API Response:", r);
             displayFullPaperInfo(r.message);
         },
         error: function (err) {
-            console.error("API Error:", err);
+            // console.error("API Error:", err);
             alert("Error connecting to server. Please try again.");
         }
     });
@@ -25,11 +30,11 @@ function getFullPaperInfo() {
 
 function displayFullPaperInfo(response) {
     var infoFullPager = document.getElementById("full-paper-review-status-check");
-    console.log("Display response:", response);
+    // console.log("Display response:", response);
 
     // Use response.conferences (the data you're actually getting)
     if (response && response.full_paper_info && response.full_paper_info.length > 0) {
-        console.log("Found conferences:", response.full_paper_info);
+        // console.log("Found conferences:", response.full_paper_info);
 
         let html = '';
 
@@ -72,9 +77,14 @@ function displayFullPaperInfo(response) {
 
 frappe.ready(function () {
     let inputField = document.querySelector("input[name='email']");
+    let cidField = document.querySelector("input[name='cid']")
     let email = inputField.value;
+    let cid = cidField.value;
 
     if (email && email.trim() !== "") {
         getFullPaperInfo(email);
+    }
+    if (cid && cid.trim()!==""){
+        getFullPaperInfo(cid);
     }
 });

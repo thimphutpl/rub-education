@@ -8,17 +8,46 @@ from frappe.model.document import Document
 class WordLimitSettings(Document):
 	pass
 
+# @frappe.whitelist(allow_guest=True)
+# def get_word_limits():
+#     record = frappe.get_all("Word Limit Settings", limit=1, fields=["min_words", "max_words", "min_abstract", "max_abstract", "min_revise_abstract", "max_revise_abstract"])
+#     if record:
+#         return record[0]
+#     else:
+#         return {
+#             "min_words": 0,
+#             "max_words": 0,
+#             "min_abstract": 0,
+#             "max_abstract": 0,
+#             "min_revise_abstract": 0,
+#             "max_revise_abstract": 0
+#         }
+
 @frappe.whitelist(allow_guest=True)
-def get_word_limits():
-    record = frappe.get_all("Word Limit Settings", limit=1, fields=["min_words", "max_words", "min_abstract", "max_abstract", "min_revise_abstract", "max_revise_abstract"])
+def get_word_limits(theme=None):
+    record = frappe.get_all(
+        "Word Limit Settings",
+        filters={"theme": theme},   # ✅ FILTER BY THEME
+        limit=1,
+        fields=[
+            "min_words",
+            "max_words",
+            "min_abstract",
+            "max_abstract",
+            "min_revise_abstract",
+            "max_revise_abstract"
+        ]
+    )
+
     if record:
         return record[0]
-    else:
-        return {
-            "min_words": 0,
-            "max_words": 0,
-            "min_abstract": 0,
-            "max_abstract": 0,
-            "min_revise_abstract": 0,
-            "max_revise_abstract": 0
-        }
+
+    # fallback if no record found
+    return {
+        "min_words": 0,
+        "max_words": 0,
+        "min_abstract": 0,
+        "max_abstract": 0,
+        "min_revise_abstract": 0,
+        "max_revise_abstract": 0
+    }

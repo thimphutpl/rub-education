@@ -1,0 +1,194 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:RM-{YY}-{MM}-{DD}-{#####}",
+ "creation": "2026-04-02 13:03:05.903788",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "college",
+  "academic_term",
+  "student",
+  "get_data",
+  "column_break_eafp",
+  "semester",
+  "module",
+  "programme",
+  "section_break_kcso",
+  "items",
+  "section_break_iuww",
+  "column_break_izac",
+  "total_ca",
+  "total_se",
+  "column_break_mise",
+  "ca",
+  "semester_exam",
+  "overall",
+  "column_break_tkje",
+  "ca_status",
+  "semester_exam_status",
+  "overall_status",
+  "section_break_7ikw",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_7ikw",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Result Modification",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "academic_term",
+   "fieldtype": "Link",
+   "label": "Academic Term",
+   "options": "Academic Term"
+  },
+  {
+   "fieldname": "column_break_eafp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "semester",
+   "fieldtype": "Link",
+   "label": "Semester",
+   "options": "Semester"
+  },
+  {
+   "fieldname": "student",
+   "fieldtype": "Link",
+   "label": "Student",
+   "options": "Student"
+  },
+  {
+   "fieldname": "college",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "College",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_kcso",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "get_data",
+   "fieldtype": "Button",
+   "label": "Get Data"
+  },
+  {
+   "fieldname": "module",
+   "fieldtype": "Link",
+   "label": "Module",
+   "options": "Module"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "options": "Result Modification Item"
+  },
+  {
+   "fieldname": "section_break_iuww",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_tkje",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ca_status",
+   "fieldtype": "Select",
+   "label": "CA Status",
+   "options": "\nFail\nPass"
+  },
+  {
+   "fieldname": "semester_exam",
+   "fieldtype": "Float",
+   "label": "Semester Exam"
+  },
+  {
+   "fieldname": "overall",
+   "fieldtype": "Float",
+   "label": "Overall"
+  },
+  {
+   "fieldname": "semester_exam_status",
+   "fieldtype": "Select",
+   "label": "Semester Exam Status",
+   "options": "\nFail\nPass"
+  },
+  {
+   "fieldname": "overall_status",
+   "fieldtype": "Select",
+   "label": "Overall Status",
+   "options": "\nPass\nFail"
+  },
+  {
+   "fieldname": "ca",
+   "fieldtype": "Float",
+   "label": "CA"
+  },
+  {
+   "fieldname": "column_break_izac",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_se",
+   "fieldtype": "Float",
+   "label": "Total Semester Exam"
+  },
+  {
+   "fieldname": "column_break_mise",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_ca",
+   "fieldtype": "Float",
+   "label": "Total CA"
+  },
+  {
+   "fieldname": "programme",
+   "fieldtype": "Link",
+   "label": "Programme",
+   "options": "Programme"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-04-03 02:19:51.813641",
+ "modified_by": "Administrator",
+ "module": "Examination",
+ "name": "Result Modification",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

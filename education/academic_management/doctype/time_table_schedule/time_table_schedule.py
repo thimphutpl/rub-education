@@ -236,26 +236,28 @@ def assign_modules(schedule_doc, constraint, modules, days, slots, index=0):
 			if not tutors or len(tutors) == 0:
 				frappe.throw("""Tutor is not allocated for module <b><a href="/app/module/{0}">{0}</a></b>""".format(module_info.get("module")))
 			for tutor_row in tutors:
-				tutor = tutor_row.tutor
-				tutor_type = tutor_row.tutor_type
-				class_type = tutor_row.class_type
+				if module_info['class_type'] == tutor_row.class_type:
+					tutor = tutor_row.tutor
+					tutor_type = tutor_row.tutor_type
+					class_type = tutor_row.class_type
 
-				# Check if tutor is available
-				# if count_tutor_day(schedule_doc, tutor, day) >= module_info.get("tutor_max_per_day", hours_needed):
-				# 	continue
-				# if count_tutor_total(schedule_doc, tutor) >= module_info.get("tutor_max_per_week", hours_needed):
-				# 	continue
+					# Check if tutor is available
+					# if count_tutor_day(schedule_doc, tutor, day) >= module_info.get("tutor_max_per_day", hours_needed):
+					# 	continue
+					# if count_tutor_total(schedule_doc, tutor) >= module_info.get("tutor_max_per_week", hours_needed):
+					# 	continue
 
-				# # Check blocked periods
-				if not is_valid_slot(schedule_doc, constraint, module_info, day, slot):
-					continue
+					# # Check blocked periods
+					if not is_valid_slot(schedule_doc, constraint, module_info, day, slot, tutor):
+						continue
 
-				# Optional: prevent module on adjacent day
-				# if is_adjacent_day(schedule_doc, module_info["module"], day):
-				# 	continue
+					# Optional: prevent module on adjacent day
+					# if is_adjacent_day(schedule_doc, module_info["module"], day):
+					# 	continue
 
-				tutor_assigned = tutor
-				# break  # Found a valid tutor
+					tutor_assigned = tutor
+					# break  # Found a valid tutor
+
 
 			if tutor_assigned:
 				# Append row only if fully valid
@@ -313,7 +315,7 @@ def remove_module_entries(doc, module):
 # 				return False
 # 	# Also check if slot already taken in timetable
 # 	return is_slot_available(doc, day, slot)
-def is_valid_slot(doc, constraint, module, day, slot):
+def is_valid_slot(doc, constraint, module, day, slot, tutor):
     blocked_map = build_blocked_slots(constraint)
 
     # Check blocked periods from constraints
@@ -323,7 +325,7 @@ def is_valid_slot(doc, constraint, module, day, slot):
                 return False
 
     # Skip slots already used by any module
-    if not is_slot_available(doc, day, slot):
+    if not is_slot_available(doc, day, slot, tutor):
         return False
 
     return True
@@ -367,7 +369,7 @@ def times_overlap(start1, end1, start2, end2):
 # 		if r.day == day and r.from_time == slot["from"]:
 # 			return False
 # 	return True
-def is_slot_available(doc, day, slot):
+def is_slot_available(doc, day, slot, tutor):
     """
     Returns True if the given slot is free for the given day, i.e.,
     it doesn't overlap with any previously assigned module/tutor/room.
@@ -376,4 +378,29 @@ def is_slot_available(doc, day, slot):
         if r.day == day:
             if times_overlap(slot["from"], slot["to"], r.from_time, r.to_time):
                 return False
+
+    # 2. Check across other timetable schedules
+    conflicts = frappe.db.sql("""
+        SELECT tsi.name
+        FROM `tabTime Table Schedule Item` tsi
+        JOIN `tabTime Table Schedule` ts ON ts.name = tsi.parent
+        WHERE tsi.tutor = %s
+        AND tsi.day = %s
+        AND ts.name != %s
+        AND (
+            (%s < tsi.to_time AND %s > tsi.from_time)
+        )
+    """, (
+        tutor,
+        day,
+        doc.name or "",   # exclude current doc (important during update)
+        slot["from"],
+        slot["to"]
+    ))
+
+    if conflicts:
+        return False
+
+    return True
+				
     return True

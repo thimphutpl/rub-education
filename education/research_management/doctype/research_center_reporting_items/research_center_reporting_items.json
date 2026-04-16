@@ -21,26 +21,45 @@
   "vol_no_journal",
   "issue_no_journal",
   "website_links_journal",
+  "journal_papers_section",
+  "title",
+  "journal_author",
+  "j_publisher",
+  "j_year",
+  "website_link",
   "section_break_mxnz",
+  "number_of_author",
+  "r_a_first_author",
+  "r_a_second_author",
+  "r_a_third_author",
+  "author",
   "research_articles_title",
   "publisher",
+  "years",
   "website_link_articles",
   "section_break_sohe",
   "conference_seminar_paper_title",
   "conferenceseminar_title",
+  "presenter",
+  "designation",
   "date",
   "nationalinternational",
   "section_break_bmwu",
   "book_chapter_title",
   "book_title",
+  "b_designation",
   "publishers",
+  "b_year",
   "website_link_books",
+  "authors",
   "knowledge_transfer_and_community_service_section",
   "trainings_organized_title",
+  "resource_person",
   "no_of_staffs_engaged",
   "no_of_student_engaged",
   "no_of_external_participants",
   "venue",
+  "dates",
   "funding_source",
   "remarks",
   "research_event_organized_section",
@@ -49,23 +68,47 @@
   "no_of_student_engageds",
   "no_of_external_participantss",
   "venues",
+  "r_date",
   "funding_sources",
   "remarkss",
   "research_projects_and_funding_section",
+  "researchers_details_name_designation_column",
   "project_title",
-  "funding_agency_nameinstitution",
-  "country",
-  "application_amount",
-  "funding_secured",
-  "is_joint_research",
-  "secured_amount",
   "grant_in_kind",
   "project_completed",
+  "researchers_details_name_designation_sections",
+  "researchers_details_name_designation_section",
   "principal",
   "employees",
+  "funding_source_details_column",
+  "funding_agency_nameinstitution",
+  "country",
+  "section_break_vysa",
+  "grant_application_submitted_column",
+  "g_date",
+  "column_break_ldws",
+  "application_amount",
+  "column_break_vffh",
+  "funding_secured",
+  "join_research_section",
+  "join_research_column",
+  "is_joint_research",
+  "agencies",
+  "r_country",
+  "secured_grant_detailsduring_the_assessment_year_column",
+  "secured_amount",
+  "s_date",
   "sb_students",
+  "first_author_student",
+  "second_author_student",
+  "third_author_student",
   "student",
   "employee",
+  "others",
+  "column_break_hljj",
+  "first_author_employee",
+  "second_author_employee",
+  "third_authoremployee",
   "section_break_xckp",
   "amended_from"
  ],
@@ -109,12 +152,12 @@
   },
   {
    "fieldname": "reporting_type",
-   "fieldtype": "Select",
+   "fieldtype": "Link",
    "label": "Reporting Type",
-   "options": "Policy Briefs\nJournals\nResearch Articles\nConference Seminar Paper\nBook Chapters\nKnowledge Transfer and Community Service\nResearch Event Organized\nResearch Projects and Funding"
+   "options": "Reporting Type"
   },
   {
-   "depends_on": "eval:doc.reporting_type == 'Policy Briefs'",
+   "depends_on": "eval:doc.sub_reporting_type == 'Policy Brief'",
    "fieldname": "policy_briefs_section",
    "fieldtype": "Section Break",
    "label": "Policy Briefs"
@@ -135,7 +178,7 @@
    "label": "Remarks"
   },
   {
-   "depends_on": "eval:doc.reporting_type == 'Journals'",
+   "depends_on": "eval:doc.sub_reporting_type == 'Journals'",
    "fieldname": "journals_section",
    "fieldtype": "Section Break",
    "label": "Journals"
@@ -170,7 +213,7 @@
    "label": "Title"
   },
   {
-   "depends_on": "eval:doc.reporting_type == 'Research Articles'",
+   "depends_on": "eval:doc.sub_reporting_type == 'Research Articles'",
    "fieldname": "section_break_mxnz",
    "fieldtype": "Section Break",
    "label": "Research Articles"
@@ -194,7 +237,7 @@
    "options": "Fiscal Year"
   },
   {
-   "depends_on": "eval:doc.reporting_type == 'Conference Seminar Paper'",
+   "depends_on": "eval:doc.sub_reporting_type == 'Conference/seminar proceedings'",
    "fieldname": "section_break_sohe",
    "fieldtype": "Section Break",
    "label": "Conference Seminar Paper"
@@ -224,7 +267,7 @@
    "options": "National\nInternational"
   },
   {
-   "depends_on": "eval:doc.reporting_type == 'Book Chapters'",
+   "depends_on": "eval:doc.sub_reporting_type == 'Book Chapters'",
    "fieldname": "section_break_bmwu",
    "fieldtype": "Section Break",
    "label": "Book Chapters"
@@ -250,19 +293,22 @@
   {
    "fieldname": "website_link_articles",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Website Link"
   },
   {
-   "depends_on": "eval:['Research Articles','Conference Seminar Paper','Book Chapters'].includes(doc.reporting_type)",
+   "depends_on": "eval:['Research Articles','Journals','Conference Seminar Paper','Book Chapters', 'Conference/seminar proceedings', 'Books', 'Journal Papers'].includes(doc.sub_reporting_type) ",
    "fieldname": "student",
    "fieldtype": "Table MultiSelect",
+   "hidden": 1,
    "label": "Students",
    "options": "Research Article Students"
   },
   {
-   "depends_on": "eval:['Research Articles','Conference Seminar Paper','Book Chapters','Knowledge Transfer and Community Service'].includes(doc.reporting_type)",
+   "depends_on": "eval:['Research Articles','Conference Seminar Paper','Book Chapters','Knowledge Transfer and Community Service', 'Policy Brief', 'Books', 'Journals'].includes(doc.sub_reporting_type)",
    "fieldname": "employee",
    "fieldtype": "Table MultiSelect",
+   "hidden": 1,
    "label": "Employees",
    "options": "Research Article Employees"
   },
@@ -352,13 +398,13 @@
    "label": "Remarks"
   },
   {
-   "depends_on": "eval:doc.reporting_type == 'Research Event Organized'",
+   "depends_on": "eval:doc.sub_reporting_type == 'Research Event'",
    "fieldname": "research_event_organized_section",
    "fieldtype": "Section Break",
    "label": "Research Event Organized"
   },
   {
-   "depends_on": "eval:doc.reporting_type == 'Knowledge Transfer and Community Service'",
+   "depends_on": "eval:doc.sub_reporting_type == 'Training and workshop'",
    "fieldname": "knowledge_transfer_and_community_service_section",
    "fieldtype": "Section Break",
    "label": "Knowledge Transfer and Community Service "
@@ -386,19 +432,19 @@
    "fieldname": "application_amount",
    "fieldtype": "Currency",
    "in_list_view": 1,
-   "label": "GAS(Amount)"
+   "label": "Grant Application Submitted (Amount)"
   },
   {
    "fieldname": "funding_secured",
    "fieldtype": "Select",
    "label": "Funding Secured?",
-   "options": "Yes\nNo"
+   "options": "\nYes\nNo\nWaiting"
   },
   {
    "fieldname": "is_joint_research",
    "fieldtype": "Select",
    "label": "Is Joint Research?",
-   "options": "Yes\nNo"
+   "options": "\nYes\nNo"
   },
   {
    "fieldname": "secured_amount",
@@ -440,14 +486,264 @@
    "fieldname": "sub_reporting_type",
    "fieldtype": "Link",
    "label": "Sub Reporting Type",
-   "options": "Sub Reporting Type"
+   "options": "Research KPI"
+  },
+  {
+   "fieldname": "author",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "in_list_view": 1,
+   "label": "Authors(s) First Name, Last Name, Designation"
+  },
+  {
+   "fieldname": "years",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Year",
+   "options": "Fiscal Year"
+  },
+  {
+   "depends_on": "eval:doc.sub_reporting_type == 'Journal Papers'",
+   "fieldname": "journal_papers_section",
+   "fieldtype": "Section Break",
+   "label": "Journal Papers"
+  },
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Title"
+  },
+  {
+   "fieldname": "journal_author",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Author(s) First Name, Last Name, Designation"
+  },
+  {
+   "fieldname": "j_publisher",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Publisher"
+  },
+  {
+   "fieldname": "j_year",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Year",
+   "options": "Fiscal Year"
+  },
+  {
+   "fieldname": "website_link",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Website Link"
+  },
+  {
+   "fieldname": "presenter",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Presenter/ Author(s) First Name, Last Name"
+  },
+  {
+   "fieldname": "designation",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Designation"
+  },
+  {
+   "fieldname": "b_year",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Year",
+   "options": "Fiscal Year"
+  },
+  {
+   "fieldname": "b_designation",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Designation"
+  },
+  {
+   "fieldname": "authors",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Author(s) First Name, Last Name"
+  },
+  {
+   "fieldname": "resource_person",
+   "fieldtype": "Data",
+   "label": "Resource Person (First Name, Last Name)"
+  },
+  {
+   "fieldname": "dates",
+   "fieldtype": "Date",
+   "label": "Date: DD//MM//YY"
+  },
+  {
+   "fieldname": "r_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date"
+  },
+  {
+   "fieldname": "researchers_details_name_designation_section",
+   "fieldtype": "Column Break",
+   "label": "Researchers Details (Name, Designation)"
+  },
+  {
+   "fieldname": "researchers_details_name_designation_column",
+   "fieldtype": "Column Break",
+   "label": "Researchers Details (Name, Designation)"
+  },
+  {
+   "fieldname": "funding_source_details_column",
+   "fieldtype": "Column Break",
+   "label": "Funding Source Details"
+  },
+  {
+   "depends_on": "eval:doc.reporting_type == 'Research Projects and Funding'",
+   "fieldname": "researchers_details_name_designation_sections",
+   "fieldtype": "Section Break",
+   "label": "Researchers Details (Name, Designation)"
+  },
+  {
+   "depends_on": "eval:doc.reporting_type == 'Research Projects and Funding'",
+   "fieldname": "section_break_vysa",
+   "fieldtype": "Section Break",
+   "label": "Grant Application Submitted"
+  },
+  {
+   "fieldname": "g_date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "column_break_ldws",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_vffh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.reporting_type == 'Research Projects and Funding'",
+   "fieldname": "join_research_section",
+   "fieldtype": "Section Break",
+   "label": "Joint Research"
+  },
+  {
+   "depends_on": "eval:doc.is_joint_research =='Yes'",
+   "fieldname": "agencies",
+   "fieldtype": "Data",
+   "label": "College/Agencies"
+  },
+  {
+   "fieldname": "r_country",
+   "fieldtype": "Link",
+   "label": "Country",
+   "options": "Country"
+  },
+  {
+   "fieldname": "secured_grant_detailsduring_the_assessment_year_column",
+   "fieldtype": "Column Break",
+   "label": "Secured Grant Details(during the assessment year)"
+  },
+  {
+   "fieldname": "s_date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "join_research_column",
+   "fieldtype": "Column Break",
+   "label": "Joint Research"
+  },
+  {
+   "fieldname": "grant_application_submitted_column",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "number_of_author",
+   "fieldtype": "Int",
+   "label": "Number of Author"
+  },
+  {
+   "depends_on": "eval:doc.r_a_third_author ==\"Other\"",
+   "fieldname": "others",
+   "fieldtype": "Data",
+   "label": "Others"
+  },
+  {
+   "fieldname": "column_break_hljj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.r_a_first_author ==\"Employee\"",
+   "fieldname": "first_author_employee",
+   "fieldtype": "Table MultiSelect",
+   "label": "First Author(Employee)",
+   "options": "Research Article Employees"
+  },
+  {
+   "depends_on": "eval:doc.r_a_second_author ==\"Employee\"",
+   "fieldname": "second_author_employee",
+   "fieldtype": "Table MultiSelect",
+   "label": "Second Author(Employee)",
+   "options": "Research Article Employees"
+  },
+  {
+   "depends_on": "eval:doc.r_a_third_author ==\"Employee\"",
+   "fieldname": "third_authoremployee",
+   "fieldtype": "Table MultiSelect",
+   "label": "Third Author(Employee)",
+   "options": "Research Article Employees"
+  },
+  {
+   "fieldname": "r_a_first_author",
+   "fieldtype": "Select",
+   "label": "First Author",
+   "options": "\nEmployee\nStudent\nOther"
+  },
+  {
+   "fieldname": "r_a_second_author",
+   "fieldtype": "Select",
+   "label": "Second Author",
+   "options": "\nEmployee\nStudent\nOther"
+  },
+  {
+   "fieldname": "r_a_third_author",
+   "fieldtype": "Select",
+   "label": "Third Author",
+   "options": "\nEmployee\nStudent\nOther"
+  },
+  {
+   "depends_on": "eval:doc.r_a_first_author ==\"Student\"",
+   "fieldname": "first_author_student",
+   "fieldtype": "Table MultiSelect",
+   "label": "First Author(Student)",
+   "options": "Research Article Students"
+  },
+  {
+   "depends_on": "eval:doc.r_a_second_author ==\"Student\"",
+   "fieldname": "second_author_student",
+   "fieldtype": "Table MultiSelect",
+   "label": "Second Author(Student)",
+   "options": "Research Article Students"
+  },
+  {
+   "depends_on": "eval:doc.r_a_third_author ==\"Student\"",
+   "fieldname": "third_author_student",
+   "fieldtype": "Table MultiSelect",
+   "label": "Third Author(Student)",
+   "options": "Research Article Students"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-03-23 16:14:59.081043",
+ "modified": "2026-04-16 10:27:33.124560",
  "modified_by": "Administrator",
  "module": "Research Management",
  "name": "Research Center Reporting Items",

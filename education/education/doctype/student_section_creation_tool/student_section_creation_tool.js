@@ -1,3 +1,34 @@
+frappe.ui.form.on('Student Section Creation Tool',{
+college: function(frm){
+  if(frm.doc.college){
+  frappe.call({
+    method: "get_current_academic_term",
+    doc: frm.doc,
+    args: {"college": frm.doc.college},
+    callback: function(r){
+      if(r.message){
+        frm.set_value("academic_term", r.message);
+        frm.refresh_field("academic_term");
+      }
+    }
+  })
+  }
+  else{
+    frm.set_value("academic_term", null);
+    frm.refresh_field("academic_term");        
+  }
+
+},
+academic_session: function(frm){
+  frm.set_query('semester', function () {
+    return {
+    filters: {
+        session: frm.doc.academic_session,
+    },
+    }
+  })
+}
+})
 frappe.ui.form.on('Student Section Creation Tool', 'refresh', function (frm) {
   // frm.disable_save()
   if (!frm.doc.__islocal && frm.doc.student_sections_created == 0) {
@@ -60,11 +91,11 @@ frappe.ui.form.on('Student Section Creation Tool', 'get_students', function (frm
                   let total = students.length;
                   
                   // Step 1: minimum sections needed
-                  let section_count = Math.ceil(total / max);
+                  let section_count = Math.floor(total / max);
                   
                   // Step 2: try reducing sections if possible
                   while (section_count > 1) {
-                      let avg = Math.ceil(total / (section_count - 1));
+                      let avg = Math.floor(total / (section_count - 1));
                   
                       // allow exceeding max to balance (your requirement)
                       if (avg <= max + 5) {  // tolerance (adjust if needed)
@@ -94,7 +125,7 @@ frappe.ui.form.on('Student Section Creation Tool', 'get_students', function (frm
                           row.student_name = student.student_name;
                           row.group_roll_number = roll_no;
                           row.section_name =
-                              frm.doc.student_group_name + " " + String.fromCharCode(65 + sec);
+                              frm.doc.student_group_name + " "+frm.doc.semester+" "+ String.fromCharCode(65 + sec);
                   
                           roll_no++;
                           student_index++;
@@ -164,17 +195,23 @@ frappe.ui.form.on('Student Section Creation Tool', 'setup', function (frm) {
           }
         }
       })
-      frappe.call({
-        method: "get_current_academic_term",
-        doc: frm.doc,
-        args: {"college": college},
-        callback: function(r){
-          if(r.message){
-            frm.set_value("academic_term", r.message);
-            frm.refresh_field("academic_term");
+      if(frm.doc.college){
+        frappe.call({
+          method: "get_current_academic_term",
+          doc: frm.doc,
+          args: {"college": frm.doc.college},
+          callback: function(r){
+            if(r.message){
+              frm.set_value("academic_term", r.message);
+              frm.refresh_field("academic_term");
+            }
           }
-        }
-      })
+        })
+      }
+      else{
+        frm.set_value("academic_term", null);
+        frm.refresh_field("academic_term");        
+      }
       frm.set_query('semester', function () {
         return {
         filters: {

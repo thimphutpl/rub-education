@@ -17,7 +17,6 @@
   "module",
   "semester",
   "assessment_component",
-  "assessment_role",
   "tutor",
   "section_break_esjd",
   "journal_entry",
@@ -140,18 +139,12 @@
    "options": "Employee"
   },
   {
+   "default": "Semester Exam",
    "fieldname": "assessment_component",
    "fieldtype": "Link",
    "label": "Assessment Component",
    "options": "Assessment Component",
    "reqd": 1
-  },
-  {
-   "fetch_from": "assessment_component.assessment_role",
-   "fieldname": "assessment_role",
-   "fieldtype": "Data",
-   "label": "Assessment Role",
-   "options": "Assessment Component"
   },
   {
    "fieldname": "posting_date",
@@ -164,7 +157,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-03-31 15:21:11.842933",
+ "modified": "2026-04-14 19:47:24.592462",
  "modified_by": "Administrator",
  "module": "Examination",
  "name": "Examination Review Application",

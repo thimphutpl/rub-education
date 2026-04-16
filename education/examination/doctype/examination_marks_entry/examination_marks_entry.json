@@ -7,11 +7,9 @@
  "engine": "InnoDB",
  "field_order": [
   "exam_type",
-  "weightage",
+  "assessment_component",
   "column_break_xvsj",
   "posting_date",
-  "assessment_component",
-  "assessment_role",
   "module",
   "section_break_ptbh",
   "academic_year",
@@ -25,6 +23,7 @@
   "tutor",
   "tutor_name",
   "college",
+  "weightage",
   "get_students",
   "section_break_jygm",
   "items",
@@ -108,7 +107,6 @@
    "reqd": 1
   },
   {
-   "depends_on": "assessment_role==\"Tutor\"",
    "fieldname": "tutor",
    "fieldtype": "Link",
    "label": "Tutor",
@@ -137,18 +135,10 @@
    "options": "Company"
   },
   {
-   "depends_on": "eval:doc.assessment_role==\"Tutor\"",
    "fetch_from": "tutor.employee_name",
    "fieldname": "tutor_name",
    "fieldtype": "Data",
    "label": "Tutor Name"
-  },
-  {
-   "fieldname": "weightage",
-   "fieldtype": "Float",
-   "label": "Weightage",
-   "precision": "2",
-   "read_only": 1
   },
   {
    "fieldname": "semester",
@@ -172,26 +162,24 @@
    "reqd": 1
   },
   {
-   "fetch_from": "assessment_component.assessment_role",
-   "fieldname": "assessment_role",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Assessment Role",
-   "read_only": 1
-  },
-  {
    "fieldname": "programme",
    "fieldtype": "Link",
    "label": "Programme",
    "options": "Programme",
    "reqd": 1
+  },
+  {
+   "fieldname": "weightage",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Weightage"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-03-27 10:07:47.298538",
+ "modified": "2026-04-03 10:36:06.000568",
  "modified_by": "Administrator",
  "module": "Examination",
  "name": "Examination Marks Entry",

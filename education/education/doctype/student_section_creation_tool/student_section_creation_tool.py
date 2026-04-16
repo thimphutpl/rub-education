@@ -16,8 +16,8 @@ class StudentSectionCreationTool(Document):
 
 	def validate_existing(self):
 		if self.batch:
-			if frappe.db.exists("Student Section Creation Tool", {"college": self.college, "academic_term": self.academic_term, "batch": self.batch, "name": ["!=", self.name]}):
-				frappe.throw("Student Section Creation Tool alraedy exists for: Student Batch: {}\nAcademic Term: {}\nCollege: {}\nExisting Doc: {}".format(self.batch, self.academic_term, self.college, frappe.db.get_value("Student Section Creation Tool", {"college": self.college, "academic_term": self.academic_term, "batch": self.batch, "name": ["!=", self.name]}, "name")))
+			if frappe.db.exists("Student Section Creation Tool", {"college": self.college, "academic_term": self.academic_term, "batch": self.batch, "name": ["!=", self.name], "program": self.program}):
+				frappe.throw("Student Section Creation Tool alraedy exists for: Student Batch: {}\nAcademic Term: {}\nCollege: {}\nPrgoramme: {}\nExisting Doc: {}".format(self.batch, self.academic_term, self.college, self.program, frappe.db.get_value("Student Section Creation Tool", {"college": self.college, "academic_term": self.academic_term, "batch": self.batch, "name": ["!=", self.name]}, "name")))
 
 	@frappe.whitelist()
 	def get_current_academic_term(self, college):

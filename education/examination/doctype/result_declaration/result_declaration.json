@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "format:RD{YY}{MM}{YY}{###}",
  "creation": "2026-03-01 21:18:04.523431",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -8,8 +9,15 @@
   "section_break_sb5e",
   "college",
   "academic_term",
-  "amended_from",
-  "column_break_segp"
+  "semester",
+  "column_break_segp",
+  "programme",
+  "student_section",
+  "academic_year",
+  "get_data",
+  "section_break_yzsi",
+  "result_html",
+  "amended_from"
  ],
  "fields": [
   {
@@ -41,16 +49,55 @@
    "fieldtype": "Link",
    "label": "Academic Term",
    "options": "Academic Term"
+  },
+  {
+   "fieldname": "section_break_yzsi",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "result_html",
+   "fieldtype": "HTML"
+  },
+  {
+   "fieldname": "programme",
+   "fieldtype": "Link",
+   "label": "Programme",
+   "options": "Programme"
+  },
+  {
+   "fieldname": "student_section",
+   "fieldtype": "Link",
+   "label": "Student Section",
+   "options": "Student Section"
+  },
+  {
+   "fieldname": "get_data",
+   "fieldtype": "Button",
+   "label": "Get Data"
+  },
+  {
+   "fieldname": "semester",
+   "fieldtype": "Link",
+   "label": "Semester",
+   "options": "Semester"
+  },
+  {
+   "fetch_from": "academic_term.academic_year",
+   "fieldname": "academic_year",
+   "fieldtype": "Link",
+   "label": "Academic Year",
+   "options": "Academic Year"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-03-04 21:23:15.444417",
+ "modified": "2026-04-12 23:55:58.316905",
  "modified_by": "Administrator",
  "module": "Examination",
  "name": "Result Declaration",
+ "naming_rule": "Expression",
  "owner": "03230133.gcbs@rub.edu.bt",
  "permissions": [
   {

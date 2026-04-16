@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:research_center",
+ "autoname": "RCP.YYYY.MM.DD.###",
  "creation": "2025-09-16 12:05:47.338462",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -11,7 +11,7 @@
   "column_break_sdyt",
   "fiscal_year",
   "section_break_rgwm",
-  "table_byyg",
+  "research_publications_details",
   "section_break_pbpz",
   "amended_from"
  ],
@@ -33,15 +33,16 @@
   {
    "fieldname": "company",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "College",
-   "options": "Company"
+   "options": "Company",
+   "reqd": 1
   },
   {
    "fieldname": "research_center",
    "fieldtype": "Link",
    "label": "Research Center",
-   "options": "Research Center",
-   "unique": 1
+   "options": "Research Center"
   },
   {
    "fieldname": "column_break_sdyt",
@@ -58,7 +59,7 @@
    "fieldtype": "Section Break"
   },
   {
-   "fieldname": "table_byyg",
+   "fieldname": "research_publications_details",
    "fieldtype": "Table",
    "options": "Research Publications Details"
   }
@@ -67,11 +68,11 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-10-10 18:01:32.957460",
+ "modified": "2026-04-08 09:24:36.067848",
  "modified_by": "Administrator",
  "module": "Research Management",
  "name": "Research Center Planning",
- "naming_rule": "By fieldname",
+ "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [
   {

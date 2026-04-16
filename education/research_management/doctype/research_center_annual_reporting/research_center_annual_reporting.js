@@ -112,8 +112,10 @@ frappe.ui.form.on("Research Center Annual Reporting", {
                                 child.conferenceseminar_title = row.conferenceseminar_title;
                                 child.date = row.date;
                                 child.nationalinternational = row.nationalinternational;
+                                child.author_employee = row.presenter; 
+                                child.designation = row.designation; 
                                 child.author_student = row.students.join(", ");   
-                                child.author_employee = row.employees.join(", "); 
+                                // child.author_employee = row.employees.join(", "); 
                             });
                 
                             frm.refresh_field("conference_seminar_paper");

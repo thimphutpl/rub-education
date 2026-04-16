@@ -1,0 +1,120 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:RE-{YY}-{MM}-{DD}-{#######}",
+ "creation": "2026-04-07 11:27:43.195946",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "college",
+  "student",
+  "semester",
+  "column_break_wbhc",
+  "academic_term",
+  "programme",
+  "section_break_xhnq",
+  "table_amrk",
+  "section_break_hice",
+  "no_of_modules_failed",
+  "status",
+  "column_break_rlif",
+  "status_remark"
+ ],
+ "fields": [
+  {
+   "fieldname": "student",
+   "fieldtype": "Link",
+   "label": "Student",
+   "options": "Student"
+  },
+  {
+   "fieldname": "column_break_wbhc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "semester",
+   "fieldtype": "Link",
+   "label": "Semester",
+   "options": "Semester"
+  },
+  {
+   "fieldname": "academic_term",
+   "fieldtype": "Link",
+   "label": "Academic Term",
+   "options": "Academic Term"
+  },
+  {
+   "fieldname": "programme",
+   "fieldtype": "Link",
+   "label": "Programme",
+   "options": "Programme"
+  },
+  {
+   "fieldname": "section_break_xhnq",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "table_amrk",
+   "fieldtype": "Table",
+   "options": "Result Entry Item"
+  },
+  {
+   "fieldname": "college",
+   "fieldtype": "Link",
+   "label": "College",
+   "options": "Company"
+  },
+  {
+   "fieldname": "section_break_hice",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "\nPassed\nFailed"
+  },
+  {
+   "fieldname": "column_break_rlif",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "status_remark",
+   "fieldtype": "Select",
+   "label": "Status Remark",
+   "options": "Passed\nPassed with module repeat\nSemester Repeat"
+  },
+  {
+   "fieldname": "no_of_modules_failed",
+   "fieldtype": "Int",
+   "label": "No of Modules Failed"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-04-13 00:23:28.989137",
+ "modified_by": "Administrator",
+ "module": "Academic Management",
+ "name": "Result Entry",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

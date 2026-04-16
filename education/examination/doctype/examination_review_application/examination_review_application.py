@@ -56,76 +56,34 @@ class ExaminationReviewApplication(Document):
 						)
 
 	def check_if_student_failed(self):
-		if self.exam_review_type == "Exam Re-Assessment":
-			# Get assessment component role to determine if tutor filter is needed
-			assessment_role = frappe.db.get_value(
-				"Assessment Component", 
-				self.assessment_component, 
-				"assessment_role"
-			)
-			
-			# Build query based on assessment role
-			if assessment_role == "Exam Cell":
-				# Exam Cell - no tutor filter
-				failed_exam = frappe.db.sql("""
-					SELECT 
-						em.name,
-						em.student,
-						em.marks_verified,
-						eme.passing_marks
-					FROM `tabExam Marks` em 
-					INNER JOIN `tabExamination Marks Entry` eme 
-						ON em.parent = eme.name 
-					WHERE 
-						em.student = %s
-						AND eme.assessment_component = %s
-						AND eme.module = %s
-						AND eme.semester = %s
-						AND eme.academic_term = %s
-						AND eme.college = %s
-						AND em.marks_verified < eme.passing_marks
-				""", 
-				(
-					self.student, 
-					self.assessment_component,
-					self.module,
-					self.semester,
-					self.academic_term,
-					self.college
-				),
-				as_dict=True)
-			else:
-				# Tutor role - include tutor filter
-				failed_exam = frappe.db.sql("""
-					SELECT 
-						em.name,
-						em.student,
-						em.marks_verified,
-						eme.passing_marks
-					FROM `tabExam Marks` em 
-					INNER JOIN `tabExamination Marks Entry` eme 
-						ON em.parent = eme.name 
-					WHERE 
-						em.student = %s
-						AND eme.assessment_component = %s
-						AND eme.module = %s
-						AND eme.semester = %s
-						AND eme.academic_term = %s
-						AND eme.college = %s
-						AND eme.tutor = %s
-						AND em.marks_verified < eme.passing_marks
-				""", 
-				(
-					self.student, 
-					self.assessment_component,
-					self.module,
-					self.semester,
-					self.academic_term,
-					self.college,
-					self.tutor
-				),
-				as_dict=True)
-
+		if self.exam_review_type == "Exam Re-Assessment":	
+			failed_exam = frappe.db.sql("""
+				SELECT 
+					em.name,
+					em.student,
+					em.marks_obtained,
+					eme.passing_marks
+				FROM `tabExam Marks` em 
+				INNER JOIN `tabExamination Marks Entry` eme 
+					ON em.parent = eme.name 
+				WHERE 
+					em.student = %s
+					AND eme.assessment_component = %s
+					AND eme.module = %s
+					AND eme.semester = %s
+					AND eme.academic_term = %s
+					AND eme.college = %s
+					AND em.marks_verified < eme.passing_marks
+			""", 
+			(
+				self.student, 
+				self.assessment_component,
+				self.module,
+				self.semester,
+				self.academic_term,
+				self.college,
+			),
+			as_dict=True)
 			if not failed_exam:
 				frappe.throw(
 					"Application not needed as you passed for {} module {}".format(
@@ -134,72 +92,34 @@ class ExaminationReviewApplication(Document):
 				)
 
 	def fetch_exam_marks(self):
-		# Get assessment component role to determine if tutor filter is needed
-		assessment_role = frappe.db.get_value(
-			"Assessment Component", 
-			self.assessment_component, 
-			"assessment_role"
-		)
+
 		
-		# Build query based on assessment role
-		if assessment_role == "Exam Cell":
-			# Exam Cell - no tutor filter
-			exam_marks = frappe.db.sql("""
-				SELECT 
-					em.name as exam_mark_id,
-					em.marks_verified,
-					eme.passing_marks,
-					eme.name as examination_marks_entry
-				FROM `tabExam Marks` em 
-				INNER JOIN `tabExamination Marks Entry` eme 
-					ON em.parent = eme.name 
-				WHERE 
-					em.student = %s
-					AND eme.assessment_component = %s
-					AND eme.module = %s
-					AND eme.semester = %s
-					AND eme.academic_term = %s
-					AND eme.college = %s
-			""", 
-			(
-				self.student,
-				self.assessment_component, 
-				self.module, 
-				self.semester, 
-				self.academic_term, 
-				self.college
-			),
-			as_dict=True)
-		else:
-			# Tutor role - include tutor filter
-			exam_marks = frappe.db.sql("""
-				SELECT 
-					em.name as exam_mark_id,
-					em.marks_verified,
-					eme.passing_marks,
-					eme.name as examination_marks_entry
-				FROM `tabExam Marks` em 
-				INNER JOIN `tabExamination Marks Entry` eme 
-					ON em.parent = eme.name 
-				WHERE 
-					em.student = %s
-					AND eme.assessment_component = %s
-					AND eme.module = %s
-					AND eme.semester = %s
-					AND eme.academic_term = %s
-					AND eme.college = %s
-					AND eme.tutor = %s
-			""", 
-			(
-				self.student,
-				self.assessment_component, 
-				self.module, 
-				self.semester, 
-				self.academic_term, 
-				self.college, 
-				self.tutor
-			),
-			as_dict=True)
+		exam_marks = frappe.db.sql("""
+			SELECT 
+				em.name as exam_mark_id,
+				em.marks_obtained,
+				eme.passing_marks,
+				eme.name as examination_marks_entry
+			FROM `tabExam Marks` em 
+			INNER JOIN `tabExamination Marks Entry` eme 
+				ON em.parent = eme.name 
+			WHERE 
+				em.student = %s
+				AND eme.assessment_component = %s
+				AND eme.module = %s
+				AND eme.semester = %s
+				AND eme.academic_term = %s
+				AND eme.college = %s
+		""", 
+		(
+			self.student,
+			self.assessment_component, 
+			self.module, 
+			self.semester, 
+			self.academic_term, 
+			self.college, 
+		),
+		as_dict=True)
 
 		if exam_marks:
 			# Set the fetched data to fields

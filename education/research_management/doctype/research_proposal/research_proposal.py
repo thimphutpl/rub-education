@@ -5,11 +5,15 @@ import re
 import frappe
 from frappe.model.document import Document
 from frappe.model.mapper import get_mapped_doc
+from frappe.utils import getdate, today
 
 
 class ResearchProposal(Document):
 
     def validate(self):
+        self.validate_submission_deadline()
+        self.validate_resubmission_deadline()
+
         # self.validate_milestone_percentage()
         self.validate_budget_amount()
         self.validate_word_count("abstract", "Abstract")
@@ -27,10 +31,46 @@ class ResearchProposal(Document):
         # self.validate_max_words("data_presentation", "Data Presentation")
 
         # total validation
-        self.validate_total_research_words()      
+        self.validate_total_research_words() 
+
+    def get_context(context):
+        context.breadcrumbs = [
+            {"label": "Research Management", "route": "/app/research-management"}
+        ]
 
     def on_submit(self):  
         self.validate_milestone_percentage()
+
+    def validate_submission_deadline(self):
+        if self.resubmission_deadline:
+            pass
+
+        """Prevent editing other fields if research_submission_date has passed"""
+        if self.research_submission_deadline and not self.is_new() and not self.resubmission_deadline:
+            submission_date = getdate(self.research_submission_deadline)
+            current_date = getdate(today())
+            
+            if current_date > submission_date:
+                # Check if this is an existing document being edited
+                if self.get_doc_before_save():
+                    frappe.throw(
+                        f"Research submission deadline ({self.research_submission_deadline}) has passed. "
+                        "You cannot edit any fields in this Research Proposal."
+                    ) 
+
+    def validate_resubmission_deadline(self):
+        """Prevent editing other fields if resubmission_date has passed"""
+        if self.resubmission_deadline and not self.is_new():
+            submission_date = getdate(self.resubmission_deadline)
+            current_date = getdate(today())
+            
+            if current_date > submission_date:
+                # Check if this is an existing document being edited
+                if self.get_doc_before_save():
+                    frappe.throw(
+                        f"Research resubmission deadline ({self.resubmission_deadline}) has passed. "
+                        "You cannot edit any fields in this Research Proposal."
+                    )                            
 
     def validate_total_research_words(self):
         fields = [
@@ -102,10 +142,10 @@ class ResearchProposal(Document):
             words = clean_text.split()
             word_count = len(words)
 
-            if word_count < 250 or word_count > 300:
-                frappe.throw(
-                    f"{label} must be between 250 and 300 words. Current: {word_count}"
-                )  
+            # if word_count < 250 or word_count > 300:
+            #     frappe.throw(
+            #         f"{label} must be between 250 and 300 words. Current: {word_count}"
+            #     )  
 
     def validate_word_count_hypothesis_impact(self, fieldname, label):
         value = self.get(fieldname)

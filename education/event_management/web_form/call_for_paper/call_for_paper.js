@@ -3,6 +3,20 @@ frappe.ready(function () {
 
 	const params = new URLSearchParams(window.location.search);
 	const route_options = params.get("route_options");
+
+	let theme = null;
+
+	if (route_options) {
+		try {
+			const parsedOptions = JSON.parse(route_options);
+			theme = parsedOptions.theme;
+			console.log('Current theme:', theme);
+		} catch (e) {
+			console.error('Error parsing route_options:', e);
+		}
+	}
+
+	console.log('Current theme:', theme);
 	let wordLimits = {
 		min_words: 0,
 		max_words: 0,
@@ -10,7 +24,11 @@ frappe.ready(function () {
 		max_abstract: 0
 	};
 	frappe.call({
+
 		method: "education.event_management.doctype.word_limit_settings.word_limit_settings.get_word_limits",
+		args: {
+			theme: theme   // ✅ PASS THEME HERE
+		},
 		callback: function (r) {
 			if (r.message) {
 				wordLimits.min_words = r.message.min_words;
@@ -44,8 +62,12 @@ frappe.ready(function () {
 				}
 
 			}
+
 		}
+
+
 	});
+
 
 
 	if (route_options) {

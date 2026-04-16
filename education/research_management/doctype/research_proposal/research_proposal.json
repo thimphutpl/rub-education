@@ -15,7 +15,7 @@
   "column_break_cotb",
   "posting_date",
   "academic_year",
-  "research_resubmission_deadline",
+  "research_submission_deadline",
   "section_break_soay",
   "research_title",
   "researcher_details",
@@ -28,20 +28,26 @@
   "research_project_description_tab",
   "abstract_section",
   "abstract",
+  "comment_for_abstract",
   "background_and_problem_statement_section",
   "bg_and_prb_statement",
+  "comment_for_background_and_problem_statement",
   "research_questions_or_hypotheses_section",
   "res_q_or_hypo",
+  "comment_for_research_questions_or_hypotheses",
   "research_objectives_section",
   "research_objectives",
+  "comment_for_research_objectives",
   "literature_review_section",
   "literature_review",
+  "comment_for_literature_review",
   "methodology_section",
   "research_design",
   "sampling_design",
   "data_collection_tools_and_procedures",
   "data_analysis_tools_and_procedures",
   "data_presentation",
+  "comment_for_methodhology",
   "ethical_cosideration",
   "statement_on_health_and_safety",
   "subject_research",
@@ -50,22 +56,29 @@
   "statement_on_conflict_of_interest",
   "statement_on_potential_conflict_of_interest",
   "conflict_of_interest_attachment",
+  "comment_for_statement_on_potential_conflict_of_interest",
   "role_of_collaborators_section",
   "role_of_collaborators",
+  "comment_for_collaborators",
   "data_dessemination_plan_section",
   "data_dissemination_plan",
+  "comment_for_data_dissemination_plan",
   "research_impact_section",
   "research_impact",
+  "comment_for_research_impact",
   "intellectual_property_section",
   "intellectual_property",
+  "comment_for_intellectual_property",
   "references_section",
   "references",
+  "comment_for_references",
   "timeline_and_budget_tab",
   "timelinemilestones_section",
   "research_proposal_milestone_details",
   "total_expenses",
   "crc_comment",
   "crcs_comment",
+  "resubmission_deadline",
   "ovc_comment",
   "reviewers_comments_section",
   "long_text_ncjr",
@@ -347,12 +360,6 @@
    "label": "Research Title (Should be clear and concise) "
   },
   {
-   "fieldname": "research_resubmission_deadline",
-   "fieldtype": "Date",
-   "label": "Research Resubmission Deadline",
-   "mandatory_depends_on": "eval doc.status == \"resubmit\""
-  },
-  {
    "fieldname": "research_proposal_milestone_details",
    "fieldtype": "Table",
    "options": "Research Proposal Milestone Details"
@@ -360,6 +367,7 @@
   {
    "fieldname": "topic_of_the_research_call",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Project Title"
   },
   {
@@ -402,23 +410,106 @@
    "label": "CRC's Comment"
   },
   {
-   "depends_on": "eval:doc.workflow_state==\"Waiting for Review\"",
+   "depends_on": "eval:doc.workflow_state==\"Waiting for Review\" || doc.workflow_state==\"Waiting for Approval\"",
    "fieldname": "crc_comment",
    "fieldtype": "Tab Break",
    "label": "CRC's Comment"
   },
   {
-   "depends_on": "eval:doc.workflow_state==\"Waiting for Approver\"",
+   "depends_on": "eval:doc.workflow_state==\"Waiting for Approval\"",
    "fieldname": "ovc_comment",
    "fieldtype": "Tab Break",
    "label": "OVC's Comment"
+  },
+  {
+   "fieldname": "resubmission_deadline",
+   "fieldtype": "Date",
+   "label": "Resubmission Deadline"
+  },
+  {
+   "fieldname": "research_submission_deadline",
+   "fieldtype": "Date",
+   "label": "Research Submission Deadline",
+   "mandatory_depends_on": "eval doc.status == \"resubmit\""
+  },
+  {
+   "depends_on": "eval:doc.workflow_state==\"Waiting for Review\" || doc.workflow_state==\"Waiting for Approval\"",
+   "fieldname": "comment_for_background_and_problem_statement",
+   "fieldtype": "Small Text",
+   "label": "Comment for Background and Problem Statement"
+  },
+  {
+   "depends_on": "eval:doc.workflow_state==\"Waiting for Review\" || doc.workflow_state==\"Waiting for Approval\"",
+   "fieldname": "comment_for_research_questions_or_hypotheses",
+   "fieldtype": "Small Text",
+   "label": "Comment for Research Questions or Hypotheses"
+  },
+  {
+   "depends_on": "eval:doc.workflow_state==\"Waiting for Review\" || doc.workflow_state==\"Waiting for Approval\"",
+   "fieldname": "comment_for_research_objectives",
+   "fieldtype": "Small Text",
+   "label": "Comment for Research Objectives"
+  },
+  {
+   "depends_on": "eval:doc.workflow_state==\"Waiting for Review\" || doc.workflow_state==\"Waiting for Approval\"",
+   "fieldname": "comment_for_literature_review",
+   "fieldtype": "Small Text",
+   "label": "Comment for Literature Review"
+  },
+  {
+   "depends_on": "eval:doc.workflow_state==\"Waiting for Review\" || doc.workflow_state==\"Waiting for Approval\"",
+   "fieldname": "comment_for_methodhology",
+   "fieldtype": "Small Text",
+   "label": "Comment for Methodhology"
+  },
+  {
+   "depends_on": "eval:doc.workflow_state==\"Waiting for Review\" || doc.workflow_state==\"Waiting for Approval\"",
+   "fieldname": "comment_for_statement_on_potential_conflict_of_interest",
+   "fieldtype": "Small Text",
+   "label": "Comment for Statement on Potential Conflict of Interest"
+  },
+  {
+   "depends_on": "eval:doc.workflow_state==\"Waiting for Review\" || doc.workflow_state==\"Waiting for Approval\"",
+   "fieldname": "comment_for_collaborators",
+   "fieldtype": "Small Text",
+   "label": "Comment for Collaborators"
+  },
+  {
+   "depends_on": "eval:doc.workflow_state==\"Waiting for Review\" || doc.workflow_state==\"Waiting for Approval\"",
+   "fieldname": "comment_for_data_dissemination_plan",
+   "fieldtype": "Small Text",
+   "label": "Comment for Data Dissemination Plan"
+  },
+  {
+   "depends_on": "eval:doc.workflow_state==\"Waiting for Review\" || doc.workflow_state==\"Waiting for Approval\"",
+   "fieldname": "comment_for_research_impact",
+   "fieldtype": "Small Text",
+   "label": "Comment for Research Impact"
+  },
+  {
+   "depends_on": "eval:doc.workflow_state==\"Waiting for Review\" || doc.workflow_state==\"Waiting for Approval\"",
+   "fieldname": "comment_for_intellectual_property",
+   "fieldtype": "Small Text",
+   "label": "Comment for Intellectual Property"
+  },
+  {
+   "depends_on": "eval:doc.workflow_state==\"Waiting for Review\" || doc.workflow_state==\"Waiting for Approval\"",
+   "fieldname": "comment_for_references",
+   "fieldtype": "Small Text",
+   "label": "Comment for References"
+  },
+  {
+   "depends_on": "eval:doc.workflow_state==\"Waiting for Review\" || doc.workflow_state==\"Waiting for Approval\"",
+   "fieldname": "comment_for_abstract",
+   "fieldtype": "Small Text",
+   "label": "Comment for Abstract"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-03 14:41:25.190346",
+ "modified": "2026-04-16 08:51:26.432614",
  "modified_by": "Administrator",
  "module": "Research Management",
  "name": "Research Proposal",

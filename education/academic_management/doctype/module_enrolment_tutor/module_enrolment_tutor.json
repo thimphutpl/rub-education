@@ -7,6 +7,7 @@
  "engine": "InnoDB",
  "field_order": [
   "tutor",
+  "class_type",
   "column_break_fhuw",
   "tutor_name"
  ],
@@ -29,13 +30,21 @@
    "in_list_view": 1,
    "label": "Tutor Name",
    "read_only": 1
+  },
+  {
+   "fieldname": "class_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Class Type",
+   "options": "\nTheory\nPractical",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-03-03 23:16:12.914590",
+ "modified": "2026-03-31 18:09:32.941131",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Module Enrolment Tutor",

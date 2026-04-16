@@ -20,9 +20,14 @@ class ResearchCenterReportingItems(Document):
 		if not self.employee:
 			return
 
-		if self.reporting_type == "Research Articles":	
+		if self.sub_reporting_type == "Research Articles":	
 
-			for row in self.employee:
+			employees = (
+				(self.first_author_employee or []) +
+				(self.second_author_employee or []) +
+				(self.third_author_employee or [])
+			)
+			for row in employees:
 				emp_doc = frappe.get_doc("Employee", row.employee)
 				emp_doc.append("research_articles", {
 					"research_reference": self.name,
@@ -35,8 +40,8 @@ class ResearchCenterReportingItems(Document):
 				emp_doc.flags.ignore_permissions = True
 				emp_doc.save()
 
-		elif self.reporting_type == "Journals":
-			for row in self.employee:
+		elif self.sub_reporting_type == "Journals":
+			for row in employees:
 				emp_doc = frappe.get_doc("Employee", row.employee)
 				emp_doc.append("journals", {
 					"research_reference": self.name,
@@ -50,8 +55,8 @@ class ResearchCenterReportingItems(Document):
 				emp_doc.flags.ignore_permissions = True
 				emp_doc.save()
 
-		elif self.reporting_type == "Conference Seminar Paper":
-			for row in self.employee:
+		elif self.sub_reporting_type == "Conference Seminar Paper":
+			for row in employees:
 				emp_doc = frappe.get_doc("Employee", row.employee)
 				emp_doc.append("conference_seminar_paper", {
 					"research_reference": self.name,
@@ -65,8 +70,8 @@ class ResearchCenterReportingItems(Document):
 				emp_doc.flags.ignore_permissions = True
 				emp_doc.save()
 
-		elif self.reporting_type == "Book Chapters":
-			for row in self.employee:
+		elif self.sub_reporting_type == "Book Chapters":
+			for row in employees:
 				emp_doc = frappe.get_doc("Employee", row.employee)
 				emp_doc.append("conference_seminar_paper", {
 					"research_reference": self.name,
@@ -80,8 +85,8 @@ class ResearchCenterReportingItems(Document):
 				emp_doc.flags.ignore_permissions = True
 				emp_doc.save()	
 
-		elif self.reporting_type == "Knowledge Transfer and Community Service":
-			for row in self.employee:
+		elif self.sub_reporting_type == "Training and workshop":
+			for row in employees:
 				emp_doc = frappe.get_doc("Employee", row.employee)
 				emp_doc.append("conference_seminar_paper", {
 					"research_reference": self.name,
@@ -98,7 +103,7 @@ class ResearchCenterReportingItems(Document):
 				emp_doc.save()			
 
 		else:	
-			for row in self.employee:
+			for row in employees:
 				emp_doc = frappe.get_doc("Employee", row.employee)
 				emp_doc.append("journals", {
 					"research_reference": self.name,
@@ -120,9 +125,14 @@ class ResearchCenterReportingItems(Document):
 		if not self.student:
 			return
 
-		if self.reporting_type == "Research Articles":	
+		if self.sub_reporting_type == "Research Articles":	
 
-			for row in self.student:
+			students = (
+				(self.first_author_student or []) +
+				(self.second_author_student or []) +
+				(self.third_author_student or [])
+			)
+			for row in students:
 				stu_doc = frappe.get_doc("Student", row.student)
 				stu_doc.append("research_articles", {
 					"research_reference": self.name,
@@ -135,8 +145,8 @@ class ResearchCenterReportingItems(Document):
 				stu_doc.flags.ignore_permissions = True
 				stu_doc.save()
 
-		elif self.reporting_type == "Journals":
-			for row in self.student:
+		elif self.sub_reporting_type == "Journals":
+			for row in students:
 				stu_doc = frappe.get_doc("Student", row.student)
 				stu_doc.append("journals", {
 					"research_reference": self.name,
@@ -150,8 +160,8 @@ class ResearchCenterReportingItems(Document):
 				stu_doc.flags.ignore_permissions = True
 				stu_doc.save()
 
-		elif self.reporting_type == "Conference Seminar Paper":
-			for row in self.student:
+		elif self.sub_reporting_type == "Conference Seminar Paper":
+			for row in students:
 				stu_doc = frappe.get_doc("Student", row.student)
 				stu_doc.append("conference_seminar_paper", {
 					"research_reference": self.name,
@@ -165,8 +175,8 @@ class ResearchCenterReportingItems(Document):
 				stu_doc.flags.ignore_permissions = True
 				stu_doc.save()
 
-		elif self.reporting_type == "Book Chapters":
-			for row in self.student:
+		elif self.sub_reporting_type == "Book Chapters":
+			for row in students:
 				stu_doc = frappe.get_doc("Student", row.student)
 				stu_doc.append("conference_seminar_paper", {
 					"research_reference": self.name,
@@ -180,8 +190,8 @@ class ResearchCenterReportingItems(Document):
 				stu_doc.flags.ignore_permissions = True
 				stu_doc.save()	
 
-		elif self.reporting_type == "Knowledge Transfer and Community Service":
-			for row in self.student:
+		elif self.sub_reporting_type == "Training and workshop":
+			for row in students:
 				stu_doc = frappe.get_doc("Student", row.student)
 				stu_doc.append("conference_seminar_paper", {
 					"research_reference": self.name,
@@ -198,7 +208,7 @@ class ResearchCenterReportingItems(Document):
 				stu_doc.save()			
 
 		else:	
-			for row in self.student:
+			for row in students:
 				stu_doc = frappe.get_doc("Student", row.student)
 				stu_doc.append("journals", {
 					"research_reference": self.name,

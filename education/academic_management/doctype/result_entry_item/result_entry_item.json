@@ -1,0 +1,93 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-04-07 11:46:13.755295",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "module",
+  "ca",
+  "se",
+  "weightage_obtained",
+  "column_break_rqgf",
+  "academic_year",
+  "passed",
+  "ca_passed",
+  "se_passed"
+ ],
+ "fields": [
+  {
+   "columns": 2,
+   "fieldname": "module",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Module",
+   "options": "Module"
+  },
+  {
+   "columns": 1,
+   "fieldname": "ca",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "CA "
+  },
+  {
+   "columns": 1,
+   "fieldname": "se",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "SE"
+  },
+  {
+   "fieldname": "weightage_obtained",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Weightage Obtained"
+  },
+  {
+   "fieldname": "column_break_rqgf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "passed",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Passed"
+  },
+  {
+   "default": "0",
+   "fieldname": "ca_passed",
+   "fieldtype": "Check",
+   "label": "CA Passed"
+  },
+  {
+   "default": "0",
+   "fieldname": "se_passed",
+   "fieldtype": "Check",
+   "label": "SE Passed"
+  },
+  {
+   "fieldname": "academic_year",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Academic Year",
+   "options": "Academic Year"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-04-13 00:32:49.661660",
+ "modified_by": "Administrator",
+ "module": "Academic Management",
+ "name": "Result Entry Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

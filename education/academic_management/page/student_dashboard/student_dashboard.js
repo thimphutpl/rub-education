@@ -182,6 +182,67 @@ frappe.pages['student-dashboard'].on_page_load = function(wrapper) {
     .click(function(){
         printTimetable(container);
     });
+
+
+	/*
+Adding Resulting Column
+*/
+	let studentContainer = $(`
+	<div class="student-field" style="margin-bottom:10px;"></div>
+	`).appendTo(topContainer);
+
+	let studentField = frappe.ui.form.make_control({
+	parent: studentContainer,
+	df: {
+		label: "Student",
+		fieldname: "student",
+		fieldtype: "Link",
+		options: "Student",
+		reqd: 1
+	},
+	render_input: true
+	});
+
+	studentField.refresh();
+
+
+
+
+	let resultCollapsible = $(`
+	<div class="result-collapsible" style="margin-top:15px;">
+		<div class="result-header" 
+			style="cursor:pointer; font-weight:bold; padding:8px; background:#f0f0f0; border-radius:6px;">
+			▶ Result Declaration
+		</div>
+		<div class="result-body" style="display:none; margin-top:10px;"></div>
+	</div>
+`).appendTo(topContainer);
+
+let resultContainer = resultCollapsible.find(".result-body");
+
+	// ============================
+	// Student Field (inside body)
+	// ============================
+	resultCollapsible.find(".result-header").click(function () {
+
+		let body = resultCollapsible.find(".result-body");
+		let isVisible = body.is(":visible");
+	
+		body.slideToggle(200);
+		$(this).text(isVisible ? "▶ Result Declaration" : "▼ Result Declaration");
+	
+		let student = studentField.get_value();
+	
+		if (!student) {
+			frappe.msgprint("Please select a Student first");
+			return;
+		}
+	
+		if (!body.data("loaded_student") || body.data("loaded_student") !== student) {
+			load_results(resultContainer, student);
+			body.data("loaded_student", student);
+		}
+	});
     // 🔹 Custom fields container (flex layout)
     // let fieldContainer = $(`
     //     <div class="custom-fields-container" 
@@ -692,3 +753,215 @@ $(`<style>
 .legend-box.academic{ background:#e6f7ff; }
 .legend-box.break{ background:#f3f3f3; }
 	</style>`).appendTo("head");
+
+
+	function load_results(container, student) {
+
+		container.html("<p>Loading results...</p>");
+	
+		frappe.call({
+			method: "education.academic_management.page.student_dashboard.student_dashboard.get_results",
+			args: { student: student },
+	
+			callback: function(r) {
+	
+				if (!r.message || !r.message.results.length) {
+					container.html("<b>No data found</b>");
+					return;
+				}
+	
+				let data = r.message.results;
+				let student_name = r.message.student;
+	
+				// Group by semester
+				let grouped = {};
+				data.forEach(d => {
+					if (!grouped[d.semester]) {
+						grouped[d.semester] = [];
+					}
+					grouped[d.semester].push(d);
+				});
+	
+				let html = `
+					<style>
+						table {
+							border-collapse: collapse;
+							width: 100%;
+							font-size: 13px;
+						}
+						th, td {
+							border: 1px solid #555;
+							padding: 6px;
+							text-align: center;
+						}
+						th {
+							background-color: #f2f2f2;
+						}
+						.semester-cell {
+							font-weight: bold;
+							background-color: #fafafa;
+						}
+						.total-row {
+							font-weight: bold;
+							background-color: #f9f9f9;
+						}
+					</style>
+	
+					<h3>Semester Result — ${student_name}</h3>
+	
+					<table>
+						<thead>
+							<tr>
+								<th>Semester</th>
+								<th>Module</th>
+								<th>Exam Year</th>
+								<th>CA</th>
+								<th>SE</th>
+								<th>Marks Secured</th>
+								<th>Max. Marks</th>
+								<th>Credit</th>
+								<th>Weighting</th>
+								<th>Remarks</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+				`;
+	
+				Object.keys(grouped).forEach(semester => {
+	
+					let rows = grouped[semester];
+	
+					let total_marks = 0;
+					let total_credit = 0;
+					let max_total = rows.length * 100;
+	
+					rows.forEach(d => {
+						total_marks += Number(d.total) || 0;
+						total_credit += Number(d.credit) || 0;
+					});
+	
+					let percentage = max_total > 0 ? (total_marks / max_total) * 100 : 0;
+	
+					let semester_weightage = Number(rows[0].weighting) || 0;
+	
+					let weighted_score = max_total > 0
+						? ((total_marks / max_total) * semester_weightage).toFixed(2)
+						: 0;
+	
+					// let remarks = percentage >= 50 ? "Pass" : "Fail";
+	
+					rows.forEach((d, index) => {
+
+						html += `<tr>`;
+					
+						// Semester column (only once)
+						if (index === 0) {
+							html += `
+								<td class="semester-cell" rowspan="${rows.length}">
+									${semester}
+								</td>
+							`;
+						}
+					
+						html += `
+							<td>${d.module}</td>
+							<td>${d.year_of_passing}</td>
+							<td>${d.ca}</td>
+							<td>${d.se}</td>
+							<td>${d.total}</td>
+							<td>100</td>
+							<td>${d.credit || ""}</td>
+						`;
+					
+						// Weighting + Remarks still semester-level (keep rowspan)
+						if (index === 0) {
+							html += `
+								<td rowspan="${rows.length}">
+									${semester_weightage}
+								</td>
+								
+							`;
+						}
+					
+						// ✅ ACTIONS PER MODULE (NO ROWSPAN)
+						html += `
+						<td>${d.passed ? "Pass" : "Fail"}</td>
+							<td>
+								<select class="status-select" 
+										data-semester="${semester}" 
+										data-module="${d.module}">
+									<option value="">Select</option>
+									<option value="Exam Recheck">Exam Recheck</option>
+									<option value="Exam Re-Evaluation">Exam Re-Evaluation</option>
+									<option value="Exam Re-Assessment">Exam Re-Assessment</option>
+								</select>
+							</td>
+						`;
+					
+						html += `</tr>`;
+					});
+	
+					// TOTAL ROW (fixed alignment)
+					html += `
+						<tr class="total-row">
+							<td colspan="3">Total</td>
+							<td></td> 
+    						<td></td>
+							<td>${total_marks}</td>
+							<td>${max_total}</td>
+							<td>${total_credit}</td>
+							<td>${weighted_score}</td>
+							<td></td>
+							<td></td>
+						</tr>
+					`;
+				});
+	
+				html += `</tbody></table>`;
+				container.html(html);
+
+				container.find(".status-select").on("change", function () {
+
+					let selectEl = $(this);
+				
+					let value = selectEl.find("option:selected").val();
+					let module = selectEl.data("module");
+					let semester = selectEl.data("semester");
+				
+					if (!value) return;
+				
+					frappe.confirm(
+						`Are you sure you want to apply for "${value}" for module "${module}"?`,
+						() => {
+				
+							frappe.msgprint({
+								message: `Request submitted for ${module}`,
+								indicator: "green"
+							});
+				
+							frappe.call({
+								method: "education.academic_management.page.student_dashboard.student_dashboard.apply_review",
+								args: {
+									student: student,
+									module: module,
+									semester: semester,
+									request_type: value
+								}
+							});
+				
+						},
+						() => {
+							// reset on cancel
+							selectEl.val("");
+						}
+					);
+				
+				});
+			}
+		});
+	}
+
+
+
+

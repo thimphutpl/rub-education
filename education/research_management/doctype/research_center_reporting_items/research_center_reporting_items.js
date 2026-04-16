@@ -10,5 +10,10 @@ frappe.ui.form.on("Research Center Reporting Items", {
                 }
             };
         });
+        frm.set_query("sub_reporting_type", function (doc) {
+			return {
+				filters: { parent_task: doc.reporting_type },
+			};
+		});
 	},
 });

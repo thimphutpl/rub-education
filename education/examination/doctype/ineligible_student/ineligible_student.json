@@ -132,6 +132,7 @@
   {
    "fieldname": "total_eligible_student",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "Total Eligible Student"
   },
   {
@@ -182,7 +183,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-03-25 11:00:02.686662",
+ "modified": "2026-04-02 11:57:58.289621",
  "modified_by": "Administrator",
  "module": "Examination",
  "name": "Ineligible Student",

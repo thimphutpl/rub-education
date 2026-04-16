@@ -142,7 +142,7 @@ frappe.ready(function () {
 			},
 			callback: function (r) {
 				if (r.message.exists) {
-					frappe.msgprint("You are already registered for this full paper.");
+					frappe.msgprint("You are already booked for this venue.");
 					$btn.prop('disabled', false).html('Submit');
 
 				} else {

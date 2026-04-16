@@ -5,6 +5,7 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "theme",
   "brief_bio_of_the_authors_section",
   "min_words",
   "column_break_zsbs",
@@ -75,12 +76,18 @@
    "fieldname": "max_revise_abstract",
    "fieldtype": "Int",
    "label": "Max"
+  },
+  {
+   "fieldname": "theme",
+   "fieldtype": "Link",
+   "label": "Theme",
+   "options": "Conference Theme"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-12-19 16:29:20.690346",
+ "modified": "2026-04-03 11:39:17.849108",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "Word Limit Settings",

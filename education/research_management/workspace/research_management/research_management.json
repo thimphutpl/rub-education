@@ -1,0 +1,282 @@
+{
+ "charts": [
+  {
+   "chart_name": "Research Project",
+   "label": "Research Project"
+  },
+  {
+   "chart_name": "Research Proposal",
+   "label": "Research Proposal"
+  }
+ ],
+ "content": "[{\"id\":\"_oty_NH8Oj\",\"type\":\"paragraph\",\"data\":{\"text\":\"Research Dashboard\",\"col\":12}},{\"id\":\"pL72FSeQGJ\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Research Proposal\",\"col\":12}},{\"id\":\"BAAJ4lI0Lm\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Research Project\",\"col\":12}},{\"id\":\"a0reofrq3-\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Research Proposal\",\"col\":3}},{\"id\":\"IbungV26V_\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Research Project\",\"col\":3}},{\"id\":\"anVNIAdzyj\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Research Management</span>\",\"col\":12}},{\"id\":\"_pt6ekuuhH\",\"type\":\"card\",\"data\":{\"card_name\":\"Research\",\"col\":4}},{\"id\":\"ZDZ6_QMdVZ\",\"type\":\"card\",\"data\":{\"card_name\":\"Research Master\",\"col\":4}},{\"id\":\"chwTgBlXyp\",\"type\":\"card\",\"data\":{\"card_name\":\"Research Center Management\",\"col\":4}},{\"id\":\"7K6RpFSbed\",\"type\":\"card\",\"data\":{\"card_name\":\"Research Report\",\"col\":4}}]",
+ "creation": "2025-07-29 14:59:07.728991",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "file-large",
+ "idx": 0,
+ "indicator_color": "",
+ "is_hidden": 0,
+ "label": "Research Management",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Research Center Management",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Research Center Planning",
+   "link_count": 0,
+   "link_to": "Research Center Planning",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Research Center Reporting Items",
+   "link_count": 0,
+   "link_to": "Research Center Reporting Items",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Research Center Annual Reporting",
+   "link_count": 0,
+   "link_to": "Research Center Annual Reporting",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Research Center Progress Reporting",
+   "link_count": 0,
+   "link_to": "Research Center Progress Reporting",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Research Report",
+   "link_count": 5,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Research Project Report",
+   "link_count": 0,
+   "link_to": "Research Project Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Research Proposal Report",
+   "link_count": 0,
+   "link_to": "Research Proposal Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Research Center Annual Reporting Summary",
+   "link_count": 0,
+   "link_to": "Research Center Annual Reporting Summary",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Research Center Progress Reporting Summary",
+   "link_count": 0,
+   "link_to": "Research Center Progress Reporting Summary",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Research Center Reporting Items Report",
+   "link_count": 0,
+   "link_to": "Research Center Reporting Items Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Research Master",
+   "link_count": 6,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Research Category",
+   "link_count": 0,
+   "link_to": "Research Category",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Research Center",
+   "link_count": 0,
+   "link_to": "Research Center",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Research Milestone",
+   "link_count": 0,
+   "link_to": "Research Milestones",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Grant Type",
+   "link_count": 0,
+   "link_to": "Grant Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Research Type",
+   "link_count": 0,
+   "link_to": "Research Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Research KPI",
+   "link_count": 0,
+   "link_to": "Research KPI",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Research",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Research Announcement",
+   "link_count": 0,
+   "link_to": "Call for Research",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Research Proposal",
+   "link_count": 0,
+   "link_to": "Research Proposal",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Research Registration",
+   "link_count": 0,
+   "link_to": "Research Registration",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Research Project",
+   "link_count": 0,
+   "link_to": "Research Project",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2026-04-16 09:39:11.967778",
+ "modified_by": "Administrator",
+ "module": "Research Management",
+ "name": "Research Management",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 42.0,
+ "shortcuts": [
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "label": "Research Project",
+   "link_to": "Research Project",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "label": "Research Proposal",
+   "link_to": "Research Proposal",
+   "stats_filter": "[]",
+   "type": "DocType"
+  }
+ ],
+ "title": "Research Management"
+}

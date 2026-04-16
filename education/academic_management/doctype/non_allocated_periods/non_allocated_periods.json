@@ -1,0 +1,48 @@
+{
+ "actions": [],
+ "autoname": "hash",
+ "creation": "2026-04-06 15:30:53.901284",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "module",
+  "column_break_fywg",
+  "reason_for_non_allocation"
+ ],
+ "fields": [
+  {
+   "fieldname": "module",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Module",
+   "options": "Module",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_fywg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "reason_for_non_allocation",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Reason for Non Allocation"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-04-06 15:37:25.282100",
+ "modified_by": "Administrator",
+ "module": "Academic Management",
+ "name": "Non Allocated Periods",
+ "naming_rule": "Random",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

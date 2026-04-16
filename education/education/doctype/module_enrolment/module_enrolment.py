@@ -61,10 +61,11 @@ class ModuleEnrolment(Document):
 		self.set("tutors", [])
 		if not self.module_enrollment_key:
 			frappe.throw("Please select Module Enrolment Key")
-		for t in frappe.get_all("Module Tutor Item", {"parent": self.course, "student_group": self.student_section}, ["tutor", "tutor_name"]):
+		for t in frappe.get_all("Module Tutor Item", {"parent": self.course, "student_group": self.student_section}, ["tutor", "tutor_name", "class_type"]):
 			row = self.append("tutors",{})
 			row.tutor = t.tutor
 			row.tutor_name = t.tutor_name
+			row.class_type = t.class_type
 
 	def add_quiz_activity(
 		self, quiz_name, quiz_response, answers, score, status, time_taken

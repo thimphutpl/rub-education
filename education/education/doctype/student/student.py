@@ -24,15 +24,15 @@ class Student(Document):
 		if self.is_existing_student == 0:
 			self.name = make_autoname(college_code+year+".####")
 		else:
-			if not self.old_student_id:
-				self.name = old_student_id
+			#if not self.old_student_id:
+			self.name = self.old_student_id
 
 
 	def validate(self):
 		self.set_title()
 		self.validate_dates()
 		self.validate_user()
-
+		self.validate_identification()
 		if self.student_applicant:
 			self.check_unique()
 			self.update_applicant_status()
@@ -56,6 +56,13 @@ class Student(Document):
 				alert=True
 			)
 
+	def validate_identification(self):
+		if self.identification_type == "CID":
+			if not self.is_numeric_string(self.cid):
+				frappe.throw(str(self.identification_type)+" can only contain numeric values.")
+			if len(self.cid) != 11:
+				frappe.throw("CID should be 11 digits.")
+
 	def set_missing_customer_details(self):
 		self.set_customer_group()
 		if self.customer:
@@ -67,6 +74,14 @@ class Student(Document):
 		if not self.customer_group:
 			self.customer_group = "Student"
 			frappe.db.set_value("Student", self.name, "customer_group", "Student")
+
+	def is_numeric_string(self,value):
+		try:
+			float(value)
+			return True
+		except (ValueError, TypeError):
+			return False
+
 
 	# Validate Functions
 	def set_title(self):

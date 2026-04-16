@@ -1,4 +1,5 @@
 {
+ "actions": [],
  "autoname": "field:type",
  "creation": "2023-10-03 09:19:39.371225",
  "doctype": "DocType",
@@ -30,12 +31,13 @@
    "fieldtype": "Link",
    "label": "Amended From",
    "no_copy": 1,
-   "options": "eNote Type",
+   "options": "Report Type",
    "print_hide": 1,
    "read_only": 1
   }
  ],
- "modified": "2023-10-23 21:35:18.453228",
+ "links": [],
+ "modified": "2026-04-06 15:10:40.736312",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Report Type",
@@ -88,7 +90,9 @@
   }
  ],
  "quick_entry": 1,
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "track_changes": 1
 }

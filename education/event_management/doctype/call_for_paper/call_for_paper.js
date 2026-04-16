@@ -59,7 +59,9 @@ frappe.ui.form.on("Call For Paper", {
                 frm.toggle_display('view_marks', true);
             }
         });
+        
 
+       
         // Update panel summary safely (use frm.doc + refresh_field)
         frm.call("update_panel_summary").then((r) => {
             if (!r.message) return;
@@ -158,6 +160,7 @@ frappe.ui.form.on("Call For Paper", {
     },
 
 });
+
 
 
 

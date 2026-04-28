@@ -1,0 +1,38 @@
+{
+ "chart_name": "Students by College",
+ "chart_type": "Report",
+ "creation": "2026-04-28 21:26:54.222560",
+ "currency": "",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "dynamic_filters_json": "{}",
+ "filters_json": "{}",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "modified": "2026-04-28 23:04:34.205037",
+ "modified_by": "Administrator",
+ "module": "Academic Management",
+ "name": "Students by College",
+ "number_of_groups": 0,
+ "owner": "Administrator",
+ "report_name": "Students by College",
+ "roles": [
+  {
+   "role": "Vice Chancellor"
+  }
+ ],
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Bar",
+ "use_report_chart": 0,
+ "x_field": "label",
+ "y_axis": [
+  {
+   "color": "#449CF0",
+   "y_field": "value"
+  }
+ ]
+}

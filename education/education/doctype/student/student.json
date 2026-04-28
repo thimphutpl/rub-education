@@ -583,7 +583,7 @@
    "link_fieldname": "student"
   }
  ],
- "modified": "2026-04-26 11:54:26.874358",
+ "modified": "2026-04-28 23:19:01.652557",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student",
@@ -614,6 +614,15 @@
    "read": 1,
    "report": 1,
    "role": "Student",
+   "share": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Vice Chancellor",
    "share": 1
   }
  ],

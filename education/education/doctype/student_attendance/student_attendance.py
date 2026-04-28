@@ -16,7 +16,7 @@ class StudentAttendance(Document):
 	def validate(self):
 		# self.validate_mandatory()
 		# self.validate_date()
-		self.set_date()
+		# self.set_date()
 		self.set_student_group()
 		self.validate_student()
 		self.validate_duplication()
@@ -29,10 +29,10 @@ class StudentAttendance(Document):
 			)
 
 	def validate_mandatory(self):
-		if not (self.student_group or self.course_schedule):
+		if not (self.student_group or self.timetable_schedule_entry):
 			frappe.throw(
-				_("{0} or {1} is mandatory").format(
-					frappe.bold("Student Section"), frappe.bold("Course Schedule")
+				_("{0} and {1} is mandatory").format(
+					frappe.bold("Student Section"), frappe.bold("Timetable Schedule Entry")
 				),
 				title=_("Mandatory Fields"),
 			)
@@ -66,11 +66,15 @@ class StudentAttendance(Document):
 			)
 
 	def validate_student(self):
+		student_group = None
 		if self.course_schedule:
 			student_group = frappe.db.get_value(
 				"Course Schedule", self.course_schedule, "student_group"
 			)
-		else:
+		elif self.timetable_schedule_entry_id:
+			if frappe.db.get_value("Timetable Schedule Entry", self.timetable_schedule_entry_id, "student_section"):
+				student_group = self.student_section
+		if not student_group:
 			student_group = self.student_group
 		student_group_students = [
 			d.student for d in get_student_group_students(student_group)
@@ -92,6 +96,17 @@ class StudentAttendance(Document):
 				{
 					"student": self.student,
 					"course_schedule": self.course_schedule,
+					"docstatus": ("!=", 2),
+					"name": ("!=", self.name),
+				},
+			)
+		elif self.timetable_schedule_entry_id:
+			attendance_record = frappe.db.exists(
+				"Student Attendance",
+				{
+					"student": self.student,
+					"timetable_schedule_entry_id": self.timetable_schedule_entry_id,
+					"date": self.date,
 					"docstatus": ("!=", 2),
 					"name": ("!=", self.name),
 				},

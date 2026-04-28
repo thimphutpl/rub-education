@@ -6,57 +6,37 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "based_on",
-  "group_based_on",
-  "column_break_2",
+  "college",
+  "timetable_schedule_entry",
   "academic_term",
   "student_group",
+  "from_time",
+  "day",
+  "column_break_2",
+  "date",
+  "programme",
   "academic_year",
   "course",
-  "course_schedule",
-  "date",
+  "to_time",
   "attendance",
   "students_html"
  ],
  "fields": [
   {
-   "fieldname": "based_on",
-   "fieldtype": "Select",
-   "label": "Based On",
-   "options": "Student Section\nCourse Schedule"
-  },
-  {
-   "default": "Batch",
-   "depends_on": "eval:doc.based_on == \"Student Section\"",
-   "fieldname": "group_based_on",
-   "fieldtype": "Select",
-   "label": "Section Based On",
-   "options": "Batch\nCourse\nActivity"
-  },
-  {
    "fieldname": "column_break_2",
    "fieldtype": "Column Break"
   },
   {
-   "depends_on": "eval:doc.based_on ==\"Student Section\"",
+   "depends_on": "eval:doc.timetable_schedule_entry",
    "fieldname": "student_group",
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Student Section",
-   "options": "Student Section",
-   "reqd": 1
+   "options": "Student Section"
   },
   {
-   "depends_on": "eval:doc.based_on ==\"Course Schedule\"",
-   "fieldname": "course_schedule",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Course Schedule",
-   "options": "Course Schedule",
-   "reqd": 1
-  },
-  {
-   "depends_on": "eval:doc.based_on ==\"Student Section\"",
+   "default": "Today",
+   "depends_on": "eval:doc.college;",
    "fieldname": "date",
    "fieldtype": "Date",
    "in_list_view": 1,
@@ -64,7 +44,7 @@
    "reqd": 1
   },
   {
-   "depends_on": "eval: (doc.course_schedule \n|| (doc.student_group && doc.date))",
+   "depends_on": "eval: doc.timetable_schedule_entry && doc.date",
    "fieldname": "attendance",
    "fieldtype": "Section Break",
    "label": "Attendance"
@@ -83,26 +63,76 @@
    "read_only": 1
   },
   {
-   "fetch_from": "student_group.academic_term",
+   "fetch_from": "timetable_schedule_entry.academic_term",
    "fieldname": "academic_term",
    "fieldtype": "Link",
    "label": "Academic Term",
    "options": "Academic Term",
+   "read_only": 1,
    "reqd": 1
   },
   {
+   "fetch_from": "timetable_schedule_entry.module",
    "fieldname": "course",
    "fieldtype": "Link",
    "label": "Module",
    "options": "Module",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "depends_on": "eval:doc.date && doc.college;",
+   "fieldname": "timetable_schedule_entry",
+   "fieldtype": "Link",
+   "label": "Timetable Schedule Entry",
+   "options": "Timetable Schedule Entry",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "timetable_schedule_entry.from_time",
+   "fieldname": "from_time",
+   "fieldtype": "Time",
+   "label": "From Time",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "timetable_schedule_entry.to_time",
+   "fieldname": "to_time",
+   "fieldtype": "Time",
+   "label": "To Time",
+   "read_only": 1
+  },
+  {
+   "fieldname": "college",
+   "fieldtype": "Link",
+   "label": "College",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "timetable_schedule_entry.programme",
+   "fieldname": "programme",
+   "fieldtype": "Link",
+   "label": "Programme",
+   "options": "Programme",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fetch_from": "timetable_schedule_entry.day",
+   "fieldname": "day",
+   "fieldtype": "Select",
+   "label": "Day",
+   "options": "\nMonday\nTuesday\nWednesday\nThursday\nFriday\nSaturday\nSunday",
+   "read_only": 1,
    "reqd": 1
   }
  ],
  "hide_toolbar": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-03-05 03:44:31.556415",
- "modified_by": "Administrator",
+ "modified": "2026-04-28 20:12:15.596981",
+ "modified_by": "tshering.dorji@thimphutechpark.bt",
  "module": "Education",
  "name": "Student Attendance Tool",
  "owner": "Administrator",

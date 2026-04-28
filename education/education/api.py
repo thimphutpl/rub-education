@@ -88,7 +88,7 @@ def check_attendance_records_exist(course_schedule=None, student_group=None, dat
 
 @frappe.whitelist()
 def mark_attendance(
-	students_present, students_absent, course_schedule=None, student_group=None, date=None, course = None
+	students_present, students_absent, from_time, to_time, day, timetable_schedule_entry, student_group=None, date=None, course = None
 ):
 	"""Creates Multiple Attendance Records.
 
@@ -116,12 +116,12 @@ def mark_attendance(
 
 	for d in present:
 		make_attendance_records(
-			d["student"], d["student_name"], "Present", course_schedule, student_group, date, course=course
+			d["student"], d["student_name"], "Present", from_time, to_time, timetable_schedule_entry, day, student_group, date=date, course=course
 		)
 
 	for d in absent:
 		make_attendance_records(
-			d["student"], d["student_name"], "Absent", course_schedule, student_group, date, course=course
+			d["student"], d["student_name"], "Absent", from_time, to_time, timetable_schedule_entry, day, student_group, date=date, course=course
 		)
 
 	frappe.db.commit()
@@ -129,7 +129,7 @@ def mark_attendance(
 
 @frappe.whitelist()
 def make_attendance_records(
-	student, student_name, status, course_schedule=None, student_group=None, date=None, course=None
+	student, student_name, status, from_time, to_time, timetable_schedule_entry, day, student_group=None, date=None, course=None
 ):
 	"""Creates/Update Attendance Record.
 
@@ -142,7 +142,7 @@ def make_attendance_records(
 		{
 			"doctype": "Student Attendance",
 			"student": student,
-			"course_schedule": course_schedule,
+			"timetable_schedule_entry_id": timetable_schedule_entry,
 			"student_group": student_group,
 			"date": date,
 		}
@@ -151,9 +151,12 @@ def make_attendance_records(
 		student_attendance = frappe.new_doc("Student Attendance")
 	student_attendance.student = student
 	student_attendance.student_name = student_name
-	student_attendance.course_schedule = course_schedule
 	student_attendance.student_group = student_group
 	student_attendance.date = date
+	student_attendance.timetable_schedule_entry_id = timetable_schedule_entry
+	student_attendance.from_time = from_time
+	student_attendance.to_time = to_time
+	student_attendance.day = day
 	student_attendance.status = status
 	if course:
 		student_attendance.module = course

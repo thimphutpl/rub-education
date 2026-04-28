@@ -9,36 +9,76 @@ frappe.ui.form.on('Student Attendance Tool', {
     )
   },
   onload: function (frm) {
-    frm.set_query('student_group', function () {
-      return {
-        filters: {
-          group_based_on: frm.doc.group_based_on,
+    if (!frm.doc.date) {
+      frm.set_value('date', frappe.datetime.get_today());
+    }
+    frm.refresh_field("date");
+    frm.set_query('student_group', function(doc, cdt, cdn) {
+			if (!frm.doc.college) {
+				return {
+					filters: {
+						company: ["=", "Please Select College"]
+					}
+				};
+			}
+
+			return {
+				filters: {
+					college: frm.doc.college,
+          program: frm.doc.programme,
+          academic_term: frm.doc.academic_term,
           disabled: 0,
-        },
-      }
-    })
+				}
+			};
+		});
+
+    frm.set_query('timetable_schedule_entry', function(doc, cdt, cdn) {
+			if (!frm.doc.college) {
+				return {
+					filters: {
+						company: ["=", "Please Select College"]
+					}
+				};
+			}
+			if (!frm.doc.date) {
+				return {
+					filters: {
+						company: ["=", "Please Select Date"]
+					}
+				};
+			}
+			return {
+        query: "erpnext.controllers.queries.filter_timetable_schedule_entries",
+				filters: {
+					college: frm.doc.college,
+					date: frm.doc.date,
+          tutor: frappe.session.user
+				}
+			};
+		});
   },
+
 
   refresh: function (frm) {
     if (frappe.route_options) {
-      frm.set_value('based_on', frappe.route_options.based_on)
+      // frm.set_value('based_on', frappe.route_options.based_on)
       frm.set_value('student_group', frappe.route_options.student_group)
-      frm.set_value('course_schedule', frappe.route_options.course_schedule)
+      // frm.set_value('course_schedule', frappe.route_options.course_schedule)
       frappe.route_options = null
     }
     frm.disable_save()
   },
 
-  based_on: function (frm) {
-    if (frm.doc.based_on == 'Student Section') {
-      frm.set_value('course_schedule', '')
-    } else {
-      frm.set_value('student_group', '')
-    }
-  },
+  // based_on: function (frm) {
+  //   if (frm.doc.based_on == 'Student Section') {
+  //     frm.set_value('course_schedule', '')
+  //   } else {
+  //     frm.set_value('student_group', '')
+  //   }
+  // },
 
   student_group: function (frm) {
-    if ((frm.doc.student_group && frm.doc.date) || frm.doc.course_schedule) {
+    if ((frm.doc.student_group && frm.doc.date && frm.doc.timetable_schedule_entry)) {
       frm.students_area
         .find('.student-attendance-checks')
         .html(`<div style='padding: 2rem 0'>Fetching...</div>`)
@@ -47,10 +87,9 @@ frappe.ui.form.on('Student Attendance Tool', {
       frappe.call({
         method: method,
         args: {
-          based_on: frm.doc.based_on,
           student_group: frm.doc.student_group,
           date: frm.doc.date,
-          course_schedule: frm.doc.course_schedule,
+          timetable_schedule_entry: frm.doc.timetable_schedule_entry,
           course: frm.doc.course
         },
         callback: function (r) {
@@ -169,7 +208,10 @@ education.StudentsEditor = class StudentsEditor {
                   students_present: students_present,
                   students_absent: students_absent,
                   student_group: frm.doc.student_group,
-                  course_schedule: frm.doc.course_schedule,
+                  from_time: frm.doc.from_time,
+                  to_time: frm.doc.to_time,
+                  timetable_schedule_entry: frm.doc.timetable_schedule_entry,
+                  day: frm.doc.day,
                   date: frm.doc.date,
                   course: cur_frm.doc.course,
                 },

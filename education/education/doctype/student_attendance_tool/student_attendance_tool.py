@@ -12,52 +12,57 @@ class StudentAttendanceTool(Document):
 
 @frappe.whitelist()
 def get_student_attendance_records(
-	based_on, date=None, student_group=None, course_schedule=None, course =None
+	date=None, student_group=None, timetable_schedule_entry=None, course =None
 ):
 	student_list = []
 	student_attendance_list = []
+	#--------------pre introduction to timetable schedule entry START-----------------------#
+	# if based_on == "Course Schedule":
+	# 	student_group = frappe.db.get_value(
+	# 		"Course Schedule", course_schedule, "student_group"
+	# 	)
+	# 	if student_group:
+	# 		student_list = frappe.get_all(
+	# 			"Student Section Student",
+	# 			fields=["student", "student_name", "group_roll_number"],
+	# 			filters={"parent": student_group, "active": 1},
+	# 			order_by="group_roll_number",
+	# 		)
 
-	if based_on == "Course Schedule":
-		student_group = frappe.db.get_value(
-			"Course Schedule", course_schedule, "student_group"
-		)
-		if student_group:
-			student_list = frappe.get_all(
-				"Student Section Student",
-				fields=["student", "student_name", "group_roll_number"],
-				filters={"parent": student_group, "active": 1},
-				order_by="group_roll_number",
-			)
+	# if not student_list:
+	#--------------pre introduction to timetable schedule entry END-----------------------#
 
-	if not student_list:
-		student_list = frappe.get_all(
-			"Student Section Student",
-			fields=["student", "student_name", "group_roll_number"],
-			filters={"parent": student_group, "active": 1},
-			order_by="group_roll_number",
-		)
+	student_list = frappe.get_all(
+		"Student Section Student",
+		fields=["student", "student_name", "group_roll_number"],
+		filters={"parent": student_group, "active": 1},
+		order_by="group_roll_number",
+	)
 
 	StudentAttendance = frappe.qb.DocType("Student Attendance")
 
-	if course_schedule:
+	if timetable_schedule_entry:
 		student_attendance_list = (
 			frappe.qb.from_(StudentAttendance)
 			.select(StudentAttendance.student, StudentAttendance.status)
-			.where((StudentAttendance.course_schedule == course_schedule))
+			.where((StudentAttendance.timetable_schedule_entry_id == timetable_schedule_entry))
 		).run(as_dict=True)
-	else:
-		student_attendance_list = (
-			frappe.qb.from_(StudentAttendance)
-			.select(StudentAttendance.student, StudentAttendance.status)
-			.where(
-				(StudentAttendance.student_group == student_group)
-				& (StudentAttendance.date == date)
-				& (
-					(StudentAttendance.course_schedule == "")
-					| (StudentAttendance.course_schedule.isnull())
-				)
-			)
-		).run(as_dict=True)
+	# else:
+	#--------------pre introduction to timetable schedule entry START-----------------------#
+
+	# student_attendance_list = (
+	# 	frappe.qb.from_(StudentAttendance)
+	# 	.select(StudentAttendance.student, StudentAttendance.status)
+	# 	.where(
+	# 		(StudentAttendance.student_group == student_group)
+	# 		& (StudentAttendance.date == date)
+	# 		& (
+	# 			(StudentAttendance.timetable_schedule_entry_id == "")
+	# 			| (StudentAttendance.course_schedule.isnull())
+	# 		)
+	# 	)
+	# ).run(as_dict=True)
+	#--------------pre introduction to timetable schedule entry END-----------------------#
 
 	for attendance in student_attendance_list:
 		for student in student_list:

@@ -10,12 +10,16 @@
   "naming_series",
   "student",
   "student_name",
+  "timetable_schedule_entry_id",
   "module",
   "student_mobile_number",
   "course_schedule",
   "student_group",
+  "from_time",
+  "to_time",
   "column_break_3",
   "date",
+  "day",
   "status",
   "leave_application",
   "amended_from",
@@ -134,12 +138,37 @@
    "label": "Academic Year",
    "options": "Academic Year",
    "reqd": 1
+  },
+  {
+   "fieldname": "timetable_schedule_entry_id",
+   "fieldtype": "Link",
+   "label": "Timetable Schedule Entry ID",
+   "options": "Timetable Schedule Entry"
+  },
+  {
+   "fieldname": "from_time",
+   "fieldtype": "Time",
+   "label": "From Time",
+   "read_only": 1
+  },
+  {
+   "fieldname": "to_time",
+   "fieldtype": "Time",
+   "label": "To Time",
+   "read_only": 1
+  },
+  {
+   "fieldname": "day",
+   "fieldtype": "Select",
+   "label": "Day",
+   "options": "\nMonday\nTuesday\nWednesday\nThursday\nFriday\nSaturday\nSunday",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-01-13 12:32:14.982790",
+ "modified": "2026-04-28 11:43:14.409096",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student Attendance",

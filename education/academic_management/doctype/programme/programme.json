@@ -199,7 +199,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-23 15:09:49.040169",
+ "modified": "2026-04-28 21:08:02.112597",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Programme",
@@ -239,10 +239,19 @@
    "select": 1,
    "share": 1,
    "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Vice Chancellor",
+   "select": 1,
+   "share": 1
   }
  ],
  "row_format": "Dynamic",
- "show_title_field_in_link": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],

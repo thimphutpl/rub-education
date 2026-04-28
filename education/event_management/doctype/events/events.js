@@ -124,9 +124,6 @@ frappe.ui.form.on("Events", {
     },
     setup:function(frm){
         const filterByCollege=()=>{
-            if(!frm.doc.college){
-                alert("College is required")
-            }
             return{
                 filters:{
                     "company":frm.doc.college

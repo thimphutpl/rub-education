@@ -1,0 +1,49 @@
+{
+ "cards": [
+  {
+   "card": "Total Employees"
+  },
+  {
+   "card": "Active Students"
+  },
+  {
+   "card": "New Hires (This Year)"
+  },
+  {
+   "card": "Employee Exits (This Year)"
+  },
+  {
+   "card": "Total Programmes Offered"
+  }
+ ],
+ "charts": [
+  {
+   "chart": "Hiring vs Attrition Count",
+   "width": "Half"
+  },
+  {
+   "chart": "Programme Count By College",
+   "width": "Half"
+  },
+  {
+   "chart": "Tutors by College",
+   "width": "Half"
+  },
+  {
+   "chart": "Students by College",
+   "width": "Half"
+  }
+ ],
+ "creation": "2026-04-22 16:45:56.717670",
+ "dashboard_name": "Management Dashboard",
+ "docstatus": 0,
+ "doctype": "Dashboard",
+ "idx": 0,
+ "is_default": 0,
+ "is_standard": 1,
+ "modified": "2026-04-28 23:09:04.379579",
+ "modified_by": "Administrator",
+ "module": "Academic Management",
+ "name": "Management Dashboard",
+ "owner": "Administrator"
+}

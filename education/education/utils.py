@@ -442,8 +442,24 @@ def get_homepage_by_role(user=None):
 
     # Redirect based on role
     if "Student" in roles:
-        return "/student-dashboard"   # URL of Student Dashboard
+        return "student-dashboard"   # URL of Student Dashboard
     elif "Tutor" in roles:
-        return "/tutor-dashboard"     # URL of Tutor Dashboard
+        return "tutor-dashboard"     # URL of Tutor Dashboard
     else:
         return "/desk"  
+
+@frappe.whitelist()
+def get_active_employees():
+    employees = frappe.db.count("Employee", {
+        "status": "Active"
+    })
+
+    return employees
+
+@frappe.whitelist()
+def get_active_students():
+    students = frappe.db.count("Student", {
+        "status": "Active"
+    })
+
+    return students

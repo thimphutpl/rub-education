@@ -8,37 +8,10 @@ class CallForPaper(Document):
 	def after_insert(self):
 		if not self.workflow_state or self.workflow_state == "Draft":
 			self.db_set("workflow_state", "Waiting for Review")
-	# @frappe.whitelist()
-	# def calculate_average_marks(self):
-	# 	avg_dict = {}
-
-	# 	# Loop through all panel_marks
-	# 	for row in self.get("evaluation_criteria"):
-	# 		crit = row.criteria
-	# 		if crit not in avg_dict:
-	# 			avg_dict[crit] = {"excellent": [], "good": [], "fair": [], "poor": []}
-
-	# 		avg_dict[crit]["excellent"].append(row.excellent or 0)
-	# 		avg_dict[crit]["good"].append(row.good or 0)
-	# 		avg_dict[crit]["fair"].append(row.fair or 0)
-	# 		avg_dict[crit]["poor"].append(row.poor or 0)
-
-	# 	# Clear old averages
-	# 	self.master_evaluation_criteria_call_for_paper = []
-
-	# 	for crit, scores in avg_dict.items():
-	# 		self.append("master_evaluation_criteria_call_for_paper", {
-	# 			"criteria": crit,
-				
-	# 		})
-
-	# 	self.save()
+	
+	
 	@frappe.whitelist()
 	def has_given_mark(self):
-		# privileged_roles = ["Administrator", "System Manager", "Super Admin"]
-		# user_roles = frappe.get_roles(frappe.session.user)
-		# if ("SSO" not in user_roles) and not any(role in privileged_roles for role in user_roles):
-		# 	return {"can_give_marks": False}
 		pm = frappe.qb.DocType("Call For Paper Panel Mark")
 		call_for_paper_panel_mark = (
 			frappe.qb.from_(pm)
@@ -46,7 +19,7 @@ class CallForPaper(Document):
 			.where(
 				(pm.docstatus < 2) &
 				(pm.source_doctype == self.doctype) &
-			    (pm.source_name == self.name) &
+				(pm.source_name == self.name) &
 				(pm.owner == frappe.session.user)
 			)
 		).run(as_dict=True)
@@ -83,16 +56,7 @@ class CallForPaper(Document):
 			"total_mark_submitted": submitted,
 			"waiting_for_review": pending
 		}
-	# @frappe.whitelist()
-	# def calculate_total_mark(self):
-	# 	total = 0.0
-	# 	for row in self.master_evaluation_criteria_call_for_paper:
-	# 		total += float(row.avg_weight or 0)
-
-	# 	# Optional: store it in a field on the parent
-	# 	self.db_set("total_mark", total)
-	# 	return total		
-
+	
 
 	@frappe.whitelist()
 	def calculate_total_mark(self):
@@ -101,3 +65,35 @@ class CallForPaper(Document):
 			total += float(row.avg_weight or 0)
 		return total
 
+
+
+
+
+
+@frappe.whitelist()
+def get_permission_query_conditions(user):
+    """Return permission conditions for Call For Paper"""
+    if not user:
+        user = frappe.session.user
+    
+    roles = frappe.get_roles(user)
+    
+    # Admin sees everything
+    if "Administrator" in roles or "System Manager" in roles:
+        return ""
+    
+    # Panel Member sees Call for Papers from their themes
+    if "Panel Member" in roles:
+        employee = frappe.db.get_value("Employee", {"user_id": user}, "name")
+        
+        if employee:
+            # Get themes where user is a panel member
+            return """`tabCall For Paper`.`theme` IN (
+                SELECT ct.`theme` 
+                FROM `tabConference Theme` ct 
+                JOIN `tabPanel Member` pm ON ct.`theme` = pm.`parent`
+                WHERE pm.`employee` = '%s'
+            )""" % employee
+        return "1=0"
+    
+    return "1=0"

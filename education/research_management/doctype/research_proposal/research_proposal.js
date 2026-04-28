@@ -309,8 +309,10 @@ function update_total_word_counter(frm) {
     let color = total_words > 1000 ? "red" : "green";
 
     // create sticky counter
+    // <div id="sticky-word-counter" 
+    // Total Research Words: ${total_words} / 1000
     let counter_html = `
-        <div id="sticky-word-counter" 
+        <div 
              style="
                 position: fixed;
                 top: 110px;
@@ -323,7 +325,6 @@ function update_total_word_counter(frm) {
                 font-weight: bold;
                 color: ${color};
              ">
-            Total Research Words: ${total_words} / 1000
         </div>
     `;
 

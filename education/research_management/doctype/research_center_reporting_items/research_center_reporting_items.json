@@ -6,60 +6,65 @@
  "engine": "InnoDB",
  "field_order": [
   "college",
-  "posting_date",
   "research_center_name",
-  "year",
   "reporting_type",
   "sub_reporting_type",
+  "column_break_pxkl",
+  "posting_date",
+  "year",
   "policy_briefs_section",
   "policy_briefs_title",
   "publisher_policy_brief",
   "date_of_publisher",
+  "column_break_gcri",
   "remarks_policy_briefs",
   "journals_section",
   "name_of_the_journal",
-  "vol_no_journal",
   "issue_no_journal",
+  "column_break_lbti",
+  "vol_no_journal",
   "website_links_journal",
   "journal_papers_section",
   "title",
-  "journal_author",
   "j_publisher",
+  "journal_author",
+  "column_break_yobc",
   "j_year",
   "website_link",
   "section_break_mxnz",
   "number_of_author",
-  "r_a_first_author",
-  "r_a_second_author",
-  "r_a_third_author",
-  "author",
   "research_articles_title",
   "publisher",
+  "author",
+  "column_break_pqoe",
   "years",
   "website_link_articles",
   "section_break_sohe",
   "conference_seminar_paper_title",
   "conferenceseminar_title",
-  "presenter",
   "designation",
+  "column_break_vcgd",
   "date",
   "nationalinternational",
+  "presenter",
   "section_break_bmwu",
   "book_chapter_title",
   "book_title",
-  "b_designation",
   "publishers",
+  "authors",
+  "column_break_jeuw",
   "b_year",
   "website_link_books",
-  "authors",
+  "b_designation",
   "knowledge_transfer_and_community_service_section",
   "trainings_organized_title",
-  "resource_person",
   "no_of_staffs_engaged",
   "no_of_student_engaged",
   "no_of_external_participants",
-  "venue",
+  "resource_person",
+  "column_break_zlly",
   "dates",
+  "venue",
   "funding_source",
   "remarks",
   "research_event_organized_section",
@@ -67,14 +72,16 @@
   "no_of_staffs_engageds",
   "no_of_student_engageds",
   "no_of_external_participantss",
-  "venues",
+  "column_break_nrpl",
   "r_date",
+  "venues",
   "funding_sources",
   "remarkss",
   "research_projects_and_funding_section",
   "researchers_details_name_designation_column",
   "project_title",
   "grant_in_kind",
+  "column_break_dmyg",
   "project_completed",
   "researchers_details_name_designation_sections",
   "researchers_details_name_designation_section",
@@ -98,6 +105,11 @@
   "secured_grant_detailsduring_the_assessment_year_column",
   "secured_amount",
   "s_date",
+  "section_break_kmql",
+  "r_a_first_author",
+  "r_a_third_author",
+  "column_break_xqim",
+  "r_a_second_author",
   "sb_students",
   "first_author_student",
   "second_author_student",
@@ -108,7 +120,7 @@
   "column_break_hljj",
   "first_author_employee",
   "second_author_employee",
-  "third_authoremployee",
+  "third_author_employee",
   "section_break_xckp",
   "amended_from"
  ],
@@ -154,7 +166,8 @@
    "fieldname": "reporting_type",
    "fieldtype": "Link",
    "label": "Reporting Type",
-   "options": "Reporting Type"
+   "options": "Reporting Type",
+   "reqd": 1
   },
   {
    "depends_on": "eval:doc.sub_reporting_type == 'Policy Brief'",
@@ -234,7 +247,8 @@
    "fieldname": "year",
    "fieldtype": "Link",
    "label": "Year",
-   "options": "Fiscal Year"
+   "options": "Fiscal Year",
+   "reqd": 1
   },
   {
    "depends_on": "eval:doc.sub_reporting_type == 'Conference/seminar proceedings'",
@@ -267,7 +281,7 @@
    "options": "National\nInternational"
   },
   {
-   "depends_on": "eval:doc.sub_reporting_type == 'Book Chapters'",
+   "depends_on": "eval:doc.sub_reporting_type == 'Book Chapters' || doc.sub_reporting_type == 'Books'",
    "fieldname": "section_break_bmwu",
    "fieldtype": "Section Break",
    "label": "Book Chapters"
@@ -432,7 +446,8 @@
    "fieldname": "application_amount",
    "fieldtype": "Currency",
    "in_list_view": 1,
-   "label": "Grant Application Submitted (Amount)"
+   "label": "Grant Application Submitted (Amount)",
+   "reqd": 1
   },
   {
    "fieldname": "funding_secured",
@@ -486,7 +501,8 @@
    "fieldname": "sub_reporting_type",
    "fieldtype": "Link",
    "label": "Sub Reporting Type",
-   "options": "Research KPI"
+   "options": "Research KPI",
+   "reqd": 1
   },
   {
    "fieldname": "author",
@@ -517,6 +533,7 @@
   {
    "fieldname": "journal_author",
    "fieldtype": "Data",
+   "hidden": 1,
    "in_list_view": 1,
    "label": "Author(s) First Name, Last Name, Designation"
   },
@@ -542,6 +559,7 @@
   {
    "fieldname": "presenter",
    "fieldtype": "Data",
+   "hidden": 1,
    "in_list_view": 1,
    "label": "Presenter/ Author(s) First Name, Last Name"
   },
@@ -567,12 +585,14 @@
   {
    "fieldname": "authors",
    "fieldtype": "Data",
+   "hidden": 1,
    "in_list_view": 1,
    "label": "Author(s) First Name, Last Name"
   },
   {
    "fieldname": "resource_person",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "Resource Person (First Name, Last Name)"
   },
   {
@@ -669,7 +689,7 @@
    "label": "Number of Author"
   },
   {
-   "depends_on": "eval:doc.r_a_third_author ==\"Other\"",
+   "depends_on": "eval: doc.r_a_first_author =='Other' || doc.r_a_second_author == 'Other' || doc.r_a_third_author ==\"Other\"",
    "fieldname": "others",
    "fieldtype": "Data",
    "label": "Others"
@@ -690,13 +710,6 @@
    "fieldname": "second_author_employee",
    "fieldtype": "Table MultiSelect",
    "label": "Second Author(Employee)",
-   "options": "Research Article Employees"
-  },
-  {
-   "depends_on": "eval:doc.r_a_third_author ==\"Employee\"",
-   "fieldname": "third_authoremployee",
-   "fieldtype": "Table MultiSelect",
-   "label": "Third Author(Employee)",
    "options": "Research Article Employees"
   },
   {
@@ -737,13 +750,69 @@
    "fieldtype": "Table MultiSelect",
    "label": "Third Author(Student)",
    "options": "Research Article Students"
+  },
+  {
+   "depends_on": "eval:doc.r_a_third_author ==\"Employee\"",
+   "fieldname": "third_author_employee",
+   "fieldtype": "Table MultiSelect",
+   "label": "Third Author(Employee)",
+   "options": "Research Article Employees"
+  },
+  {
+   "depends_on": "eval:doc.sub_reporting_type=='Journal Papers' || doc.sub_reporting_type =='Research Articles' || doc.sub_reporting_type =='Conference/seminar proceedings' || doc.sub_reporting_type =='Training and workshop'",
+   "fieldname": "section_break_kmql",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_xqim",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_pxkl",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_gcri",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_lbti",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_yobc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_pqoe",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_vcgd",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_jeuw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_zlly",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_nrpl",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_dmyg",
+   "fieldtype": "Column Break"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-16 10:27:33.124560",
+ "modified": "2026-04-28 10:13:18.150910",
  "modified_by": "Administrator",
  "module": "Research Management",
  "name": "Research Center Reporting Items",

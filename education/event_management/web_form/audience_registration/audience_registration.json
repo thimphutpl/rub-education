@@ -19,7 +19,7 @@
  "list_columns": [],
  "login_required": 0,
  "max_attachment_size": 0,
- "modified": "2026-03-03 01:49:06.069220",
+ "modified": "2026-04-26 15:31:54.738231",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "audience-registration",
@@ -149,7 +149,7 @@
    "options": "Country",
    "precision": "",
    "read_only": 0,
-   "reqd": 0,
+   "reqd": 1,
    "show_in_filter": 0
   },
   {
@@ -200,7 +200,7 @@
    "max_value": 0,
    "precision": "",
    "read_only": 0,
-   "reqd": 0,
+   "reqd": 1,
    "show_in_filter": 0
   },
   {
@@ -213,7 +213,7 @@
    "max_value": 0,
    "precision": "",
    "read_only": 0,
-   "reqd": 0,
+   "reqd": 1,
    "show_in_filter": 0
   },
   {
@@ -486,6 +486,18 @@
    "label": "Consent for Recording and Use of Media",
    "max_length": 0,
    "max_value": 0,
+   "precision": "",
+   "read_only": 0,
+   "reqd": 0,
+   "show_in_filter": 0
+  },
+  {
+   "allow_read_on_all_link_options": 0,
+   "fieldtype": "HTML",
+   "hidden": 0,
+   "max_length": 0,
+   "max_value": 0,
+   "options": " <div id=\"recaptcha-container\"></div>",
    "precision": "",
    "read_only": 0,
    "reqd": 0,

@@ -120,19 +120,16 @@ def get_room_info(college=None):
             r.cost_center,
             r.amount,
             r.company,
+            r.account_number,
+            r.qr_code,
             hb.from_date,
             hb.to_date,
             hb.from_time,
-            hb.to_time,
-            CASE 
-                WHEN hb.name IS NOT NULL THEN 'Not Available'
-                ELSE 'Available'
-            END AS status
+            hb.to_time
         FROM `tabRoom` r
         LEFT JOIN `tabHall Booking` hb
             ON r.name = hb.venue
-            AND NOW() BETWEEN CONCAT(hb.from_date,' ',hb.from_time)
-                           AND CONCAT(hb.to_date,' ',hb.to_time)
+ 
         {where_clause}
         ORDER BY r.room_name ASC
         """,

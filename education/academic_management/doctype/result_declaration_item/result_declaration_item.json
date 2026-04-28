@@ -5,36 +5,166 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "section_break_ckgi"
+  "student",
+  "student_name",
+  "module",
+  "se",
+  "ca",
+  "assessment_ledger",
+  "review_type",
+  "result_declaration",
+  "total_achieved",
+  "column_break_ygqg",
+  "total",
+  "remark",
+  "ca_passed",
+  "se_passed",
+  "tl_passed",
+  "overall_passed",
+  "section_break_almn",
+  "previous_ca",
+  "previous_total",
+  "column_break_nsio",
+  "previous_se"
  ],
  "fields": [
   {
-   "fieldname": "section_break_ckgi",
-   "fieldtype": "Section Break"
+   "fieldname": "student_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Student Name"
+  },
+  {
+   "fieldname": "column_break_ygqg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "student",
+   "fieldtype": "Link",
+   "label": "Student",
+   "options": "Student"
+  },
+  {
+   "fieldname": "module",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Module",
+   "options": "Module"
+  },
+  {
+   "columns": 1,
+   "fieldname": "se",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "SE"
+  },
+  {
+   "columns": 1,
+   "fieldname": "ca",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "CA"
+  },
+  {
+   "columns": 1,
+   "description": "The Total May varies based on Semester End Exam Review Type",
+   "fieldname": "total",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Total "
+  },
+  {
+   "columns": 1,
+   "fieldname": "remark",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Remark"
+  },
+  {
+   "default": "0",
+   "fieldname": "ca_passed",
+   "fieldtype": "Check",
+   "label": "CA Passed"
+  },
+  {
+   "default": "0",
+   "fieldname": "se_passed",
+   "fieldtype": "Check",
+   "label": "SE Passed"
+  },
+  {
+   "default": "0",
+   "fieldname": "tl_passed",
+   "fieldtype": "Check",
+   "label": "TL Passed"
+  },
+  {
+   "fieldname": "review_type",
+   "fieldtype": "Select",
+   "label": "Semester Exam Review Type",
+   "options": "\nRegular Assessment\nExam Recheck\nExam Re-Evaluation\nExam Re-Assessment",
+   "read_only": 1
+  },
+  {
+   "fieldname": "result_declaration",
+   "fieldtype": "Link",
+   "label": "Result Declaration",
+   "options": "Result Entry",
+   "read_only": 1
+  },
+  {
+   "fieldname": "assessment_ledger",
+   "fieldtype": "Link",
+   "label": "SE Assessment Ledger",
+   "options": "Assessment Ledger",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_achieved",
+   "fieldtype": "Float",
+   "label": "Total Achieved"
+  },
+  {
+   "default": "0",
+   "fieldname": "overall_passed",
+   "fieldtype": "Check",
+   "label": "Overall Passed"
+  },
+  {
+   "fieldname": "section_break_almn",
+   "fieldtype": "Section Break",
+   "label": "Previous Record"
+  },
+  {
+   "fieldname": "previous_ca",
+   "fieldtype": "Float",
+   "label": "Previous CA"
+  },
+  {
+   "fieldname": "column_break_nsio",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "previous_se",
+   "fieldtype": "Float",
+   "label": "Previous SE"
+  },
+  {
+   "fieldname": "previous_total",
+   "fieldtype": "Float",
+   "label": "Previous Total"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
+ "istable": 1,
  "links": [],
- "modified": "2026-04-07 12:15:29.721843",
+ "modified": "2026-04-25 23:34:44.442416",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Result Declaration Item",
  "owner": "Administrator",
- "permissions": [
-  {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "System Manager",
-   "share": 1,
-   "write": 1
-  }
- ],
+ "permissions": [],
  "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",

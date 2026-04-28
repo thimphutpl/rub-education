@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "AR-.YYYY.####",
  "creation": "2025-11-03 10:22:17.394778",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -241,10 +242,11 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-03-03 01:47:55.391749",
+ "modified": "2026-04-23 21:29:55.406882",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "Audience Registration",
+ "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [
   {

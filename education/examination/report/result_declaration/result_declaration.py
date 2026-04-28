@@ -137,6 +137,7 @@ def get_data(filters):
                 AND mac.module = '{i.module}'
                 AND mac.semester = '{semester}'
                 AND mai.assessment_component_type = '{assessment_type}'
+                and docstatus =1
             """
 
         # frappe.throw(str(query1))

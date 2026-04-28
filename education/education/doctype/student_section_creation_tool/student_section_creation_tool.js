@@ -83,6 +83,7 @@ frappe.ui.form.on('Student Section Creation Tool', 'get_students', function (frm
             },
             callback: function(r) {
                 if(r.message){
+                  console.log(r.message)
                   frm.clear_table("students");
 
                   let students = r.message;
@@ -91,8 +92,13 @@ frappe.ui.form.on('Student Section Creation Tool', 'get_students', function (frm
                   let total = students.length;
                   
                   // Step 1: minimum sections needed
-                  let section_count = Math.floor(total / max);
-                  
+                  let section_count = total / max
+                  if(section_count > 1){
+                    section_count = Math.floor();
+                  }
+                  else if(section_count > 0 && section_count < 1){
+                    section_count = 1
+                  }
                   // Step 2: try reducing sections if possible
                   while (section_count > 1) {
                       let avg = Math.floor(total / (section_count - 1));
@@ -119,7 +125,7 @@ frappe.ui.form.on('Student Section Creation Tool', 'get_students', function (frm
                   
                       for (let i = 0; i < size; i++) {
                           let student = students[student_index];
-                  
+                          
                           let row = frm.add_child("students");
                           row.student = student.name;
                           row.student_name = student.student_name;

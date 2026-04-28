@@ -133,75 +133,6 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Research Master",
-   "link_count": 6,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Research Category",
-   "link_count": 0,
-   "link_to": "Research Category",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Research Center",
-   "link_count": 0,
-   "link_to": "Research Center",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Research Milestone",
-   "link_count": 0,
-   "link_to": "Research Milestones",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Grant Type",
-   "link_count": 0,
-   "link_to": "Grant Type",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Research Type",
-   "link_count": 0,
-   "link_to": "Research Type",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Research KPI",
-   "link_count": 0,
-   "link_to": "Research KPI",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Research",
    "link_count": 4,
    "link_type": "DocType",
@@ -247,9 +178,78 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Research Master",
+   "link_count": 6,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Research Category",
+   "link_count": 0,
+   "link_to": "Research Category",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Research Center",
+   "link_count": 0,
+   "link_to": "Research Center",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Grant Type",
+   "link_count": 0,
+   "link_to": "Grant Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Reporting Type",
+   "link_count": 0,
+   "link_to": "Reporting Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Research KPI",
+   "link_count": 0,
+   "link_to": "Research KPI",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Research Type",
+   "link_count": 0,
+   "link_to": "Research Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2026-04-16 09:39:11.967778",
+ "modified": "2026-04-21 13:02:39.741305",
  "modified_by": "Administrator",
  "module": "Research Management",
  "name": "Research Management",

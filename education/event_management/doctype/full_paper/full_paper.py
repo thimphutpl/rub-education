@@ -70,3 +70,31 @@ class FullPaper(Document):
 		# Optional: store it in a field on the parent
 		# self.db_set("total_mark", total)
 		return total	
+	
+
+
+@frappe.whitelist()
+def get_permission_query_conditions(user):
+    if not user:
+        user = frappe.session.user
+    
+    roles = frappe.get_roles(user)
+    
+    # Admin sees everything
+    if "Administrator" in roles or "System Manager" in roles:
+        return ""
+    
+    # Panel Member sees Call for Papers from their themes
+    if "Panel Member" in roles:
+        employee = frappe.db.get_value("Employee", {"user_id": user}, "name")
+        
+        if employee:
+            # Get themes where user is a panel member
+            return """`tabFull Paper`.`theme` IN (
+                SELECT ct.`theme` 
+                FROM `tabConference Theme` ct 
+                JOIN `tabPanel Member` pm ON ct.`theme` = pm.`parent`
+                WHERE pm.`employee` = '%s'
+            )""" % employee
+        return "1=0"
+    

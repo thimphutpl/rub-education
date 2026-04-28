@@ -13,7 +13,7 @@ class FacultyAttendance(Document):
 def create_attendance(dt, dn):
     event = frappe.get_doc(dt, dn)
     if not event.get("faculty_register") or len(event.faculty_register) == 0:
-        frappe.throw(_("Cannot create attendance - Faculty Register is empty. Please add students first."))    
+        frappe.throw(_("Cannot create attendance - Staff Register is empty. Please add Staff first."))    
     attendance = frappe.new_doc("Faculty Attendance")
     attendance.event = event.name
     attendance.college = event.college

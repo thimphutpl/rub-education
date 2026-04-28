@@ -3,6 +3,9 @@ frappe.ui.form.on("Exam Timetable", {
         frm.add_custom_button(__("Upload File"), function () {
             frm.events.upload_file(frm);
         }).addClass("btn-dark");
+     frm.add_custom_button(__("View Report"), function () {
+            frm.events.view_report(frm);
+        }).addClass("btn-dark");
     },
 
     // Upload Excel Function
@@ -42,6 +45,18 @@ frappe.ui.form.on("Exam Timetable", {
             __("Upload")
         );
     },
+    view_report(frm) {
+            if (frm.is_new()) {
+                frappe.msgprint(__("Please save the document before viewing the report."));
+                return;
+            }
+            
+            // Navigate to the page with docname as parameter
+            frappe.set_route("examtimetable-report", {"docname": frm.doc.name});
+            
+            // Alternative: Open in new tab
+            // window.open(`/app/exam-timetable-report?docname=${frm.doc.name}`, '_blank');
+        },
 
     // Get Students (No confirmation)
     get_student(frm) {

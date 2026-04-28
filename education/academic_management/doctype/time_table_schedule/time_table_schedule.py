@@ -134,17 +134,26 @@ def get_working_days(constraint):
 # 	return [s for s in slots if (s["from"], s["to"]) not in blocked]
 
 def get_time_slots(constraint):
-	start_time = datetime.strptime("09:00:00", "%H:%M:%S")
-	end_time = datetime.strptime("17:00:00", "%H:%M:%S")
+	# start_time = datetime.strptime("09:00:00", "%H:%M:%S")
+	# end_time = datetime.strptime("17:00:00", "%H:%M:%S")
+	if not constraint.start_time:
+		frappe.throw("Academic Start Time is not set in Timetable Constraint {}".format(constraint.start_time))
+	if not constraint.end_time:
+		frappe.throw("Academic End Time is not set in Timetable Constraint {}".format(constraint.start_time))
+	start_time = datetime.combine(datetime.today(), to_time_obj(constraint.start_time))
+	end_time = datetime.combine(datetime.today(), to_time_obj(constraint.end_time))
 
-	slot_duration = 60  # minutes (make this configurable)
+	# ✅ slot duration comes from max_hour_per_session
+	slot_duration = timedelta(hours=constraint.max_hour_per_session)  # convert hours → minutes
+
 
 	slots = []
 
 	current = start_time
 
 	while current < end_time:
-		slot_end = current + timedelta(minutes=slot_duration)
+		# slot_end = current + timedelta(minutes=slot_duration)
+		slot_end = current + slot_duration
 
 		if slot_end > end_time:
 			break

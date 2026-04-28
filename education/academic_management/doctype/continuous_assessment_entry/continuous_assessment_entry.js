@@ -54,6 +54,7 @@ frappe.ui.form.on("Continuous Assessment Entry", {
                 module: frm.doc.module,
                 tutor: frm.doc.tutor,
                 academic_term: frm.doc.academic_term,
+                examination_assesment: 0
                 },
             }
         })

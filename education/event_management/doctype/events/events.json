@@ -70,7 +70,8 @@
    "fieldname": "event_title",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Event Title"
+   "label": "Event Title",
+   "reqd": 1
   },
   {
    "fieldname": "event_description",
@@ -82,20 +83,23 @@
    "fieldname": "start_date",
    "fieldtype": "Datetime",
    "in_list_view": 1,
-   "label": "Start Date"
+   "label": "Start Date",
+   "reqd": 1
   },
   {
    "fieldname": "end_date",
    "fieldtype": "Datetime",
    "in_list_view": 1,
-   "label": "End Date"
+   "label": "End Date",
+   "reqd": 1
   },
   {
    "fieldname": "event_type",
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Event Type",
-   "options": "Event Type"
+   "options": "Event Type",
+   "reqd": 1
   },
   {
    "fieldname": "column_break_ryhp",
@@ -260,6 +264,7 @@
    "fieldtype": "Section Break"
   },
   {
+   "depends_on": "eval:doc.college",
    "fieldname": "forward_to",
    "fieldtype": "Link",
    "ignore_user_permissions": 1,
@@ -280,8 +285,9 @@
   {
    "fieldname": "type",
    "fieldtype": "Select",
-   "label": "Event Organization Type",
-   "options": "\nStaff\nStudent"
+   "label": "Event Organizer Type",
+   "options": "\nStaff\nStudent",
+   "reqd": 1
   },
   {
    "fieldname": "student",
@@ -296,7 +302,6 @@
    "options": "Employee"
   },
   {
-   "depends_on": "eval:!frappe.user.has_role(\"Panel Member\")",
    "fieldname": "details_tab",
    "fieldtype": "Tab Break",
    "label": "Details"
@@ -306,7 +311,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-15 09:02:43.668877",
+ "modified": "2026-04-28 10:05:09.443087",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "Events",

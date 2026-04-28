@@ -198,12 +198,36 @@ Adding Resulting Column
 		fieldname: "student",
 		fieldtype: "Link",
 		options: "Student",
-		reqd: 1
+		reqd: 1,
+		hidden: 1
 	},
 	render_input: true
-	});
+});
 
-	studentField.refresh();
+studentField.refresh();
+
+// 🔥 fetch logged-in student
+frappe.call({
+	method: "frappe.client.get_value",
+	args: {
+		doctype: "Student",
+		filters: {
+			user: frappe.session.user
+		},
+		fieldname: "name"
+	},
+	callback: function(r) {
+		if (r.message) {
+			let student_id = r.message.name;
+
+			console.log("Student ID:", student_id);
+
+			// ✅ set value AFTER fetch
+			studentField.set_value(student_id);
+			studentField.refresh();
+		}
+	}
+});
 
 
 
@@ -243,6 +267,46 @@ let resultContainer = resultCollapsible.find(".result-body");
 			body.data("loaded_student", student);
 		}
 	});
+
+
+
+	
+
+
+let caCollapsible = $(`
+	<div class="ca-collapsible" style="margin-top:15px;">
+		<div class="ca-header" 
+			style="cursor:pointer; font-weight:bold; padding:8px; background:#f0f0f0; border-radius:6px;">
+			▶ CA (Continuous Assessment)
+		</div>
+		<div class="ca-body" style="display:none; margin-top:10px;"></div>
+	</div>
+`).appendTo(topContainer);
+
+let caContainer = caCollapsible.find(".ca-body");
+
+
+
+caCollapsible.find(".ca-header").click(function () {
+
+	let body = caCollapsible.find(".ca-body");
+	let isVisible = body.is(":visible");
+
+	body.slideToggle(200);
+	$(this).text(isVisible ? "▶ CA (Continuous Assessment)" : "▼ CA (Continuous Assessment)");
+
+	let student = studentField.get_value();
+
+	if (!student) {
+		frappe.msgprint("Please select a Student first");
+		return;
+	}
+
+	if (!body.data("loaded_student") || body.data("loaded_student") !== student) {
+		load_ca(caContainer, student);   // 👈 your CA loader
+		body.data("loaded_student", student);
+	}
+});
     // 🔹 Custom fields container (flex layout)
     // let fieldContainer = $(`
     //     <div class="custom-fields-container" 
@@ -327,11 +391,20 @@ let resultContainer = resultCollapsible.find(".result-body");
 				fieldname: 'academic_term',
 				fieldtype: 'Link',
 				options: 'Academic Term',
-				placeholder: 'Select Academic Term', // Text field
-
+				placeholder: 'Select Academic Term',
+		
+				// ✅ filter by college
+				// get_query: function () {
+				// 	return {
+				// 		filters: {
+				// 			college: college   // make sure this variable exists
+				// 		}
+				// 	};
+				// }
 			},
 			render_input: true
 		});
+		
 		academic_term.refresh();
 		let college_val = ""
 		let programme_val = ""
@@ -381,8 +454,11 @@ let resultContainer = resultCollapsible.find(".result-body");
 				tableContainer.html("<b>Please select all the fields</b>");
 			}
 		}
+		// [college, programme, academic_term].forEach(f => {
+		// 	f.$input.on("change", checkAndLoad);
+		// });
 		[college, programme, academic_term].forEach(f => {
-			f.$input.on("change", checkAndLoad);
+			f.df.onchange = checkAndLoad;
 		});
 
 	}
@@ -807,7 +883,7 @@ $(`<style>
 						}
 					</style>
 	
-					<h3>Semester Result — ${student_name}</h3>
+					<h3>Result — ${student_name}</h3>
 	
 					<table>
 						<thead>
@@ -886,7 +962,7 @@ $(`<style>
 					
 						// ✅ ACTIONS PER MODULE (NO ROWSPAN)
 						html += `
-						<td>${d.passed ? "Pass" : "Fail"}</td>
+							<td>${d.passed ? "Passed" : "Failed"}</td>
 							<td>
 								<select class="status-select" 
 										data-semester="${semester}" 
@@ -894,10 +970,12 @@ $(`<style>
 									<option value="">Select</option>
 									<option value="Exam Recheck">Exam Recheck</option>
 									<option value="Exam Re-Evaluation">Exam Re-Evaluation</option>
-									<option value="Exam Re-Assessment">Exam Re-Assessment</option>
+									<option value="Exam Re-Assessment" ${d.passed ? "disabled" : ""}>
+										Exam Re-Assessment
+									</option>
 								</select>
 							</td>
-						`;
+							`;
 					
 						html += `</tr>`;
 					});
@@ -931,31 +1009,136 @@ $(`<style>
 				
 					if (!value) return;
 				
-					frappe.confirm(
-						`Are you sure you want to apply for "${value}" for module "${module}"?`,
-						() => {
+					frappe.call({
+						method: "education.academic_management.page.student_dashboard.student_dashboard.get_academic_settings",
+						callback: function (r) {
 				
-							frappe.msgprint({
-								message: `Request submitted for ${module}`,
-								indicator: "green"
-							});
+							let settings = r.message || {};
 				
-							frappe.call({
-								method: "education.academic_management.page.student_dashboard.student_dashboard.apply_review",
-								args: {
-									student: student,
-									module: module,
-									semester: semester,
-									request_type: value
+							let re_check_fee = settings.re_check || 0;
+							let re_evaluation_fee = settings.re_evaluation || 0;
+							let re_reassessment_fee = settings.re_assessment || 0;
+				
+							let isRequired = true;
+							
+							let amountText = "";
+				
+							if (value === "Exam Re-Assessment") {
+								if (re_reassessment_fee == 0) {
+									isRequired = false;
+									amountText = "No payment required";
+								} else {
+									isRequired = true;
+									amountText = `Nu. ${re_reassessment_fee}`;
+								}
+								// if ${re_reassessment_fee} == 0:
+								// isRequired = false
+								// // isRequired = false;
+								// // amountText = "No payment required";
+								// amountText = `Nu.${re_reassessment_fee}`;
+				
+							} else if (value === "Exam Recheck") {
+
+								if (re_check_fee == 0) {
+									isRequired = false;
+									amountText = "No payment required";
+								} else {
+									isRequired = true;
+									amountText = `Nu. ${re_check_fee}`;
+								}
+							
+							} else if (value === "Exam Re-Evaluation") {
+							
+								if (re_evaluation_fee == 0) {
+									isRequired = false;
+									amountText = "No payment required";
+								} else {
+									isRequired = true;
+									amountText = `Nu. ${re_evaluation_fee}`;
+								}
+							
+							}
+				
+							// 🔹 CASE 1: No payment
+							if (!isRequired) {
+								let d = new frappe.ui.Dialog({
+									title: "Confirmation",
+									fields: [
+										{
+											fieldtype: "HTML",
+											options: `
+												<p>Are you sure you want to proceed with <b>${value}</b>?</p>
+												<p><b>No payment is required.</b></p>
+											`
+										}
+									],
+									primary_action_label: "Yes, Proceed",
+									primary_action() {
+				
+										frappe.call({
+											method: "education.academic_management.page.student_dashboard.student_dashboard.apply_review",
+											args: {
+												student: student,
+												module: module,
+												semester: semester,
+												request_type: value,
+												journal_number: null
+											},
+											callback: function () {
+												frappe.msgprint({
+													message: `Request submitted for ${module}`,
+													indicator: "green"
+												});
+												d.hide();
+											}
+										});
+				
+									}
+								});
+				
+								d.show();
+								return;
+							}
+				
+							// 🔹 CASE 2: Payment required
+							let d = new frappe.ui.Dialog({
+								title: "Enter Payment Details",
+								fields: [
+									{
+										label: "Reference Number",
+										fieldname: "journal_entry",
+										fieldtype: "Data",
+										reqd: 1,
+										description: `Enter reference number. Payable amount: ${amountText}.`
+									}
+								],
+								primary_action_label: "Submit",
+								primary_action(values) {
+				
+									frappe.call({
+										method: "education.academic_management.page.student_dashboard.student_dashboard.apply_review",
+										args: {
+											student: student,
+											module: module,
+											semester: semester,
+											request_type: value,
+											journal_number: values.journal_entry
+										},
+										callback: function () {
+											frappe.msgprint({
+												message: `Request submitted for ${module}`,
+												indicator: "green"
+											});
+											d.hide();
+										}
+									});
+				
 								}
 							});
 				
-						},
-						() => {
-							// reset on cancel
-							selectEl.val("");
+							d.show();
 						}
-					);
+					});
 				
 				});
 			}
@@ -965,3 +1148,169 @@ $(`<style>
 
 
 
+	function load_ca(container, student) {
+		
+
+		// container.html("<p>Loading results...</p>");
+	
+		// ============================
+		// FILTER SECTION (inside CA)
+		// ============================
+		let filterContainer = $(`
+			<div class="ca-filter-container"
+				style="display:flex; gap:15px; margin-bottom:10px; flex-wrap:wrap;">
+			</div>
+		`).appendTo(container);
+
+		let studentField = frappe.ui.form.make_control({
+			parent: filterContainer,
+			df: {
+				label: "Student",
+				fieldname: "student",
+				fieldtype: "Link",
+				options: "Student",
+				reqd: 1,
+				read_only: 1 
+			},
+			render_input: true
+		});
+		
+		studentField.refresh();
+		
+		// ✅ AUTO SET VALUE HERE
+		if (student) {
+			studentField.set_value(student);
+		}
+	
+		let academic_term = frappe.ui.form.make_control({
+			parent: filterContainer,
+			df: {
+				label: "Academic Term",
+				fieldname: "academic_term",
+				fieldtype: "Link",
+				options: "Academic Term",
+				reqd: 1
+			},
+			render_input: true
+		});
+		academic_term.refresh();
+
+		
+	
+		let semester = frappe.ui.form.make_control({
+			parent: filterContainer,
+			df: {
+				label: "Semester",
+				fieldname: "semester",
+				fieldtype: "Link",
+				options: "Semester",
+				reqd: 1
+			},
+			render_input: true
+		});
+		semester.refresh();
+	
+		let module = frappe.ui.form.make_control({
+			parent: filterContainer,
+			df: {
+				label: "Module",
+				fieldname: "module",
+				fieldtype: "Link",
+				options: "Module",
+				reqd: 1
+			},
+			render_input: true
+		});
+		module.refresh();
+	
+		// ============================
+		// DATA CONTAINER
+		// ============================
+		let dataContainer = $(`
+			<div class="ca-data-container"></div>
+		`).appendTo(container);
+	
+		// ============================
+		// LOAD FUNCTION
+		// ============================
+		function load_ca_data() {
+	
+			if (
+				!student ||
+				!academic_term.get_value() ||
+				!semester.get_value() ||
+				!module.get_value()
+			) {
+				return;
+			}
+	
+			dataContainer.html("<p>Loading data...</p>");
+	
+			frappe.call({
+				method: "education.academic_management.page.student_dashboard.student_dashboard.get_ca",
+				args: {
+					student: studentField.get_value(),
+					academic_term: academic_term.get_value(),
+					semester: semester.get_value(),
+					module: module.get_value()
+				},
+				callback: function (r) {
+	
+					if (!r.message || !r.message.length) {
+						dataContainer.html("<b>No data found</b>");
+						return;
+					}
+	
+					let data = r.message;
+	
+					let html = `
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th>Assessment Component</th>
+									<th>Type</th>
+									<th>Marks Achieved</th>
+									<th>Weightage</th>
+								</tr>
+							</thead>
+							<tbody>
+					`;
+	
+					let total_weighted = 0;
+	
+					data.forEach(d => {
+	
+						let weighted = Number(d.weightage_achieved) || 0;
+						total_weighted += weighted;
+	
+						html += `
+							<tr>
+								<td>${d.assessment_component}</td>
+								<td>${d.assessment_component_type}</td>
+								<td>${d.marks_obtained}</td>
+								<td>${weighted}</td>
+							</tr>
+						`;
+					});
+	
+					html += `
+						<tr style="font-weight:bold;">
+							<td colspan="3">Total</td>
+							<td>${total_weighted}</td>
+						</tr>
+					`;
+	
+					html += `</tbody></table>`;
+	
+					dataContainer.html(html);
+				}
+			});
+		}
+	
+		// ============================
+		// TRIGGERS
+		// ============================
+		[academic_term, semester, module].forEach(f => {
+			f.df.onchange = load_ca_data;
+		});
+	}

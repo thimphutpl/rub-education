@@ -9,7 +9,7 @@ class ContinuousAssessmentEntry(Document):
 	def validate(self):
 		self.fetch_weightage()
 		self.check_assesment_component()
-		self.check_duplicate_marks_entry()
+		# self.check_duplicate_marks_entry()
 		self.calculate_weightage_achieved()
 
 	def on_submit(self):

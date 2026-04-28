@@ -35,25 +35,29 @@
    "fieldname": "title",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Title"
+   "label": "Title",
+   "reqd": 1
   },
   {
    "fieldname": "start_date",
    "fieldtype": "Date",
    "in_list_view": 1,
-   "label": "Start Date "
+   "label": "Start Date ",
+   "reqd": 1
   },
   {
    "fieldname": "end_date",
    "fieldtype": "Date",
    "in_list_view": 1,
-   "label": "End Date"
+   "label": "End Date",
+   "reqd": 1
   },
   {
    "fieldname": "location",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Location"
+   "label": "Location",
+   "reqd": 1
   },
   {
    "fieldname": "image",
@@ -63,20 +67,22 @@
   {
    "fieldname": "deadline",
    "fieldtype": "Datetime",
-   "label": "deadline"
+   "label": "Deadline",
+   "reqd": 1
   },
   {
    "fieldname": "theme",
    "fieldtype": "Link",
    "label": "Theme",
-   "options": "Conference Theme"
+   "options": "Conference Theme",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-11-24 13:45:59.300534",
+ "modified": "2026-04-25 16:55:21.398512",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "Conference Announcement",

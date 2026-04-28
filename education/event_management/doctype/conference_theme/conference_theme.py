@@ -4,38 +4,26 @@ from frappe.model.document import Document
 
 class ConferenceTheme(Document):
 
-	def after_insert(self):
-		self.assign_panel_roles()
-
-
-	def on_update(self):
-		self.assign_panel_roles()
+	pass
 	
-
-	def assign_panel_roles(self):
-		"""
-		Assign 'Panel Member' role to all users in the Panel Member child table
-		"""
-		for row in self.get("panel_member"):
-			user = row.user 
-			if user:
-				self.add_panel_role(user)
-
-	def add_panel_role(self, user):
-		"""
-		Assign 'Panel Member' role to a specific user if not already assigned
-		"""
-		if not user:
-			return
-
-		if not frappe.db.exists("Has Role", {"parent": user, "role": "Panel Member"}):
-			frappe.get_doc({
-				"doctype": "Has Role",
-				"parent": user,
-				"parenttype": "User",
-				"parentfield": "roles",
-				"role": "Panel Member"
-			}).insert(ignore_permissions=True)
-			frappe.db.commit()  # commit to save immediately
-			frappe.log_error(f"'Panel Member' role assigned to {user}", "Panel Role Assignment")
-	
+@frappe.whitelist()
+def panel_member_query(doctype, txt, searchfield, start, page_len, filters):
+    """Get employees with Panel Member role"""
+    company = filters.get("company")
+    
+    # Get users with Panel Member role
+    users = frappe.get_all("Has Role", {"role": "Panel Member"}, pluck="parent")
+    
+    if not users:
+        return []
+    
+    # Get employees
+    return frappe.db.sql("""
+        SELECT name, employee_name
+        FROM `tabEmployee`
+        WHERE company = %s
+            AND status = 'Active'
+            AND user_id IN %s
+            AND (name LIKE %s OR employee_name LIKE %s)
+        LIMIT %s OFFSET %s
+    """, (company, tuple(users), f"%{txt}%", f"%{txt}%", page_len, start))

@@ -10,7 +10,7 @@ class ExaminationMarksEntry(Document):
         if self.exam_type == 'Regular Assessment':
             self.fetch_exam_registration()
         self.check_duplicate_ass_component()
-        # self.check_duplicate_marks_entry()
+        self.check_duplicate_marks_entry()
         self.calculate_weightageAchieved()
 
     def on_submit(self):
@@ -71,19 +71,21 @@ class ExaminationMarksEntry(Document):
                 frappe.throw("Examination Review Application not found for {}".format(self.assessment_component))
                 
     def check_duplicate_marks_entry(self):
-        if self.exam_type == 'Regular Assessment':
-            duplicate = frappe.db.exists("Examination Marks Entry",{
-                "exam_type": self.exam_type,
-                "docstatus": 1
-            })
-        else:
-            duplicate = frappe.db.exists("Examination Marks Entry",{
-                "exam_type": self.exam_type,
-                "docstatus": 1
-            })
+       
+        duplicate = frappe.db.exists("Examination Marks Entry",{
+            "exam_type": self.exam_type,
+            "academic_term": self.academic_term,
+            "programme":self.programme,
+            "module":self.module,
+            "assessment_component":self.assessment_component,
+            "docstatus": 1
+        })
     
-        if duplicate:
-            frappe.throw("The Marks entry done already for this combination")
+    
+        # if duplicate:
+        #     frappe.throw(
+        #         f"The marks entry for <b>{self.assessment_component}</b> has already been completed."
+        #     )
             
     def check_duplicate_ass_component(self):
         pass
@@ -167,7 +169,7 @@ class ExaminationMarksEntry(Document):
                 "programme": programme,
                 "module": self.module,
                 "assessment_component": self.assessment_component,
-                "assessment_weightage": self.weightage,
+                "assessment_weightage": i.weightage,
                 "weightage_achieved": i.weightage_achieved,
                 "tutor": self.tutor,
                 "tutor_name": self.tutor_name
@@ -215,6 +217,8 @@ def get_students(examination_registration=None, doc=None):
             (doc["module"], doc["tutor"], doc["academic_term"], doc["college"], doc["semester"]),
             as_dict=True
         )
+
+        # frappe.throw(str(data))
         
     elif doc['exam_type'] in ('Exam Recheck', 'Exam Re-Evaluation', 'Exam Re-Assessment'):
         if not doc.get('module'):

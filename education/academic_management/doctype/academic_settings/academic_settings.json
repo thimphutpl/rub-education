@@ -8,7 +8,13 @@
   "attendance_settings_section",
   "attendance_threshold",
   "passing_criteria_section",
-  "table_qhlg"
+  "table_qhlg",
+  "section_break_uaai",
+  "re_assessment",
+  "column_break_dora",
+  "re_check",
+  "column_break_eujp",
+  "re_evaluation"
  ],
  "fields": [
   {
@@ -32,13 +38,41 @@
    "fieldname": "table_qhlg",
    "fieldtype": "Table",
    "options": "Pass Criteria"
+  },
+  {
+   "fieldname": "section_break_uaai",
+   "fieldtype": "Section Break",
+   "label": "Review Fee Terms"
+  },
+  {
+   "fieldname": "re_assessment",
+   "fieldtype": "Float",
+   "label": "Re Assessment"
+  },
+  {
+   "fieldname": "column_break_dora",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_eujp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "re_check",
+   "fieldtype": "Float",
+   "label": "Re Check"
+  },
+  {
+   "fieldname": "re_evaluation",
+   "fieldtype": "Float",
+   "label": "Re Evaluation"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-04-09 12:31:37.473578",
+ "modified": "2026-04-27 11:29:58.574888",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Academic Settings",

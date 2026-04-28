@@ -137,7 +137,7 @@ import frappe
 #     }
 
 @frappe.whitelist()
-def get_results(college, programme, academic_term, student_section):
+def get_results(college, programme, academic_term, student_section, exam_type):
 
 
 
@@ -230,33 +230,85 @@ def get_results(college, programme, academic_term, student_section):
     student_ids = [s.student for s in students]
 
     # 🔹 4. Get all marks (OPTIMIZED - single query)
+    
+    
     all_marks = frappe.db.sql("""
+          SELECT 
+        al.student,
+        al.module,
+
+       
+
+        COALESCE(SUM(CASE 
+            WHEN ac.assessment_component_type IN 
+                ('Continuous Assessment', 'Continuous Assessment (Theory)')
+            THEN al.weightage_achieved ELSE 0 
+        END), 0) AS ca,
+
+        COALESCE(SUM(CASE 
+            WHEN ac.assessment_component_type IN 
+                ('Semester Exam', 'Semester Exam (Theory)')
+            THEN al.weightage_achieved ELSE 0 
+        END), 0) AS se
+
+    FROM `tabAssessment Ledger` al
+
+    INNER JOIN `tabAssessment Component` ac 
+        ON al.assessment_component = ac.name
+
+    -- ✅ FIXED: latest per TYPE (not per component)
+    INNER JOIN (
         SELECT 
-            al.student,
-            al.module,
+            al2.student,
+            al2.module,
+            ac2.assessment_component_type,
+            MAX(al2.creation) AS latest_creation
+        FROM `tabAssessment Ledger` al2
 
-            COALESCE(SUM(CASE 
-                WHEN ac.assessment_component_type IN 
-                    ('Continuous Assessment', 'Continuous Assessment (Theory)')
-                THEN al.weightage_achieved ELSE 0 END), 0) AS ca,
-
-            COALESCE(SUM(CASE 
-                WHEN ac.assessment_component_type IN 
-                    ('Semester Exam', 'Semester Exam (Theory)')
-                THEN al.weightage_achieved ELSE 0 END), 0) AS se
-
-        FROM `tabAssessment Ledger` al
-        INNER JOIN `tabAssessment Component` ac 
-            ON al.assessment_component = ac.name
+        INNER JOIN `tabAssessment Component` ac2 
+            ON al2.assessment_component = ac2.name
 
         WHERE 
-            al.student IN %s
-            AND al.module IN %s
-            AND al.is_cancelled = 0
-            AND al.has_reassessment = 0
+            al2.student IN %s
+            AND al2.module IN %s
+            AND al2.is_cancelled = 0
 
-        GROUP BY al.student, al.module
-    """, (tuple(student_ids), tuple(module_list)), as_dict=1)
+        GROUP BY 
+            al2.student, 
+            al2.module, 
+            ac2.assessment_component_type
+    ) latest
+
+    ON al.student = latest.student
+    AND al.module = latest.module
+    AND al.creation = latest.latest_creation
+    AND ac.assessment_component_type = latest.assessment_component_type
+
+    WHERE 
+        al.student IN %s
+        AND al.module IN %s
+        AND al.is_cancelled = 0
+
+        -- 🚫 exclude already passed
+        AND NOT EXISTS (
+            SELECT 1 
+            FROM `tabResult Declaration Item` rdi
+            WHERE 
+                rdi.student = al.student
+                AND rdi.module = al.module
+                AND rdi.docstatus != 2
+                AND rdi.remark = 'Pass'
+        )
+
+    GROUP BY 
+        al.student, 
+        al.module;
+    """, (tuple(student_ids), tuple(module_list),tuple(student_ids), tuple(module_list)), as_dict=1)
+
+    frappe.throw(frappe.as_json(all_marks))
+
+    
+
 
     # 🔹 5. Create lookup map
     marks_map = {}
@@ -279,23 +331,49 @@ def get_results(college, programme, academic_term, student_section):
             if key in marks_map:
                 ca = marks_map[key].ca or 0
                 se = marks_map[key].se or 0
+                assessment_ledger = marks_map[key].name or ''
             else:
                 ca = 0
                 se = 0
-
-            student_data["results"][m] = {
-                "ca": ca,
-                "se": se,
-                "tl": ca + se
-            }
+            
+            if key in marks_map and exam_type=="Review":
+                student_data["results"][m] = {
+                    "ca": ca,
+                    "se": se,
+                    "tl": ca + se,
+                    "assessment_ledger": assessment_ledger
+                }
+            elif exam_type=="Regular":
+                student_data["results"][m] = {
+                    "ca": ca,
+                    "se": se,
+                    "tl": ca + se,
+                    "assessment_ledger": assessment_ledger
+                }
 
         result.append(student_data)
 
     # frappe.throw(frappe.as_json(result))
-    ca_pass_percentage = frappe.db.get_value("Pass Criteria",{"college":college},'ca_passing_citeria')
-    se_pass_percentage = frappe.db.get_value("Pass Criteria",{"college":college},'se_passing_citeria')
-    tl_pass_percentage = frappe.db.get_value("Pass Criteria",{"college":college},'total_passing_citeria')
-    failed_module_for_repeat = frappe.db.get_value("Pass Criteria",{"college":college},'failed_module')
+    # ca_pass_percentage = frappe.db.get_value("Pass Criteria",{"college":college},'ca_passing_citeria') else 0
+    # se_pass_percentage = frappe.db.get_value("Pass Criteria",{"college":college},'se_passing_citeria')
+    # tl_pass_percentage = frappe.db.get_value("Pass Criteria",{"college":college},'total_passing_citeria')
+    # failed_module_for_repeat = frappe.db.get_value("Pass Criteria",{"college":college},'failed_module')
+    pass_criteria = frappe.db.get_value(
+    "Pass Criteria",
+    {"college": college},
+    [
+        "ca_passing_citeria",
+        "se_passing_citeria",
+        "total_passing_citeria",
+        "failed_module"
+    ],
+    as_dict=1
+    )
+
+    ca_pass_percentage = pass_criteria.get("ca_passing_citeria", 0) if pass_criteria else 0
+    se_pass_percentage = pass_criteria.get("se_passing_citeria", 0) if pass_criteria else 0
+    tl_pass_percentage = pass_criteria.get("total_passing_citeria", 0) if pass_criteria else 0
+    failed_module_for_repeat = pass_criteria.get("failed_module", 0) if pass_criteria else 0
 
     for i in result:
 

@@ -8,7 +8,12 @@ from frappe.utils import flt
 
 class Module(Document):
 	def validate(self):
-		# self.validate_assessment()
+		if len(self.colleges) > 1:
+			self.multi_college_module = 1
+		if self.multi_college_module == 1:
+			self.validate_multi_college_module()
+
+	def validate_multi_college_module(self):
 		pass
 
 	# @frappe.whitelist()

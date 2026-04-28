@@ -6,14 +6,14 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "student",
   "college",
   "academic_term",
-  "student",
   "get_data",
   "column_break_eafp",
   "semester",
-  "module",
   "programme",
+  "module",
   "section_break_kcso",
   "items",
   "section_break_iuww",
@@ -57,6 +57,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "fetch_from": "student.semester",
    "fieldname": "semester",
    "fieldtype": "Link",
    "label": "Semester",
@@ -69,11 +70,13 @@
    "options": "Student"
   },
   {
+   "fetch_from": "student.company",
    "fieldname": "college",
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "College",
    "options": "Company",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -98,7 +101,8 @@
   },
   {
    "fieldname": "section_break_iuww",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_tkje",
@@ -108,34 +112,40 @@
    "fieldname": "ca_status",
    "fieldtype": "Select",
    "label": "CA Status",
-   "options": "\nFail\nPass"
+   "options": "\nFail\nPass",
+   "read_only": 1
   },
   {
    "fieldname": "semester_exam",
    "fieldtype": "Float",
-   "label": "Semester Exam"
+   "label": "Semester Exam",
+   "read_only": 1
   },
   {
    "fieldname": "overall",
    "fieldtype": "Float",
-   "label": "Overall"
+   "label": "Overall",
+   "read_only": 1
   },
   {
    "fieldname": "semester_exam_status",
    "fieldtype": "Select",
    "label": "Semester Exam Status",
-   "options": "\nFail\nPass"
+   "options": "\nFail\nPass",
+   "read_only": 1
   },
   {
    "fieldname": "overall_status",
    "fieldtype": "Select",
    "label": "Overall Status",
-   "options": "\nPass\nFail"
+   "options": "\nPass\nFail",
+   "read_only": 1
   },
   {
    "fieldname": "ca",
    "fieldtype": "Float",
-   "label": "CA"
+   "label": "CA",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_izac",
@@ -144,7 +154,8 @@
   {
    "fieldname": "total_se",
    "fieldtype": "Float",
-   "label": "Total Semester Exam"
+   "label": "Total Semester Exam",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_mise",
@@ -153,20 +164,23 @@
   {
    "fieldname": "total_ca",
    "fieldtype": "Float",
-   "label": "Total CA"
+   "label": "Total CA",
+   "read_only": 1
   },
   {
+   "fetch_from": "student.programme",
    "fieldname": "programme",
    "fieldtype": "Link",
    "label": "Programme",
-   "options": "Programme"
+   "options": "Programme",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-03 02:19:51.813641",
+ "modified": "2026-04-26 16:59:24.963673",
  "modified_by": "Administrator",
  "module": "Examination",
  "name": "Result Modification",

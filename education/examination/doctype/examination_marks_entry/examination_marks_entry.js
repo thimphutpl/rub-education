@@ -2,37 +2,116 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on("Examination Marks Entry", {
+    onload(frm) {
+		if (!frm.doc.posting_date) {
+			frm.set_value("posting_date", frappe.datetime.now_date());
+		}
+	},
+    setup(frm){
+        frm.set_query('module_enrolment_key', function () {
+            return {
+              filters: {
+                // program: frm.doc.programme,
+                academic_term: frm.doc.academic_term,
+                docstatus: 1,
+              },
+            }
+          })
+        frm.set_query("college", function () {
+            return {
+                filters: {
+                    is_group: 0,
+            name: ["!=", "Office of Vice Chancellor"]
+                },
+            };
+        });
+        frm.set_query('programme', function () {
+            return {
+                query:
+                'education.education.doctype.module_enrolment_tool.module_enrolment_tool.get_programme',
+              filters: {
+                college: frm.doc.college,
+                date: frm.doc.posting_date,
+                validate: 1
+              },
+            }
+        })
+        frm.set_query('tutor', function () {
+            return {
+                query:
+                'erpnext.controllers.queries.filter_module_tutors',
+                filters: {
+                // program: frm.doc.programme,
+                college: frm.doc.college,
+                programme: frm.doc.programme,
+                module: frm.doc.module,
+                },
+            }
+        })
+        frm.set_query('assessment_component', function () {
+            return {
+                query:
+                'erpnext.controllers.queries.filter_assessment_component',
+                filters: {
+                college: frm.doc.college,
+                programme: frm.doc.programme,
+                module: frm.doc.module,
+                tutor: frm.doc.tutor,
+                academic_term: frm.doc.academic_term,
+                examination_assesment: 1
+                },
+            }
+        })
+    },
     refresh(frm) {
         // Set module field visibility based on exam type
         this.set_module_field_visibility(frm);
-    },
 
-    assessment_component: function(frm) {
-        if (frm.doc.assessment_component) {
-            // Get assessment component details
-            frappe.call({
-                method: "frappe.client.get_value",
-                args: {
-                    doctype: "Assessment Component",
-                    fieldname: ["assessment_role", "assessment_name"],
-                    filters: { name: frm.doc.assessment_component }
+        frm.set_query('assessment_component', function () {
+            return {
+                query:
+                'erpnext.controllers.queries.filter_assessment_component',
+                filters: {
+                college: frm.doc.college,
+                programme: frm.doc.programme,
+                module: frm.doc.module,
+                tutor: frm.doc.tutor,
+                academic_term: frm.doc.academic_term,
                 },
-                callback: function(r) {
-                    if (r.message) {
-                        // Set tutor field as mandatory
-                        frm.set_df_property('tutor', 'reqd', 1);
-                        frm.set_df_property('tutor', 'hidden', 0);
-                        // Module is mandatory for Regular Assessment
-                        if (frm.doc.exam_type === 'Regular Assessment') {
-                            frm.set_df_property('module', 'reqd', 1);
-                        } else {
-                            frm.set_df_property('module', 'reqd', 0);
-                        }
-                    }
-                }
-            });
-        }
+            }
+        })
     },
+    
+
+   
+        
+
+    // assessment_component: function(frm) {
+    //     if (frm.doc.assessment_component) {
+    //         // Get assessment component details
+    //         frappe.call({
+    //             method: "frappe.client.get_value",
+    //             args: {
+    //                 doctype: "Assessment Component",
+    //                 fieldname: ["assessment_role", "assessment_name"],
+    //                 filters: { name: frm.doc.assessment_component }
+    //             },
+    //             callback: function(r) {
+    //                 if (r.message) {
+    //                     // Set tutor field as mandatory
+    //                     frm.set_df_property('tutor', 'reqd', 1);
+    //                     frm.set_df_property('tutor', 'hidden', 0);
+    //                     // Module is mandatory for Regular Assessment
+    //                     if (frm.doc.exam_type === 'Regular Assessment') {
+    //                         frm.set_df_property('module', 'reqd', 1);
+    //                     } else {
+    //                         frm.set_df_property('module', 'reqd', 0);
+    //                     }
+    //                 }
+    //             }
+    //         });
+    //     }
+    // },
 
     exam_type: function(frm){
         this.set_module_field_visibility(frm);

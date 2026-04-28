@@ -14,7 +14,11 @@
   "company",
   "branch",
   "cost_center",
-  "exam_room"
+  "exam_room",
+  "section_break_zsru",
+  "account_number",
+  "column_break_zjoz",
+  "qr_code"
  ],
  "fields": [
   {
@@ -71,10 +75,28 @@
    "label": "Branch",
    "options": "Branch",
    "reqd": 1
+  },
+  {
+   "fieldname": "section_break_zsru",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "account_number",
+   "fieldtype": "Data",
+   "label": "Account Number"
+  },
+  {
+   "fieldname": "column_break_zjoz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "qr_code",
+   "fieldtype": "Attach Image",
+   "label": "QR Code"
   }
  ],
  "links": [],
- "modified": "2026-03-19 15:33:59.043806",
+ "modified": "2026-04-24 08:38:38.548701",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Room",

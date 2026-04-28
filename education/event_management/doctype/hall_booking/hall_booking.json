@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "HB-.YYYY.####",
  "creation": "2026-03-12 16:06:52.962799",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -8,6 +9,18 @@
   "hall_booking_reservation_form_section",
   "amended_from",
   "venue",
+  "section_break_hcql",
+  "from_date",
+  "from_time",
+  "column_break_jdri",
+  "to_date",
+  "to_time",
+  "section_break_niif",
+  "amount",
+  "column_break_drag",
+  "total_days",
+  "column_break_ukyy",
+  "total_amount",
   "section_break_kaqg",
   "company",
   "section_break_aerw",
@@ -28,18 +41,14 @@
   "organization",
   "section_break_zznl",
   "purpose",
-  "section_break_hcql",
-  "from_date",
-  "from_time",
-  "column_break_jdri",
-  "to_date",
-  "to_time",
-  "section_break_niif",
-  "amount",
-  "column_break_drag",
-  "total_days",
-  "column_break_ukyy",
-  "total_amount"
+  "section_break_btvq",
+  "account_number",
+  "column_break_cpgo",
+  "qr_code",
+  "section_break_reqm",
+  "payment_status",
+  "section_break_lkjj",
+  "captcha_html_wrapper"
  ],
  "fields": [
   {
@@ -71,8 +80,7 @@
    "fieldname": "designation",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Designation",
-   "reqd": 1
+   "label": "Designation"
   },
   {
    "fieldname": "section_break_pkds",
@@ -215,16 +223,56 @@
   {
    "fieldname": "section_break_zcts",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "account_number",
+   "fieldtype": "Data",
+   "label": "Account Number"
+  },
+  {
+   "fieldname": "section_break_btvq",
+   "fieldtype": "Section Break",
+   "hidden": 1
+  },
+  {
+   "fieldname": "column_break_cpgo",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "qr_code",
+   "fieldtype": "Attach Image",
+   "label": "QR Code"
+  },
+  {
+   "fieldname": "section_break_reqm",
+   "fieldtype": "Section Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "payment_status",
+   "fieldtype": "Data",
+   "label": "Payment Status",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_lkjj",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "captcha_html_wrapper",
+   "fieldtype": "HTML",
+   "label": "Captcha"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-03-19 15:54:28.562253",
+ "modified": "2026-04-26 10:29:54.024090",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "Hall Booking",
+ "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [
   {

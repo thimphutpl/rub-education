@@ -1,0 +1,26 @@
+{
+ "content": null,
+ "creation": "2026-04-21 10:54:31.822303",
+ "docstatus": 0,
+ "doctype": "Page",
+ "idx": 0,
+ "modified": "2026-04-21 11:10:19.109414",
+ "modified_by": "Administrator",
+ "module": "Examination",
+ "name": "examtimetable-report",
+ "owner": "Administrator",
+ "page_name": "examtimetable-report",
+ "roles": [
+  {
+   "role": "Student"
+  },
+  {
+   "role": "System Manager"
+  }
+ ],
+ "script": null,
+ "standard": "Yes",
+ "style": null,
+ "system_page": 0,
+ "title": "Exam Timetable Report"
+}

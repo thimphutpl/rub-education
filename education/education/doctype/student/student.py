@@ -9,6 +9,12 @@ from frappe.model.document import Document
 from frappe.utils import getdate, today
 from erpnext import get_default_currency
 from frappe.utils.nestedset import get_root_of
+from frappe.permissions import (
+	add_user_permission,
+	get_doc_permissions,
+	has_permission,
+	remove_user_permission,
+)
 
 from education.education.utils import check_content_completion, check_quiz_completion
 
@@ -55,6 +61,29 @@ class Student(Document):
 				.format(self.name, self.status),
 				alert=True
 			)
+		if self.user and self.status:
+			self.update_user_permissions()
+
+	def update_user_permissions(self):
+		if not self.create_user_permission:
+			return
+		if not has_permission("User Permission", ptype="write", raise_exception=False):
+			return
+
+		student_user_permission_exists = frappe.db.exists(
+			"User Permission", {"allow": "Student", "for_value": self.name, "user": self.user}
+		)
+		disable_user=frappe.db.exists(
+			"User",{"name":self.user,"enabled":0}
+		)
+		if disable_user:
+			return
+
+		if student_user_permission_exists:
+			return
+
+		add_user_permission("Student", self.name, self.user)
+		add_user_permission("Company", self.company, self.user)
 
 	def validate_identification(self):
 		if self.identification_type == "CID":

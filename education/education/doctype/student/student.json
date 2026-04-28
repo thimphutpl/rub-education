@@ -20,6 +20,7 @@
   "year",
   "semester",
   "is_existing_student",
+  "create_user_permission",
   "old_student_id",
   "column_break_4",
   "naming_series",
@@ -32,6 +33,7 @@
   "status",
   "date_of_graudation",
   "hostel_status",
+  "academic_year",
   "section_break_7",
   "identification_type",
   "cid",
@@ -528,6 +530,19 @@
    "fieldtype": "Data",
    "label": "CID/Passport Number/Document Card",
    "reqd": 1
+  },
+  {
+   "fieldname": "academic_year",
+   "fieldtype": "Link",
+   "label": "Academic Year",
+   "options": "Fiscal Year"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.user",
+   "fieldname": "create_user_permission",
+   "fieldtype": "Check",
+   "label": "Create User Permission "
   }
  ],
  "image_field": "image",
@@ -568,7 +583,7 @@
    "link_fieldname": "student"
   }
  ],
- "modified": "2026-04-06 12:33:00.696604",
+ "modified": "2026-04-26 11:54:26.874358",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student",

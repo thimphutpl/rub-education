@@ -6,3 +6,11 @@
 
 // 	},
 // });
+
+// {
+//     "fetch_from": "program_leader.department",
+//     "fieldname": "department_of_pl",
+//     "fieldtype": "Data",
+//     "label": "Department of PL",
+//     "read_only": 1
+//    },

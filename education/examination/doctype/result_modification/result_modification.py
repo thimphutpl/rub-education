@@ -9,15 +9,85 @@ import json
 class ResultModification(Document):
 	def validate(self):
 		self.fetch_total_marks()
+		self.calculate_weightage_obtained()
 		self.calculate_marks()
 		self.check_remarks()
+		
+
+	def on_submit(self):
+		self.update_assessment_ledger()
+
+	def on_cancel(self):
+		self.update_assessment_ledger(cancelled=True)
+
+	def calculate_weightage_obtained(self):
+		for i in self.items:
+			i.new_weightage_obtained = (i.new_marks_obtained/i.total_marks)*i.assessment_weightage
+
+	def update_assessment_ledger(self, cancelled=False):
+		
+		for i in self.items:
+
+			if i.marks_obtained != i.new_marks_obtained:
+				if cancelled:
+					frappe.db.set_value(
+					"Assessment Ledger",
+					i.assessment_ledger,
+					{
+						"marks_obtained": i.marks_obtained or 0,
+						"weightage_achieved": i.weightage_achieved or 0
+					}
+				)
+				else:
+					frappe.db.set_value(
+						"Assessment Ledger",
+						i.assessment_ledger,
+						{
+							"marks_obtained": i.new_marks_obtained or 0,
+							"weightage_achieved": i.new_weightage_obtained or 0
+						}
+					)
 
 	def check_remarks(self):
 		# self.ca_status = if flt(self.ca/self.total_ca) >= 40 then "Pass" else "Fail"
+		pass_criteria = frappe.db.get_value(
+			"Pass Criteria",
+			{"college": self.college},
+			[
+				"ca_passing_citeria",
+				"se_passing_citeria",
+				"total_passing_citeria",
+				"failed_module"
+			],
+			as_dict=1
+			)
+		ca_pass_percentage = pass_criteria.get("ca_passing_citeria", 0) if pass_criteria else 0
+		se_pass_percentage = pass_criteria.get("se_passing_citeria", 0) if pass_criteria else 0
+		tl_pass_percentage = pass_criteria.get("total_passing_citeria", 0) if pass_criteria else 0
 		if self.total_ca and self.total_ca != 0:  # avoid division by zero
-			self.ca_status = "Pass" if (frappe.utils.flt(self.ca) / frappe.utils.flt(self.total_ca)) * 100 >= 40 else "Fail"
+			self.ca_status = "Pass" if (frappe.utils.flt(self.ca) / frappe.utils.flt(self.total_ca)) * 100 >= ca_pass_percentage else "Fail"
 		else:
 			self.ca_status = "Fail"
+
+		if self.total_se and self.total_se != 0:  # avoid division by zero
+			self.semester_exam_status = "Pass" if (frappe.utils.flt(self.semester_exam) / frappe.utils.flt(self.total_se)) * 100 >= se_pass_percentage else "Fail"
+		else:
+			self.semester_exam_status = "Fail"
+
+		self.overall = self.semester_exam + self.ca
+
+		self.overall_status = "Fail"
+
+		if self.ca_status == "Fail":
+			self.overall_status = "Fail"
+		elif self.semester_exam_status == "Fail":
+			self.overall_status = "Fail"
+		elif (
+			self.ca_status == "Pass" and 
+			self.semester_exam_status == "Pass" and 
+			self.overall >= tl_pass_percentage
+		):
+			self.overall_status = "Pass"
 
 	def fetch_total_marks(self):
 		# Total Continuous Assessment
@@ -67,10 +137,14 @@ class ResultModification(Document):
 
 		for item in self.items:
 			marks = item.new_marks_obtained or 0  # handles None
+			weightage = item.assessment_weightage or 0
+			total_marks = item.total_marks or 0
 			if item.assessment_component_type in ['Continuous Assessment']:
-				ca_total += marks
+				# ca_total += ((marks/total_marks) * (weightage))
+				ca_total += item.new_weightage_obtained
 			elif item.assessment_component_type == 'Semester Exam':
-				sem_total += marks
+				# sem_total += ((marks/total_marks) * (weightage))
+				sem_total += item.new_weightage_obtained
 
 		self.ca = ca_total
 		self.semester_exam = sem_total
@@ -102,6 +176,7 @@ def get_students(doc):
 		al.marks_obtained,
 		al.assessment_weightage,
 		al.weightage_achieved,
+		al.assessment_component,
 		ac.assessment_component_type
 		FROM `tabAssessment Ledger` al
 		INNER JOIN `tabAssessment Component` ac 

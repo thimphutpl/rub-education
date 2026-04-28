@@ -6,23 +6,24 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "exam_type",
-  "assessment_component",
+  "module_enrolment_key",
+  "academic_term",
+  "academic_year",
+  "programme",
+  "semester",
   "column_break_xvsj",
   "posting_date",
+  "college",
   "module",
-  "section_break_ptbh",
-  "academic_year",
-  "semester",
-  "total_marks",
-  "passing_marks",
-  "programme",
-  "examination_registration",
-  "column_break_rdat",
-  "academic_term",
   "tutor",
   "tutor_name",
-  "college",
+  "section_break_ptbh",
+  "exam_type",
+  "total_marks",
+  "passing_marks",
+  "examination_registration",
+  "column_break_rdat",
+  "assessment_component",
   "weightage",
   "get_students",
   "section_break_jygm",
@@ -57,7 +58,7 @@
    "fieldtype": "Column Break"
   },
   {
-   "fetch_from": "examination_registration.module",
+   "fetch_from": "module_enrolment_key.module",
    "fieldname": "module",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -91,15 +92,16 @@
    "reqd": 1
   },
   {
-   "fetch_from": "examination_registration.academic_year",
+   "fetch_from": "module_enrolment_key.academic_year",
    "fieldname": "academic_year",
    "fieldtype": "Link",
    "label": "Academic Year",
    "options": "Academic Year",
+   "read_only": 1,
    "reqd": 1
   },
   {
-   "fetch_from": "examination_registration.academic_term",
+   "fetch_from": "module_enrolment_key.academic_term",
    "fieldname": "academic_term",
    "fieldtype": "Link",
    "label": "Academic Term",
@@ -128,17 +130,19 @@
    "options": "Exam Marks"
   },
   {
-   "fetch_from": "examination_registration.company",
+   "fetch_from": "module_enrolment_key.college",
    "fieldname": "college",
    "fieldtype": "Link",
    "label": "College",
-   "options": "Company"
+   "options": "Company",
+   "reqd": 1
   },
   {
    "fetch_from": "tutor.employee_name",
    "fieldname": "tutor_name",
    "fieldtype": "Data",
-   "label": "Tutor Name"
+   "label": "Tutor Name",
+   "read_only": 1
   },
   {
    "fieldname": "semester",
@@ -162,6 +166,7 @@
    "reqd": 1
   },
   {
+   "fetch_from": "module_enrolment_key.programme",
    "fieldname": "programme",
    "fieldtype": "Link",
    "label": "Programme",
@@ -173,13 +178,20 @@
    "fieldtype": "Data",
    "hidden": 1,
    "label": "Weightage"
+  },
+  {
+   "fieldname": "module_enrolment_key",
+   "fieldtype": "Link",
+   "label": "Module Enrolment Key",
+   "options": "Module Enrolment Key",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-03 10:36:06.000568",
+ "modified": "2026-04-27 10:22:56.875537",
  "modified_by": "Administrator",
  "module": "Examination",
  "name": "Examination Marks Entry",

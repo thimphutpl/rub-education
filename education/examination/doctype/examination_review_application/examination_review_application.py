@@ -39,7 +39,6 @@ class ExaminationReviewApplication(Document):
 				"Examination Review Application",
 				{
 					"student": self.student,
-					"assessment_component": self.assessment_component,
 					"module": self.module,
 					"exam_review_type": "Exam Re-Assessment",
 					"docstatus": 1

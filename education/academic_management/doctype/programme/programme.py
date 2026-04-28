@@ -10,3 +10,10 @@ class Programme(Document):
 	def validate(self):
 		# self.validate_assessment()
 		pass
+
+	def autoname(self):
+		year = str(self.from_date).split("-")[0]
+		# from erpnext.accounts.utils import get_autoname_with_number
+		from frappe.model.naming import make_autoname
+
+		self.name = self.programme_name+" - "+str(year)

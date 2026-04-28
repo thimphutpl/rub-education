@@ -6,11 +6,13 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "section_break_rpdp",
   "amended_from",
+  "company",
+  "section_break_kapi",
   "venue",
   "posting_date",
   "column_break_dxzo",
-  "company",
   "branch",
   "cost_center",
   "section_break_pjyx",
@@ -27,8 +29,14 @@
   "total_days",
   "column_break_vidg",
   "total_amount",
+  "reference_section",
+  "hall_booking",
   "payment_tab",
   "section_break_zlcy",
+  "account_number",
+  "column_break_iril",
+  "qr_code",
+  "section_break_ycut",
   "mode_of_payment",
   "section_break_pobd",
   "journal_no",
@@ -213,13 +221,51 @@
    "fieldtype": "Data",
    "label": "College",
    "read_only": 1
+  },
+  {
+   "fieldname": "section_break_kapi",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "account_number",
+   "fieldtype": "Data",
+   "label": "Account Number"
+  },
+  {
+   "fieldname": "section_break_rpdp",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_iril",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "qr_code",
+   "fieldtype": "Attach Image",
+   "label": "Qr Code"
+  },
+  {
+   "fieldname": "section_break_ycut",
+   "fieldtype": "Section Break"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "reference_section",
+   "fieldtype": "Section Break",
+   "label": "Reference"
+  },
+  {
+   "fieldname": "hall_booking",
+   "fieldtype": "Link",
+   "label": "Hall Booking",
+   "options": "Hall Booking"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-03-20 11:39:09.074812",
+ "modified": "2026-04-25 10:29:31.569668",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "Hall Payment",

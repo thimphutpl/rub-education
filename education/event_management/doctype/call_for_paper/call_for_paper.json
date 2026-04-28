@@ -9,9 +9,10 @@
   "details_tab",
   "section_break_obzu",
   "theme",
+  "section_break_qewp",
+  "conference",
   "section_break_yqgt",
   "amended_from",
-  "conference",
   "prefix",
   "column_break_rnzf",
   "first_name",
@@ -79,9 +80,9 @@
   {
    "fieldname": "conference",
    "fieldtype": "Link",
-   "hidden": 1,
    "label": "Conference",
-   "options": "Conference Announcement"
+   "options": "Conference Announcement",
+   "read_only": 1
   },
   {
    "fieldname": "email",
@@ -261,18 +262,21 @@
   {
    "fieldname": "theme",
    "fieldtype": "Data",
-   "label": "Theme"
+   "label": "Theme",
+   "read_only": 1
   },
   {
    "fieldname": "author_name",
    "fieldtype": "Table",
    "label": "Author(s) Name",
-   "options": "Author Name"
+   "options": "Author Name",
+   "read_only": 1
   },
   {
    "fieldname": "affiliation",
    "fieldtype": "Small Text",
-   "label": "Affiliation"
+   "label": "Affiliation",
+   "read_only": 1
   },
   {
    "fieldname": "give_marks",
@@ -288,7 +292,8 @@
    "fieldname": "brief_bio",
    "fieldtype": "Table",
    "label": "Brief Bio of the author(s)",
-   "options": "Author Details"
+   "options": "Author Details",
+   "read_only": 1
   },
   {
    "fieldname": "abstract_tab",
@@ -299,7 +304,8 @@
    "fieldname": "master_evaluation_criteria_call_for_paper",
    "fieldtype": "Table",
    "label": "Evaluation Criteria",
-   "options": "Evaluation Master Criteria For Call For Paper"
+   "options": "Evaluation Master Criteria For Call For Paper",
+   "read_only": 1
   },
   {
    "fieldname": "section_break_lhnd",
@@ -312,7 +318,8 @@
   {
    "fieldname": "total_mark_submitted",
    "fieldtype": "Int",
-   "label": "Total Mark Submitted"
+   "label": "Total Mark Submitted",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_xhky",
@@ -321,31 +328,37 @@
   {
    "fieldname": "waiting_for_review",
    "fieldtype": "Int",
-   "label": "Waiting For Review"
+   "label": "Waiting For Review",
+   "read_only": 1
   },
   {
    "fieldname": "total_mark",
    "fieldtype": "Float",
    "label": "Total Mark",
-   "precision": "2"
+   "precision": "2",
+   "read_only": 1
   },
   {
    "fieldname": "total_panel_member",
    "fieldtype": "Int",
-   "label": "Total Panel Member"
+   "label": "Total Panel Member",
+   "read_only": 1
   },
   {
-   "depends_on": "eval: !frappe.user_roles.includes(\"Panel Member\")",
    "fieldname": "details_tab",
    "fieldtype": "Tab Break",
    "label": "Details"
+  },
+  {
+   "fieldname": "section_break_qewp",
+   "fieldtype": "Section Break"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-14 15:14:05.244091",
+ "modified": "2026-04-26 13:32:37.734594",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "Call For Paper",

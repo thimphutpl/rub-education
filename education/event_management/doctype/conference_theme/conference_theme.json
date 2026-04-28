@@ -7,6 +7,8 @@
  "engine": "InnoDB",
  "field_order": [
   "theme",
+  "section_break_ihig",
+  "company",
   "panel_member_section",
   "panel_member"
  ],
@@ -14,7 +16,9 @@
   {
    "fieldname": "theme",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Theme",
+   "reqd": 1,
    "unique": 1
   },
   {
@@ -27,12 +31,24 @@
    "fieldtype": "Table",
    "label": "Panel Member",
    "options": "Panel Member"
+  },
+  {
+   "fieldname": "section_break_ihig",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "College",
+   "options": "Company",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-02-07 13:02:24.940077",
+ "modified": "2026-04-25 16:35:52.278162",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "Conference Theme",

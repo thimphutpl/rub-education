@@ -10,6 +10,7 @@ class HallPayment(Document):
 	def on_submit(self):
 		self.update_general_ledger()
 		self.post_journal_entry()
+		self.update_hall_booking_payment_status() 
 	def update_general_ledger(self):
 		gl_entries = []
 		default_bank_account = frappe.db.get_value("Company", self.company, "default_bank_account")
@@ -74,4 +75,30 @@ class HallPayment(Document):
 			})
 			
 		je.save()
-		frappe.db.commit()		
+		frappe.db.commit()	
+
+	# def update_hall_booking_payment_status(self):
+	# 	if self.hall_booking:
+	# 		hall_booking = frappe.get_doc("Hall Booking", self.hall_booking)
+	# 		hall_payemnt = frappe.ge_doc("Hall Payment",self.name)
+	# 		hall_payemnt.workflow_state="Payment Completed"
+	# 		hall_booking.workflow_state= "Payment Completed"
+	# 		hall_booking.flags.ignore_permissions = True
+	# 		hall_booking.save()
+	# 		frappe.db.commit()
+	# 		frappe.msgprint(
+	# 			f"Hall Booking {self.hall_booking} payment status updated to 'Completed'",
+	# 			alert=True
+	# 		)	
+	def update_hall_booking_payment_status(self):
+		if not self.hall_booking:
+			return
+		
+		if not frappe.db.exists("Hall Booking", self.hall_booking):
+			return
+		
+		frappe.db.set_value("Hall Booking", self.hall_booking, "workflow_state", "Payment Completed")
+		frappe.db.set_value("Hall Payment", self.name, "workflow_state", "Payment Completed")
+		frappe.db.commit()
+		
+		frappe.msgprint(f"✅ Booking {self.hall_booking} payment completed", alert=True)	

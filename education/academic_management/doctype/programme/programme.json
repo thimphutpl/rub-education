@@ -1,7 +1,6 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:programme_name",
  "creation": "2025-09-16 11:18:29.368530",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -38,8 +37,7 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Programme Name",
-   "reqd": 1,
-   "unique": 1
+   "reqd": 1
   },
   {
    "allow_on_submit": 1,
@@ -72,7 +70,7 @@
    "fieldtype": "Date",
    "in_list_view": 1,
    "label": "From Date",
-   "read_only": 1
+   "reqd": 1
   },
   {
    "fieldname": "column_break_znrv",
@@ -84,7 +82,7 @@
    "fieldtype": "Date",
    "in_list_view": 1,
    "label": "To Date",
-   "read_only": 1
+   "reqd": 1
   },
   {
    "fieldname": "sb_colleges",
@@ -96,7 +94,8 @@
    "fieldname": "colleges",
    "fieldtype": "Table",
    "label": "Colleges",
-   "options": "Colleges"
+   "options": "Colleges",
+   "reqd": 1
   },
   {
    "fieldname": "section_break_emfb",
@@ -176,6 +175,7 @@
    "allow_on_submit": 1,
    "fieldname": "programme_master",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Programme Master",
    "options": "Programme Master",
    "read_only": 1
@@ -191,6 +191,7 @@
   {
    "fieldname": "programme_name_display",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "Programme Name(For Display)"
   }
  ],
@@ -198,11 +199,10 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-03-05 02:31:56.462876",
+ "modified": "2026-04-23 15:09:49.040169",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Programme",
- "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {
@@ -242,9 +242,10 @@
   }
  ],
  "row_format": "Dynamic",
+ "show_title_field_in_link": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
- "title_field": "programme_name_display",
+ "title_field": "programme_name",
  "track_changes": 1
 }

@@ -8,11 +8,13 @@
  "field_order": [
   "programme",
   "module",
+  "assessment_component",
   "assessment_component_type",
   "total_marks",
   "passing_marks",
   "marks_obtained",
   "new_marks_obtained",
+  "new_weightage_obtained",
   "column_break_exsz",
   "assessment_ledger",
   "assessment_weightage",
@@ -44,6 +46,7 @@
    "read_only": 1
   },
   {
+   "columns": 1,
    "fieldname": "passing_marks",
    "fieldtype": "Float",
    "in_list_view": 1,
@@ -51,6 +54,7 @@
    "read_only": 1
   },
   {
+   "columns": 1,
    "fieldname": "marks_obtained",
    "fieldtype": "Float",
    "in_list_view": 1,
@@ -75,6 +79,7 @@
    "label": "Previous Weightage Achieved"
   },
   {
+   "columns": 1,
    "fieldname": "new_marks_obtained",
    "fieldtype": "Float",
    "in_list_view": 1,
@@ -86,13 +91,25 @@
    "in_list_view": 1,
    "label": "Assessment Component Type",
    "options": "Assessment Component Type"
+  },
+  {
+   "fieldname": "assessment_component",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Assessment Component",
+   "options": "Assessment Component"
+  },
+  {
+   "fieldname": "new_weightage_obtained",
+   "fieldtype": "Float",
+   "label": "New Weightage Obtained"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-04-03 01:38:14.517010",
+ "modified": "2026-04-20 12:04:01.038133",
  "modified_by": "Administrator",
  "module": "Examination",
  "name": "Result Modification Item",

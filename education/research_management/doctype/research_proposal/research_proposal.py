@@ -230,6 +230,10 @@ def make_research_registration(source_name, target_doc=None):
                 "field_map": {
                     "posting_date": "posting_date",
                     "grant_type": "grant_type",
+                    "topic_of_the_research_call":"title_of_the_project",
+                    "grant_amount":"funding_amount",
+                    "posting_date":"project_start_date",
+                    "research_submission_deadline":"project_end_date"
                 },
             }
         },

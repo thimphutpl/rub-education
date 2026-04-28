@@ -43,6 +43,7 @@ frappe.ui.form.on("Result Modification", {
                         row.marks_obtained = data.marks_obtained;
                         row.assessment_weightage = data.assessment_weightage;
                         row.weightage_achieved = data.weightage_achieved;
+                        row.assessment_component = data.assessment_component;
         
                         // Optional (if you include in backend)
                         row.student = data.student;

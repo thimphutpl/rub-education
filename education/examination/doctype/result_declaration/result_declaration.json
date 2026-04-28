@@ -7,6 +7,7 @@
  "engine": "InnoDB",
  "field_order": [
   "section_break_sb5e",
+  "exam_type",
   "college",
   "academic_term",
   "semester",
@@ -17,7 +18,9 @@
   "get_data",
   "section_break_yzsi",
   "result_html",
-  "amended_from"
+  "amended_from",
+  "section_break_erfg",
+  "items"
  ],
  "fields": [
   {
@@ -38,7 +41,8 @@
    "fieldname": "college",
    "fieldtype": "Link",
    "label": "College",
-   "options": "Company"
+   "options": "Company",
+   "reqd": 1
   },
   {
    "fieldname": "column_break_segp",
@@ -62,7 +66,8 @@
    "fieldname": "programme",
    "fieldtype": "Link",
    "label": "Programme",
-   "options": "Programme"
+   "options": "Programme",
+   "reqd": 1
   },
   {
    "fieldname": "student_section",
@@ -87,13 +92,30 @@
    "fieldtype": "Link",
    "label": "Academic Year",
    "options": "Academic Year"
+  },
+  {
+   "fieldname": "section_break_erfg",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "options": "Result Declaration Item"
+  },
+  {
+   "fieldname": "exam_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Exam Type",
+   "options": "\nRegular\nReview",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-12 23:55:58.316905",
+ "modified": "2026-04-23 14:09:03.458374",
  "modified_by": "Administrator",
  "module": "Examination",
  "name": "Result Declaration",

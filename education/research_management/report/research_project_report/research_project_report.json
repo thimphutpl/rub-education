@@ -7,11 +7,11 @@
  "docstatus": 0,
  "doctype": "Report",
  "filters": [],
- "idx": 0,
+ "idx": 2,
  "is_standard": "Yes",
  "letter_head": "rub_defaut",
  "letterhead": null,
- "modified": "2026-03-06 04:44:31.481311",
+ "modified": "2026-04-27 12:50:46.443354",
  "modified_by": "Administrator",
  "module": "Research Management",
  "name": "Research Project Report",
@@ -23,6 +23,9 @@
  "roles": [
   {
    "role": "System Manager"
+  },
+  {
+   "role": "Research User"
   }
  ],
  "timeout": 0

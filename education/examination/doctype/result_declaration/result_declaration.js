@@ -2,9 +2,9 @@ frappe.ui.form.on("Result Declaration", {
 
     refresh: function(frm) {
         // Optional: auto load on refresh if fields are filled
-        if (all_fields_filled(frm)) {
-            load_results(frm);
-        }
+        // if (all_fields_filled(frm)) {
+        //     load_results(frm);
+        // }
     },
 
     get_data: function(frm) {
@@ -12,7 +12,8 @@ frappe.ui.form.on("Result Declaration", {
             frappe.msgprint("Please select all fields");
             return;
         }
-        load_results(frm);
+        // load_results(frm);
+        load_table(frm);
     }
 });
 
@@ -34,7 +35,8 @@ function load_results(frm) {
             college: frm.doc.college,
             programme: frm.doc.programme,
             academic_term: frm.doc.academic_term,
-            student_section: frm.doc.student_section
+            student_section: frm.doc.student_section,
+            exam_type: frm.doc.exam_type
         },
         callback: function(r) {
 
@@ -44,6 +46,80 @@ function load_results(frm) {
             }
 
             render_table(frm, r.message);
+        }
+    });
+}
+
+function load_table(frm) {
+
+    frappe.call({
+        method: "education.examination.doctype.result_declaration.result_declaration.get_results",
+        args: {
+            college: frm.doc.college,
+            programme: frm.doc.programme,
+            academic_term: frm.doc.academic_term,
+            student_section: frm.doc.student_section,
+            exam_type: frm.doc.exam_type
+        },
+        callback: function(r) {
+            if (!r.message) return;
+
+            let data = r.message;
+            console.log(data)
+
+            frm.clear_table("items");
+
+            let modules = frm.doc.modules || []; // or keep your old source
+            let students = Object.values(data);  // ✅ FIX HERE
+
+            students.forEach(s => {
+
+                // ❗ skip empty students
+                if (!s.results || Object.keys(s.results).length === 0) {
+                    return;
+                }
+
+                let first_row = true;
+
+                for (let module_name in s.results) {
+
+                    let result = s.results[module_name];
+
+                    let ca = result.ca || 0;
+                    let se = result.se || 0;
+                    let ca_pass = result.ca_pass
+                    let se_pass = result.se_pass
+                    let tl_pass = result.tl_pass
+                    let exam_type = result.se_exam_type;
+                    let se_assessment_ledger = result.se_assessment_ledger
+
+                    if (!ca && !se) continue;
+
+                    let total = ca + se;
+
+                    let row = frm.add_child("items");
+
+                    if (first_row) {
+                        row.student_name = s.student_name || "";
+                        first_row = false;
+                    } else {
+                        row.student_name = "";
+                    }
+
+                    row.student = s.student || null;
+                    row.module = module_name;
+                    row.ca = ca;
+                    row.ca_passed = ca_pass;
+                    row.se = se;
+                    row.se_passed = se_pass;
+                    row.tl_passed = tl_pass;
+                    row.review_type= exam_type;
+                    row.total_achieved = total;
+                    row.assessment_ledger= se_assessment_ledger
+                }
+            });
+
+            frm.refresh_field("items");
         }
     });
 }

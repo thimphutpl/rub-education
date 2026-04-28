@@ -17,8 +17,8 @@ class ResearchCenterReportingItems(Document):
 
 	# UPDATE EMPLOYEE
 	def update_employee_journals(self):
-		if not self.employee:
-			return
+		# if not self.employees:
+		# 	return
 
 		if self.sub_reporting_type == "Research Articles":	
 
@@ -41,6 +41,11 @@ class ResearchCenterReportingItems(Document):
 				emp_doc.save()
 
 		elif self.sub_reporting_type == "Journals":
+			employees = (
+				(self.first_author_employee or []) +
+				(self.second_author_employee or []) +
+				(self.third_author_employee or [])
+			)
 			for row in employees:
 				emp_doc = frappe.get_doc("Employee", row.employee)
 				emp_doc.append("journals", {
@@ -56,6 +61,11 @@ class ResearchCenterReportingItems(Document):
 				emp_doc.save()
 
 		elif self.sub_reporting_type == "Conference Seminar Paper":
+			employees = (
+				(self.first_author_employee or []) +
+				(self.second_author_employee or []) +
+				(self.third_author_employee or [])
+			)
 			for row in employees:
 				emp_doc = frappe.get_doc("Employee", row.employee)
 				emp_doc.append("conference_seminar_paper", {
@@ -71,6 +81,11 @@ class ResearchCenterReportingItems(Document):
 				emp_doc.save()
 
 		elif self.sub_reporting_type == "Book Chapters":
+			employees = (
+				(self.first_author_employee or []) +
+				(self.second_author_employee or []) +
+				(self.third_author_employee or [])
+			)
 			for row in employees:
 				emp_doc = frappe.get_doc("Employee", row.employee)
 				emp_doc.append("conference_seminar_paper", {
@@ -86,6 +101,11 @@ class ResearchCenterReportingItems(Document):
 				emp_doc.save()	
 
 		elif self.sub_reporting_type == "Training and workshop":
+			employees = (
+				(self.first_author_employee or []) +
+				(self.second_author_employee or []) +
+				(self.third_author_employee or [])
+			)
 			for row in employees:
 				emp_doc = frappe.get_doc("Employee", row.employee)
 				emp_doc.append("conference_seminar_paper", {
@@ -103,6 +123,11 @@ class ResearchCenterReportingItems(Document):
 				emp_doc.save()			
 
 		else:	
+			employees = (
+				(self.first_author_employee or []) +
+				(self.second_author_employee or []) +
+				(self.third_author_employee or [])
+			)
 			for row in employees:
 				emp_doc = frappe.get_doc("Employee", row.employee)
 				emp_doc.append("journals", {
@@ -122,8 +147,8 @@ class ResearchCenterReportingItems(Document):
 
 	# UPDATE STUDENT
 	def update_student_journals(self):
-		if not self.student:
-			return
+		# if not self.student:
+		# 	return
 
 		if self.sub_reporting_type == "Research Articles":	
 
@@ -146,6 +171,11 @@ class ResearchCenterReportingItems(Document):
 				stu_doc.save()
 
 		elif self.sub_reporting_type == "Journals":
+			students = (
+				(self.first_author_student or []) +
+				(self.second_author_student or []) +
+				(self.third_author_student or [])
+			)
 			for row in students:
 				stu_doc = frappe.get_doc("Student", row.student)
 				stu_doc.append("journals", {
@@ -161,6 +191,11 @@ class ResearchCenterReportingItems(Document):
 				stu_doc.save()
 
 		elif self.sub_reporting_type == "Conference Seminar Paper":
+			students = (
+				(self.first_author_student or []) +
+				(self.second_author_student or []) +
+				(self.third_author_student or [])
+			)
 			for row in students:
 				stu_doc = frappe.get_doc("Student", row.student)
 				stu_doc.append("conference_seminar_paper", {
@@ -176,6 +211,11 @@ class ResearchCenterReportingItems(Document):
 				stu_doc.save()
 
 		elif self.sub_reporting_type == "Book Chapters":
+			students = (
+				(self.first_author_student or []) +
+				(self.second_author_student or []) +
+				(self.third_author_student or [])
+			)
 			for row in students:
 				stu_doc = frappe.get_doc("Student", row.student)
 				stu_doc.append("conference_seminar_paper", {
@@ -191,6 +231,11 @@ class ResearchCenterReportingItems(Document):
 				stu_doc.save()	
 
 		elif self.sub_reporting_type == "Training and workshop":
+			students = (
+				(self.first_author_student or []) +
+				(self.second_author_student or []) +
+				(self.third_author_student or [])
+			)
 			for row in students:
 				stu_doc = frappe.get_doc("Student", row.student)
 				stu_doc.append("conference_seminar_paper", {
@@ -208,6 +253,11 @@ class ResearchCenterReportingItems(Document):
 				stu_doc.save()			
 
 		else:	
+			students = (
+				(self.first_author_student or []) +
+				(self.second_author_student or []) +
+				(self.third_author_student or [])
+			)
 			for row in students:
 				stu_doc = frappe.get_doc("Student", row.student)
 				stu_doc.append("journals", {

@@ -92,6 +92,7 @@
   {
    "fieldname": "program_leader",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Program Leader",
    "options": "Employee"
   },
@@ -103,21 +104,15 @@
    "read_only": 1
   },
   {
-   "fetch_from": "program_leader.department",
-   "fieldname": "department_of_pl",
-   "fieldtype": "Data",
-   "label": "Department of PL",
-   "read_only": 1
-  },
-  {
    "fieldname": "approver_details_section",
    "fieldtype": "Section Break",
    "label": "Approver Details"
   },
   {
    "fieldname": "approved_by_pl",
-   "fieldtype": "Data",
-   "label": "Approved by PL "
+   "fieldtype": "Link",
+   "label": "Approved by PL ",
+   "options": "Employee"
   },
   {
    "fieldname": "column_break_zjke",
@@ -125,8 +120,9 @@
   },
   {
    "fieldname": "approved_by_dril",
-   "fieldtype": "Data",
-   "label": "Approved by DRIL"
+   "fieldtype": "Link",
+   "label": "Approved by DRIL",
+   "options": "Employee"
   },
   {
    "fieldname": "attachments_section",
@@ -151,13 +147,20 @@
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
+  },
+  {
+   "fetch_from": "program_leader.department",
+   "fieldname": "department_of_pl",
+   "fieldtype": "Data",
+   "label": "Department of PL",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-10-20 15:22:49.042351",
+ "modified": "2026-04-23 14:52:53.278769",
  "modified_by": "Administrator",
  "module": "Research Management",
  "name": "Research Registration",

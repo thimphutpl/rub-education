@@ -131,7 +131,7 @@ def get_results(student):
 
 
 @frappe.whitelist()
-def apply_review(student, module, semester,request_type):
+def apply_review(student, module, semester,request_type,journal_number):
     # frappe.throw('hi')
     # frappe.throw((academic_term))
     
@@ -140,6 +140,7 @@ def apply_review(student, module, semester,request_type):
     doc.student = student
     doc.module = module
     doc.semester = semester
+    doc.journal_entry = journal_number
 
     # doc.student_name = 'kinley Zangmo'
     # doc.college ='Gedu College of Business Studies'
@@ -174,3 +175,71 @@ def apply_review(student, module, semester,request_type):
     frappe.db.commit()
 
 
+@frappe.whitelist()
+def get_ca(student, academic_term, semester, module):
+
+    # ✅ Get college from student
+    college = frappe.db.get_value("Student", student, "company")
+
+    # ✅ Validations
+    if not module:
+        frappe.throw("Please select Module")
+    if not academic_term:
+        frappe.throw("Please select Academic Term")
+    if not semester:
+        frappe.throw("Please select Semester")
+    if not student:
+        frappe.throw("Please select Student")
+
+    data = frappe.db.sql(
+        """
+        SELECT 
+            al.name,
+            al.module,
+            al.programme,
+            al.total_marks,
+            al.passing_marks,
+            al.marks_obtained,
+            al.assessment_weightage,
+            al.weightage_achieved,
+            al.assessment_component,
+            ac.assessment_component_type
+        FROM `tabAssessment Ledger` al
+        INNER JOIN `tabAssessment Component` ac 
+            ON al.assessment_component = ac.name
+        WHERE 
+            al.college = %(college)s
+            AND al.student = %(student)s
+            AND al.academic_term = %(academic_term)s
+            AND al.semester = %(semester)s
+            AND al.module = %(module)s
+            AND al.is_cancelled = 0
+            AND ac.assessment_component_type = 'Continuous Assessment'
+        ORDER BY ac.assessment_component_type
+        """,
+        {
+            "college": college,
+            "student": student,
+            "academic_term": academic_term,
+            "semester": semester,
+            "module": module
+        },
+        as_dict=True
+    )
+   
+
+    return data
+
+
+@frappe.whitelist()
+def get_academic_settings():
+    """Fetch Academic Settings (Single DocType) safely"""
+    settings = frappe.get_single("Academic Settings")
+
+    return {
+        "attendance_threshold": settings.attendance_threshold,
+        "re_assessment": settings.re_assessment,
+        "re_check": settings.re_check,
+        "re_evaluation": settings.re_evaluation,
+        "pass_criteria": settings.table_qhlg  # child table
+    }

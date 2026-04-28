@@ -1,13 +1,18 @@
 from frappe import _
 
-
 def get_data():
-	return {
-		"non_standard_fieldnames": {
-			"Journal Entry": "reference_name",
-		},
-	
-		"transactions": [
-			{"label": _("Payment"), "items": [ "Journal Entry"]},
-		],
-	}
+    return {
+        "fieldname": "name",
+        "non_standard_fieldnames": {
+            "Journal Entry": "reference_name",
+    
+        },
+
+        "transactions": [
+            {
+                "label": _("Journal Entry"),
+                "items": ["Journal Entry"]
+            }
+
+        ],
+    }

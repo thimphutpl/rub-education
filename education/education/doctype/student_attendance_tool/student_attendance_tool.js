@@ -190,7 +190,7 @@ education.StudentsEditor = class StudentsEditor {
     // make html grid of students
     let student_html = ''
     for (let student of students) {
-      student_html += `<div class="col-sm-3">
+      student_html += `<div class="col-md-4">
 					<div class="checkbox">
 						<label>
 							<input
@@ -200,7 +200,7 @@ education.StudentsEditor = class StudentsEditor {
 								data-student-name="${student.student_name}"
 								class="students-check"
 								${student.status === 'Present' ? 'checked' : ''}>
-							${student.group_roll_number} - ${student.student_name}
+							${student.group_roll_number} - ${student.student_name} (${student.student})
 						</label>
 					</div>
 				</div>`

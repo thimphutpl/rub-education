@@ -16,7 +16,7 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Programme",
-   "options": "Programme Master"
+   "options": "Programme"
   },
   {
    "fieldname": "year",
@@ -37,7 +37,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-02-14 15:39:03.108277",
+ "modified": "2026-04-23 22:38:39.388629",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "Student Filter",

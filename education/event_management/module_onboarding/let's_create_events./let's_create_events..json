@@ -1,0 +1,26 @@
+{
+ "allow_roles": [
+  {
+   "role": "All"
+  }
+ ],
+ "creation": "2026-04-27 21:56:03.276000",
+ "docstatus": 0,
+ "doctype": "Module Onboarding",
+ "documentation_url": "https://docs.erpnext.com/docs/user/manual/en/website",
+ "idx": 0,
+ "is_complete": 0,
+ "modified": "2026-04-27 21:58:38.389543",
+ "modified_by": "Administrator",
+ "module": "Event Management",
+ "name": "Let's Create Events.",
+ "owner": "Administrator",
+ "steps": [
+  {
+   "step": "Event Type"
+  }
+ ],
+ "subtitle": "Event Type,Events",
+ "success_message": "You're ready to start your journey with ERPNext",
+ "title": "Let's begin your journey with ERPNext"
+}

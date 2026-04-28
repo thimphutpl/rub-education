@@ -201,8 +201,7 @@ def get_books_chapter(research_center_name, posting_date):
             "book_chapter_title",
             "book_title",
             "publishers",
-            "website_link_books",
-            "author_employee"
+            "website_link_books"
         ]
     )
 

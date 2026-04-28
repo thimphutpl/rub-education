@@ -5,14 +5,18 @@ import frappe
 from frappe.model.document import Document
 from erpnext.custom_workflow import validate_workflow_states, notify_workflow_states
 class Events(Document):
-	# def validate(self):
-	# 	validate_workflow_states(self)
-	# 	if self.workflow_state != "Approved":
-	# 		notify_workflow_states(self)
-	# def on_submit(self):
-	# 	notify_workflow_states(self)
-	# def on_cancel(self):
-	# 	notify_workflow_states(self)
+	def validate(self):
+		# validate_workflow_states(self)
+		# notify_workflow_states(self)
+		self.validate_from_to_dates()
+	def on_submit(self):
+		pass
+		# notify_workflow_states(self)
+	def on_cancel(self):
+		notify_workflow_states(self)
+	def validate_from_to_dates(self):
+		if self.start_date > self.end_date:
+			frappe.throw("From Date cannot be after To Date")
 	@frappe.whitelist()
 	def has_attendance(self) -> dict[str, bool]:
 		ea = frappe.qb.DocType("Event Attendance")
@@ -64,35 +68,84 @@ def get_student_college(user=None):
 	if student:
 		return student[0].company
 	return None
+# @frappe.whitelist()
+# def get_students_by_filters(filters):
+
+# 	import json
+# 	filters = json.loads(filters) if isinstance(filters, str) else filters
+
+# 	all_students = []
+
+# 	for f in filters:
+# 		# Skip rows without complete filter
+# 		if not (f.get("programme") and f.get("year") and f.get("semester")):
+# 			continue
+
+# 		# Ensure programme is always a list
+# 		programme_list = f["programme"] if isinstance(f["programme"], list) else [f["programme"]]
+# 		students = frappe.get_all(
+# 			"Student",
+# 			filters={
+# 				"programme": ["in", programme_list],
+# 				"year": f["year"],
+# 				"semester": f["semester"],
+# 				"status": "Active"
+# 			},
+# 			fields=["name", "student_email_id", "first_name", "last_name"]
+# 		)
+
+# 		all_students.extend(students)
+
+# 	return all_students
 @frappe.whitelist()
-def get_students_by_filters(filters):
+def get_students_by_filters(filters=None, company=None):
 	import json
-	filters = json.loads(filters) if isinstance(filters, str) else filters
+
+	if filters:
+		filters = json.loads(filters) if isinstance(filters, str) else filters
+	else:
+		filters = []
+
+	# ✅ Base filter
+	base_filters = {
+		"status": "Active"
+	}
+
+	if company:
+		base_filters["company"] = company
+
+	# ✅ No filters → return all students of that company
+	if not filters:
+		return frappe.get_all(
+			"Student",
+			filters=base_filters,
+			fields=["name", "student_email_id", "first_name", "last_name"]
+		)
 
 	all_students = []
 
 	for f in filters:
-		# Skip rows without complete filter
-		if not (f.get("programme") and f.get("year") and f.get("semester")):
-			continue
+		query_filters = base_filters.copy()
 
-		# Ensure programme is always a list
-		programme_list = f["programme"] if isinstance(f["programme"], list) else [f["programme"]]
+		if f.get("programme"):
+			programme_list = f["programme"] if isinstance(f["programme"], list) else [f["programme"]]
+			query_filters["programme"] = ["in", programme_list]
+
+		if f.get("year"):
+			query_filters["year"] = f["year"]
+
+		if f.get("semester"):
+			query_filters["semester"] = f["semester"]
+
 		students = frappe.get_all(
 			"Student",
-			filters={
-				"programme": ["in", programme_list],
-				"year": f["year"],
-				"semester": f["semester"],
-				"status": "Active"
-			},
+			filters=query_filters,
 			fields=["name", "student_email_id", "first_name", "last_name"]
 		)
 
 		all_students.extend(students)
 
 	return all_students
-
 @frappe.whitelist()
 def get_programmes_by_college(doctype, txt, searchfield, start, page_len, filters):
 	"""
@@ -169,7 +222,30 @@ def get_users_by_college(doctype, txt, filters=None, page_length=10, start=0):
 	)
 	users.extend(employees)
 
-	return users    	
+	return users   
+
+@frappe.whitelist()
+def get_employees_by_role_and_company(doctype, txt, searchfield, start, page_len, filters):
+    """Get employees who have users with Event Approval role"""
+    
+    company = filters.get('company')
+    role = filters.get('role', 'Event Approval')
+    
+    return frappe.db.sql("""
+        SELECT 
+            e.name,
+            e.employee_name,
+            e.user_id
+        FROM `tabEmployee` e
+        INNER JOIN `tabUser` u ON u.name = e.user_id
+        INNER JOIN `tabHas Role` hr ON hr.parent = u.name
+        WHERE e.company = %s
+            AND hr.role = %s
+            AND u.enabled = 1
+            AND (e.name LIKE %s OR e.employee_name LIKE %s OR e.user_id LIKE %s)
+        ORDER BY e.employee_name
+        LIMIT %s OFFSET %s
+    """, (company, role, f"%{txt}%", f"%{txt}%", f"%{txt}%", page_len, start))
 
 def get_permission_query_conditions(user):
 	if not user:
@@ -187,4 +263,3 @@ def get_permission_query_conditions(user):
 
 	return """(`tabEvents`.owner = '{0}')""".format(user)
 
-	

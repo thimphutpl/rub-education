@@ -18,7 +18,7 @@
  "list_columns": [],
  "login_required": 0,
  "max_attachment_size": 0,
- "modified": "2026-04-14 10:36:01.156494",
+ "modified": "2026-04-26 13:12:26.367790",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "call-for-paper",
@@ -32,32 +32,6 @@
  "web_form_fields": [
   {
    "allow_read_on_all_link_options": 0,
-   "fieldname": "section_break_obzu",
-   "fieldtype": "Section Break",
-   "hidden": 0,
-   "max_length": 0,
-   "max_value": 0,
-   "precision": "",
-   "read_only": 0,
-   "reqd": 0,
-   "show_in_filter": 0
-  },
-  {
-   "allow_read_on_all_link_options": 0,
-   "fieldname": "conference",
-   "fieldtype": "Link",
-   "hidden": 0,
-   "label": "Conference",
-   "max_length": 0,
-   "max_value": 0,
-   "options": "Conference Announcement",
-   "precision": "",
-   "read_only": 0,
-   "reqd": 0,
-   "show_in_filter": 0
-  },
-  {
-   "allow_read_on_all_link_options": 0,
    "fieldname": "theme",
    "fieldtype": "Data",
    "hidden": 0,
@@ -65,7 +39,21 @@
    "max_length": 0,
    "max_value": 0,
    "precision": "",
-   "read_only": 0,
+   "read_only": 1,
+   "reqd": 0,
+   "show_in_filter": 0
+  },
+  {
+   "allow_read_on_all_link_options": 0,
+   "fieldname": "conference",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Conference",
+   "max_length": 0,
+   "max_value": 0,
+   "options": "Conference Announcement",
+   "precision": "",
+   "read_only": 1,
    "reqd": 0,
    "show_in_filter": 0
   },
@@ -118,7 +106,7 @@
    "max_value": 0,
    "precision": "",
    "read_only": 0,
-   "reqd": 0,
+   "reqd": 1,
    "show_in_filter": 0
   },
   {
@@ -142,7 +130,7 @@
    "max_length": 0,
    "max_value": 0,
    "precision": "",
-   "read_only": 0,
+   "read_only": 1,
    "reqd": 0,
    "show_in_filter": 0
   },
@@ -194,7 +182,7 @@
    "options": "Country",
    "precision": "",
    "read_only": 0,
-   "reqd": 0,
+   "reqd": 1,
    "show_in_filter": 0
   },
   {
@@ -268,7 +256,7 @@
    "max_length": 0,
    "max_value": 0,
    "precision": "",
-   "read_only": 0,
+   "read_only": 1,
    "reqd": 0,
    "show_in_filter": 0
   },
@@ -293,7 +281,7 @@
    "max_length": 0,
    "max_value": 0,
    "precision": "",
-   "read_only": 0,
+   "read_only": 1,
    "reqd": 0,
    "show_in_filter": 0
   },
@@ -344,7 +332,7 @@
    "max_value": 0,
    "precision": "",
    "read_only": 0,
-   "reqd": 0,
+   "reqd": 1,
    "show_in_filter": 0
   },
   {
@@ -370,7 +358,7 @@
    "max_value": 0,
    "precision": "",
    "read_only": 0,
-   "reqd": 0,
+   "reqd": 1,
    "show_in_filter": 0
   },
   {
@@ -395,7 +383,7 @@
    "max_value": 0,
    "precision": "",
    "read_only": 0,
-   "reqd": 0,
+   "reqd": 1,
    "show_in_filter": 0
   },
   {
@@ -420,29 +408,15 @@
    "max_value": 0,
    "precision": "",
    "read_only": 0,
-   "reqd": 0,
+   "reqd": 1,
    "show_in_filter": 0
   },
   {
    "allow_read_on_all_link_options": 0,
-   "fieldname": "",
+   "fieldname": "abstract_tab",
    "fieldtype": "Page Break",
    "hidden": 0,
-   "label": "",
-   "max_length": 0,
-   "max_value": 0,
-   "options": "",
-   "precision": "",
-   "read_only": 0,
-   "reqd": 0,
-   "show_in_filter": 0
-  },
-  {
-   "allow_read_on_all_link_options": 0,
-   "fieldname": "abstract_details_section",
-   "fieldtype": "Section Break",
-   "hidden": 0,
-   "label": "Abstract Details",
+   "label": "Abstract",
    "max_length": 0,
    "max_value": 0,
    "precision": "",
@@ -479,21 +453,6 @@
   },
   {
    "allow_read_on_all_link_options": 0,
-   "description": "",
-   "fieldname": "brief_bio",
-   "fieldtype": "Table",
-   "hidden": 0,
-   "label": "Brief Bio of the author(s)",
-   "max_length": 0,
-   "max_value": 0,
-   "options": "Author Details",
-   "precision": "",
-   "read_only": 0,
-   "reqd": 0,
-   "show_in_filter": 0
-  },
-  {
-   "allow_read_on_all_link_options": 0,
    "fieldname": "affiliation",
    "fieldtype": "Small Text",
    "hidden": 0,
@@ -516,6 +475,18 @@
    "precision": "",
    "read_only": 0,
    "reqd": 1,
+   "show_in_filter": 0
+  },
+  {
+   "allow_read_on_all_link_options": 0,
+   "fieldtype": "HTML",
+   "hidden": 0,
+   "max_length": 0,
+   "max_value": 0,
+   "options": " <div id=\"recaptcha-container\"></div>",
+   "precision": "",
+   "read_only": 0,
+   "reqd": 0,
    "show_in_filter": 0
   }
  ]

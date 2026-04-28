@@ -82,6 +82,8 @@ class StudentSectionCreationTool(Document):
 
 	@frappe.whitelist()
 	def get_students(self, programme, college, batch=None):
+		if self.max_strength == 0:
+			frappe.throw("Max Strength cannot be 0.")
 		self.set("students", [])
 		if not (programme and college):
 			frappe.throw(_("Please select all the mandatory fields"))
@@ -99,6 +101,7 @@ class StudentSectionCreationTool(Document):
 			order_by="student_name",
 			fields=["name", "student_name"],
 		 )
+		# frappe.throw(str(students))
 		if not students or len(students) == 0:
 			frappe.throw("No student record for the selected filters.")
 		return students

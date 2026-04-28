@@ -14,7 +14,8 @@
   "academic_year",
   "passed",
   "ca_passed",
-  "se_passed"
+  "se_passed",
+  "tl_passed"
  ],
  "fields": [
   {
@@ -74,13 +75,19 @@
    "in_list_view": 1,
    "label": "Academic Year",
    "options": "Academic Year"
+  },
+  {
+   "default": "0",
+   "fieldname": "tl_passed",
+   "fieldtype": "Check",
+   "label": "TL Passed"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-04-13 00:32:49.661660",
+ "modified": "2026-04-26 13:33:28.424237",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Result Entry Item",

@@ -47,8 +47,9 @@
   {
    "fieldname": "module_type",
    "fieldtype": "Select",
+   "hidden": 1,
    "label": "Module Type",
-   "options": "Compulsory\nElective\nInternational Students"
+   "options": "\nCompulsory\nElective\nInternational Students"
   },
   {
    "fieldname": "module_credit",
@@ -114,7 +115,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-03-31 16:15:12.918592",
+ "modified": "2026-04-27 15:39:53.339100",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Module",

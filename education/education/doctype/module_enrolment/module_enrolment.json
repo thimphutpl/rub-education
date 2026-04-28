@@ -47,7 +47,8 @@
    "fetch_from": "student.student_name",
    "fieldname": "student_name",
    "fieldtype": "Data",
-   "label": "Student Name"
+   "label": "Student Name",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_uisg",
@@ -163,7 +164,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-01 12:32:46.330225",
+ "modified": "2026-04-27 14:36:45.049674",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Module Enrolment",

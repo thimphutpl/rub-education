@@ -22,6 +22,10 @@
    "width": "Half"
   },
   {
+   "chart": "Employees by Age",
+   "width": "Half"
+  },
+  {
    "chart": "Programme Count By College",
    "width": "Half"
   },
@@ -32,6 +36,14 @@
   {
    "chart": "Students by College",
    "width": "Half"
+  },
+  {
+   "chart": "Research Project",
+   "width": "Half"
+  },
+  {
+   "chart": "Research Dashboard",
+   "width": "Half"
   }
  ],
  "creation": "2026-04-22 16:45:56.717670",
@@ -41,7 +53,7 @@
  "idx": 0,
  "is_default": 0,
  "is_standard": 1,
- "modified": "2026-04-28 23:09:04.379579",
+ "modified": "2026-04-29 09:32:15.236124",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Management Dashboard",

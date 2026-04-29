@@ -11,18 +11,25 @@
  "dynamic_filters_json": "[]",
  "filters_json": "[]",
  "group_by_type": "Count",
- "idx": 3,
+ "idx": 5,
  "is_public": 1,
  "is_standard": 1,
- "last_synced_on": "2026-03-01 23:25:37.180494",
- "modified": "2026-03-01 23:30:27.740244",
+ "last_synced_on": "2026-04-29 08:11:49.157838",
+ "modified": "2026-04-29 09:28:47.000484",
  "modified_by": "Administrator",
  "module": "Research Management",
  "name": "Research Proposal",
  "number_of_groups": 0,
  "owner": "Administrator",
  "parent_document_type": "",
- "roles": [],
+ "roles": [
+  {
+   "role": "Vice Chancellor"
+  },
+  {
+   "role": "Registrar"
+  }
+ ],
  "source": "",
  "time_interval": "Yearly",
  "timeseries": 1,

@@ -101,15 +101,16 @@
   },
   {
    "fieldname": "project_period",
-   "fieldtype": "Data",
-   "label": "Project Period"
+   "fieldtype": "Link",
+   "label": "Project Period",
+   "options": "Fiscal Year"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-06 16:00:59.755819",
+ "modified": "2026-05-04 12:17:41.287741",
  "modified_by": "Administrator",
  "module": "Research Management",
  "name": "Call for Research",

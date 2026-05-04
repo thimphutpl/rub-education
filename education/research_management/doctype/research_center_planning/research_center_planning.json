@@ -42,7 +42,8 @@
    "fieldname": "research_center",
    "fieldtype": "Link",
    "label": "Research Center",
-   "options": "Research Center"
+   "options": "Research Center",
+   "reqd": 1
   },
   {
    "fieldname": "column_break_sdyt",
@@ -51,8 +52,9 @@
   {
    "fieldname": "fiscal_year",
    "fieldtype": "Link",
-   "label": "Fiscal Year",
-   "options": "Fiscal Year"
+   "label": "Research Year",
+   "options": "Fiscal Year",
+   "reqd": 1
   },
   {
    "fieldname": "section_break_rgwm",
@@ -68,7 +70,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-08 09:24:36.067848",
+ "modified": "2026-05-04 09:37:28.165792",
  "modified_by": "Administrator",
  "module": "Research Management",
  "name": "Research Center Planning",

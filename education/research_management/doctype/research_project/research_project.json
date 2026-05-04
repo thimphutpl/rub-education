@@ -40,7 +40,8 @@
   {
    "fieldname": "research_title",
    "fieldtype": "Data",
-   "label": "Research Title"
+   "label": "Research Title",
+   "reqd": 1
   },
   {
    "fieldname": "researcher_details",
@@ -99,7 +100,8 @@
    "fieldname": "grant_type",
    "fieldtype": "Link",
    "label": "Grant Type",
-   "options": "Grant Type"
+   "options": "Grant Type",
+   "reqd": 1
   },
   {
    "fieldname": "total_budget_consumed",
@@ -121,8 +123,8 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-10-21 11:23:26.584055",
- "modified_by": "kalden.dorji@thimphutechpark.bt",
+ "modified": "2026-05-01 12:58:42.490507",
+ "modified_by": "Administrator",
  "module": "Research Management",
  "name": "Research Project",
  "naming_rule": "Expression (old style)",

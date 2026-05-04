@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "format:RR{YY}{MM}{####}",
+ "autoname": "field:registration_number",
  "creation": "2025-08-26 10:16:05.827258",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -14,9 +14,9 @@
   "project_end_date",
   "section_break_pvby",
   "funding_agency",
+  "column_break_bzds",
   "funding_amount",
   "crc_approval_date",
-  "column_break_bzds",
   "research_center",
   "program_leader",
   "designation_of_pl",
@@ -34,17 +34,24 @@
   {
    "fieldname": "title_of_the_project",
    "fieldtype": "Data",
-   "label": "Title of the Project"
+   "in_list_view": 1,
+   "label": "Title of the Project",
+   "reqd": 1
   },
   {
    "fieldname": "registration_number",
    "fieldtype": "Data",
-   "label": "Registration Number"
+   "in_list_view": 1,
+   "label": "Registration Number",
+   "reqd": 1,
+   "unique": 1
   },
   {
    "fieldname": "registration_date",
    "fieldtype": "Date",
-   "label": "Registration Date"
+   "in_list_view": 1,
+   "label": "Registration Date",
+   "reqd": 1
   },
   {
    "fieldname": "column_break_zwqy",
@@ -53,12 +60,15 @@
   {
    "fieldname": "project_start_date",
    "fieldtype": "Date",
-   "label": "Project Start Date"
+   "in_list_view": 1,
+   "label": "Project Start Date",
+   "reqd": 1
   },
   {
    "fieldname": "project_end_date",
    "fieldtype": "Date",
-   "label": "Project End Date"
+   "label": "Project End Date",
+   "reqd": 1
   },
   {
    "fieldname": "section_break_pvby",
@@ -77,7 +87,8 @@
   {
    "fieldname": "crc_approval_date",
    "fieldtype": "Date",
-   "label": "CRC Approval Date"
+   "hidden": 1,
+   "label": "CRC/OVC Approval Date"
   },
   {
    "fieldname": "column_break_bzds",
@@ -86,6 +97,7 @@
   {
    "fieldname": "research_center",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Research Center",
    "options": "Research Center"
   },
@@ -111,7 +123,8 @@
   {
    "fieldname": "approved_by_pl",
    "fieldtype": "Link",
-   "label": "Approved by PL ",
+   "hidden": 1,
+   "label": "Approved by Chair CRC/OVC",
    "options": "Employee"
   },
   {
@@ -121,6 +134,7 @@
   {
    "fieldname": "approved_by_dril",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Approved by DRIL",
    "options": "Employee"
   },
@@ -160,11 +174,11 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-23 14:52:53.278769",
+ "modified": "2026-05-04 22:53:12.726659",
  "modified_by": "Administrator",
  "module": "Research Management",
  "name": "Research Registration",
- "naming_rule": "Expression",
+ "naming_rule": "By fieldname",
  "owner": "kalden.dorji@thimphutechpark.bt",
  "permissions": [
   {

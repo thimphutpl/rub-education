@@ -9,6 +9,7 @@ class ResearchProject(Document):
 
     def before_save(self):
         self.validate_research_milestone_progress()
+        self.update_project_status_based_on_payments()
         
     def before_submit(self):
         """
@@ -43,7 +44,59 @@ class ResearchProject(Document):
 
         self.research_milestone_progress = total_percentage
         self.total_budget_consumed = total_amount
-    
+
+    def update_project_status_based_on_payments(self):
+        """
+        Update project status based on milestone payments.
+        Status format: "milestone_percentage% Paid" (e.g., "10% Paid", "25% Paid")
+        Only update if the latest payment has a reference_payment_entry.
+        """
+        # Get approved milestones that have reference_payment_entry
+        paid_milestones = [c for c in self.table_bzbl if c.status == "Approved" and c.reference_payment_entry]
+        
+        if not paid_milestones:
+            # No payments made yet, keep default status as "Draft" or existing status
+            if not self.status or self.status == "Draft":
+                self.status = "Draft"
+            return
+        
+        # Find the milestone with the latest reference_payment_entry (most recent payment)
+        latest_milestone = None
+        latest_payment_date = None
+        
+        for milestone in paid_milestones:
+            if milestone.reference_payment_entry:
+                # Get the payment entry document to check its posting date
+                payment = frappe.get_doc("Payment Entry", milestone.reference_payment_entry)
+                payment_date = payment.posting_date if payment else None
+                
+                if payment_date and (not latest_payment_date or payment_date > latest_payment_date):
+                    latest_payment_date = payment_date
+                    latest_milestone = milestone
+        
+        if latest_milestone:
+            # Calculate total paid percentage including this milestone
+            total_paid_percentage = sum([c.milestone_percentage for c in paid_milestones])
+            
+            # Set the status with the total paid percentage
+            # Only use the latest milestone's percentage if we want individual milestone status
+            # Or use total sum for cumulative status
+            new_status = f"{int(total_paid_percentage)}% Paid"
+            self.status = new_status
+        else:
+            if not self.status or self.status == "Draft":
+                self.status = "Draft"        
+
+@frappe.whitelist()
+def update_milestone_payment_reference(self, milestone_name, payment_entry_name):
+    """Update the reference_payment_entry for a specific milestone"""
+    for milestone in self.table_bzbl:
+        if milestone.name == milestone_name:
+            milestone.reference_payment_entry = payment_entry_name
+            self.save()
+            self.update_project_status_based_on_payments()
+            return True
+    return False    
 
 @frappe.whitelist()
 def make_payment_entry(source_name, target_doc=None):
@@ -116,4 +169,63 @@ def make_payment_entry(source_name, target_doc=None):
         set_missing_values,
     )
 
+@frappe.whitelist()
+def get_researcher_details(type, researcher_id):
+    """Get researcher details including name, email, and gender"""
+    if not type or not researcher_id:
+        frappe.throw(_("Researcher Type and Researcher ID are required"))
+    
+    details = {
+        "researcher_id": researcher_id,
+        "researcher_name": "",
+        "email": "",
+        "gender": "",
+        "college": "",
+    }
+    
+    if type == "Employee":
+        employee = frappe.db.get_value(
+            "Employee", 
+            researcher_id, 
+            ["employee_name", "company_email", "personal_email", "gender", "cell_number", "company"], 
+            as_dict=True
+        )
+        if employee:
+            # Prefer company email, fallback to personal email
+            email = employee.get("company_email") or employee.get("personal_email")
+            details.update({
+                "researcher_name": employee.get("employee_name", ""),
+                "email": email or "",
+                "gender": employee.get("gender", ""),
+                "phone": employee.get("cell_number", ""),
+                "college": employee.get("company", "")
+            })
+        else:
+            frappe.throw(_("Employee {0} not found").format(researcher_id))
+    
+    elif type == "Student":
+        student = frappe.db.get_value(
+            "Student", 
+            researcher_id, 
+            ["student_name", "student_email_id", "gender", "student_mobile_number", "company"], 
+            as_dict=True
+        )
+        if student:
+            details.update({
+                "researcher_name": student.get("student_name", ""),
+                "email": student.get("student_email_id", ""),
+                "gender": student.get("gender", ""),
+                "phone": student.get("student_mobile_number", ""),
+                "college": student.get("company", "")
+            })
+        else:
+            frappe.throw(_("Student {0} not found").format(researcher_id))
+    
+    return details
 
+@frappe.whitelist()
+def update_payment_reference(project_name, milestone_name, payment_entry_name):
+    """Update the milestone with payment entry reference"""
+    project = frappe.get_doc("Research Project", project_name)
+    project.update_milestone_payment_reference(milestone_name, payment_entry_name)
+    return True

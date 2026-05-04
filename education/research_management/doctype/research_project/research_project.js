@@ -35,6 +35,118 @@ frappe.ui.form.on("Research Project", {
                 }, __('Create'));
             }
         }
+        if (frm.doc.docstatus === 0 && !frm.doc.__islocal) {
+            frappe.call({
+                method: "frappe.client.get_list",
+                args: {
+                    doctype: "Research Registration",
+                    filters: {
+                        research_proposal: frm.doc.name
+                    },
+                    fields: ["name", "registration_name"]
+                },
+                callback: function(response) {
+                    if (response.message && response.message.length > 0) {
+                        let registration = response.message[0];
+                        frm.add_custom_button(__('View Registration'), function() {
+                            frappe.set_route("Form", "Research Registration", registration.name);
+                        }, __('Actions'));
+                        
+                        frm.set_df_property("status", "description", 
+                            `Registration Created: ${registration.registration_name}`);
+                    }
+                }
+            });
+        }
     },
 });
+
+// Child table events for Researcher Details
+frappe.ui.form.on("Researcher Details", {
+    type: function(frm, cdt, cdn) {
+        let row = frappe.get_doc(cdt, cdn);
+        // Clear researcher_id and name when type changes
+        if (row.type) {
+            frappe.model.set_value(cdt, cdn, "researcher_id", "");
+            frappe.model.set_value(cdt, cdn, "researcher_name", "");
+            frappe.model.set_value(cdt, cdn, "email", "");
+            frappe.model.set_value(cdt, cdn, "gender", "");
+            frappe.model.set_value(cdt, cdn, "phone", "");
+            frappe.model.set_value(cdt, cdn, "college", "");
+        }
+    },
+    
+    researcher_id: function(frm, cdt, cdn) {
+        let row = frappe.get_doc(cdt, cdn);
+        
+        if (!row.researcher_id) {
+            frappe.model.set_value(cdt, cdn, "researcher_name", "");
+            frappe.model.set_value(cdt, cdn, "email", "");
+            frappe.model.set_value(cdt, cdn, "gender", "");
+            frappe.model.set_value(cdt, cdn, "phone", "");
+            frappe.model.set_value(cdt, cdn, "college", "");
+            return;
+        }
+        
+        if (!row.type) {
+            frappe.msgprint(__("Please select Researcher Type first"));
+            frappe.model.set_value(cdt, cdn, "researcher_id", "");
+            return;
+        }
+        
+        // Fetch name based on researcher type
+        // fetch_researcher_name(frm, cdt, cdn, row.type, row.researcher_id);
+        fetch_researcher_details(frm, cdt, cdn, row.type, row.researcher_id);
+    }
+});
+
+function fetch_researcher_details(frm, cdt, cdn, type, researcher_id) {
+    frappe.call({
+        method: "education.research_management.doctype.research_proposal.research_proposal.get_researcher_details",
+        args: {
+            type: type,
+            researcher_id: researcher_id
+        },
+        callback: function(response) {
+            if (response.message && !response.message.error) {
+                let data = response.message;
+                
+                // Set all fetched values
+                frappe.model.set_value(cdt, cdn, "researcher_name", data.researcher_name || "");
+                frappe.model.set_value(cdt, cdn, "email", data.email || "");
+                frappe.model.set_value(cdt, cdn, "gender", data.gender || "");
+                frappe.model.set_value(cdt, cdn, "phone", data.phone || "");
+                frappe.model.set_value(cdt, cdn, "college", data.college || "");
+                
+                // Optional: Show success message
+                frappe.show_alert({
+                    message: __("Researcher details loaded for {0}", [data.researcher_name]),
+                    indicator: "green"
+                }, 2);
+            } else {
+                // Clear fields if invalid
+                frappe.model.set_value(cdt, cdn, "researcher_id", "");
+                frappe.model.set_value(cdt, cdn, "researcher_name", "");
+                frappe.model.set_value(cdt, cdn, "email", "");
+                frappe.model.set_value(cdt, cdn, "gender", "");
+                frappe.model.set_value(cdt, cdn, "phone", "");
+                frappe.model.set_value(cdt, cdn, "college", "");
+                
+                frappe.msgprint({
+                    title: __("Invalid Selection"),
+                    message: __("Invalid {0}: {1}. Please select a valid {0}.", 
+                        [type, researcher_id]),
+                    indicator: "red"
+                });
+            }
+        },
+        error: function(error) {
+            frappe.msgprint({
+                title: __("Error"),
+                message: __("Failed to fetch researcher details. Please try again."),
+                indicator: "red"
+            });
+        }
+    });
+}
 

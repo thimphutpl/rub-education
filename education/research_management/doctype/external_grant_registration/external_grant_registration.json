@@ -1,0 +1,240 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:registration_number",
+ "creation": "2026-05-04 12:24:00.932362",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "title_of_the_project",
+  "registration_number",
+  "registration_date",
+  "column_break_nusa",
+  "project_start_date",
+  "project_end_date",
+  "section_break_eidj",
+  "funding_agency",
+  "funding_amount",
+  "column_break_egin",
+  "ovccrc_approval_date",
+  "section_break_cejo",
+  "investigator_type",
+  "column_break_jbdf",
+  "principal_investigator",
+  "pi_name",
+  "approval_detail_section",
+  "approved_by_chair_crcovc",
+  "column_break_wona",
+  "amended_from",
+  "attachments_section",
+  "attach_dmbe"
+ ],
+ "fields": [
+  {
+   "fieldname": "title_of_the_project",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Title of the Project",
+   "reqd": 1
+  },
+  {
+   "fieldname": "registration_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Registration Number",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "registration_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Registration Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_nusa",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "project_start_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Project Start Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "project_end_date",
+   "fieldtype": "Date",
+   "label": "Project End Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_eidj",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "funding_agency",
+   "fieldtype": "Data",
+   "label": "Funding Agency",
+   "reqd": 1
+  },
+  {
+   "fieldname": "funding_amount",
+   "fieldtype": "Float",
+   "label": "Funding Amount",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_egin",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ovccrc_approval_date",
+   "fieldtype": "Date",
+   "label": "OVC/CRC Approval Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "approval_detail_section",
+   "fieldtype": "Section Break",
+   "label": "Approval Detail"
+  },
+  {
+   "fieldname": "approved_by_chair_crcovc",
+   "fieldtype": "Link",
+   "label": "Approved by Chair CRC/OVC",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_wona",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "principal_investigator",
+   "fieldtype": "Dynamic Link",
+   "label": "Principal Investigator",
+   "options": "investigator_type",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_cejo",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "investigator_type",
+   "fieldtype": "Select",
+   "label": "Investigator Type",
+   "options": "\nStudent\nEmployee",
+   "reqd": 1
+  },
+  {
+   "fieldname": "pi_name",
+   "fieldtype": "Data",
+   "label": "PI Name"
+  },
+  {
+   "fieldname": "column_break_jbdf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "External Grant Registration",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "attachments_section",
+   "fieldtype": "Section Break",
+   "label": "Attachments"
+  },
+  {
+   "description": "Signed MoU/Letter from the Cabinet Secretariat, if any",
+   "fieldname": "attach_dmbe",
+   "fieldtype": "Attach"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-05-04 22:41:29.786818",
+ "modified_by": "Administrator",
+ "module": "Research Management",
+ "name": "External Grant Registration",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Research Officer",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Academic Dean",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Research Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "CRC Approver",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

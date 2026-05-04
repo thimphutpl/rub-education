@@ -246,7 +246,7 @@
   {
    "fieldname": "year",
    "fieldtype": "Link",
-   "label": "Year",
+   "label": "Research Year",
    "options": "Fiscal Year",
    "reqd": 1
   },
@@ -446,8 +446,7 @@
    "fieldname": "application_amount",
    "fieldtype": "Currency",
    "in_list_view": 1,
-   "label": "Grant Application Submitted (Amount)",
-   "reqd": 1
+   "label": "Grant Application Submitted (Amount)"
   },
   {
    "fieldname": "funding_secured",
@@ -812,7 +811,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-28 10:13:18.150910",
+ "modified": "2026-05-04 10:08:03.927116",
  "modified_by": "Administrator",
  "module": "Research Management",
  "name": "Research Center Reporting Items",

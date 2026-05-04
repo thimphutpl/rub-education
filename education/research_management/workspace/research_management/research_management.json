@@ -133,55 +133,6 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Research",
-   "link_count": 4,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Research Announcement",
-   "link_count": 0,
-   "link_to": "Call for Research",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Research Proposal",
-   "link_count": 0,
-   "link_to": "Research Proposal",
-   "link_type": "DocType",
-   "onboard": 1,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Research Registration",
-   "link_count": 0,
-   "link_to": "Research Registration",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Research Project",
-   "link_count": 0,
-   "link_to": "Research Project",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Research Master",
    "link_count": 6,
    "link_type": "DocType",
@@ -247,9 +198,58 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Research",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Research Announcement",
+   "link_count": 0,
+   "link_to": "Call for Research",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Research Proposal",
+   "link_count": 0,
+   "link_to": "Research Proposal",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "External Grant Registration",
+   "link_count": 0,
+   "link_to": "External Grant Registration",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Research Project Monitoring && Completion",
+   "link_count": 0,
+   "link_to": "Research Project",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2026-04-21 13:02:39.741305",
+ "modified": "2026-05-04 22:37:44.389206",
  "modified_by": "Administrator",
  "module": "Research Management",
  "name": "Research Management",

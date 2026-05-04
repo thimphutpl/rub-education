@@ -41,20 +41,24 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "UOM",
-   "options": "UOM"
+   "options": "UOM",
+   "reqd": 1
   },
   {
+   "fetch_from": "research_kpi.weight",
    "fieldname": "weight",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Weight"
+   "label": "Weight",
+   "reqd": 1
   },
   {
    "fieldname": "research_kpi",
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Key Performance/Success Indicators",
-   "options": "Research KPI"
+   "options": "Research KPI",
+   "reqd": 1
   },
   {
    "default": "0",
@@ -87,14 +91,15 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Reporting Type",
-   "options": "Reporting Type"
+   "options": "Reporting Type",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-04-08 09:28:25.290638",
+ "modified": "2026-05-04 10:04:39.946360",
  "modified_by": "Administrator",
  "module": "Research Management",
  "name": "Research Publications Details",

@@ -203,7 +203,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Research",
-   "link_count": 4,
+   "link_count": 5,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -231,6 +231,16 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Research Registration",
+   "link_count": 0,
+   "link_to": "Research Registration",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "External Grant Registration",
    "link_count": 0,
    "link_to": "External Grant Registration",
@@ -249,7 +259,7 @@
    "type": "Link"
   }
  ],
- "modified": "2026-05-04 22:37:44.389206",
+ "modified": "2026-05-05 07:58:00.412516",
  "modified_by": "Administrator",
  "module": "Research Management",
  "name": "Research Management",

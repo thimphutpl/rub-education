@@ -54,11 +54,11 @@ class ResearchProject(Document):
         # Get approved milestones that have reference_payment_entry
         paid_milestones = [c for c in self.table_bzbl if c.status == "Approved" and c.reference_payment_entry]
         
-        if not paid_milestones:
-            # No payments made yet, keep default status as "Draft" or existing status
-            if not self.status or self.status == "Draft":
-                self.status = "Draft"
-            return
+        # if not paid_milestones:
+        #     # No payments made yet, keep default status as "Draft" or existing status
+        #     if not self.status or self.status == "Draft":
+        #         self.status = "Draft"
+        #     return
         
         # Find the milestone with the latest reference_payment_entry (most recent payment)
         latest_milestone = None
@@ -83,9 +83,9 @@ class ResearchProject(Document):
             # Or use total sum for cumulative status
             new_status = f"{int(total_paid_percentage)}% Paid"
             self.status = new_status
-        else:
-            if not self.status or self.status == "Draft":
-                self.status = "Draft"        
+        # else:
+        #     if not self.status or self.status == "Draft":
+        #         self.status = "Draft"        
 
 @frappe.whitelist()
 def update_milestone_payment_reference(self, milestone_name, payment_entry_name):

@@ -35,29 +35,6 @@ frappe.ui.form.on("Research Project", {
                 }, __('Create'));
             }
         }
-        if (frm.doc.docstatus === 0 && !frm.doc.__islocal) {
-            frappe.call({
-                method: "frappe.client.get_list",
-                args: {
-                    doctype: "Research Registration",
-                    filters: {
-                        research_proposal: frm.doc.name
-                    },
-                    fields: ["name", "registration_name"]
-                },
-                callback: function(response) {
-                    if (response.message && response.message.length > 0) {
-                        let registration = response.message[0];
-                        frm.add_custom_button(__('View Registration'), function() {
-                            frappe.set_route("Form", "Research Registration", registration.name);
-                        }, __('Actions'));
-                        
-                        frm.set_df_property("status", "description", 
-                            `Registration Created: ${registration.registration_name}`);
-                    }
-                }
-            });
-        }
     },
 });
 

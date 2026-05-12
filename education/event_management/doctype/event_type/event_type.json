@@ -7,6 +7,7 @@
  "engine": "InnoDB",
  "field_order": [
   "event_name",
+  "company",
   "event_description"
  ],
  "fields": [
@@ -22,12 +23,19 @@
    "fieldtype": "Small Text",
    "in_list_view": 1,
    "label": "Description"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "College",
+   "options": "Company",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-07-22 14:20:05.115733",
+ "modified": "2026-05-11 18:34:30.810255",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "Event Type",

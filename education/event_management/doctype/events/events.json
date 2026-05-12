@@ -138,27 +138,27 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Register Type",
-   "options": "\nAll\nFaculty\nClass"
+   "options": "\nAll\nStaff\nStudent"
   },
   {
-   "depends_on": "eval:doc.registration_type=='Faculty' || doc.registration_type=='All'",
+   "depends_on": "eval:doc.registration_type=='Staff' || doc.registration_type=='All'",
    "fieldname": "get_all_faculty",
    "fieldtype": "Button",
    "label": "Get All Faculty"
   },
   {
-   "depends_on": "eval:doc.registration_type=='Class' || doc.registration_type=='All'",
+   "depends_on": "eval:doc.registration_type=='Student' || doc.registration_type=='All'",
    "fieldname": "student_register",
    "fieldtype": "Table",
-   "label": "Class",
+   "label": "Student",
    "options": "Student Registration"
   },
   {
-   "depends_on": "eval:doc.registration_type=='Class' || doc.registration_type=='All'",
+   "depends_on": "eval:doc.registration_type=='Student' || doc.registration_type=='All'",
    "fieldname": "get_all_student",
    "fieldtype": "Button",
    "hidden": 1,
-   "label": "Get All Class"
+   "label": "Get All Student"
   },
   {
    "fieldname": "color",
@@ -166,13 +166,13 @@
    "label": "Color"
   },
   {
-   "depends_on": "eval:doc.registration_type=='Class' || doc.registration_type=='All'",
+   "depends_on": "eval:doc.registration_type=='Student' || doc.registration_type=='All'",
    "fieldname": "get_student",
    "fieldtype": "Button",
    "label": "Get Student"
   },
   {
-   "depends_on": "eval:doc.registration_type=='Class' || doc.registration_type=='All'",
+   "depends_on": "eval:doc.registration_type=='Student' || doc.registration_type=='All'",
    "fieldname": "student_filter",
    "fieldtype": "Table",
    "label": "Student Filter",
@@ -217,7 +217,7 @@
   },
   {
    "allow_on_submit": 1,
-   "depends_on": "eval:doc.registration_type=='Faculty' || doc.registration_type=='All'",
+   "depends_on": "eval:doc.registration_type=='Staff' || doc.registration_type=='All'",
    "fieldname": "faculty_register",
    "fieldtype": "Table",
    "label": "Faculty",
@@ -311,7 +311,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-28 10:05:09.443087",
+ "modified": "2026-05-11 20:09:46.871262",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "Events",

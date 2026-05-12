@@ -130,6 +130,7 @@ frappe.ui.form.on("Events", {
                 }
             }
         };
+        frm.set_query("event_type",filterByCollege);
         frm.set_query("student",filterByCollege);
         frm.set_query("employee",filterByCollege);
     },

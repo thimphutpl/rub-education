@@ -192,7 +192,7 @@ class ResultDeclaration(Document):
 			doc.college = college
 
 			# optional: take from first row
-			# doc.no_of_modules_failed = rows[0].total_modules_failed
+			doc.no_of_modules_failed = rows[0].total_modules_failed
 
 			# 🔹 Step 3: append ALL modules for that student
 			for i in rows:

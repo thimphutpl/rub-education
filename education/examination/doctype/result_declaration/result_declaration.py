@@ -251,6 +251,8 @@ def get_results(college, programme, academic_term, student_section, exam_type):
 		student_name = i.student_name
 		module = i.module
 
+		
+
 		if exam_type=="Regular":
 			exist= frappe.db.sql('''
 				select rd.docstatus from `tabResult Declaration Item` rdi inner join 

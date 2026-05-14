@@ -1,4 +1,5 @@
 {
+    
  "actions": [],
  "allow_rename": 1,
  "autoname": "format:RE-{YY}-{MM}-{DD}-{#######}",

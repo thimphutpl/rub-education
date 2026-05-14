@@ -8,6 +8,22 @@ frappe.ui.form.on('Student Section', {
         },
       }
     })
+    frm.set_query('academic_term', function(doc, cdt, cdn) {
+      if (!frm.doc.college) {
+        return {
+          filters: {
+            college: ["=", "Please Select College"]
+          }
+        };
+      }
+      else{
+        return {
+          filters: {
+            college: frm.doc.college,
+          }
+        };
+      }
+    });
     // if (!frm.__islocal) {
       // frm.set_query('student', 'students', function () {
       //   // let filters = {

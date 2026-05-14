@@ -9,7 +9,7 @@ class ContinuousAssessmentEntry(Document):
 	def validate(self):
 		self.fetch_weightage()
 		self.check_assesment_component()
-		# self.check_duplicate_marks_entry()
+		self.check_duplicate_marks_entry()
 		self.calculate_weightage_achieved()
 
 	def on_submit(self):
@@ -20,7 +20,7 @@ class ContinuousAssessmentEntry(Document):
 		self.ignore_linked_doctypes = (
 			"Assessment Ledger",
 		)
-		super().on_cancel()
+		# super().on_cancel()
 		self.cancel_assessment_entry()
 
 	def cancel_assessment_entry(self):
@@ -155,8 +155,8 @@ class ContinuousAssessmentEntry(Document):
 				continue
 
 			condition = ""
-			if self.tutor:
-				condition = f" AND mac.tutor = '{self.tutor}'"
+			# if self.tutor:
+			# 	condition = f" AND mac.tutor = '{self.tutor}'"
 
 			query = f"""
 				SELECT mai.weightage
@@ -168,7 +168,7 @@ class ContinuousAssessmentEntry(Document):
 				AND mac.programme = '{self.programme}'
 				AND mac.module = '{self.module}'
 				AND mai.assessment_name = '{self.assessment_component}'
-				{condition}
+			
 			"""
 
 			# frappe.throw(str(query))
@@ -177,6 +177,8 @@ class ContinuousAssessmentEntry(Document):
 
 			if not result:
 				frappe.throw("Weightage not defined for this configuration")
+
+			# frappe.throw(str(result[0][0]))
 
 			weightage = result[0][0] or 0
 
@@ -187,8 +189,8 @@ class ContinuousAssessmentEntry(Document):
 
 	def fetch_weightage(self):
 		condition = ""
-		if self.tutor:
-			condition = f" AND mac.tutor = '{self.tutor}'"
+		# if self.tutor:
+		# 	condition = f" AND mac.tutor = '{self.tutor}'"
 		weightage= frappe.db.sql(f"""
 			SELECT mai.weightage
 			FROM `tabModule Assessment Item` mai
@@ -199,7 +201,7 @@ class ContinuousAssessmentEntry(Document):
 			AND mac.programme = '{self.programme}'
 			AND mac.module = '{self.module}'
 			AND mai.assessment_name = '{self.assessment_component}'
-			{condition}
+			
 		""", as_dict=1)
 		if len(weightage) > 0:
 			weightage = weightage[0].weightage
@@ -252,7 +254,7 @@ def get_students(doc, module_enrolment_key):
 
 	data = frappe.db.sql(
 		"""
-		select student, student_name
+		select distinct student, student_name
 		from `tabModule Enrolment` where module_enrollment_key=%s
 		""",
 		(module_enrolment_key),

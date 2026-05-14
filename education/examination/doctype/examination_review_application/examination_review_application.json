@@ -24,7 +24,9 @@
   "amount_paid",
   "section_break_nikz",
   "posting_date",
-  "amended_from"
+  "amended_from",
+  "column_break_vbgx",
+  "marks_awarded"
  ],
  "fields": [
   {
@@ -151,13 +153,23 @@
    "fieldtype": "Date",
    "label": "Posting Date",
    "options": "Examination Review Application"
+  },
+  {
+   "fieldname": "column_break_vbgx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "marks_awarded",
+   "fieldtype": "Check",
+   "label": "Marks Awarded"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-14 19:47:24.592462",
+ "modified": "2026-05-08 21:08:44.861782",
  "modified_by": "Administrator",
  "module": "Examination",
  "name": "Examination Review Application",

@@ -139,7 +139,7 @@ import frappe
 @frappe.whitelist()
 def get_results(college, programme, academic_term, student_section, exam_type):
 
-
+    frappe.throw('jii')
 
     # 🔹 1. Get modules
     modules = frappe.db.sql("""

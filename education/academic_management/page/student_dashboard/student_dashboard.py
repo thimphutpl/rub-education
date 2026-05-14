@@ -243,3 +243,49 @@ def get_academic_settings():
         "re_evaluation": settings.re_evaluation,
         "pass_criteria": settings.table_qhlg  # child table
     }
+
+@frappe.whitelist()
+def get_attendance_summary(student, academic_term):
+	# 🔹 Get current academic term from Student
+
+	if not academic_term:
+		return []
+
+	# 🔹 Aggregate attendance from Student Attendance
+	data = frappe.db.sql("""
+		SELECT
+			module,
+			
+			COUNT(*) AS total_classes,
+
+			SUM(
+				CASE 
+					WHEN status = 'Present' THEN 1
+					ELSE 0
+				END
+			) AS present_count,
+
+			SUM(
+				CASE 
+					WHEN status = 'Absent' THEN 1
+					ELSE 0
+				END
+			) AS absent_count
+
+		FROM `tabStudent Attendance`
+		WHERE student = %s
+		AND academic_term = %s
+		AND docstatus = 1   -- only submitted attendance
+
+		GROUP BY module
+		ORDER BY module
+	""", (student, academic_term), as_dict=True)
+
+	# 🔹 Calculate percentage in Python (safer)
+	for d in data:
+		total = d.total_classes or 0
+		present = d.present_count or 0
+
+		d.attendance_percentage = round((present / total) * 100, 2) if total else 0
+
+	return data

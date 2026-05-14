@@ -7,8 +7,8 @@ import json
 
 class ExaminationMarksEntry(Document):
     def validate(self):
-        if self.exam_type == 'Regular Assessment':
-            self.fetch_exam_registration()
+        # if self.exam_type == 'Regular Assessment':
+        #     self.fetch_exam_registration()
         self.check_duplicate_ass_component()
         self.check_duplicate_marks_entry()
         self.calculate_weightageAchieved()
@@ -82,10 +82,10 @@ class ExaminationMarksEntry(Document):
         })
     
     
-        # if duplicate:
-        #     frappe.throw(
-        #         f"The marks entry for <b>{self.assessment_component}</b> has already been completed."
-        #     )
+        if duplicate:
+            frappe.throw(
+                f"The marks entry for <b>{self.assessment_component}</b> has already been completed."
+            )
             
     def check_duplicate_ass_component(self):
         pass
@@ -120,7 +120,7 @@ class ExaminationMarksEntry(Document):
             if not (i.marks_obtained and self.total_marks):
                 continue
 
-            condition = f" AND mac.tutor = '{self.tutor}'"
+            # condition = f" AND mac.tutor = '{self.tutor}'"
 
             query = f"""
                 SELECT mai.weightage
@@ -131,7 +131,7 @@ class ExaminationMarksEntry(Document):
                 AND mac.academic_term = '{self.academic_term}'
                 AND mac.programme = '{self.programme}'
                 AND mai.assessment_name = '{self.assessment_component}'
-                {condition}
+               
             """
 
             result = frappe.db.sql(query)
@@ -180,6 +180,12 @@ class ExaminationMarksEntry(Document):
             doc.insert(ignore_permissions=True)
 
             doc.submit()
+
+            frappe.db.set_value(
+                "Examination Review Application",
+                i.examination_review_link,
+                {"marks_awarded": 1}
+            )
 
         frappe.msgprint(f"Assessment Ledger created and submitted for {self.module} - {self.assessment_component}")
         
@@ -239,7 +245,9 @@ def get_students(examination_registration=None, doc=None):
             SELECT DISTINCT 
                 era.student,
                 era.student_name,
-                era.programme
+                era.programme,
+                era.name as review_name
+
             FROM 
                 `tabExamination Review Application` era
             INNER JOIN `tabModule Enrolment` me 

@@ -65,10 +65,10 @@ def execute(filters=None):
 def get_columns(filters):
 	columns = [
 		{
-			"label": _("Student Group"),
+			"label": _("Student Section"),
 			"fieldname": "student_group",
 			"fieldtype": "Link",
-			"options": "Student Group",
+			"options": "Student Section",
 			"width": 250,
 		},
 		{
@@ -101,7 +101,7 @@ def get_columns(filters):
 
 def get_active_student_group():
 	active_student_groups = frappe.db.sql(
-		"""select name from `tabStudent Group` where group_based_on = "Batch"
+		"""select name from `tabStudent Section` where group_based_on = "Batch"
 		and academic_year=%s order by name""",
 		(frappe.defaults.get_defaults().academic_year),
 		as_dict=1,
@@ -111,7 +111,7 @@ def get_active_student_group():
 
 def get_student_group_strength(student_group):
 	student_group_strength = frappe.db.sql(
-		"""select count(*) from `tabStudent Group Student`
+		"""select count(*) from `tabStudent Section Student`
 		where parent = %s and active=1""",
 		student_group,
 	)[0][0]

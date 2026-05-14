@@ -18,11 +18,11 @@ frappe.pages['student-dashboard'].on_page_load = function(wrapper) {
 	// Create a container for the print button and table
 	let topContainer = $('<div class="timetable-top-container"></div>').appendTo(main);
 	sidebar.html(`
-		<div class="sidebar-card user-profile-card" style="text-align:center;">
-        <img id="user-profile-pic" src="/assets/frappe/images/ui/avatar.png" 
-             style="width:60px; height:60px; border-radius:50%; margin-bottom:10px;">
-        <div id="user-fullname" style="font-weight:bold;"></div>
-        <div id="user-email" style="font-size:12px; color:#666;"></div>
+		<div class="sidebar-card user-profile-card" id="profile-card" style="text-align:center; cursor:pointer;">
+			<img id="user-profile-pic" src="/assets/frappe/images/ui/avatar.png" 
+				style="width:60px; height:60px; border-radius:50%; margin-bottom:10px;">
+			<div id="user-fullname" style="font-weight:bold;"></div>
+			<div id="user-email" style="font-size:12px; color:#666;"></div>
 		</div>
 		<div class="sidebar-card">
 			<h4 id="realtime-date" style="font-size:14px; margin-bottom:5px;"></h4>
@@ -167,6 +167,71 @@ frappe.pages['student-dashboard'].on_page_load = function(wrapper) {
 	// 	.click(function(){
 	// 		printTimetable(container);
 	// 	});
+	// ============================
+	// 🔹 QUICK LINKS CARD (List Navigation)
+	// ============================
+	let quickLinks = $(`
+		<div class="quick-links-card modern-card">
+			
+			<div class="quick-links-header">
+				<span>Quick Links</span>
+			</div>
+	
+			<div class="quick-links-grid">
+	
+				<div class="quick-tile" data-doctype="Student Leave Application">
+					<div class="label">Leave Application</div>
+				</div>
+	
+				<div class="quick-tile" data-doctype="Module Enrolment">
+					<div class="label">Module Enrolment</div>
+				</div>
+	
+				<div class="quick-tile" data-doctype="Assessment Result">
+					<div class="label">Results</div>
+				</div>
+	
+				<div class="quick-tile" data-doctype="Fee Payment">
+					<div class="label">Fees</div>
+				</div>
+	
+			</div>
+		</div>
+	`).appendTo(topContainer);
+
+	/* Student Attendance Card */
+	let attendanceCard = $(`
+		<div class="attendance-card modern-card">
+			<div style="font-weight:600; margin-bottom:10px;">
+				Module Attendance
+			</div>
+	
+			<div class="attendance-filter" style="margin-bottom:10px;"></div>
+	
+			<div class="attendance-body">
+				<p>Loading attendance...</p>
+			</div>
+		</div>
+	`).appendTo(topContainer);
+	
+	let attendanceContainer = attendanceCard.find(".attendance-body");
+	let attendanceFilter = attendanceCard.find(".attendance-filter");
+	let academicTermField = frappe.ui.form.make_control({
+		parent: attendanceFilter,
+		df: {
+			label: "Academic Term",
+			fieldname: "academic_term",
+			fieldtype: "Link",
+			options: "Academic Term",
+			reqd: 1
+		},
+		render_input: true
+	});
+	
+	academicTermField.refresh();
+
+	/* Student Attendance Card END*/
+
 	let collapsible = $(`
 		<div class="timetable-collapsible">
 			<div class="timetable-header" style="cursor:pointer; font-weight:bold; padding:8px; background:#f0f0f0; border-radius:6px;">
@@ -182,54 +247,89 @@ frappe.pages['student-dashboard'].on_page_load = function(wrapper) {
     .click(function(){
         printTimetable(container);
     });
+	// 🔹 Navigate to List View
+	quickLinks.find(".quick-tile").click(function () {
+		let doctype = $(this).data("doctype");
+	
+		frappe.set_route("List", doctype);
+	});
 
 
 	/*
-Adding Resulting Column
-*/
-	let studentContainer = $(`
-	<div class="student-field" style="margin-bottom:10px;"></div>
-	`).appendTo(topContainer);
+	Adding Resulting Column
+	*/
+		let studentContainer = $(`
+		<div class="student-field" style="margin-bottom:10px;"></div>
+		`).appendTo(topContainer);
 
-	let studentField = frappe.ui.form.make_control({
-	parent: studentContainer,
-	df: {
-		label: "Student",
-		fieldname: "student",
-		fieldtype: "Link",
-		options: "Student",
-		reqd: 1,
-		hidden: 1
-	},
-	render_input: true
-});
-
-studentField.refresh();
-
-// 🔥 fetch logged-in student
-frappe.call({
-	method: "frappe.client.get_value",
-	args: {
-		doctype: "Student",
-		filters: {
-			user: frappe.session.user
+		let studentField = frappe.ui.form.make_control({
+		parent: studentContainer,
+		df: {
+			label: "Student",
+			fieldname: "student",
+			fieldtype: "Link",
+			options: "Student",
+			reqd: 1,
+			hidden: 1
 		},
-		fieldname: "name"
-	},
-	callback: function(r) {
-		if (r.message) {
-			let student_id = r.message.name;
+		render_input: true
+	});
 
-			console.log("Student ID:", student_id);
+	studentField.refresh();
 
-			// ✅ set value AFTER fetch
-			studentField.set_value(student_id);
-			studentField.refresh();
+	// 🔥 fetch logged-in student
+	// frappe.call({
+	// 	method: "frappe.client.get_value",
+	// 	args: {
+	// 		doctype: "Student",
+	// 		filters: {
+	// 			user: frappe.session.user
+	// 		},
+	// 		fieldname: "name"
+	// 	},
+	// 	callback: function(r) {
+	// 		if (r.message) {
+	// 			let student_id = r.message.name;
+
+	// 			console.log("Student ID:", student_id);
+
+	// 			// ✅ set value AFTER fetch
+	// 			studentField.set_value(student_id);
+	// 			studentField.refresh();
+	// 		}
+	// 	}
+	// });
+	let current_student = null;
+	frappe.call({
+		method: "frappe.client.get_value",
+		args: {
+			doctype: "Student",
+			filters: {
+				user: frappe.session.user
+			},
+			fieldname: "name"
+		},
+		callback: function(r) {
+			if (r.message) {
+				current_student = r.message.name;
+
+				studentField.set_value(current_student);
+				load_attendance(attendanceContainer, current_student, academicTermField.get_value());
+				studentField.refresh();
+			}
+			else {
+				attendanceContainer.html("<b>No student linked to this user</b>");
+			}
 		}
-	}
-});
+	});
 
-
+	$(document).on("click", "#profile-card", function () {
+		if (current_student) {
+			frappe.set_route("Form", "Student", current_student);
+		} else {
+			frappe.msgprint("Student record not found");
+		}
+	});
 
 
 	let resultCollapsible = $(`
@@ -498,7 +598,71 @@ caCollapsible.find(".ca-header").click(function () {
 // 			// });
 // 		}
 // 	})
+function load_attendance(container, student, academic_term) {
 
+	if(student && academic_term){
+		frappe.call({
+			method: "education.academic_management.page.student_dashboard.student_dashboard.get_attendance_summary",
+			args: {
+				student: student,
+				academic_term: academic_term
+			},
+			callback: function (r) {
+	
+				if (!r.message || !r.message.length) {
+					container.html("<b>No attendance data found</b>");
+					return;
+				}
+	
+				let data = r.message;
+	
+				let html = `
+					<table class="table table-bordered attendance-table">
+						<thead>
+							<tr>
+								<th>Module</th>
+								<th>Attended</th>
+								<th>Total</th>
+								<th>%</th>
+								<th style="width:120px;">Progress</th>
+							</tr>
+						</thead>
+						<tbody>
+				`;
+	
+				data.forEach(d => {
+	
+					let percent = d.total > 0 
+						? ((d.attended / d.total) * 100).toFixed(1) 
+						: 0;
+	
+					let color = percent < 75 ? "#ff4d4f" : "#52c41a";
+	
+					html += `
+						<tr>
+							<td>${d.module}</td>
+							<td>${d.attended}</td>
+							<td>${d.total}</td>
+							<td><b>${percent}%</b></td>
+							<td>
+								<div class="progress">
+									<div class="progress-bar" style="width:${percent}%; background:${color};"></div>
+								</div>
+							</td>
+						</tr>
+					`;
+				});
+	
+				html += `</tbody></table>`;
+	
+				container.html(html);
+			}
+		});
+	}
+	else{
+		container.html("<p>No Data Found</p>");
+	}
+}
 
 function load_timetable(container, college, programme, academic_term){
 	frappe.call({
@@ -775,6 +939,7 @@ $(`<style>
 		box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 		margin-bottom: 15px;
 	}
+
 	.tt-break{
 		background:#f3f3f3;
 		color:#666;
@@ -793,15 +958,18 @@ $(`<style>
 		color:#999;
 	}
 	.timetable-sidebar{
-    width:250px;
-    background:#f8f9fa;
-    border:1px solid #ddd;
-    border-radius:8px;
-    padding:15px;
-	flex-shrink: 0;   /* 🔥 prevents shrinking */
-	
-    height:fit-content;
-}
+		width:250px;
+		background:#f8f9fa;
+		border:1px solid #ddd;
+		border-radius:8px;
+		padding:15px;
+		flex-shrink: 0;
+
+		position: sticky;
+		top: 15px;              /* distance from top when scrolling */
+		align-self: flex-start; /* important for flex layouts */
+		height: fit-content;
+	}
 .layout-main-section {
     padding-left: 5px !important;   /* reduce left gap */
     padding-right: 5px !important;
@@ -825,9 +993,82 @@ $(`<style>
     height:12px;
     margin-right:5px;
 }
+/* 🔹 Card base */
+.modern-card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 12px 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border: 1px solid #eee;
+    margin-bottom: 15px;   /* ✅ ADD THIS */
+}
 
+/* 🔹 Header */
+.quick-links-header {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #333;
+}
+
+/* 🔹 Grid layout */
+.quick-links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 12px;
+}
+
+/* 🔹 Tile */
+.quick-tile {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    border: 1px solid transparent;
+}
+
+/* 🔹 Icon */
+.quick-tile .icon {
+    font-size: 20px;
+    margin-bottom: 6px;
+}
+
+/* 🔹 Label */
+.quick-tile .label {
+    font-size: 12px;
+    font-weight: 500;
+    color: #444;
+}
+
+/* 🔥 Hover effect */
+.quick-tile:hover {
+    background: #e6f7ff;
+    border-color: #91d5ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.quick-tile:{ background:#fff7e6; }
 .legend-box.academic{ background:#e6f7ff; }
 .legend-box.break{ background:#f3f3f3; }
+.attendance-table th {
+	background: #fafafa;
+	font-size: 12px;
+}
+
+.progress {
+	background: #f0f0f0;
+	border-radius: 10px;
+	height: 10px;
+	overflow: hidden;
+}
+
+.progress-bar {
+	height: 100%;
+	transition: width 0.4s ease;
+}
 	</style>`).appendTo("head");
 
 
@@ -882,9 +1123,9 @@ $(`<style>
 							background-color: #f9f9f9;
 						}
 					</style>
-	
-					<h3>Result — ${student_name}</h3>
-	
+					
+					
+
 					<table>
 						<thead>
 							<tr>

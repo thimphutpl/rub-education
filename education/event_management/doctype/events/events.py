@@ -131,8 +131,8 @@ def get_students_by_filters(filters=None, company=None):
 			programme_list = f["programme"] if isinstance(f["programme"], list) else [f["programme"]]
 			query_filters["programme"] = ["in", programme_list]
 
-		if f.get("year"):
-			query_filters["year"] = f["year"]
+		if f.get("academic_year"):
+			query_filters["academic_year"] = f["academic_year"]
 
 		if f.get("semester"):
 			query_filters["semester"] = f["semester"]

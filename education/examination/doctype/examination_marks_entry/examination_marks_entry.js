@@ -6,14 +6,44 @@ frappe.ui.form.on("Examination Marks Entry", {
 		if (!frm.doc.posting_date) {
 			frm.set_value("posting_date", frappe.datetime.now_date());
 		}
+        if (!frm.doc.company) {
+            set_company_from_user(frm);
+        }
+
+        // if (!frm.doc.academic_term){
+        //     set_current_academic_term(frm);
+        // }
+        
+        
+        
 	},
+    academic_term: function(frm) {
+        frm.set_value('semester', '');
+
+        if (frm.doc.academic_term) {
+            frappe.db.get_value(
+                'Academic Term',
+                frm.doc.academic_term,
+                'academic_session'
+            ).then(r => {
+                if (r.message) {
+                    frm.set_query('semester', () => ({
+                        filters: {
+                            session: r.message.academic_session
+                        }
+                    }));
+                }
+            });
+        }
+    },
     setup(frm){
         frm.set_query('module_enrolment_key', function () {
             return {
               filters: {
                 // program: frm.doc.programme,
                 academic_term: frm.doc.academic_term,
-                docstatus: 1,
+                college: frm.doc.college,
+                // docstatus: 1,
               },
             }
           })
@@ -36,18 +66,18 @@ frappe.ui.form.on("Examination Marks Entry", {
               },
             }
         })
-        frm.set_query('tutor', function () {
-            return {
-                query:
-                'erpnext.controllers.queries.filter_module_tutors',
-                filters: {
-                // program: frm.doc.programme,
-                college: frm.doc.college,
-                programme: frm.doc.programme,
-                module: frm.doc.module,
-                },
-            }
-        })
+        // frm.set_query('tutor', function () {
+        //     return {
+        //         query:
+        //         'erpnext.controllers.queries.filter_module_tutors',
+        //         filters: {
+        //         // program: frm.doc.programme,
+        //         college: frm.doc.college,
+        //         programme: frm.doc.programme,
+        //         module: frm.doc.module,
+        //         },
+        //     }
+        // })
         frm.set_query('assessment_component', function () {
             return {
                 query:
@@ -56,13 +86,14 @@ frappe.ui.form.on("Examination Marks Entry", {
                 college: frm.doc.college,
                 programme: frm.doc.programme,
                 module: frm.doc.module,
-                tutor: frm.doc.tutor,
                 academic_term: frm.doc.academic_term,
                 examination_assesment: 1
                 },
             }
         })
     },
+    
+        
     refresh(frm) {
         // Set module field visibility based on exam type
         this.set_module_field_visibility(frm);
@@ -179,6 +210,7 @@ frappe.ui.form.on("Examination Marks Entry", {
                         row.student = student.student;
                         row.student_name = student.student_name;
                         row.programme = student.programme;
+                        row.examination_review_link = student.review_name
                     });
                     
                     // Refresh child table
@@ -213,3 +245,32 @@ frappe.ui.form.on("Examination Marks Entry", {
         }
     }
 });
+
+function set_company_from_user(frm) {
+    // Step 1: Get Employee linked to current user
+    frappe.db.get_value('Employee', {
+        user_id: frappe.session.user
+    }, ['company','name']).then(r => {
+        if (r.message) {
+            frm.set_value('college', r.message.company);
+            frm.set_value('tutor',r.message.name);
+        } else {
+            console.log("No Employee linked to this user");
+        }
+    });
+
+}
+// function set_current_academic_term(frm) {
+
+//     frappe.db.get_value('Academic Term', {
+//         term_start_date: ['<=', frappe.datetime.now_date()],
+//         term_end_date: ['>=', frappe.datetime.now_date()]
+//     }, ['name','academic_year']).then(r => {
+//         if (r.message) {
+//             frm.set_value('academic_term', r.message.name);
+//             frm.set_value('academic_year', r.message.academic_year);
+//         } else {
+//             console.log("No Academic Term found for this date");
+//         }
+//     });
+// }

@@ -9,6 +9,18 @@ from frappe.utils import flt
 class ModuleAssessmentCriteria(Document):
 	def validate(self):
 		self.validate_assessment()
+		self.validate_duplicate()
+	
+	def validate_duplicate(self):
+		if frappe.db.exists("Module Assessment Criteria", {
+			"college": self.college,
+			"academic_term": self.academic_term,
+			"programme": self.programme,
+			"module": self.module,
+			"name": ["!=", self.name],
+			"docstatus":1
+		}):
+			frappe.throw("Record already exists for the selected combination.")
 
 	@frappe.whitelist()
 	def validate_assessment(self):

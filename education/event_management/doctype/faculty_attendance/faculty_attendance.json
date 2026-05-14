@@ -6,11 +6,12 @@
  "engine": "InnoDB",
  "field_order": [
   "section_break_lt0u",
+  "college",
   "amended_from",
   "event",
   "column_break_gsxg",
   "attendance_date",
-  "college",
+  "posting_date",
   "faculty_section",
   "faculty_attendance_list"
  ],
@@ -61,13 +62,19 @@
    "fieldtype": "Table",
    "label": "Faculty Attendance List",
    "options": "Faculty Attedance Table"
+  },
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-03-18 10:38:49.250338",
+ "modified": "2026-05-04 16:48:50.301895",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "Faculty Attendance",

@@ -7,7 +7,61 @@ from frappe import _
 
 
 class FacultyAttendance(Document):
-	pass
+	def on_submit(self):
+		self.create_attendance_entries()
+	def create_attendance_entries(self):
+		created_count = 0
+		skipped_count = 0
+
+		for row in self.faculty_attendance_list:
+
+			if not row.faculty:
+				skipped_count += 1
+				continue
+
+			existing_entry = frappe.db.exists("Attendance Entry", {
+				"student_code": row.faculty,
+				"posting_date": self.posting_date,
+				"transaction_name": self.name
+			})
+
+			if existing_entry:
+				skipped_count += 1
+				continue
+
+			try:
+				attendance_entry = frappe.get_doc({
+					"doctype": "Attendance Entry",
+					"posting_date": self.posting_date,
+					"student_code": row.faculty,
+					"student_name": row.faculty_name,
+					"attendance": row.status,
+					"college": self.college,
+					"transaction_type": "Faculty Attendance",
+					"transaction_name": self.name,
+				})
+
+				attendance_entry.insert()
+				attendance_entry.submit()
+
+				created_count += 1
+
+			except Exception as e:
+				frappe.log_error(
+					title="Attendance Entry Creation Error",
+					message=f"faculty: {row.faculty} | Error: {str(e)}"
+				)
+
+				frappe.msgprint(
+					_(f"Error creating attendance entry for student {row.faculty}: {str(e)}"),
+					indicator='orange',
+					alert=True
+				)
+
+		frappe.msgprint(
+			_(f"Created: {created_count}, Skipped: {skipped_count}"),
+			indicator='green'
+		)
 
 @frappe.whitelist()
 def create_attendance(dt, dn):

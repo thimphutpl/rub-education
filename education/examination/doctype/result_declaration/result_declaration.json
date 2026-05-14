@@ -91,7 +91,8 @@
    "fieldname": "academic_year",
    "fieldtype": "Link",
    "label": "Academic Year",
-   "options": "Academic Year"
+   "options": "Academic Year",
+   "read_only": 1
   },
   {
    "fieldname": "section_break_erfg",
@@ -100,7 +101,8 @@
   {
    "fieldname": "items",
    "fieldtype": "Table",
-   "options": "Result Declaration Item"
+   "options": "Result Declaration Item",
+   "reqd": 1
   },
   {
    "fieldname": "exam_type",
@@ -115,7 +117,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-23 14:09:03.458374",
+ "modified": "2026-05-12 23:03:50.389698",
  "modified_by": "Administrator",
  "module": "Examination",
  "name": "Result Declaration",

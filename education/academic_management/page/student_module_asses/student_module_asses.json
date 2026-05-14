@@ -4,7 +4,7 @@
  "docstatus": 0,
  "doctype": "Page",
  "idx": 0,
- "modified": "2026-04-28 01:34:31.106374",
+ "modified": "2026-05-01 16:29:34.688868",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "student-module-asses",
@@ -14,5 +14,6 @@
  "script": null,
  "standard": "Yes",
  "style": null,
- "system_page": 0
+ "system_page": 0,
+ "title": "Module Assessment Component Report"
 }

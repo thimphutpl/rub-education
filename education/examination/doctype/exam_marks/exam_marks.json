@@ -12,7 +12,8 @@
   "weightage",
   "column_break_jqwd",
   "marks_obtained",
-  "weightage_achieved"
+  "weightage_achieved",
+  "examination_review_link"
  ],
  "fields": [
   {
@@ -61,13 +62,20 @@
    "fieldtype": "Link",
    "label": "Programme",
    "options": "Programme"
+  },
+  {
+   "fieldname": "examination_review_link",
+   "fieldtype": "Link",
+   "label": "Examination Review Link",
+   "options": "Examination Review Application",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-03-25 16:52:20.440672",
+ "modified": "2026-05-08 21:05:05.399389",
  "modified_by": "Administrator",
  "module": "Examination",
  "name": "Exam Marks",

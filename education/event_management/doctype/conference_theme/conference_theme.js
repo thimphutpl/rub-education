@@ -37,6 +37,13 @@ frappe.ui.form.on("Conference Theme", {
     },
 
     refresh: function(frm) {
+         frm.add_custom_button('Start Tour', () => {
+            const tour_name = 'Conference';
+
+            frm.tour.init({ tour_name }).then(() => {
+                frm.tour.start();
+            });
+        });
         frm.fields_dict['panel_member'].grid.get_field('employee').get_query = function(doc) {
             if (!frm.doc.company) {
                 // Use Frappe message instead of alert

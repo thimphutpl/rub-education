@@ -3,7 +3,7 @@
 
 import frappe
 from frappe.model.document import Document
-from education.academic_management.page.semester_result_decl.semester_result_decl import get_results
+# from education.academic_management.page.semester_result_decl.semester_result_decl import get_results
 
 
 class ResultDeclaration(Document):
@@ -11,7 +11,7 @@ class ResultDeclaration(Document):
 		self.post_result_entry()
 
 	def validate(self):
-		self.check_doc_duplicate()
+		# self.check_doc_duplicate()
 		self.check_duplicate()
 		self.fetch_previous_marks()
 		self.calculate_total()
@@ -33,8 +33,21 @@ class ResultDeclaration(Document):
 				"student_section": self.student_section,
 				"name": ["!=", self.name]  # exclude current doc
 			}
-		):
-			frappe.throw("Duplicate Result Declaration already exists.")
+		):	
+
+			if self.exam_type != "Regular":
+				for i in self.items:
+					rd = frappe.db.sql('''
+					select 1 from `tabResult Declaration Item` rdi 
+					inner join `tabResult Declaration` rd on rdi.parent=rd.name 
+					where rd.docstatus=1 and rdi.assessment_ledger=%s;
+					''',(i.assessment_ledger))
+
+					if rd:
+						frappe.throw("Duplicate Result Declaration already exists for student {}".format(i.student))
+
+			else:	
+				frappe.throw("Duplicate Result Declaration already exists.")
 	def fetch_previous_marks(self):
 		for i in self.items:
 			if i.result_declaration:
@@ -131,11 +144,15 @@ class ResultDeclaration(Document):
 					LIMIT 1
 				""", (i.student, i.module), as_dict=True)
 
+				
+
 				# safety check
 				if not result_dcl_item:
 					continue
 
 				row_name = result_dcl_item[0].name
+
+				
 
 				# 🔹 update fields properly
 				frappe.db.set_value("Result Entry Item", row_name, {
@@ -213,6 +230,9 @@ def get_results(college, programme, academic_term, student_section, exam_type):
 	module_key_list = [m.name for m in module_enrollment_key]
 	module_list = list(set([m.module for m in module_enrollment_key]))
 
+	if not module_enrollment_key:
+		frappe.throw("Module Enrollment Key not found for the given filters")
+
 	# ---------------- ENROLLED STUDENTS ----------------
 	enrolled_students = frappe.db.sql("""
 		SELECT student, course as module, student_name
@@ -227,10 +247,26 @@ def get_results(college, programme, academic_term, student_section, exam_type):
 
 	# ---------------- MAIN LOOP ----------------
 	for i in enrolled_students:
-
 		student = i.student
 		student_name = i.student_name
 		module = i.module
+
+		if exam_type=="Regular":
+			exist= frappe.db.sql('''
+				select rd.docstatus from `tabResult Declaration Item` rdi inner join 
+				`tabResult Declaration` rd on rdi.parent=rd.name where 
+				exam_type='Regular' and programme=%s
+				and academic_term=%s 
+				and student_section=%s
+				and student=%s and module=%s 
+				and rd.docstatus=1;
+			
+			''',(programme,academic_term,student_section,student, module))
+
+			if exist:
+				continue
+
+		
 
 		# ---------------- CA ----------------
 		ca_data = frappe.db.sql("""
@@ -239,9 +275,9 @@ def get_results(college, programme, academic_term, student_section, exam_type):
 			INNER JOIN `tabAssessment Component` ac
 				ON al.assessment_component = ac.name
 			WHERE ac.assessment_component_type IN (
-				'Continuous Assessment',
-				'Continuous Assessment (Theory)'
+				'Continuous Assessment'
 			)
+			AND al.is_cancelled = 0
 			AND al.student = %s
 			AND al.module = %s
 		""", (student, module), as_dict=1)
@@ -353,11 +389,14 @@ def get_results(college, programme, academic_term, student_section, exam_type):
 		WHERE ma.college = %s
 		AND ma.academic_term = %s
 		AND ma.module IN %s
+		AND mai.docstatus=1
 
 		GROUP BY ma.module
 	""", (college, academic_term, tuple(module_list)), as_dict=1)
 
 	weightage_map = {d.module: d for d in weightage_data}
+
+	
 
 	# ---------------- FINAL PASS/FAIL CALC ----------------
 	for student, sdata in result.items():
@@ -371,6 +410,8 @@ def get_results(college, programme, academic_term, student_section, exam_type):
 			ca_perc = (r["ca"] / ca_total * 100) if ca_total else 0
 			se_perc = (r["se"] / se_total * 100) if se_total else 0
 			total_perc = ((r["ca"] + r["se"]) / (ca_total + se_total) * 100) if (ca_total + se_total) else 0
+
+			# frappe.throw(str(se_perc))
 
 			r["ca_pass"] = ca_perc >= ca_pass_percentage
 			r["se_pass"] = se_perc >= se_pass_percentage

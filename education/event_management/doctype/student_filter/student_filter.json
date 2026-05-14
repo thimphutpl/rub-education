@@ -7,7 +7,7 @@
  "engine": "InnoDB",
  "field_order": [
   "programme",
-  "year",
+  "academic_year",
   "semester"
  ],
  "fields": [
@@ -19,25 +19,25 @@
    "options": "Programme"
   },
   {
-   "fieldname": "year",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Year",
-   "options": "Fiscal Year"
-  },
-  {
    "fieldname": "semester",
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Semester",
    "options": "Semester"
+  },
+  {
+   "fieldname": "academic_year",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Year",
+   "options": "Fiscal Year"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-04-23 22:38:39.388629",
+ "modified": "2026-05-14 14:29:53.056249",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "Student Filter",

@@ -9,6 +9,7 @@
   "section_break_zawl",
   "topic_of_the_research_call",
   "research_type",
+  "funding_type",
   "grant_type",
   "grant_amount",
   "column_break_cotb",
@@ -255,7 +256,7 @@
    "label": "7.4 Protection of Environment (if relevant)."
   },
   {
-   "description": "Full disclosure of any potential conflicts of interest and plan to manage them (made in consultation with the CRC), or a statement that there are none. ",
+   "description": "Full disclosure of any potential conflicts of interest and plan to manage them (made in consultation with the CRC), or a statement that there are none. \nPlease download the form by using the link below and upload the signed CoI",
    "fieldname": "statement_on_conflict_of_interest",
    "fieldtype": "Section Break",
    "label": "8.\tStatement on potential conflict of interest "
@@ -266,7 +267,7 @@
   },
   {
    "fieldname": "conflict_of_interest_attachment",
-   "fieldtype": "Data",
+   "fieldtype": "Attach",
    "label": "Declaration of Conflict-of-Interest Form"
   },
   {
@@ -361,15 +362,19 @@
    "reqd": 1
   },
   {
+   "depends_on": "eval:doc.funding_type == \"Funded\"",
    "fieldname": "research_proposal_milestone_details",
    "fieldtype": "Table",
    "options": "Research Proposal Milestone Details"
   },
   {
    "fieldname": "topic_of_the_research_call",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
+   "in_filter": 1,
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Project Title",
+   "options": "Call for Research",
    "reqd": 1
   },
   {
@@ -392,17 +397,20 @@
    "options": "Research Type"
   },
   {
+   "depends_on": "eval:doc.funding_type == \"Funded\"",
    "fieldname": "grant_type",
    "fieldtype": "Link",
    "label": "Grant Type",
-   "options": "Grant Type",
-   "reqd": 1
+   "mandatory_depends_on": "eval:doc.funding_type == \"Funded\"",
+   "options": "Grant Type"
   },
   {
    "fetch_from": "grant_type.grant_amount",
    "fieldname": "grant_amount",
    "fieldtype": "Currency",
-   "label": "Grant Amount"
+   "label": "Grant Amount",
+   "mandatory_depends_on": "eval:doc.funding_type == \"Funded\"",
+   "read_only": 1
   },
   {
    "fieldname": "project_period",
@@ -417,7 +425,7 @@
    "label": "CRC's Comment"
   },
   {
-   "depends_on": "eval:doc.workflow_state==\"Waiting for Review\" || doc.workflow_state==\"Waiting for Approval\"",
+   "depends_on": "eval:doc.workflow_state==\"Waiting for Review\" || doc.workflow_state==\"Waiting for Approval\" || doc.workflow_state==\"Rejected\"",
    "fieldname": "crc_comment",
    "fieldtype": "Tab Break",
    "label": "CRC's Comment"
@@ -510,13 +518,20 @@
    "fieldname": "comment_for_abstract",
    "fieldtype": "Small Text",
    "label": "Comment for Abstract"
+  },
+  {
+   "fieldname": "funding_type",
+   "fieldtype": "Select",
+   "label": "Funding Type",
+   "options": "\nFunded\nNot Funded",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-05-05 11:56:18.337248",
+ "modified": "2026-05-13 08:38:45.273684",
  "modified_by": "Administrator",
  "module": "Research Management",
  "name": "Research Proposal",

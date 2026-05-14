@@ -14,45 +14,65 @@ class ExaminationReviewApplication(Document):
 		self.check_if_student_failed()
 
 	def check_duplicate(self):
-		if self.exam_review_type != 'Exam Re-Assessment':
-			duplicate = frappe.db.get_value(
+		duplicate = frappe.db.get_value(
 					"Examination Review Application",
 					{
 						"student": self.student,
-						"exam_review_type": ["in", ["Exam Recheck", "Exam Re-Evaluation"]],
-						"docstatus": 1,
+						"marks_awarded": 0,
+						"docstatus": ["!=",2],
 						"assessment_component": self.assessment_component,
-						"module": self.module
+						"module": self.module,
+						"name": ["!=", self.name]
 					},
 					"name"
 				)
-			if duplicate:
-				frappe.throw(
-							"Review Application already registered for <b>{}</b> - <b>{}</b>. "
-							"The Registered Number is <a href='/app/examination-review-application/{}' target='_blank'>{}</a>".format(
-								self.module, self.assessment_component, duplicate, duplicate
-							),
-							title="Duplicate Review Application Found"
-						)
-		else:
-			duplicate = frappe.db.get_value(
-				"Examination Review Application",
-				{
-					"student": self.student,
-					"module": self.module,
-					"exam_review_type": "Exam Re-Assessment",
-					"docstatus": 1
-				},
-				"name"
-			)
-			if duplicate:
-				frappe.throw(
-							"Re-assessment Application already registered for <b>{}</b> - <b>{}</b>. "
-							"The Registered Number is <a href='/app/examination-review-application/{}' target='_blank'>{}</a>".format(
-								self.module, self.assessment_component, duplicate, duplicate
-							),
-							title="Duplicate Review Application Found"
-						)
+		if duplicate:
+			frappe.throw(
+						"Review Application already registered for <b>{}</b> - <b>{}</b>. "
+						"The Registered Number is <a href='/app/examination-review-application/{}' target='_blank'>{}</a>".format(
+							self.module, self.assessment_component, duplicate, duplicate
+						),
+						title="Duplicate Review Application Found"
+					)
+		# if self.exam_review_type != 'Exam Re-Assessment':
+		# 	duplicate = frappe.db.get_value(
+		# 			"Examination Review Application",
+		# 			{
+		# 				"student": self.student,
+		# 				"exam_review_type": ["in", ["Exam Recheck", "Exam Re-Evaluation"]],
+		# 				"docstatus": 1,
+		# 				"assessment_component": self.assessment_component,
+		# 				"module": self.module
+		# 			},
+		# 			"name"
+		# 		)
+		# 	if duplicate:
+		# 		frappe.throw(
+		# 					"Review Application already registered for <b>{}</b> - <b>{}</b>. "
+		# 					"The Registered Number is <a href='/app/examination-review-application/{}' target='_blank'>{}</a>".format(
+		# 						self.module, self.assessment_component, duplicate, duplicate
+		# 					),
+		# 					title="Duplicate Review Application Found"
+		# 				)
+		# else:
+		# 	duplicate = frappe.db.get_value(
+		# 		"Examination Review Application",
+		# 		{
+		# 			"student": self.student,
+		# 			"module": self.module,
+		# 			"exam_review_type": "Exam Re-Assessment",
+		# 			"docstatus": 1
+		# 		},
+		# 		"name"
+		# 	)
+		# 	if duplicate:
+		# 		frappe.throw(
+		# 					"Re-assessment Application already registered for <b>{}</b> - <b>{}</b>. "
+		# 					"The Registered Number is <a href='/app/examination-review-application/{}' target='_blank'>{}</a>".format(
+		# 						self.module, self.assessment_component, duplicate, duplicate
+		# 					),
+		# 					title="Duplicate Review Application Found"
+		# 				)
 
 	def check_if_student_failed(self):
 		if self.exam_review_type == "Exam Re-Assessment":	

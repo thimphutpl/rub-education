@@ -103,6 +103,7 @@
   {
    "fieldname": "get_students",
    "fieldtype": "Button",
+   "hidden": 1,
    "label": "Get Students"
   },
   {
@@ -128,7 +129,7 @@
   }
  ],
  "links": [],
- "modified": "2026-04-02 12:05:50.618549",
+ "modified": "2026-05-14 09:48:02.474705",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student Section",

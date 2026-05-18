@@ -15,6 +15,62 @@ frappe.ui.form.on("Research Center Reporting Items", {
 				filters: { parent_task: doc.reporting_type },
 			};
 		});
+
+		frm.set_query("first_author_employee", function() {
+			return {
+				filters: {
+					company: frm.doc.college
+				}
+			};
+		}); 
+
+		frm.set_query("second_author_employee", function() {
+			return {
+				filters: {
+					company: frm.doc.college
+				}
+			};
+		});
+
+		frm.set_query("third_author_employee", function() {
+			return {
+				filters: {
+					company: frm.doc.college
+				}
+			};
+		});
+
+		frm.set_query("first_author_student", function() {
+			return {
+				filters: {
+					company: frm.doc.college
+				}
+			};
+		}); 
+
+		frm.set_query("second_author_student", function() {
+			return {
+				filters: {
+					company: frm.doc.college
+				}
+			};
+		});
+
+		frm.set_query("third_author_student", function() {
+			return {
+				filters: {
+					company: frm.doc.college
+				}
+			};
+		});
+
+		// frm.set_query("account", "accounts", function() {
+		// 	return {
+		// 		filters: {
+		// 			company: frm.doc.company
+		// 		}
+		// 	};
+		// });
 	},
     sub_reporting_type(frm) {
 		// Clear previous mandatory settings

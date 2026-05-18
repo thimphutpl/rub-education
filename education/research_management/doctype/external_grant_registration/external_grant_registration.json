@@ -1,22 +1,23 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:registration_number",
+ "autoname": "field:abbr",
  "creation": "2026-05-04 12:24:00.932362",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "company",
   "title_of_the_project",
   "registration_number",
-  "registration_date",
   "column_break_nusa",
+  "registration_date",
   "project_start_date",
   "project_end_date",
   "section_break_eidj",
   "funding_agency",
-  "funding_amount",
+  "abbr",
   "column_break_egin",
-  "ovccrc_approval_date",
+  "funding_amount",
   "section_break_cejo",
   "investigator_type",
   "column_break_jbdf",
@@ -24,7 +25,9 @@
   "pi_name",
   "approval_detail_section",
   "approved_by_chair_crcovc",
+  "approval_name",
   "column_break_wona",
+  "ovccrc_approval_date",
   "amended_from",
   "attachments_section",
   "attach_dmbe"
@@ -40,16 +43,15 @@
   {
    "fieldname": "registration_number",
    "fieldtype": "Data",
-   "in_list_view": 1,
+   "hidden": 1,
    "label": "Registration Number",
-   "reqd": 1,
    "unique": 1
   },
   {
    "fieldname": "registration_date",
    "fieldtype": "Date",
    "in_list_view": 1,
-   "label": "Registration Date",
+   "label": "Posting Date",
    "reqd": 1
   },
   {
@@ -101,11 +103,11 @@
    "label": "Approval Detail"
   },
   {
+   "fetch_from": "company.crc_approval",
    "fieldname": "approved_by_chair_crcovc",
    "fieldtype": "Link",
    "label": "Approved by Chair CRC/OVC",
-   "options": "Employee",
-   "reqd": 1
+   "options": "Employee"
   },
   {
    "fieldname": "column_break_wona",
@@ -157,13 +159,33 @@
    "description": "Signed MoU/Letter from the Cabinet Secretariat, if any",
    "fieldname": "attach_dmbe",
    "fieldtype": "Attach"
+  },
+  {
+   "fieldname": "abbr",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "abbr",
+   "unique": 1
+  },
+  {
+   "fetch_from": "approved_by_chair_crcovc.employee_name",
+   "fieldname": "approval_name",
+   "fieldtype": "Data",
+   "label": "Approval Name"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-05-05 12:02:27.419808",
+ "modified": "2026-05-16 17:43:57.430826",
  "modified_by": "Administrator",
  "module": "Research Management",
  "name": "External Grant Registration",

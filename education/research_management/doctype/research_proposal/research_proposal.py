@@ -17,7 +17,7 @@ class ResearchProposal(Document):
     def create_research_registration(self):
         """Create a Research Registration document from this proposal"""
         
-        # Generate the name based on grant_type/YYYY/MM/serial_no
+        # Generate the name based on abbr/YYYY/MM/serial_no
         registration_number = self.generate_registration_name()
         
         # Create Research Registration document
@@ -51,14 +51,14 @@ class ResearchProposal(Document):
     
     def generate_registration_name(self):
         """
-        Generate registration name in format: grant_type/YYYY/MM/serial_no
+        Generate registration name in format: abbr/YYYY/MM/serial_no
         Example: STUDENT/2025/05/001
         """
         from frappe.utils import getdate
         
-        grant_type = self.grant_type or "GEN"
+        abbr = self.abbr or "RP"
         # Remove spaces and special characters, convert to uppercase
-        grant_type = grant_type.upper().replace(" ", "_")
+        abbr = abbr.upper().replace(" ", "_")
         
         current_date = getdate()
         year = current_date.strftime("%Y")
@@ -71,7 +71,7 @@ class ResearchProposal(Document):
             WHERE registration_number LIKE %s 
             ORDER BY creation DESC 
             LIMIT 1
-        """, (f"{grant_type}/{year}/{month}/%",), as_dict=True)
+        """, (f"{abbr}/{year}/{month}/%",), as_dict=True)
         
         if last_registration:
             # Extract serial number from last registration name
@@ -83,7 +83,7 @@ class ResearchProposal(Document):
         # Format serial number as 3-digit (001, 002, etc.)
         serial_no = str(new_serial).zfill(3)
         
-        return f"{grant_type}/{year}/{month}/{serial_no}"
+        return f"{abbr}/{year}/{month}/{serial_no}"
 
     def validate(self):
         self.validate_submission_deadline()

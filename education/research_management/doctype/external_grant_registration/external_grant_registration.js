@@ -31,6 +31,20 @@ frappe.ui.form.on("External Grant Registration", {
         // Fetch name based on researcher type
         // fetch_researcher_name(frm, cdt, cdn, row.type, row.principal_investigator);
         fetch_researcher_details(frm, cdt, cdn, row.investigator_type, row.principal_investigator);
+    },
+
+    company: function(frm) {
+        if (frm.doc.company) {
+            frappe.db.get_value('Company', frm.doc.company, 'crc_approval', (r) => {
+                if (r && r.crc_approval) {
+                    frm.set_value('approved_by_chair_crcovc', r.crc_approval);
+                } else {
+                    frm.set_value('approved_by_chair_crcovc', '');
+                }
+            });
+        } else {
+            frm.set_value('approved_by_chair_crcovc', '');
+        }
     }
 });
 

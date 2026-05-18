@@ -7,9 +7,10 @@
  "engine": "InnoDB",
  "field_order": [
   "grant_type",
-  "grant_amount",
+  "abbr",
   "column_break_hgke",
-  "research_category"
+  "research_category",
+  "grant_amount"
  ],
  "fields": [
   {
@@ -36,12 +37,18 @@
    "label": "Research Category",
    "options": "Research Category",
    "reqd": 1
+  },
+  {
+   "fieldname": "abbr",
+   "fieldtype": "Data",
+   "label": "Abbr",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-05 14:51:49.111186",
+ "modified": "2026-05-16 15:22:35.855598",
  "modified_by": "Administrator",
  "module": "Research Management",
  "name": "Grant Type",

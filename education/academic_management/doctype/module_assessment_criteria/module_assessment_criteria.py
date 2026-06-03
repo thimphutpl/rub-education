@@ -10,6 +10,15 @@ class ModuleAssessmentCriteria(Document):
 	def validate(self):
 		self.validate_assessment()
 		self.validate_duplicate()
+		self.check_exam_required()
+
+	def check_exam_required(self):
+		if self.semester_exam_not_required==1:
+			for i in self.assessment_item:
+				if i.assessment_component_type == "Semester Exam":
+					frappe.throw(
+						f"Cannot have Semester Exam when 'No Exam Required' is ticked in module. Row: {i.idx}"
+					)
 	
 	def validate_duplicate(self):
 		if frappe.db.exists("Module Assessment Criteria", {

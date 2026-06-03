@@ -15,6 +15,7 @@
   "module_code",
   "module_credit",
   "multi_college_module",
+  "semester_exam_not_required",
   "sb_colleges",
   "colleges",
   "more_details_section",
@@ -109,13 +110,20 @@
    "default": "0",
    "fieldname": "multi_college_module",
    "fieldtype": "Check",
+   "hidden": 1,
    "label": "Multi College Module"
+  },
+  {
+   "default": "0",
+   "fieldname": "semester_exam_not_required",
+   "fieldtype": "Check",
+   "label": "Semester Exam Not Required"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-27 15:39:53.339100",
+ "modified": "2026-06-02 17:29:11.167283",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Module",

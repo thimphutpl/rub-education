@@ -45,6 +45,8 @@
   "student_mobile_number",
   "gender",
   "nationality",
+  "promotion_history_section",
+  "promotion_history",
   "address_tab",
   "section_break_22",
   "country",
@@ -535,7 +537,7 @@
    "fieldname": "academic_year",
    "fieldtype": "Link",
    "label": "Academic Year",
-   "options": "Fiscal Year"
+   "options": "Academic Year"
   },
   {
    "default": "0",
@@ -543,6 +545,16 @@
    "fieldname": "create_user_permission",
    "fieldtype": "Check",
    "label": "Create User Permission "
+  },
+  {
+   "fieldname": "promotion_history_section",
+   "fieldtype": "Section Break",
+   "label": "Promotion History"
+  },
+  {
+   "fieldname": "promotion_history",
+   "fieldtype": "Table",
+   "options": "Student Promotion History"
   }
  ],
  "image_field": "image",
@@ -583,7 +595,7 @@
    "link_fieldname": "student"
   }
  ],
- "modified": "2026-04-28 23:19:01.652557",
+ "modified": "2026-06-02 15:03:13.585211",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student",

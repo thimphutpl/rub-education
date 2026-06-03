@@ -14,6 +14,7 @@
   "programme_master",
   "programme_duration_section",
   "from_date",
+  "programme_year",
   "column_break_znrv",
   "to_date",
   "sb_colleges",
@@ -62,7 +63,7 @@
   {
    "fieldname": "programme_duration_section",
    "fieldtype": "Section Break",
-   "label": "Programme Duration"
+   "label": "<u><b>Programme Duration<b></b></b></u>"
   },
   {
    "allow_on_submit": 1,
@@ -87,7 +88,7 @@
   {
    "fieldname": "sb_colleges",
    "fieldtype": "Section Break",
-   "label": "Colleges"
+   "label": "<u><b>Colleges</b></u>"
   },
   {
    "allow_on_submit": 1,
@@ -137,7 +138,7 @@
   {
    "fieldname": "section_break_slol",
    "fieldtype": "Section Break",
-   "label": "Attachments"
+   "label": "<u><b>Attachments</b></u>"
   },
   {
    "allow_on_submit": 1,
@@ -149,7 +150,7 @@
    "collapsible": 1,
    "fieldname": "sb_more_info",
    "fieldtype": "Section Break",
-   "label": "More Information"
+   "label": "<u><b>More Information</b></u>"
   },
   {
    "allow_on_submit": 1,
@@ -193,13 +194,20 @@
    "fieldtype": "Data",
    "hidden": 1,
    "label": "Programme Name(For Display)"
+  },
+  {
+   "fieldname": "programme_year",
+   "fieldtype": "Link",
+   "label": "Programme Duration (In Years)",
+   "options": "Programme Year",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-28 21:08:02.112597",
+ "modified": "2026-05-15 10:24:23.633884",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Programme",

@@ -12,17 +12,17 @@ frappe.ui.form.on('Student Promotion Entry', {
 	},
 
 	refresh: function(frm) {
-		if (frm.doc.docstatus == 0) {
-			if(!frm.is_new()) {
-				frm.page.clear_primary_action();
-				frm.add_custom_button(__("Get Students"),
-					function() {
-						frm.events.get_student_details(frm);
-					}
-				).toggleClass('btn-primary', !(frm.doc.employees || []).length);
-			}
-			if ((frm.doc.employees || []).length) {
-				frm.page.set_primary_action(__('Create Student Promotion'), () => {
+		if (frm.doc.docstatus == 0 && !frm.is_new()) {
+			// if(!frm.is_new()) {
+			// 	frm.page.clear_primary_action();
+			// 	frm.add_custom_button(__("Get Students"),
+			// 		function() {
+			// 			frm.events.get_student_details(frm);
+			// 		}
+			// 	).toggleClass('btn-primary', !(frm.doc.employees || []).length);
+			// }
+			if ((frm.doc.students || []).length) {
+				frm.page.set_primary_action(__('Create Student Promotions'), () => {
 					frm.save('Submit').then(()=>{
 						frm.page.clear_primary_action();
 						frm.refresh();
@@ -37,7 +37,7 @@ frappe.ui.form.on('Student Promotion Entry', {
 		}
 	},
 
-	get_student_details: function (frm) {
+	get_students: function (frm) {
 		return frappe.call({
 			doc: frm.doc,
 			method: 'fill_student_details',
@@ -47,7 +47,6 @@ frappe.ui.form.on('Student Promotion Entry', {
 					// 	method: "check_increment_cycle",
 					// 	doc: frm.doc
 					// })
-					frm.save();
 					frm.refresh();
 				}
 			}
@@ -68,7 +67,7 @@ frappe.ui.form.on('Student Promotion Entry', {
 	add_context_buttons: function(frm) {
 		if(frm.doc.promotions_created && !frm.doc.promotions_submitted) {
 			frm.add_custom_button(__("Submit Employee Promotion"), function() {
-				submit_employee_promotions(frm);
+				submit_student_promotions(frm);
 			}).addClass("btn-primary");
 		}
 	},
@@ -104,16 +103,16 @@ frappe.ui.form.on('Student Promotion Entry', {
 });
 // Submit salary slips
 
-const submit_employee_promotions = function (frm) {
-	frappe.confirm(__('This will submit Employee Promotion. Do you want to proceed?'),
+const submit_student_promotions = function (frm) {
+	frappe.confirm(__('This will submit Student Promotion. Do you want to proceed?'),
 		function() {
 			frappe.call({
-				method: 'submit_employee_promotions',
+				method: 'submit_student_promotions',
 				args: {},
 				callback: function() {frm.events.refresh(frm);},
 				doc: frm.doc,
 				freeze: true,
-				freeze_message: 'Submitting Employee Promotions...'
+				freeze_message: 'Submitting Student Promotions...'
 			});
 		},
 		function() {

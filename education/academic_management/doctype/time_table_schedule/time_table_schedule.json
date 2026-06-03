@@ -104,6 +104,7 @@
    "label": "<u><b>Schedule Details<b><u></u></b></b></u>"
   },
   {
+   "allow_bulk_edit": 1,
    "fieldname": "items",
    "fieldtype": "Table",
    "options": "Time Table Schedule Item",
@@ -138,7 +139,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-28 15:17:39.130028",
+ "modified": "2026-06-02 16:42:41.083784",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Time Table Schedule",

@@ -20,18 +20,16 @@ class StudentPromotionEntry(Document):
 				return
 
 		# check if salary increments were manually submitted
-		entries = frappe.db.count("Student Promotion", {'student_promotion_entry': self.name, 'docstatus': 1}, ['name'])
+		entries = frappe.db.count("Student Promotion", {'promotion_entry': self.name, 'docstatus': 1}, ['name'])
 		if cint(entries) == len(self.students):
-				self.set_onload("submitted_ep", True)
+				self.set_onload("submitted_sp", True)
 
 	def validate(self):
 		# self.set_month_dates()
 		self.check_duplicates()
 
 	def on_submit(self):
-		if self.month_name != "July":
-			self.check_increment()
-		self.create_employee_promotions()
+		self.create_student_promotions()
 
 
 	def on_cancel(self):
@@ -42,87 +40,54 @@ class StudentPromotionEntry(Document):
 	def check_duplicates(self):
 		pass
 
-	def get_emp_list(self, process_type=None):
+	def get_std_list(self, process_type=None):
 		# self.set_month_dates()
 
 		cond = self.get_filter_condition()
 		# cond += self.get_joining_relieving_condition()
 
-		if not self.fiscal_year or not self.month_name:
-			frappe.throw("Please select Fiscal Year and Month.")
+		if not self.academic_term:
+			frappe.throw("Please select Academic Term")
 
-		if self.month_name == "January":
-			pe_date = self.fiscal_year+"-01-01"
-		elif self.month_name == "July":
-			pe_date = self.fiscal_year+"-07-01"
-		query = """select t1.name as employee, t1.employee_name, t1.department, t1.designation, t1.grade as employee_grade 
-					from `tabEmployee` t1 
-					where t1.status = 'Active' 
-					and t1.employment_type not in ('Contract','Probation') 
-					and t1.promotion_due_date = "{}" 
-					and t1.promotion_cycle = "{}" 
-					and exists(select 1
-							from `tabSalary Structure` t2
-							where t2.employee = t1.name
-							and t2.is_active = "Yes")
+		# if self.month_name == "January":
+		# 	pe_date = self.fiscal_year+"-01-01"
+		# elif self.month_name == "July":
+		# 	pe_date = self.fiscal_year+"-07-01"
+
+		query = """select t1.name as student, t1.student_name, t1.company as college, t1.programme, t1.year, t1.semester
+					from `tabStudent` t1 
+					where t1.status = 'Active'
 					{} 
-					order by t1.branch, t1.name """.format(pe_date, self.month_name, cond)
-		# frappe.msgprint(query)
-		emp_list = frappe.db.sql(query, as_dict=True)
-		emp = []
-		# frappe.throw(query)
-		# emp_list = frappe.db.sql("""
-		# 	select t1.name as employee, t1.employee_name, t1.department, t1.designation, t1.grade as employee_grade
-		# 	from `tabEmployee` t1
-		# 	where t1.status = 'Active' and
-		# 	employment_type not in ('Contract','Probation')
-		# 	and t1.promotion_due_date = '{}'
-		# 	and t1.promotion_cycle = '{}'
-		# 	{}
-		# 	order by t1.branch, t1.name
-		# """.format(pe_date, self.month_name, cond), as_dict=True)
-		# frappe.throw(emp_list)
-		for e in emp_list:
-			latest = frappe.db.sql("""
-					select name from `tabEmployee Internal Work History` where parent = '{0}' and promotion_due_date is not NULL order by idx desc limit 1
-                """.format(e.employee), as_dict = True)
-			if latest:
-				is_eligible = frappe.db.sql("""
-					select 1
-					from `tabEmployee Internal Work History` t3, `tabEmployee` t1
-					where t3.parent = t1.name
-					and t3.promotion_due_date = '{2}'
-					and t1.name = '{0}' and t3.name = '{1}'
-                                """.format(e.employee, latest[0].name, pe_date))
-				# frappe.msgprint(str(is_eligible))
-				# frappe.msgprint(str(e.employee)+" "+str(is_eligible)+" grade:"+str(e.employee_grade))
-				if is_eligible:
-					salary_structure = frappe.db.sql("select sd.amount as amount, ss.employee_grade from `tabSalary Detail` sd, `tabSalary Structure` ss where sd.parent = ss.name and ss.employee = '{0}' and ss.is_active = 'Yes' and sd.salary_component = 'Basic Pay'".format(e.employee), as_dict = True)
+					order by t1.programme, t1.name """.format(cond)
 
-					new_grade, new_increment, new_basic_pay = self.get_additional_details(e.employee, salary_structure[0].amount)
-					emp.append({"employee":e.employee, "employee_name": e.employee_name, "department": e.department, "designation": e.designation, "employee_grade": e.employee_grade, "current_basic_pay": salary_structure[0].amount, "new_increment": new_increment, "new_basic_pay": new_basic_pay, "new_employee_grade": new_grade})
+
+		std_list = frappe.db.sql(query, as_dict=True)
+		std = []
+
+		for s in std_list:
+			is_eligible = frappe.db.sql("""
+				select 1
+				from `tabResult Entry`
+				where student = %s
+				and status = "Passed"
+				and academic_term = %s
+				""", (s.student, self.academic_term))
+			if len(is_eligible) > 0:
+				is_eligible = 1
 			else:
-				# is_eligible = frappe.db.sql("""
-				# 	select 1 from
-				# 	`tabEmployee` t1
-				# 	where ifnull(TIMESTAMPDIFF(YEAR, t1.date_of_joining, CURDATE()),0) >= (select next_promotion_years from `tabEmployee Grade` g where g.name = t1.grade)
-                #     and t1.name = '{}'            
-                #             """.format(e.employee))
-				is_eligible = frappe.db.sql("""
-					select 1 from
-					`tabEmployee` t1
-					where t1.promotion_due_date = '{}'
-                    and t1.name = '{}'            
-                            """.format(pe_date, e.employee))
-				if is_eligible:
-					salary_structure = frappe.db.sql("select sd.amount as amount,  ss.employee_grade from `tabSalary Detail` sd, `tabSalary Structure` ss where sd.parent = ss.name and ss.employee = '{0}' and ss.is_active = 'Yes' and sd.salary_component = 'Basic Pay'".format(e.employee), as_dict = True)
-
-					new_grade, new_increment, new_basic_pay, new_promot_date = self.get_additional_details(e.employee, salary_structure[0].amount)
-					emp.append({"employee":e.employee, "employee_name": e.employee_name, "department": e.department, "designation": e.designation, "employee_grade": e.employee_grade, "current_basic_pay": salary_structure[0].amount, "new_increment": new_increment,"new_basic_pay": new_basic_pay, "new_employee_grade": new_grade, "next_promotion_date":new_promot_date})		
-		# it = iter(emp)
-		# emp_dict = dict(zip(it, it))
-		# frappe.msgprint(str(emp))
-		return emp
+				is_eligible = 0
+			# frappe.msgprint(str(is_eligible))
+			# frappe.msgprint(str(e.employee)+" "+str(is_eligible)+" grade:"+str(e.employee_grade))
+			if is_eligible == 1:
+				new_semester = frappe.db.get_value("Semester", s.semester, "promote_to_semester")
+				new_year = frappe.db.get_value("Semester", new_semester, "year")
+				programme_year = frappe.db.get_value("Programme", s.programme, "programme_year")
+				if flt(new_year) > flt(programme_year):
+					new_status = "Graduated"
+				else:
+					new_status = "Promoted"
+				std.append({"student":s.student, "student_name": s.student_name, "college": s.college, "current_programme": s.programme, "new_programme": s.programme,  "current_year": s.year, "current_semester": s.semester, "new_year": new_year, "new_semester": new_semester, "status": new_status})
+		return std
 
 	def get_additional_details(self, employee, basic_pay):
 		emp = frappe.get_doc("Employee", employee)
@@ -182,19 +147,20 @@ class StudentPromotionEntry(Document):
 		self.check_mandatory()
 
 		cond = ''
-		
-		for f in ['company', 'branch', 'department', 'designation', 'employee']:
+		semesters = []
+		if not self.academic_session:
+			frappe.throw("Academic Session cannot be blank.")
+
+		for s in frappe.db.sql("select name from `tabSemester` where session = %s", (self.academic_session), as_dict=1):
+			semesters.append(s.name)
+		for f in ['college']:
 			if self.get(f):
-				cond += " and t1." + f + " = '" + self.get(f).replace("'", "\'") + "'"
-
+				cond += " and t1.company = '" + self.get(f).replace("'", "\'") + "'"
+		if self.get("academic_term") and semesters:
+			semester_list = ", ".join(f"'{s}'" for s in semesters)
+			cond += f""" and t1.semester in ({semester_list})"""
+		# frappe.throw(str(cond))
 		return cond
-
-	# def get_joining_relieving_condition(self):
-	# 	cond = """
-	# 		and ifnull(t1.date_of_joining, '0000-00-00') <= '%(end_date)s'
-	# 		and ifnull(t1.relieving_date, '2199-12-31') >= '%(start_date)s'
-	# 	""" % {"start_date": self.start_date, "end_date": self.end_date}
-	# 	return cond
 
 	# following method created by SHIV on 2020/10/20
 	
@@ -211,7 +177,7 @@ class StudentPromotionEntry(Document):
 
 	def check_mandatory(self):
 		# following line is replaced by subsequent by SHIV on 2020/10/20
-		for fieldname in ['company', 'fiscal_year']:
+		for fieldname in ['college', 'academic_term']:
 			if not self.get(fieldname):
 				frappe.throw(_("Please set {0}").format(self.meta.get_label(fieldname)))
 
@@ -226,21 +192,20 @@ class StudentPromotionEntry(Document):
 
 		if std_list:
 			args = frappe._dict({
-				"company": self.college,
+				"college": self.college,
 				"posting_date": self.posting_date,
-				"fiscal_year": self.fiscal_year,
-				"month": self.month_name,
+				"academic_term": self.academic_term,
 				"promotion_entry": self.name
 			})
-			if len(emp_list) > 500:
-				frappe.enqueue(create_student_promotion_for_students, timeout=600, employees=emp_list, args=args)
+			if len(std_list) > 500:
+				frappe.enqueue(create_student_promotion_for_students, timeout=600, employees=std_list, args=args)
 			else:
-				create_student_promotion_for_student(emp_list, args=args, publish_progress=False)
+				create_student_promotion_for_students(std_list, args=args, publish_progress=False)
 				# since this method is called via frm.call this doc needs to be updated manually
 				self.reload()
 
 	@frappe.whitelist()
-	def get_employee_promotion_list(self, ep_status, as_dict=False):
+	def get_student_promotion_list(self, sp_status, as_dict=False):
 		"""
 			Returns list of employee promotions based on selected criteria
 		"""
@@ -251,48 +216,48 @@ class StudentPromotionEntry(Document):
 		# 	and t1.promotion_entry = '{}'
 		# """.format(self.month_name, ep_status, cond, self.name)
 		# frappe.throw(query)
-		ep_list = frappe.db.sql("""
-			select t2.name from `tabEmployee Promotion` t2, `tabEmployee` t1
-			where t2.employee = t1.name and t1.promotion_cycle = %s and t2.docstatus = %s %s
+		sp_list = frappe.db.sql("""
+			select t2.name from `tabStudent Promotion` t2, `tabStudent` t1
+			where t2.student = t1.name and  t2.docstatus = 0 %s
 			and t2.promotion_entry = %s
-		""" % ('%s', '%s', cond, '%s'), (self.month_name, ep_status, self.name), as_dict=as_dict)
-		return ep_list
+		""" % (cond, '%s'), (self.name), as_dict=as_dict)
+		return sp_list
 
 	@frappe.whitelist()
-	def remove_employee_promotions(self):
+	def remove_studnet_promotions(self):
 		self.check_permission('write')
-		ep_list = self.get_employee_promotion_list(ep_status=0)
-		if len(ep_list) > 500:
-			frappe.enqueue(remove_employee_promotions_for_employees, timeout=600, promotion_entry=self, employee_promotions=ep_list)
+		sp_list = self.get_student_promotion_list(sp_status=0)
+		if len(sp_list) > 500:
+			frappe.enqueue(remove_student_promotions_for_students, timeout=600, promotion_entry=self, student_promotions=sp_list)
 		else:
-			remove_employee_promotions_for_employees(self, ep_list, publish_progress=False)
+			remove_student_promotions_for_students(self, sp_list, publish_progress=False)
 
 	@frappe.whitelist()
-	def submit_employee_promotions(self):
+	def submit_student_promotions(self):
 		self.check_permission('write')
-		ep_list = self.get_employee_promotion_list(ep_status=0)
-		if len(ep_list) > 500:
-			frappe.enqueue(submit_employee_promotions_for_employees, timeout=600, promotion_entry=self, employee_promotions=ep_list)
+		sp_list = self.get_student_promotion_list(sp_status=0)
+		if len(sp_list) > 500:
+			frappe.enqueue(submit_student_promotions_for_students, timeout=600, promotion_entry=self, student_promotions=sp_list)
 		else:
-			submit_employee_promotions_for_employees(self, ep_list, publish_progress=False)
+			submit_student_promotions_for_students(self, sp_list, publish_progress=False)
 
 	# def email_salary_slip(self, submitted_ss):
 	# 	if frappe.db.get_single_value("HR Settings", "email_salary_slip_to_employee"):
 	# 		for ss in submitted_ss:
 	# 			ss.email_salary_slip()
 
-def remove_employee_promotions_for_employees(promotion_entry, employee_promotions, publish_progress=True):
-	deleted_ep = []
-	not_deleted_ep = []
+def remove_student_promotions_for_employees(promotion_entry, employee_promotions, publish_progress=True):
+	deleted_sp = []
+	not_deleted_sp = []
 	frappe.flags.via_promotion_entry = True
 
 	count = 0
-	for ep in employee_promotions:
+	for sp in student_promotions:
 		try:
-			frappe.delete_doc("Employee Promotion",ep[0])
-			deleted_ep.append(ep[0])
+			frappe.delete_doc("Student Promotion",ep[0])
+			deleted_sp.append(sp[0])
 		except frappe.ValidationError:
-			not_deleted_ep.append(ep[0])
+			not_deleted_sp.append(sp[0])
 
 		count += 1
 		# if publish_progress:
@@ -307,146 +272,110 @@ def remove_employee_promotions_for_employees(promotion_entry, employee_promotion
 	# 	frappe.msgprint(_("Could not submit some Employee Promotions. List: "+str(not_deleted_ep)))
 
 def create_student_promotion_for_students(students, args, publish_progress=True):
-	student_promotion_exists_for = get_existing_student_promotions(employees, args)
+	student_promotion_exists_for = get_existing_student_promotions(students, args)
 	count=0
 	promotion_entry = frappe.get_doc("Student Promotion Entry", args.promotion_entry)
 	# frappe.msgprint(str(args.promotion_entry)+" "+str(frappe.get_doc("Promotion Entry", str(args.promotion_entry))))
 
-	for emp in promotion_entry.get("students"):
-		if emp.employee not in employee_promotion_exists_for:
+	for std in promotion_entry.get("students"):
+		if std.student not in student_promotion_exists_for:
 			args.update({
-				"doctype": "Employee Promotion",
-				"employee": emp.employee
+				"doctype": "Student Promotion",
+				"student": std.student
 			})
-			ep = frappe.get_doc(args)
+			sp = frappe.get_doc(args)
+			#update paramters-------------
+			current_semester = frappe.db.get_value("Student", std.student, "semester")
+			new_semester = frappe.db.get_value("Semester", frappe.db.get_value("Student", std.student, "semester"), "promote_to_semester")
+			current_status = frappe.db.get_value("Student", std.student, "status")
+			current_year = frappe.db.get_value("Student", std.student, "year")
+			new_year = frappe.db.get_value("Semester", new_semester, "year")
+			programme_year = frappe.db.get_value("Programme", frappe.db.get_value("Student", std.student, "programme"), "programme_year")
+			#update paramters end---------
 			rows = [
 					{
-						'property': 'Grade',
-						'current': emp.employee_grade,
-						'new': frappe.db.get_value("Employee Grade", emp.employee_grade, "promotion_grade") or "N/A",
-						'fieldname': 'grade'
+						'property': 'Semester',
+						'current': frappe.db.get_value("Student", std.student, "semester"),
+						'new': std.new_semester if programme_year >= std.new_year else std.current_semester,
+						'fieldname': 'semester'
 					},
 					{
-						'property': 'Promotion Due Date',
-						'current': frappe.db.get_value("Employee", emp.employee, "promotion_due_date"),
-						'new': emp.next_promotion_date,
-						'fieldname': 'promotion_due_date'
+						'property': 'Status',
+						'current': current_status,
+						'new': "Graduated" if flt(std.new_year) > flt(programme_year) else current_status,
+						'fieldname': 'status'
+					},
+					{
+						'property': 'Year',
+						'current': std.current_year,
+						'new': std.new_year if programme_year >= std.new_year else std.cuurent_year,
+						'fieldname': 'grade'
 					}
 				]
-			if emp.new_designation:
-				rows.append({
-					'property': 'Designation',
-					'current': emp.designation,
-					'new': emp.new_designation,
-					'fieldname': 'designation'
-				})
 			for row in rows:
-				ep.append("promotion_details", row)
+				sp.append("promotion_details", row)
 
-			# if emp.new_designation:
-			# 	designation_row = ep.append("promotion_details")
-			# 	designation_row.property = "Designation"
-			# 	designation_row.current = emp.designation
-			# 	designation_row.new = emp.new_designation
-			# 	designation_row.fieldname = "designation"
-
-			# row = ep.append("promotion_details")
-			# row.property = 'Grade'
-			# row.current = emp.employee_grade
-			# row.new = frappe.db.get_value("Employee Grade", emp.employee_grade, "promotion_grade")
-			# row.fieldname = 'grade'
-			# if emp.new_designation:
-			# 	row_two = ep.append("promotion_details")
-			# 	row_two.property = "Designation"
-			# 	row_two.current = emp.designation
-			# 	row_two.new = emp.new_designation
-			# 	row_two.fieldname = "designation"
-
-			# -----------------------Salary Details for Employee Promotion/Salary Fixation----------------#
-			old_lower_limit = frappe.db.get_value("Employee Grade", emp.employee_grade, "lower_limit")
-			old_increment = frappe.db.get_value("Employee Grade", emp.employee_grade, "increment_value")
-			old_upper_limit = frappe.db.get_value("Employee Grade", emp.employee_grade, "upper_limit")
-			new_grade = frappe.db.get_value("Employee Grade", emp.employee_grade, "promotion_grade")
-			new_lower_limit = frappe.db.get_value("Employee Grade", new_grade, "lower_limit")
-			new_increment = frappe.db.get_value("Employee Grade", new_grade, "increment_value")
-			new_upper_limit = frappe.db.get_value("Employee Grade", new_grade, "upper_limit")
-			ep.current_lower_limit = old_lower_limit
-			ep.current_increment = old_increment
-			ep.current_upper_limit = old_upper_limit
-			ep.new_lower_limit = new_lower_limit
-			ep.new_increment = new_increment
-			ep.new_upper_limit = new_upper_limit
-			salary_structure = frappe.db.sql("select sd.amount as amount from `tabSalary Detail` sd, `tabSalary Structure` ss where sd.parent = ss.name and ss.employee = '{0}' and ss.is_active = 'Yes' and sd.salary_component = 'Basic Pay'".format(emp.employee), as_dict = True)
-			ep.current_basic_pay = salary_structure[0].amount
-			# bp_diff = flt(salary_structure[0].amount) - flt(new_lower_limit)
-			# new_increment_div = flt(bp_diff) / flt(new_increment)
-			# if new_increment_div < 0:
-			# 	new_increment_div = -1 * new_increment_div
-			# new_increment_div = math.floor(new_increment_div) + 2
-			# new_basic_multiple = new_increment_div * new_increment
-			# amount = new_basic_multiple + new_lower_limit
-			# if int(salary_structure[0].amount) <= new_lower_limit:
-			# 	amount = new_lower_limit + new_increment
-			# elif int(salary_structure[0].amount) > new_lower_limit:
-			# 	amount = int(salary_structure[0].amount)+new_increment
-			ep.new_basic_pay = emp.new_basic_pay
+			sp.current_programme = std.current_programme
+			sp.new_programme = std.new_programme
+			sp.semester = std.current_semester
+			sp.new_semester = std.new_semester
+			sp.year = std.current_year
+			sp.new_year = std.new_year
+			sp.status = std.status
 			#----------------------------------End--------------------------------------------------------#
 
-			if args.month == "January":
-				ep.promotion_date = args.fiscal_year+"-01-01"
-			elif args.month == "July":
-				ep.promotion_date = args.fiscal_year+"-07-01"
-			ep.insert()
+			sp.promotion_date = promotion_entry.posting_date
+			sp.insert()
 			count+=1
 
-			ied = frappe.get_doc("Promotion Employee Detail", emp.name)
-			ied.db_set("employee_promotion", ep.name)
+			ied = frappe.get_doc("Student Promotion Detail", std.name)
+			ied.db_set("student_promotion", sp.name)
 			if publish_progress:
-				description = " Processing {}: ".format(ss[0]) + "["+str(count)+"/"+str(len(employees))+"]"
-				frappe.publish_progress(count*100/len(set(employees) - set(employee_promotion_exists_for)),
-					title = _("Creating Employee Promotions..."), description=description)
+				description = " Processing {}: ".format(ss[0]) + "["+str(count)+"/"+str(len(students))+"]"
+				frappe.publish_progress(count*100/len(set(students) - set(student_promotion_exists_for)),
+					title = _("Creating Student Promotions..."), description=description)
 
 	promotion_entry.db_set("promotions_created", 1)
 	promotion_entry.notify_update()
 
-def get_existing_employee_promotions(employees, args):
+def get_existing_student_promotions(students, args):
 	return frappe.db.sql_list("""
-		select distinct employee from `tabEmployee Promotion`
-		where docstatus!= 2 and company = %s
-			and fiscal_year = %s and month = %s
-			and employee in (%s)
-	""" % ('%s', '%s', '%s', ', '.join(['%s']*len(employees))),
-		[args.company, args.fiscal_year, args.month] + employees)
+		select distinct student from `tabStudent Promotion`
+		where docstatus!= 2 and college = %s
+			and academic_term = %s
+			and student in (%s)
+	""" % ('%s', '%s', ', '.join(['%s']*len(students))),
+		[args.company, args.academic_term] + students)
 
-def submit_employee_promotions_for_employees(promotion_entry, employee_promotions, publish_progress=True):
-	submitted_ep = []
-	not_submitted_ep = []
+def submit_student_promotions_for_students(promotion_entry, student_promotions, publish_progress=True):
+	submitted_sp = []
+	not_submitted_sp = []
 	frappe.flags.via_promotion_entry = True
 
 	count = 0
-	for ep in employee_promotions:
-		ep_obj = frappe.get_doc("Employee Promotion",ep[0])
-		if not ep_obj.promotion_details or ep_obj.promotion_details == None or ep_obj.promotion_details == "":
-			not_submitted_ep.append(ep[0])
-		else:
-			try:
-				ep_obj.submit()
-				submitted_ep.append(ep_obj)
-			except frappe.ValidationError:
-				not_submitted_ep.append(ep[0])
+	for sp in student_promotions:
+		sp_obj = frappe.get_doc("Student Promotion",sp[0])
+		# if not sp_obj.promotion_details or sp_obj.promotion_details == None or sp_obj.promotion_details == "":
+		# 	not_submitted_sp.append(sp[0])
+		# else:
+		try:
+			sp_obj.submit()
+			submitted_sp.append(sp_obj)
+		except frappe.ValidationError:
+			not_submitted_sp.append(sp[0])
 
 		count += 1
 		if publish_progress:
-			frappe.publish_progress(count*100/len(employee_promotions), title = _("Submitting Employee Promotions..."))
-	if submitted_ep:
-		frappe.msgprint(_("Employee Promotions submitted for promotion cycle {1}, {0}")
-			.format(ep_obj.fiscal_year, ep_obj.month))
+			frappe.publish_progress(count*100/len(student_promotions), title = _("Submitting Student Promotions..."))
+	if submitted_sp:
+		frappe.msgprint(_("Student Promotions submitted for Academic Term {0}")
+			.format(sp_obj.academic_term))
 
 		promotion_entry.db_set("promotions_submitted", 1)
 		promotion_entry.notify_update()
 
-	if not submitted_ep and not not_submitted_ep:
-		frappe.msgprint(_("No Employee Promotions found to submit for the above selected criteria OR Employee Promotion already submitted"))
+	if not submitted_sp and not not_submitted_sp:
+		frappe.msgprint(_("No Student Promotions found to submit for the above selected criteria OR Student Promotion already submitted"))
 
-	if not_submitted_ep:
-		frappe.msgprint(_("Could not submit some Employee Promotions. List of not submitted promotions: "+str(not_submitted_ep)))
+	if not_submitted_sp:
+		frappe.msgprint(_("Could not submit some Student Promotions. List of not submitted promotions: "+str(not_submitted_sp)))

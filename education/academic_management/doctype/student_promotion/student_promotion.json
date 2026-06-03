@@ -10,6 +10,8 @@
   "student_name",
   "programme",
   "status",
+  "year",
+  "semester",
   "column_break_3",
   "promotion_date",
   "college",
@@ -131,13 +133,29 @@
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "\nPromoted\nGraduated",
+   "options": "\nPromoted\nDetained\nGraduated",
+   "reqd": 1
+  },
+  {
+   "fieldname": "year",
+   "fieldtype": "Link",
+   "label": "Year",
+   "options": "Year",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "semester",
+   "fieldtype": "Link",
+   "label": "Semester",
+   "options": "Semester",
+   "read_only": 1,
    "reqd": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2026-03-25 12:29:13.327895",
+ "modified": "2026-06-01 16:18:16.187932",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Student Promotion",

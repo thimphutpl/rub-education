@@ -11,8 +11,8 @@ class TimeTableSchedule(Document):
 		self.validate_duplicate()
 		self.make_tts_entry()
 
-	def on_cancel(self):
-		self.remove_tts_entry()
+	# def on_cancel(self):
+	# 	# self.remove_tts_entry()
 
 	def validate_duplicate(self):
 		if frappe.db.exists("Time Table Schedule", {"college": self.college, "academic_term": self.academic_term, "programme": self.programme, "constraint": self.constraint, "docstatus": ["!=",2], "name": ["!=", self.name]}):

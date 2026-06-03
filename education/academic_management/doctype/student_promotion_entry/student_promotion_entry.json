@@ -7,13 +7,14 @@
  "engine": "InnoDB",
  "field_order": [
   "sb_promotion_cycle",
-  "academic_year",
-  "section_break_8",
   "college",
-  "column_break_10",
-  "department",
-  "number_of_employees",
+  "academic_year",
+  "column_break_gran",
+  "academic_term",
+  "academic_session",
   "section_break_13",
+  "get_students",
+  "number_of_employees",
   "students",
   "promotions_created",
   "promotions_submitted",
@@ -25,33 +26,18 @@
   {
    "fieldname": "sb_promotion_cycle",
    "fieldtype": "Section Break",
-   "label": "Select Promotion Details"
-  },
-  {
-   "fieldname": "section_break_8",
-   "fieldtype": "Section Break",
-   "label": "Select Student"
-  },
-  {
-   "fieldname": "department",
-   "fieldtype": "Link",
-   "label": "Academic Year",
-   "options": "Academic Year"
-  },
-  {
-   "fieldname": "column_break_10",
-   "fieldtype": "Column Break"
+   "label": "Promotion Details"
   },
   {
    "fieldname": "number_of_employees",
    "fieldtype": "Int",
-   "in_list_view": 1,
    "label": "Number Of Students",
    "read_only": 1
   },
   {
    "fieldname": "section_break_13",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "label": "Student Details"
   },
   {
    "default": "0",
@@ -90,16 +76,10 @@
    "search_index": 1
   },
   {
-   "fieldname": "academic_year",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Academic Year",
-   "options": "Academic Year",
-   "reqd": 1
-  },
-  {
    "fieldname": "college",
    "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "College",
    "options": "Company",
    "remember_last_selected_value": 1,
@@ -111,12 +91,48 @@
    "fieldtype": "Table",
    "label": "Student Details",
    "options": "Student Promotion Detail"
+  },
+  {
+   "fieldname": "academic_term",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Academic Term",
+   "options": "Academic Term",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "academic_term.academic_session",
+   "fieldname": "academic_session",
+   "fieldtype": "Link",
+   "label": "Academic Session",
+   "options": "Academic Session",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_gran",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "academic_term.academic_year",
+   "fieldname": "academic_year",
+   "fieldtype": "Link",
+   "label": "Academic Year",
+   "options": "Academic Year",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.docstatus == 0;",
+   "fieldname": "get_students",
+   "fieldtype": "Button",
+   "label": "Get Students"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-03-25 11:31:20.150155",
+ "modified": "2026-06-02 16:38:23.050947",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Student Promotion Entry",

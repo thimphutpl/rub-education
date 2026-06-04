@@ -11,7 +11,7 @@
   "current_programme",
   "current_semester",
   "current_year",
-  "student__promotion",
+  "student_promotion",
   "column_break_3",
   "student_name",
   "new_programme",
@@ -56,12 +56,6 @@
    "read_only": 1
   },
   {
-   "fieldname": "student__promotion",
-   "fieldtype": "Data",
-   "label": "Student  Promotion",
-   "read_only": 1
-  },
-  {
    "fetch_from": "student.student_name",
    "fieldname": "student_name",
    "fieldtype": "Data",
@@ -97,12 +91,18 @@
    "label": "Status",
    "options": "\nPromoted\nGraduated",
    "read_only": 1
+  },
+  {
+   "fieldname": "student_promotion",
+   "fieldtype": "Data",
+   "label": "Student Promotion",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-03-25 12:43:46.868594",
+ "modified": "2026-06-02 10:35:54.285579",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Student Promotion Detail",

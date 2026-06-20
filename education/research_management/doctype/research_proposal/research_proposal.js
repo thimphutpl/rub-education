@@ -54,6 +54,13 @@ frappe.ui.form.on("Research Proposal", {
         }
     },
 
+    onload(frm){
+        if (!frm.doc.posting_date) {
+			frm.set_value('posting_date', frappe.datetime.now_date());
+			// frm.set_value("posting_date", get_today());
+		}
+    },
+
     res_q_or_hypo(frm) {
         setup_research_question_word_counter(frm);
     },

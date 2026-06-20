@@ -134,7 +134,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Research Master",
-   "link_count": 6,
+   "link_count": 5,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -192,16 +192,6 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Research Type",
-   "link_count": 0,
-   "link_to": "Research Type",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Research Transaction",
    "link_count": 5,
    "link_type": "DocType",
@@ -251,7 +241,7 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Research Project Monitoring && Completion",
+   "label": "Research Project Monitoring & Completion",
    "link_count": 0,
    "link_to": "Research Project",
    "link_type": "DocType",
@@ -259,7 +249,7 @@
    "type": "Link"
   }
  ],
- "modified": "2026-05-14 12:13:06.371379",
+ "modified": "2026-05-22 08:57:44.428504",
  "modified_by": "Administrator",
  "module": "Research Management",
  "name": "Research Management",

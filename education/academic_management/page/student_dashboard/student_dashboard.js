@@ -350,7 +350,7 @@ let resultContainer = resultCollapsible.find(".result-body");
 	resultCollapsible.find(".result-header").click(function () {
 
 		let body = resultCollapsible.find(".result-body");
-		let isVisible = body.is(":visible");
+		let isVisible = body.is(":visible"); 
 	
 		body.slideToggle(200);
 		$(this).text(isVisible ? "▶ Result Declaration" : "▼ Result Declaration");

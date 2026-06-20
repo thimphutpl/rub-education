@@ -15,12 +15,15 @@ class ResultDeclaration(Document):
 		self.check_duplicate()
 		self.fetch_previous_marks()
 		self.calculate_total()
+		# self.check_no_exam_required()
 		
 		
 		# self.fetch_review_type()
 
 	# def fetch_review_type():
 	# 	for i in self.items:
+	# def check_no_exam_required(self):
+	# 	for i in 
 	def check_doc_duplicate(self):
 		if frappe.db.exists(
 			"Result Declaration",
@@ -76,10 +79,14 @@ class ResultDeclaration(Document):
 
 	def calculate_total(self):
 		for i in self.items:
+			if i.no_semester_exam_required:
+				i.se_passed = 1
 			if i.ca_passed and i.se_passed and i.tl_passed:
 				i.remark = "Pass"
 				i.overall_passed = 1
 				if i.review_type in ('Regular Assessment','Exam Recheck'):
+					i.total = i.total_achieved
+				if i.no_semester_exam_required:
 					i.total = i.total_achieved
 				if i.review_type =='Exam Re-Assessment':
 					i.total = 50
@@ -124,93 +131,238 @@ class ResultDeclaration(Document):
 
 	def create_result_entries(self, college, programme, academic_term):
 
-		
-
 		student_map = {}
 
-		# 🔹 Step 1: group by student
-		for i in self.items: 
+		# 🔹 Step 1: Group by student
+		for i in self.items:
+
 			if not i.student:
 				continue
-			
+
+			# 🔹 If already declared, update existing Result Entry Item
 			if i.result_declaration:
 
 				result_dcl_item = frappe.db.sql("""
-					SELECT rei.name
+					SELECT rei.name, rei.parent
 					FROM `tabResult Entry Item` rei
 					INNER JOIN `tabResult Entry` re ON rei.parent = re.name
 					WHERE re.student = %s
+					AND re.academic_term = %s
+					AND re.programme = %s
+					AND re.semester = %s
 					AND rei.module = %s
 					LIMIT 1
-				""", (i.student, i.module), as_dict=True)
+				""", (
+					i.student,
+					academic_term,
+					programme,
+					self.semester,
+					i.module
+				), as_dict=True)
 
-				
-
-				# safety check
+				# Safety check
 				if not result_dcl_item:
 					continue
 
 				row_name = result_dcl_item[0].name
 
-				
-
-				# 🔹 update fields properly
+				# 🔹 Update existing row
 				frappe.db.set_value("Result Entry Item", row_name, {
 					"se": i.se,
 					"ca": i.ca,
-					"passed": i.overall_passed,   # adjust field name if different
-					"ca_passed":i.ca_passed,
-					"se_passed":i.se_passed,
+					"passed": i.overall_passed,
+					"ca_passed": i.ca_passed,
+					"se_passed": i.se_passed,
+					"tl_passed": i.tl_passed,
 					"weightage_obtained": i.total,
-					"academic_year": self.academic_year
+					"year_of_passing": self.academic_year
 				})
 
 				continue
 
-
+			# 🔹 Group rows by student
 			if i.student not in student_map:
 				student_map[i.student] = []
 
 			student_map[i.student].append(i)
 
-		# 🔹 Step 2: create one doc per student
+		# 🔹 Step 2: Create or update Result Entry per student
 		for student_id, rows in student_map.items():
 
-			# جلوگیری duplicates
-			if frappe.db.exists("Result Entry", {
+			# Check existing Result Entry
+			existing_result = frappe.db.exists("Result Entry", {
 				"student": student_id,
 				"academic_term": academic_term,
-				"programme": programme
-			}):
-				continue
+				"programme": programme,
+				"semester": self.semester
+			})
 
-			doc = frappe.new_doc("Result Entry")
-			doc.student = student_id
-			doc.semester = self.semester
-			doc.academic_term = academic_term
-			doc.programme = programme
-			doc.college = college
+			# =========================================================
+			# 🔹 UPDATE EXISTING RESULT ENTRY
+			# =========================================================
+			if existing_result:
 
-			# optional: take from first row
-			doc.no_of_modules_failed = rows[0].total_modules_failed
+				doc = frappe.get_doc("Result Entry", existing_result)
 
-			# 🔹 Step 3: append ALL modules for that student
-			for i in rows:
-				row = doc.append("table_amrk", {})
-				row.module = i.module
-				row.ca = i.ca
-				row.se = i.se
-				row.weightage_obtained = i.total
-				row.passed = i.overall_passed
-				row.tl_passed = i.tl_passed
-				row.ca_passed = i.ca_passed
-				row.se_passed = i.se_passed
-				row.year_of_passing = self.academic_year
+				# Update optional parent field
+				doc.no_of_modules_failed = rows[0].total_modules_failed
 
-			# 🔹 insert once per student
-			doc.insert(ignore_permissions=True)
+				for i in rows:
+
+					# Check duplicate module
+					existing_item = frappe.db.exists(
+						"Result Entry Item",
+						{
+							"parent": doc.name,
+							"module": i.module
+						}
+					)
+
+					# Skip if module already exists
+					if existing_item:
+						continue
+
+					# Append new row
+					row = doc.append("table_amrk", {})
+					row.module = i.module
+					row.ca = i.ca
+					row.se = i.se
+					row.weightage_obtained = i.total
+					row.passed = i.overall_passed
+					row.tl_passed = i.tl_passed
+					row.ca_passed = i.ca_passed
+					row.se_passed = i.se_passed
+					row.year_of_passing = self.academic_year
+
+				doc.save(ignore_permissions=True)
+
+			# =========================================================
+			# 🔹 CREATE NEW RESULT ENTRY
+			# =========================================================
+			else:
+
+				doc = frappe.new_doc("Result Entry")
+				doc.student = student_id
+				doc.semester = self.semester
+				doc.academic_term = academic_term
+				doc.programme = programme
+				doc.college = college
+
+				# Optional parent field
+				doc.no_of_modules_failed = rows[0].total_modules_failed
+
+				# Append all modules
+				for i in rows:
+
+					row = doc.append("table_amrk", {})
+					row.module = i.module
+					row.ca = i.ca
+					row.se = i.se
+					row.weightage_obtained = i.total
+					row.passed = i.overall_passed
+					row.tl_passed = i.tl_passed
+					row.ca_passed = i.ca_passed
+					row.se_passed = i.se_passed
+					row.year_of_passing = self.academic_year
+
+				doc.insert(ignore_permissions=True)
 
 		frappe.db.commit()
+
+	# def create_result_entries(self, college, programme, academic_term):
+
+	# 	# frappe.throw(str(self.semester))
+
+	# 	student_map = {}
+
+	# 	# 🔹 Step 1: group by student
+	# 	for i in self.items: 
+	# 		if not i.student:
+	# 			continue
+			
+	# 		if i.result_declaration:
+
+	# 			result_dcl_item = frappe.db.sql("""
+	# 				SELECT rei.name
+	# 				FROM `tabResult Entry Item` rei
+	# 				INNER JOIN `tabResult Entry` re ON rei.parent = re.name
+	# 				WHERE re.student = %s
+	# 				AND rei.module = %s
+	# 				LIMIT 1
+	# 			""", (i.student, i.module), as_dict=True)
+
+				
+
+	# 			# safety check
+	# 			if not result_dcl_item:
+	# 				continue
+
+	# 			row_name = result_dcl_item[0].name
+
+
+
+				
+
+	# 			# 🔹 update fields properly
+	# 			frappe.db.set_value("Result Entry Item", row_name, {
+	# 				"se": i.se,
+	# 				"ca": i.ca,
+	# 				"passed": i.overall_passed,   # adjust field name if different
+	# 				"ca_passed":i.ca_passed,
+	# 				"se_passed":i.se_passed,
+	# 				"weightage_obtained": i.total,
+	# 				"academic_year": self.academic_year
+	# 			})
+
+	# 			continue
+
+
+	# 		if i.student not in student_map:
+	# 			student_map[i.student] = []
+
+	# 		student_map[i.student].append(i)
+
+	# 	# 🔹 Step 2: create one doc per student
+	# 	for student_id, rows in student_map.items():
+
+	# 		# جلوگیری duplicates
+	# 		if frappe.db.exists("Result Entry", {
+	# 			"student": student_id,
+	# 			"academic_term": academic_term,
+	# 			"programme": programme,
+	# 			"semester":self.semester
+	# 		}):
+	# 			continue
+
+	# 		# if frappe.db.exist("Result Entry")
+
+	# 		doc = frappe.new_doc("Result Entry")
+	# 		doc.student = student_id
+	# 		doc.semester = self.semester
+	# 		doc.academic_term = academic_term
+	# 		doc.programme = programme
+	# 		doc.college = college
+
+	# 		# optional: take from first row
+	# 		doc.no_of_modules_failed = rows[0].total_modules_failed
+
+	# 		# 🔹 Step 3: append ALL modules for that student
+	# 		for i in rows:
+	# 			row = doc.append("table_amrk", {})
+	# 			row.module = i.module
+	# 			row.ca = i.ca
+	# 			row.se = i.se
+	# 			row.weightage_obtained = i.total
+	# 			row.passed = i.overall_passed
+	# 			row.tl_passed = i.tl_passed
+	# 			row.ca_passed = i.ca_passed
+	# 			row.se_passed = i.se_passed
+	# 			row.year_of_passing = self.academic_year
+
+	# 		# 🔹 insert once per student
+	# 		doc.insert(ignore_permissions=True)
+
+	# 	frappe.db.commit()
 
 
 @frappe.whitelist()
@@ -312,12 +464,12 @@ def get_results(college, programme, academic_term, student_section, exam_type):
 			WHERE 
 				rdi.student = al.student
 				AND rdi.module = al.module
-				AND rdi.docstatus != 2
+				AND rdi.docstatus = 1
 				AND rdi.assessment_ledger= al.name
 		)
 		""", (student, module), as_dict=1)
 
-		
+		# frappe.throw(frappe.as_json(se_data[0]))		
 
 		se = se_data[0].total if se_data else 0
 		se_exam_type = se_data[0].exam_type if se_data else None

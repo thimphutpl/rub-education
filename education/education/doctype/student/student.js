@@ -16,8 +16,19 @@ frappe.ui.form.on('Student', {
 					"is_group": 0,
 				}
 			}
-		});   
-
+		}); 
+    
+    frm.set_query('programme', function () {
+      return {
+          query:
+          'erpnext.controllers.queries.get_programme',
+        filters: {
+          college: frm.doc.company,
+          date: frm.doc.joining_date,
+          validate: 1
+        },
+      }
+  });
     if (!frm.is_new()) {
       frm.add_custom_button(__('Accounting Ledger'), function () {
         frappe.set_route('query-report', 'General Ledger', {

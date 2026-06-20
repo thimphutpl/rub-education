@@ -177,8 +177,8 @@ function displayRoomInfo(response) {
         response.room_info.forEach(function (room, index) {
             // Set badge color based on workflow_state or availability
             let badgeColor = "badge-warning"; // default
-
-            if (room.workflow_state === "Approved") {
+            if (room.workflow_state === "Waiting For Payment") {
+     
                 badgeColor = "badge-success";
             }
             else if (room.workflow_state === "Waiting for Approval") {
@@ -195,7 +195,7 @@ function displayRoomInfo(response) {
                 bookingPeriod = ` (from ${room.from_date} ${room.from_time || ''} to ${room.to_date} ${room.to_time || ''})`;
             }
             let paymentButton = "";
-            if (room.workflow_state === "Approved") {
+            if (room.workflow_state === "Waiting For Payment") {
                 paymentButton = `
             <button class="btn btn-primary make-payment-btn" 
                    onclick="goToPayment('${encodeURIComponent(room.name)}')"
@@ -222,7 +222,7 @@ function displayRoomInfo(response) {
                     </div>
                     
                 </div>
-                <div class"button-container">
+                <div class="button-container">
                      ${paymentButton}
                 </div>
             `;

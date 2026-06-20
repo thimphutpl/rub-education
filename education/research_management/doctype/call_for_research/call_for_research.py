@@ -7,8 +7,8 @@ from frappe.model.mapper import get_mapped_doc
 
 
 class CallforResearch(Document):
-    def on_submit(self):
-        self.send_research_email()
+    # def on_submit(self):
+    #     self.send_research_email()
 
     def send_research_email(self):
         emails = []
@@ -83,7 +83,8 @@ def make_research_proposal(source_name, target_doc=None):
                     "grant_amount": "grant_amount",
                     "topic_of_the_research_call": "topic_of_the_research_call",
                     "grant_type": "grant_type",
-                    "research_type":"research_type"
+                    "research_type":"research_type",
+                    "deadline_for_submission":"research_submission_deadline"
                 },
             }
         },

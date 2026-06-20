@@ -2,7 +2,6 @@
  "actions": [],
  "allow_import": 1,
  "allow_rename": 1,
- "autoname": "format:{title}-{college_abbreviation}",
  "creation": "2015-09-08 17:19:19.158228",
  "doctype": "DocType",
  "document_type": "Setup",
@@ -47,7 +46,7 @@
    "fieldname": "title",
    "fieldtype": "Data",
    "label": "Title",
-   "reqd": 1
+   "read_only": 1
   },
   {
    "fieldname": "column_break_jhzu",
@@ -124,11 +123,10 @@
    "link_fieldname": "academic_term"
   }
  ],
- "modified": "2026-03-31 12:05:08.099001",
+ "modified": "2026-05-28 15:10:46.148735",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Academic Term",
- "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {

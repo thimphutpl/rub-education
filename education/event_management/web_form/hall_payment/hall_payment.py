@@ -10,8 +10,9 @@ def get_hall_payment_data(name):
 			return {"error": f"Hall Booking {name} not found"}
 
 		doc = frappe.get_doc("Hall Booking", name)
+	
         
-		return {
+		result = {
 			"name":doc.name,
 			"venue": doc.venue,
 			"company": doc.company,
@@ -29,8 +30,10 @@ def get_hall_payment_data(name):
 			"account_number": doc.account_number,
 			"qr_code": doc.qr_code
 		}
+		frappe.errprint(result)
+		return result
 	  
-
+	
 	except Exception as e:
 		frappe.log_error(str(e), "Hall Payment Web Form")
 		return {"error": str(e)}

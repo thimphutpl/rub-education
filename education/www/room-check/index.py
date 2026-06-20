@@ -94,7 +94,6 @@ def get_college():
 #     )
 
 #     return {"room_info": rooms}
-
 @frappe.whitelist(allow_guest=True)
 def get_room_info(college=None):
     filters = []
@@ -108,8 +107,7 @@ def get_room_info(college=None):
     if filters:
         where_clause = "WHERE " + " AND ".join(filters)
 
-    rooms = frappe.db.sql(
-        f"""
+    rooms = frappe.db.sql(f"""
         SELECT
             r.name,
             r.room_name,
@@ -119,24 +117,11 @@ def get_room_info(college=None):
             r.branch,
             r.cost_center,
             r.amount,
-            r.company,
             r.account_number,
-            r.qr_code,
-            hb.from_date,
-            hb.to_date,
-            hb.from_time,
-            hb.to_time
+            r.qr_code
         FROM `tabRoom` r
-        LEFT JOIN `tabHall Booking` hb
-            ON r.name = hb.venue
- 
         {where_clause}
         ORDER BY r.room_name ASC
-        """,
-        tuple(values),
-        as_dict=True
-    )
-
+    """, tuple(values), as_dict=True)
     return {"room_info": rooms}
-
     

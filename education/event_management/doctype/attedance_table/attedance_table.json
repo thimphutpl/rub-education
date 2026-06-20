@@ -25,8 +25,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Status",
-   "options": "\nPresent\nAbsent\nOn Leave",
-   "read_only": 1
+   "options": "\nPresent\nAbsent\nOn Leave"
   },
   {
    "fieldname": "student_email",
@@ -48,7 +47,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-10-10 18:00:53.521155",
+ "modified": "2026-05-28 14:21:10.779138",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "Attedance Table",

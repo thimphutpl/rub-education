@@ -9,11 +9,11 @@ frappe.pages['semester-result-decl'].on_page_load = function(wrapper) {
 	let topContainer = $('<div class="timetable-top-container"></div>').appendTo(page.body);
 
 	// 🔹 Add Print Button at the top
-	// let printBtn = $('<button class="btn btn-primary" style="margin-bottom:10px;">Print Timetable</button>')
-	// 	.appendTo(topContainer)
-	// 	.click(function(){
-	// 		printTimetable(container);
-	// 	});
+	let printBtn = $('<button class="btn btn-primary" style="margin-bottom:10px;">Print Semester Result</button>')
+		.appendTo(topContainer)
+		.click(function(){
+			printSemesterResult(container);
+		});
     // 🔹 Custom fields container (flex layout)
     let fieldContainer = $(`
         <div class="custom-fields-container" 
@@ -323,6 +323,292 @@ function load_results(container, college, programme, academic_term, student_sect
             `;
 
             container.html(html);
+        }
+    });
+}
+
+// function printSemesterResult(container){
+//     let content = container.html(); // get timetable HTML
+
+//     let myWindow = window.open('', '', 'width=1000,height=800');
+//     myWindow.document.write('<html><head><title>Print Semester Result</title>');
+//     frappe.call({method:"education.academic_management.page.semester_result_decl.semester_result_decl.get_header",
+//         callback:function(r){
+//             alert(r.message)
+//         }
+
+//     });
+//     // Include all styles
+//     myWindow.document.write(`
+//     <style>
+//         body {
+//             font-family: Arial, sans-serif;
+//             padding: 20px;
+//         }
+//         table {
+//             border: 1px solid rgb(56, 56, 56);
+//             border-collapse: collapse;
+//             width: 100%;
+//         }
+//         th, td {
+//             border: 1px solid rgb(56, 56, 56);
+//             padding: 5px;
+//             text-align: center;
+//             width: 47px;
+//         }
+//         thead tr {
+//             background-color: #f3f3f3;
+//         }
+//         tbody tr {
+//             background-color: #ffffff;
+//         }
+//         .pass {
+//             color: green;
+//             font-weight: bold;
+//         }
+//         .fail {
+//             color: red;
+//             font-weight: bold;
+//         }
+//         h3 {
+//             text-align: center;
+//         }
+
+//         /* Make it print-friendly */
+//         @media print {
+//             body { margin: 10px; }
+//             table { page-break-inside: auto; }
+//             tr { page-break-inside: avoid; page-break-after: auto; }
+//             th, td {
+//                 -webkit-print-color-adjust: exact !important;
+//                 print-color-adjust: exact !important;
+//             }
+//         }
+//     </style>`);
+
+//     myWindow.document.write('</head><body>');
+//     myWindow.document.write(content);
+//     myWindow.document.write('</body></html>');
+
+//     myWindow.document.close();
+//     myWindow.focus();
+//     myWindow.print();
+//     myWindow.close();
+// }
+
+function printSemesterResult(container){
+    let content = container.html(); // get timetable HTML
+    
+    // First, fetch the header image
+    frappe.call({
+        method: "education.academic_management.page.semester_result_decl.semester_result_decl.get_header",
+        callback: function(r) {
+            let headerImage = r.message || '';
+            
+            // Now create the print window with the image
+            let myWindow = window.open('', '', 'width=1000,height=800');
+            myWindow.document.write('<html><head><title>Print Semester Result</title>');
+            
+            // Include all styles with full width header
+            myWindow.document.write(`
+            <style>
+                * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                }
+                body {
+                    font-family: Arial, sans-serif;
+                    padding: 0;
+                    margin: 0;
+                    background: #fff;
+                }
+                .print-container {
+                    max-width: 100%;
+                    margin: 0 auto;
+                }
+                .header-container {
+                    width: 100%;
+                    background: #fff;
+                    text-align: center;
+                    padding: 0;
+                    margin: 0;
+                    line-height: 0;
+                }
+                .header-container img {
+                    width: 100%;
+                    height: auto;
+                    display: block;
+                    margin: 0;
+                }
+                .content-container {
+                    padding: 20px 20px 20px 20px;
+                }
+                table {
+                    border: 1px solid rgb(56, 56, 56);
+                    border-collapse: collapse;
+                    width: 100%;
+                    font-size: 12px;
+                }
+                th, td {
+                    border: 1px solid rgb(56, 56, 56);
+                    padding: 5px;
+                    text-align: center;
+                }
+                thead tr {
+                    background-color: #f3f3f3;
+                }
+                tbody tr {
+                    background-color: #ffffff;
+                }
+                .pass {
+                    color: green;
+                    font-weight: bold;
+                }
+                .fail {
+                    color: red;
+                    font-weight: bold;
+                }
+                h3 {
+                    text-align: center;
+                    margin: 20px 0 10px 0;
+                }
+
+                /* Make it print-friendly */
+                @media print {
+                    body { 
+                        margin: 0; 
+                        padding: 0;
+                    }
+                    .print-container {
+                        padding: 0;
+                    }
+                    .header-container {
+                        padding: 0;
+                        margin: 0;
+                    }
+                    .header-container img {
+                        width: 100%;
+                        height: auto;
+                        display: block;
+                    }
+                    .content-container {
+                        padding: 10px 20px 20px 20px;
+                    }
+                    table { 
+                        page-break-inside: auto; 
+                    }
+                    tr { 
+                        page-break-inside: avoid; 
+                        page-break-after: auto; 
+                    }
+                    th, td {
+                        -webkit-print-color-adjust: exact !important;
+                        print-color-adjust: exact !important;
+                    }
+                }
+            </style>`);
+
+            myWindow.document.write('</head><body>');
+            
+            myWindow.document.write('<div class="print-container">');
+            
+            // Add header image if available - full width
+            if (headerImage) {
+                myWindow.document.write(`
+                    <div class="header-container">
+                        <img src="${headerImage}" alt="Letter Head" />
+                    </div>
+                `);
+            }
+            
+            // Add the content with padding
+            myWindow.document.write('<div class="content-container">');
+            myWindow.document.write(content);
+            myWindow.document.write('</div>');
+            
+            myWindow.document.write('</div>'); // Close print-container
+            
+            myWindow.document.write('</body></html>');
+
+            myWindow.document.close();
+            myWindow.focus();
+            
+            // Wait for image to load, then print
+            setTimeout(function() {
+                myWindow.print();
+                myWindow.close();
+            }, 500);
+        },
+        error: function(err) {
+            console.error("Error fetching header:", err);
+            // Print without header if error
+            let myWindow = window.open('', '', 'width=1000,height=800');
+            myWindow.document.write('<html><head><title>Print Semester Result</title>');
+            myWindow.document.write(`
+            <style>
+                * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                }
+                body {
+                    font-family: Arial, sans-serif;
+                    padding: 0;
+                    margin: 0;
+                }
+                .print-container {
+                    padding: 20px;
+                    max-width: 100%;
+                }
+                table {
+                    border: 1px solid rgb(56, 56, 56);
+                    border-collapse: collapse;
+                    width: 100%;
+                }
+                th, td {
+                    border: 1px solid rgb(56, 56, 56);
+                    padding: 5px;
+                    text-align: center;
+                }
+                thead tr {
+                    background-color: #f3f3f3;
+                }
+                tbody tr {
+                    background-color: #ffffff;
+                }
+                .pass {
+                    color: green;
+                    font-weight: bold;
+                }
+                .fail {
+                    color: red;
+                    font-weight: bold;
+                }
+                h3 {
+                    text-align: center;
+                    margin: 20px 0;
+                }
+                @media print {
+                    body { margin: 0; padding: 0; }
+                    .print-container { padding: 0; }
+                    table { page-break-inside: auto; }
+                    tr { page-break-inside: avoid; page-break-after: auto; }
+                    th, td {
+                        -webkit-print-color-adjust: exact !important;
+                        print-color-adjust: exact !important;
+                    }
+                }
+            </style>`);
+            myWindow.document.write('</head><body>');
+            myWindow.document.write('<div class="print-container">');
+            myWindow.document.write(content);
+            myWindow.document.write('</div>');
+            myWindow.document.write('</body></html>');
+            myWindow.document.close();
+            myWindow.focus();
+            myWindow.print();
+            myWindow.close();
         }
     });
 }

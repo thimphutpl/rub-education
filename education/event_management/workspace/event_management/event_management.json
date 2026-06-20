@@ -126,25 +126,6 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Event Master Data",
-   "link_count": 1,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Event Type",
-   "link_count": 0,
-   "link_to": "Event Type",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Hall Booking",
    "link_count": 2,
    "link_type": "DocType",
@@ -174,8 +155,37 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Event Master Data",
+   "link_count": 2,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Event Type",
+   "link_count": 0,
+   "link_to": "Event Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Room",
+   "link_count": 0,
+   "link_to": "Room",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Event",
-   "link_count": 4,
+   "link_count": 5,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -193,19 +203,9 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Event Attendance",
+   "label": "Student Attendance",
    "link_count": 0,
    "link_to": "Event Attendance",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Event Registration",
-   "link_count": 0,
-   "link_to": "Event Registration",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -219,10 +219,30 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Event Calendar",
+   "link_count": 0,
+   "link_to": "Calendar View",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Event Registration",
+   "link_count": 0,
+   "link_to": "Event Registration",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2026-04-27 22:32:56.297889",
- "modified_by": "Administrator",
+ "modified": "2026-06-02 09:16:36.002827",
+ "modified_by": "mon.chhetri@thimphutechpark.bt",
  "module": "Event Management",
  "name": "Event Management",
  "number_cards": [],

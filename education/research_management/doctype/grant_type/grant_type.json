@@ -1,11 +1,13 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:grant_type",
+ "autoname": "format:{grant_type}-{abbr}-{college_abbr}",
  "creation": "2025-08-26 10:52:46.337055",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "college",
+  "college_abbr",
   "grant_type",
   "abbr",
   "column_break_hgke",
@@ -42,17 +44,31 @@
    "fieldname": "abbr",
    "fieldtype": "Data",
    "label": "Abbr",
-   "read_only": 1
+   "reqd": 1
+  },
+  {
+   "fieldname": "college",
+   "fieldtype": "Link",
+   "label": "College",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "college.abbr",
+   "fieldname": "college_abbr",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "College Abbr"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-16 15:22:35.855598",
+ "modified": "2026-05-18 23:26:43.406990",
  "modified_by": "Administrator",
  "module": "Research Management",
  "name": "Grant Type",
- "naming_rule": "By fieldname",
+ "naming_rule": "Expression",
  "owner": "kalden.dorji@thimphutechpark.bt",
  "permissions": [
   {

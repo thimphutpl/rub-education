@@ -16,7 +16,6 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Invigilator ",
-   "link_filters": "[[\"Employee\",\"is_teaching_staff\",\"=\",1]]",
    "options": "Employee"
   },
   {
@@ -38,7 +37,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-03-25 17:14:59.679181",
+ "modified": "2026-05-20 22:17:46.482874",
  "modified_by": "Administrator",
  "module": "Examination",
  "name": "Exam Invigilator",

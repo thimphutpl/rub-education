@@ -253,5 +253,11 @@ frappe.ui.form.on("Research Center Annual Reporting", {
 
             });
         }
+    },
+    onload(frm){
+        if (!frm.doc.posting_date) {
+			frm.set_value('posting_date', frappe.datetime.now_date());
+			// frm.set_value("posting_date", get_today());
+		}
     }
 });

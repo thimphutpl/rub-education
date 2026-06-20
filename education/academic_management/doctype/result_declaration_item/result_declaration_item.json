@@ -8,6 +8,7 @@
   "student",
   "student_name",
   "module",
+  "no_semester_exam_required",
   "se",
   "ca",
   "assessment_ledger",
@@ -160,13 +161,22 @@
    "fieldname": "check_umew",
    "fieldtype": "Check",
    "hidden": 1
+  },
+  {
+   "default": "0",
+   "fetch_from": "module.semester_exam_not_required",
+   "fieldname": "no_semester_exam_required",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "No Semester Exam Required",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-05-14 20:34:45.764015",
+ "modified": "2026-05-16 16:01:35.364333",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Result Declaration Item",
@@ -176,5 +186,4 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
- 
 }

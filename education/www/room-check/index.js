@@ -184,7 +184,8 @@ function displayRoomInfo(room_info) {
 
 
 function bookRoom(name) {
-   window.location.href = `/hall-booking/new?venue=${name}`;
+ 
+    window.location.href = `/hall-booking/new?venue=${name}`;
 
 
 }

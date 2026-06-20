@@ -10,11 +10,12 @@
   "grant_type",
   "research_type",
   "grant_amount",
+  "project_period",
   "column_break_zele",
+  "posting_date",
   "deadline_for_submission",
   "organization",
   "research_call_for",
-  "project_period",
   "research_details_section",
   "research_description",
   "file_upload",
@@ -36,7 +37,8 @@
   {
    "fieldname": "deadline_for_submission",
    "fieldtype": "Date",
-   "label": "Deadline for Submission"
+   "label": "Deadline for Submission",
+   "reqd": 1
   },
   {
    "fieldname": "research_details_section",
@@ -64,10 +66,10 @@
   {
    "fieldname": "research_type",
    "fieldtype": "Link",
+   "hidden": 1,
    "in_list_view": 1,
    "label": "Research Type",
-   "options": "Research Type",
-   "reqd": 1
+   "options": "Research Type"
   },
   {
    "fieldname": "grant_type",
@@ -87,7 +89,8 @@
    "fieldname": "research_call_for",
    "fieldtype": "Select",
    "label": "Research Call For",
-   "options": "\nStudent\nFaculty"
+   "options": "\nStudent\nFaculty\nAll",
+   "reqd": 1
   },
   {
    "fieldname": "amended_from",
@@ -104,13 +107,19 @@
    "fieldtype": "Link",
    "label": "Project Period",
    "options": "Fiscal Year"
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-05-05 13:36:41.375915",
+ "modified": "2026-05-19 00:13:25.275397",
  "modified_by": "Administrator",
  "module": "Research Management",
  "name": "Call for Research",

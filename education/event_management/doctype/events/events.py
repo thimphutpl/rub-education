@@ -136,6 +136,8 @@ def get_students_by_filters(filters=None, company=None):
 
 		if f.get("semester"):
 			query_filters["semester"] = f["semester"]
+		if f.get("student_batch"):
+			query_filters["student_batch"]=f["student_batch"]
 
 		students = frappe.get_all(
 			"Student",

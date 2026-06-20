@@ -9,20 +9,18 @@ from frappe.utils import getdate
 
 
 class AcademicTerm(Document):
-	# def autoname(self):
-	# 	self.name = (
-	# 		self.academic_year + " {})".format(self.term_name) if self.term_name else ""
-	# 	)
+	def autoname(self):
+		self.name = str(self.term_start_date).split("-")[0]+" "+self.academic_session+" - "+self.college_abbreviation
 
 	def validate(self):
-		# self.set_title()
+		self.set_title()
 		self.validate_duplication()
 		self.validate_dates()
 		self.validate_term_against_year()
 
 	def set_title(self):
 		self.title = (
-			self.academic_year + " ({})".format(self.term_name) if self.term_name else ""
+			str(self.term_start_date).split("-")[0] +" "+(self.academic_session)
 		)
 
 	def validate_duplication(self):

@@ -72,6 +72,14 @@ frappe.ui.form.on("Research Center Reporting Items", {
 		// 	};
 		// });
 	},
+
+	onload(frm){
+        if (!frm.doc.posting_date) {
+			frm.set_value('posting_date', frappe.datetime.now_date());
+			// frm.set_value("posting_date", get_today());
+		}
+    },
+	
     sub_reporting_type(frm) {
 		// Clear previous mandatory settings
 		clear_mandatory_fields(frm);

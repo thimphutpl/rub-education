@@ -43,7 +43,7 @@ function displayFullPaperInfo(response) {
         response.full_paper_info.forEach(function (full_paper_info, index) {
             let badgeColor;
             switch (full_paper_info.workflow_state) {
-                case 'Approved':
+                case 'Waiting For Payment':
                     badgeColor = 'success';
                     break;
                 case 'Rejected':
@@ -54,12 +54,25 @@ function displayFullPaperInfo(response) {
                     badgeColor = 'warning';
                     break;
             }
+
+            let paymentButton = "";
+            if (full_paper_info.workflow_state === "Waiting For Payment") {
+                paymentButton = `
+            <button class="btn btn-primary make-payment-btn" 
+                   onclick="goToPayment('${encodeURIComponent(full_paper_info.name)}')"
+                    title="Click to complete your payment for this room">Pay Now
+            </button>
+        `;
+            }
             html += `
             <div class="full-paper-card mb-4 p-3 shadow-sm">
                 <div class="full-paper-detail">
                     <p>Name: ${full_paper_info.name}</p>
                     <p class="status-text badge-${badgeColor}"> ${full_paper_info.workflow_state || 'N/A'}</p>
                 </div>
+            </div>
+             <div class="button-container">
+                     ${paymentButton}
             </div>
             `;
         });
@@ -88,3 +101,7 @@ frappe.ready(function () {
         getFullPaperInfo(cid);
     }
 });
+
+function goToPayment(name) {
+	window.location.href = `/conference-payment/new?full_paper=${name}`;
+}

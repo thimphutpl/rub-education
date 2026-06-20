@@ -12,14 +12,16 @@
   {
    "fieldname": "research_category",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Research Category",
+   "reqd": 1,
    "unique": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-05 12:14:41.522296",
+ "modified": "2026-05-18 23:34:38.530116",
  "modified_by": "Administrator",
  "module": "Research Management",
  "name": "Research Category",

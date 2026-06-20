@@ -1,37 +1,46 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "format:RC{research_center_number}-{research_center_name}",
+ "autoname": "format:{research_center_number}-{research_center_name}",
  "creation": "2025-08-26 10:42:52.275770",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "college",
-  "research_center_number",
-  "research_center_name"
+  "column_break_dcxc",
+  "research_center_name",
+  "research_center_number"
  ],
  "fields": [
   {
    "fieldname": "research_center_number",
    "fieldtype": "Data",
-   "label": "Research Center Number"
+   "label": "Research Center Abbr"
   },
   {
    "fieldname": "research_center_name",
    "fieldtype": "Data",
-   "label": "Research Center Name"
+   "in_list_view": 1,
+   "label": "Research Center Name",
+   "reqd": 1
   },
   {
    "fieldname": "college",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "College",
-   "options": "Company"
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_dcxc",
+   "fieldtype": "Column Break"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-05 12:17:07.707566",
+ "modified": "2026-05-18 23:25:34.843118",
  "modified_by": "Administrator",
  "module": "Research Management",
  "name": "Research Center",

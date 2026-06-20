@@ -42,6 +42,12 @@ frappe.query_reports["Assessment Ledger Report"] = {
             "options": "Employee"
         },
         {
+            "fieldname": "programme",
+            "label": "Programme",
+            "fieldtype": "Link",
+            "options": "Programme"
+        },
+        {
             "fieldname": "assessment_component",
             "label": "Assessment Component",
             "fieldtype": "Link",

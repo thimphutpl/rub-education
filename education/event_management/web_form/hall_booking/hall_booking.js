@@ -1,29 +1,30 @@
-frappe.ready(function() {
+
+frappe.ready(function () {
     let captchaWidget = null;
     let captchaRendered = false;
     let captchaVerified = false;
     let perDayAmount = 0;
 
-    
     function renderCaptcha() {
-        // Don't re-render if already rendered and valid
         if (captchaRendered && captchaWidget !== null) {
             try {
-                // Check if widget still exists
-                if (typeof grecaptcha !== 'undefined' && grecaptcha.getResponse(captchaWidget)) {
+                if (
+                    typeof grecaptcha !== "undefined" &&
+                    grecaptcha.getResponse(captchaWidget)
+                ) {
                     console.log("Captcha already valid");
                     return;
                 }
-            } catch(e) {
+            } catch (e) {
                 captchaRendered = false;
             }
         }
 
         let container = document.getElementById("recaptcha-container");
-        
+
         if (!container) {
-            // Find a better place to insert - before the submit button
-            const $form = $('form');
+            const $form = $("form");
+
             if ($form.length) {
                 $form.append(`
                     <div class="form-group">
@@ -32,29 +33,28 @@ frappe.ready(function() {
                         </div>
                     </div>
                 `);
+
                 container = document.getElementById("recaptcha-container");
             } else {
-                // Wait for form to be available using MutationObserver
                 waitForFormAndRender();
                 return;
             }
         }
 
         if (typeof grecaptcha === "undefined") {
-            // Load reCAPTCHA if not loaded
             if (!document.querySelector('script[src*="recaptcha/api.js"]')) {
-                const script = document.createElement('script');
-                script.src = 'https://www.google.com/recaptcha/api.js?render=explicit';
+                const script = document.createElement("script");
+                script.src = "https://www.google.com/recaptcha/api.js?render=explicit";
                 script.async = true;
                 script.defer = true;
-                script.onload = function() {
+                script.onload = function () {
                     renderCaptcha();
                 };
                 document.head.appendChild(script);
             } else {
-                // Wait for grecaptcha to be available
                 waitForGrecaptchaAndRender();
             }
+
             return;
         }
 
@@ -62,140 +62,153 @@ frappe.ready(function() {
             try {
                 grecaptcha.reset(captchaWidget);
                 return;
-            } catch(e) {
+            } catch (e) {
                 captchaWidget = null;
             }
         }
 
         try {
-            // Clear container
-            container.innerHTML = '';
-            
+            container.innerHTML = "";
+
             captchaWidget = grecaptcha.render(container, {
                 sitekey: "6Lery8osAAAAAIvNfDE7w9rNEA5etF5cGkWlD4tY",
-                callback: function(response) {
+
+                callback: function () {
                     console.log("✅ Captcha verified");
                     captchaRendered = true;
                     captchaVerified = true;
-                    // Enable submit button when captcha is verified
-                    enableSubmitButton(true);
+                    updateSubmitButtonState();
                 },
-                "expired-callback": function() {
-                    console.log("⚠️ Captcha expired - re-rendering");
+
+                "expired-callback": function () {
+                    console.log("⚠️ Captcha expired");
                     captchaWidget = null;
                     captchaRendered = false;
                     captchaVerified = false;
-                    // Disable submit button when captcha expires
                     enableSubmitButton(false);
                     renderCaptcha();
                 },
-                "error-callback": function() {
+
+                "error-callback": function () {
                     console.error("❌ Captcha error");
                     captchaWidget = null;
                     captchaRendered = false;
                     captchaVerified = false;
-                    // Disable submit button on error
                     enableSubmitButton(false);
                 }
             });
+
             console.log("✅ reCAPTCHA rendered");
-            
-            // Initially disable submit button until captcha is verified
             enableSubmitButton(false);
         } catch (error) {
-            console.error("Error:", error);
-            // Try again on next event loop
-            requestAnimationFrame(() => renderCaptcha());
+            console.error("Captcha render error:", error);
+            requestAnimationFrame(function () {
+                renderCaptcha();
+            });
         }
     }
 
-    // Helper function to enable/disable submit button
     function enableSubmitButton(enable) {
         const $submitBtn = $('form button[type="submit"]');
-        if ($submitBtn.length) {
-            if (enable) {
-                $submitBtn.prop("disabled", false);
-                $submitBtn.css('opacity', '1');
-                console.log("✅ Submit button enabled");
-            } else {
-                $submitBtn.prop("disabled", true);
-                $submitBtn.css('opacity', '0.5');
-                console.log("❌ Submit button disabled");
-            }
+
+        if (!$submitBtn.length) {
+            return;
+        }
+
+        if (enable) {
+            $submitBtn.prop("disabled", false);
+            $submitBtn.css("opacity", "1");
+        } else {
+            $submitBtn.prop("disabled", true);
+            $submitBtn.css("opacity", "0.5");
         }
     }
 
-    // Helper function to check if button should be enabled
     function updateSubmitButtonState() {
-        if (!frappe.web_form || typeof frappe.web_form.get_value !== 'function') {
+        if (!frappe.web_form || typeof frappe.web_form.get_value !== "function") {
             enableSubmitButton(false);
             return;
         }
-        
+
         const email = frappe.web_form.get_value("email");
         const venue = frappe.web_form.get_value("venue");
         const from_date = frappe.web_form.get_value("from_date");
+        const from_time = frappe.web_form.get_value("from_time");
         const to_date = frappe.web_form.get_value("to_date");
-        
-        const requiredFieldsFilled = email && venue && from_date && to_date;
-        const shouldEnable = requiredFieldsFilled && captchaVerified;
-        
-        enableSubmitButton(shouldEnable);
+        const to_time = frappe.web_form.get_value("to_time");
+
+        const requiredFieldsFilled =
+            email &&
+            venue &&
+            from_date &&
+            from_time &&
+            to_date &&
+            to_time;
+
+        enableSubmitButton(requiredFieldsFilled && captchaVerified);
     }
 
-    // Helper function to wait for form element
     function waitForFormAndRender() {
-        const observer = new MutationObserver(function(mutations, obs) {
-            const $form = $('form');
+        const observer = new MutationObserver(function (mutations, obs) {
+            const $form = $("form");
+
             if ($form.length) {
                 obs.disconnect();
                 renderCaptcha();
             }
         });
-        
-        observer.observe(document.body, { childList: true, subtree: true });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
     }
 
-    // Helper function to wait for grecaptcha
     function waitForGrecaptchaAndRender() {
-        const checkGrecaptcha = function() {
+        const checkGrecaptcha = function () {
             if (typeof grecaptcha !== "undefined") {
                 renderCaptcha();
                 return true;
             }
+
             return false;
         };
-        
+
         if (!checkGrecaptcha()) {
-            const observer = new MutationObserver(function() {
+            const observer = new MutationObserver(function () {
                 if (checkGrecaptcha()) {
                     observer.disconnect();
                 }
             });
-            observer.observe(document.head, { childList: true, subtree: true });
+
+            observer.observe(document.head, {
+                childList: true,
+                subtree: true
+            });
         }
     }
 
     function getCaptchaResponse() {
-        if (captchaWidget !== null && typeof grecaptcha !== 'undefined') {
+        if (captchaWidget !== null && typeof grecaptcha !== "undefined") {
             try {
                 const response = grecaptcha.getResponse(captchaWidget);
                 return response && response.length > 0 ? response : null;
-            } catch(e) {
+            } catch (e) {
                 return null;
             }
         }
+
         return null;
     }
 
     function resetCaptcha() {
-        if (captchaWidget !== null && typeof grecaptcha !== 'undefined') {
+        if (captchaWidget !== null && typeof grecaptcha !== "undefined") {
             try {
                 grecaptcha.reset(captchaWidget);
                 captchaRendered = false;
                 captchaVerified = false;
                 enableSubmitButton(false);
-            } catch(e) {
+            } catch (e) {
                 captchaWidget = null;
                 renderCaptcha();
             }
@@ -205,62 +218,115 @@ frappe.ready(function() {
     function verifyWithServer(captchaResponse, callback) {
         frappe.call({
             method: "education.event_management.web_form.hall_booking.hall_booking.verify_captcha",
-            args: { "response": captchaResponse },
-            callback: function(r) {
+            args: {
+                response: captchaResponse
+            },
+            callback: function (r) {
                 if (r.message && r.message.verified) {
                     callback(true);
                 } else {
                     callback(false);
                 }
             },
-            error: function() {
+            error: function () {
                 callback(false);
             }
         });
     }
 
-    const params = new URLSearchParams(window.location.search);
-    const name = params.get("venue");
-    
-    if (name) {
+    function getHallDataFromURL() {
+        const params = new URLSearchParams(window.location.search);
+        const name = params.get("venue");
+
+        if (!name) {
+            return;
+        }
+
         frappe.call({
             method: "education.event_management.web_form.hall_booking.hall_booking.get_hall_data",
-            args: { name: name },
-            callback: function(r) {
+            args: {
+                name: name
+            },
+            callback: function (r) {
                 if (!r.message || r.message.error) {
                     frappe.msgprint(r.message?.error || "Error loading hall booking data");
                     return;
                 }
-                
+
                 const opts = r.message;
-                console.log(opts);
-                
+
                 frappe.web_form.set_value("venue", opts.venue);
                 frappe.web_form.set_value("company", opts.company);
                 frappe.web_form.set_value("branch", opts.branch);
                 frappe.web_form.set_value("cost_center", opts.cost_center);
                 frappe.web_form.set_value("amount", opts.amount);
-                
+                frappe.web_form.set_value("account_number", opts.account_number);
+                frappe.web_form.set_value("qr_code", opts.qr_code);
+
                 if (opts.amount) {
                     perDayAmount = parseFloat(opts.amount);
                 }
-                
+
                 if (opts.qr_code) {
                     const $qrField = $(`[data-fieldname="qr_code"] .control-value`);
+
                     if ($qrField.length) {
-                        $qrField.html(`<img src="${opts.qr_code}" style="max-width:200px; border:1px solid #ddd; padding:5px; border-radius:8px;" />`);
+                        $qrField.html(`
+                            <img src="${opts.qr_code}"
+                                 style="max-width:200px; border:1px solid #ddd; padding:5px; border-radius:8px;" />
+                        `);
                     } else {
                         frappe.web_form.set_value("qr_code", opts.qr_code);
                     }
                 }
-                
-                // Update button state after loading data
+
                 updateSubmitButtonState();
             }
         });
     }
 
-    const calculateTotal = () => {
+    function parseDate(dateValue) {
+        if (!dateValue) {
+            return null;
+        }
+
+        if (typeof dateValue === "string") {
+            const parts = dateValue.split("-");
+
+            if (parts.length === 3) {
+                if (parts[0].length === 4) {
+                    return new Date(parts[0], parts[1] - 1, parts[2]);
+                } else {
+                    return new Date(parts[2], parts[1] - 1, parts[0]);
+                }
+            }
+        }
+
+        return new Date(dateValue);
+    }
+
+    function calculateBooking(fromDate, toDate, perDayAmount) {
+        const from = parseDate(fromDate);
+        const to = parseDate(toDate);
+
+        if (!from || !to || isNaN(from.getTime()) || isNaN(to.getTime())) {
+            return {
+                total_days: 0,
+                total_amount: 0
+            };
+        }
+
+        const diffTime = Math.abs(to - from);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+        const total_amount = diffDays * perDayAmount;
+
+        return {
+            total_days: diffDays,
+            total_amount: total_amount
+        };
+    }
+
+    function calculateTotal() {
         const fromDate = frappe.web_form.get_value("from_date");
         const toDate = frappe.web_form.get_value("to_date");
         const amountField = parseFloat(frappe.web_form.get_value("amount")) || 0;
@@ -268,161 +334,246 @@ frappe.ready(function() {
 
         if (fromDate && toDate && perDay > 0) {
             const result = calculateBooking(fromDate, toDate, perDay);
+
             frappe.web_form.set_value("total_days", result.total_days);
             frappe.web_form.set_value("total_amount", result.total_amount);
         } else {
             frappe.web_form.set_value("total_days", 0);
             frappe.web_form.set_value("total_amount", 0);
         }
-        
 
         updateSubmitButtonState();
-    };
+    }
 
-    frappe.web_form.on("from_date", (field, value) => calculateTotal());
-    frappe.web_form.on("to_date", (field, value) => calculateTotal());
-    frappe.web_form.on("amount", (field, value) => calculateTotal());
-
-    function calculateBooking(fromDate, toDate, perDayAmount) {
-        let from, to;
-
-        if (typeof fromDate === 'string') {
-            if (fromDate.includes('-')) {
-                const parts = fromDate.split('-');
-                if (parts[0].length === 4) {
-                    from = new Date(parts[0], parts[1] - 1, parts[2]);
-                    to = new Date(toDate.split('-')[0], toDate.split('-')[1] - 1, toDate.split('-')[2]);
-                } else {
-                    from = new Date(parts[2], parts[1] - 1, parts[0]);
-                    to = new Date(toDate.split('-')[2], toDate.split('-')[1] - 1, toDate.split('-')[0]);
-                }
-            }
-        } else {
-            from = new Date(fromDate);
-            to = new Date(toDate);
+    function combineDateTime(dateValue, timeValue) {
+        if (!dateValue || !timeValue) {
+            return null;
         }
 
-        const diffTime = Math.abs(to - from);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
-        const total_amount = diffDays * perDayAmount;
+        const date = parseDate(dateValue);
 
-        return { total_days: diffDays, total_amount };
+        if (!date || isNaN(date.getTime())) {
+            return null;
+        }
+
+        const timeParts = timeValue.split(":");
+        const hours = parseInt(timeParts[0] || "0", 10);
+        const minutes = parseInt(timeParts[1] || "0", 10);
+        const seconds = parseInt(timeParts[2] || "0", 10);
+
+        date.setHours(hours, minutes, seconds, 0);
+
+        return date;
+    }
+
+    function validateDateTimeRange() {
+        const from_date = frappe.web_form.get_value("from_date");
+        const from_time = frappe.web_form.get_value("from_time");
+        const to_date = frappe.web_form.get_value("to_date");
+        const to_time = frappe.web_form.get_value("to_time");
+
+        if (!from_date || !from_time || !to_date || !to_time) {
+            return true;
+        }
+
+        const fromDateTime = combineDateTime(from_date, from_time);
+        const toDateTime = combineDateTime(to_date, to_time);
+
+        if (!fromDateTime || !toDateTime) {
+            frappe.msgprint({
+                title: "Invalid Date/Time",
+                message: "Please enter valid From Date, From Time, To Date and To Time.",
+                indicator: "red"
+            });
+
+            return false;
+        }
+
+        if (fromDateTime >= toDateTime) {
+            frappe.msgprint({
+                title: "Invalid Booking Time",
+                message: "To Date/Time must be greater than From Date/Time.",
+                indicator: "red"
+            });
+
+            return false;
+        }
+
+        return true;
     }
 
     function setupFieldChangeListeners() {
-        if (!frappe.web_form) return;
-        
-        const requiredFields = ['email', 'venue', 'from_date', 'to_date'];
-        
-        requiredFields.forEach(fieldname => {
-            $(document).on('frappe.web_form.field_change', function(e, field) {
-                if (requiredFields.includes(field.df.fieldname)) {
-                    updateSubmitButtonState();
-                }
-            });
-        });
-        
-        $('input[data-fieldname="from_date"], input[data-fieldname="to_date"], input[data-fieldname="email"], select[data-fieldname="venue"]').on('change keyup', function() {
+        if (!frappe.web_form) {
+            return;
+        }
+
+        frappe.web_form.on("from_date", function () {
+            calculateTotal();
             updateSubmitButtonState();
         });
-        
+
+        frappe.web_form.on("to_date", function () {
+            calculateTotal();
+            updateSubmitButtonState();
+        });
+
+        frappe.web_form.on("from_time", function () {
+            updateSubmitButtonState();
+        });
+
+        frappe.web_form.on("to_time", function () {
+            updateSubmitButtonState();
+        });
+
+        frappe.web_form.on("amount", function () {
+            calculateTotal();
+        });
+
+        frappe.web_form.on("email", function () {
+            updateSubmitButtonState();
+        });
+
+        frappe.web_form.on("venue", function () {
+            updateSubmitButtonState();
+        });
+
+        $(document).on("change keyup", "input, select, textarea", function () {
+            updateSubmitButtonState();
+        });
+
         updateSubmitButtonState();
     }
 
+    function setupSubmitButton() {
+        $(document).off("click", 'form button[type="submit"]');
 
-    $('form button[type="submit"]').on('click', function(e) {
-        e.preventDefault();
-        
-        // Check captcha verification before proceeding
-        if (!captchaVerified) {
-            frappe.msgprint({
-                title: "Verification Required",
-                message: 'Please complete the "I am not a robot" verification.',
-                indicator: "red"
-            });
-            return false;
-        }
+        $(document).on("click", 'form button[type="submit"]', function (e) {
+            e.preventDefault();
 
-        const email = frappe.web_form.get_value("email");
-        const venue = frappe.web_form.get_value("venue");
-        const from_date = frappe.web_form.get_value("from_date");
-        const to_date = frappe.web_form.get_value("to_date");
-        
-        if (from_date && to_date) {
-            const from = new Date(from_date);
-            const to = new Date(to_date);
+            const $btn = $(this);
+            const originalText = $btn.html();
 
-            if (from > to) {
-                frappe.msgprint("From Date cannot be after To Date");
-                return;
-            }
-        }
-
-        // Get captcha response
-        const captchaResponse = getCaptchaResponse();
-        
-        if (!captchaResponse) {
-            frappe.msgprint({
-                title: "Verification Required",
-                message: 'Please check the "I am not a robot" box.',
-                indicator: "red"
-            });
-            return false;
-        }
-
-        const $btn = $(this);
-        const originalText = $btn.html();
-        $btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Verifying...');
-
-        // Verify captcha with server
-        verifyWithServer(captchaResponse, function(isValid) {
-            if (!isValid) {
+            if (!captchaVerified) {
                 frappe.msgprint({
-                    title: "Verification Failed",
-                    message: "Captcha verification failed. Please try again.",
+                    title: "Verification Required",
+                    message: 'Please complete the "I am not a robot" verification.',
                     indicator: "red"
                 });
-                resetCaptcha();
-                $btn.prop('disabled', false).html(originalText);
-                return;
+
+                return false;
             }
 
-            // Check venue availability
-            frappe.call({
-                method: "education.event_management.web_form.hall_booking.hall_booking.check_duplicate_venue",
-                args: {
-                    email: email,
-                    venue: venue,
-                    from_date: from_date,
-                    to_date: to_date
-                },
-                callback: function(r) {
-                    if (r.message.conflict) {
-                        frappe.msgprint(`This venue is already booked from ${r.message.booked_from} to ${r.message.booked_to}.`);
-                        resetCaptcha();
-                        $btn.prop('disabled', false).html(originalText);
-                    } else {
-                        $btn.html('<i class="fa fa-spinner fa-spin"></i> Submitting...');
-                        $('form').submit();
-                    }
-                },
-                error: function() {
-                    frappe.msgprint("Error checking availability. Please try again.");
-                    $btn.prop('disabled', false).html(originalText);
+            const email = frappe.web_form.get_value("email");
+            const venue = frappe.web_form.get_value("venue");
+            const from_date = frappe.web_form.get_value("from_date");
+            const from_time = frappe.web_form.get_value("from_time");
+            const to_date = frappe.web_form.get_value("to_date");
+            const to_time = frappe.web_form.get_value("to_time");
+
+            if (!email || !venue || !from_date || !from_time || !to_date || !to_time) {
+                frappe.msgprint({
+                    title: "Missing Details",
+                    message: "Please fill Venue, Email, From Date, From Time, To Date and To Time.",
+                    indicator: "red"
+                });
+
+                return false;
+            }
+
+            if (!validateDateTimeRange()) {
+                return false;
+            }
+
+            const captchaResponse = getCaptchaResponse();
+
+            if (!captchaResponse) {
+                frappe.msgprint({
+                    title: "Verification Required",
+                    message: 'Please check the "I am not a robot" box.',
+                    indicator: "red"
+                });
+
+                return false;
+            }
+
+            $btn.prop("disabled", true).html('<i class="fa fa-spinner fa-spin"></i> Verifying...');
+
+            verifyWithServer(captchaResponse, function (isValid) {
+                if (!isValid) {
+                    frappe.msgprint({
+                        title: "Verification Failed",
+                        message: "Captcha verification failed. Please try again.",
+                        indicator: "red"
+                    });
+
+                    resetCaptcha();
+                    $btn.prop("disabled", false).html(originalText);
+                    return;
                 }
+
+                $btn.html('<i class="fa fa-spinner fa-spin"></i> Checking availability...');
+
+                frappe.call({
+                    method: "education.event_management.web_form.hall_booking.hall_booking.check_duplicate_venue",
+                    args: {
+                        email: email,
+                        venue: venue,
+                        from_date: from_date,
+                        from_time: from_time,
+                        to_date: to_date,
+                        to_time: to_time
+                    },
+                    callback: function (r) {
+                        if (r.message && r.message.conflict) {
+                            let msg = r.message.message || "This venue is already booked during this time.";
+
+                            if (r.message.booked_from && r.message.booked_to) {
+                                msg = `This venue is already booked from <b>${r.message.booked_from}</b> to <b>${r.message.booked_to}</b>.`;
+                            }
+
+                            frappe.msgprint({
+                                title: "Booking Conflict",
+                                message: msg,
+                                indicator: "red"
+                            });
+
+                            resetCaptcha();
+                            $btn.prop("disabled", false).html(originalText);
+                            return;
+                        }
+
+                        $btn.html('<i class="fa fa-spinner fa-spin"></i> Submitting...');
+
+                        frappe.web_form.save();
+                    },
+                    error: function () {
+                        frappe.msgprint({
+                            title: "Error",
+                            message: "Error checking availability. Please try again.",
+                            indicator: "red"
+                        });
+
+                        $btn.prop("disabled", false).html(originalText);
+                    }
+                });
             });
+
+            return false;
         });
-    });
+    }
 
     function initialize() {
-        console.log("Initializing captcha...");
+        console.log("Initializing Hall Booking Web Form...");
+
+        getHallDataFromURL();
         renderCaptcha();
         setupFieldChangeListeners();
+        setupSubmitButton();
         calculateTotal();
     }
-    
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initialize);
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initialize);
     } else {
         initialize();
     }

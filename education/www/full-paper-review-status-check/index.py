@@ -10,7 +10,7 @@ def get_full_paper(email,cid):
         filters={
             "email": email,
             "passport__cid_number":cid,
-            "workflow_state": ["in", ["Waiting for Review", "Approved", "Rejected"]],
+            "workflow_state": ["in", ["Waiting for Review", "Waiting For Payment", "Rejected"]],
         },
         fields=["name","conference", "workflow_state"],
         order_by="creation desc",

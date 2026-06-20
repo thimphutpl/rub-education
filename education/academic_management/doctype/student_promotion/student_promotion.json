@@ -36,7 +36,7 @@
    "reqd": 1
   },
   {
-   "description": "Set the properties that should be updated in the Employee master on promotion submission",
+   "description": "Set the properties that should be updated in the Student master on promotion submission",
    "fieldname": "details_section",
    "fieldtype": "Section Break",
    "label": "Student Promotion Details"
@@ -155,7 +155,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2026-06-01 16:18:16.187932",
+ "modified": "2026-06-11 14:23:44.927493",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Student Promotion",

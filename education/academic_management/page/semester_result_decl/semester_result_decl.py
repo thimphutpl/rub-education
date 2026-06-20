@@ -641,3 +641,28 @@ def get_declared_results(college, programme, academic_term, student_section):
         "students": result
     }
 
+
+@frappe.whitelist()
+def get_header():
+    company='Royal University of Bhutan'
+    employee_company = frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "company")
+    student_college= frappe.db.get_value("Student", {"user": frappe.session.user}, "company")
+
+    if employee_company:
+       company=employee_company
+    elif student_college:
+        company=student_college
+
+    # else:
+    #     company='Royal University of Bhutan'
+
+    image_path=frappe.db.sql(f""" select image from `tabLetter Head` where company=%s""" ,company,as_dict=1)
+    if image_path and len(image_path) > 0:
+        return image_path[0].get('image')
+    else:
+        return None
+    
+
+
+
+    

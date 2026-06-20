@@ -40,6 +40,7 @@ def get_columns():
         {"fieldname": "reference_name", "label": "Reference Name", "fieldtype": "Dynamic Link", "options": "reference_type", "width": 150},
         {"fieldname": "is_cancelled", "label": "Is Cancelled", "fieldtype": "Check", "options": "", "width": 150},
     ]
+    
 def construct_query(filters):
     conditions = get_conditions(filters)
     query = f"""
@@ -69,6 +70,8 @@ def get_conditions(filters):
         conditions += f" AND module = '{filters.get('module')}'"
     if filters.get("tutor"):
         conditions += f" AND tutor = '{filters.get('tutor')}'"
+    if filters.get("programme"):
+        conditions += f" AND programme = '{filters.get('programme')}'"
     if filters.get("student"):
         conditions += f" AND student = '{filters.get('student')}'"
     if filters.get("assessment_component"):

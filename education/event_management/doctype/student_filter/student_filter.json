@@ -8,7 +8,8 @@
  "field_order": [
   "programme",
   "academic_year",
-  "semester"
+  "semester",
+  "student_batch"
  ],
  "fields": [
   {
@@ -31,13 +32,20 @@
    "in_list_view": 1,
    "label": "Year",
    "options": "Fiscal Year"
+  },
+  {
+   "fieldname": "student_batch",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Section",
+   "options": "Student Batch Name"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-05-14 14:29:53.056249",
+ "modified": "2026-05-14 18:51:55.290373",
  "modified_by": "Administrator",
  "module": "Event Management",
  "name": "Student Filter",

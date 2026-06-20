@@ -172,7 +172,7 @@ frappe.ui.form.on("Events", {
             frm.set_df_property("student", "hidden", 0);
             frm.set_df_property("student", "reqd", 1);
             frm.set_df_property("forward_to", "reqd", 1);
-        } else if (frm.doc.type === "Staff") {
+        } else if (frm.doc.type === "Faculty") {
             frm.set_df_property("student", "hidden", 1);
             frm.set_df_property("employee", "hidden", 0);
             frm.set_df_property("employee", "reqd", 1);

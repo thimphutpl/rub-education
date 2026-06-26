@@ -1201,24 +1201,31 @@ $(`<style>
 							`;
 						}
 					
-						// ✅ ACTIONS PER MODULE (NO ROWSPAN)
-						html += `
-							<td>${d.passed ? "Passed" : "Failed"}</td>
-							<td>
-								<select class="status-select" 
-										data-semester="${semester}" 
-										data-module="${d.module}">
-									<option value="">Select</option>
-									<option value="Exam Recheck">Exam Recheck</option>
-									<option value="Exam Re-Evaluation">Exam Re-Evaluation</option>
-									<option value="Exam Re-Assessment" ${d.passed ? "disabled" : ""}>
-										Exam Re-Assessment
-									</option>
-								</select>
-							</td>
-							`;
-					
-						html += `</tr>`;
+					// ✅ ACTIONS PER MODULE (NO ROWSPAN)
+					let caTotal = Number(d.ca) || 0;
+					let seTotal = Number(d.se) || 0;
+					let remarks = "Not Declared";
+
+					if (caTotal > 0 || seTotal > 0) {
+						remarks = d.passed ? "Passed" : "Failed";
+					}
+
+					html += `
+						<td>${remarks}</td>
+						<td>
+							<select class="status-select" 
+									data-semester="${semester}" 
+									data-module="${d.module}">
+								<option value="">Select</option>
+								<option value="Exam Recheck">Exam Recheck</option>
+								<option value="Exam Re-Evaluation">Exam Re-Evaluation</option>
+								<option value="Exam Re-Assessment" ${d.passed ? "disabled" : ""}>
+									Exam Re-Assessment
+								</option>
+							</select>
+						</td>
+						`;
+					html += `</tr>`;
 					});
 	
 					// TOTAL ROW (fixed alignment)

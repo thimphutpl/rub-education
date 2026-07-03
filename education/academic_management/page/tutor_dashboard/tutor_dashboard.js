@@ -80,16 +80,14 @@ frappe.pages['tutor-dashboard'].on_page_load = function(wrapper) {
 
 		let r = await frappe.db.get_value("Employee",
 			{"user_id": frappe.session.user},
-			["company", "programme"]
+			["company"]
 		);
 	
 		if (r.message && r.message.company) {
 	
 			let college_val = r.message.company;
-			let programme_val = r.message.programme;
 	
 			$('#user-college').text(college_val);
-			$('#user-programme').text(programme_val);
 	
 		}
 	
@@ -246,47 +244,47 @@ frappe.pages['tutor-dashboard'].on_page_load = function(wrapper) {
 		});
 
 		college.refresh(); // render the field
-		let programme = frappe.ui.form.make_control({
-			parent: fieldContainer,
-			df: {
-				label: 'Programme',
-				fieldname: 'programme',
-				fieldtype: 'Link',
-				options: 'Programme',
-				placeholder: 'Select Programme', // Text field
+		// let programme = frappe.ui.form.make_control({
+		// 	parent: fieldContainer,
+		// 	df: {
+		// 		label: 'Programme',
+		// 		fieldname: 'programme',
+		// 		fieldtype: 'Link',
+		// 		options: 'Programme',
+		// 		placeholder: 'Select Programme', // Text field
 
-			},
-			render_input: true
-		});
-		programme.refresh();
-		let academic_term = frappe.ui.form.make_control({
-			parent: fieldContainer,
-			df: {
-				label: 'Academic Term',
-				fieldname: 'academic_term',
-				fieldtype: 'Link',
-				options: 'Academic Term',
-				placeholder: 'Select Academic Term', // Text field
+		// 	},
+		// 	render_input: true
+		// });
+		// programme.refresh();
+		// let academic_term = frappe.ui.form.make_control({
+		// 	parent: fieldContainer,
+		// 	df: {
+		// 		label: 'Academic Term',
+		// 		fieldname: 'academic_term',
+		// 		fieldtype: 'Link',
+		// 		options: 'Academic Term',
+		// 		placeholder: 'Select Academic Term', // Text field
 
-			},
-			render_input: true
-		});
-		academic_term.refresh();
-		let college_val = ""
-		let programme_val = ""
-		let current_at = ""
-		frappe.call({
-			method:"education.academic_management.page.student_dashboard.student_dashboard.get_student_details",
-			args: {"user": frappe.session.user},
-			async: false,
-			callback: function(r){
-				if(r.message){
-					college_val = r.message[0]
-					programme_val = r.message[1]
-					current_at = r.message[2]
-				}
-			}
-		})
+		// 	},
+		// 	render_input: true
+		// });
+		// academic_term.refresh();
+		// let college_val = ""
+		// let programme_val = ""
+		// let current_at = ""
+		// frappe.call({
+		// 	method:"education.academic_management.page.student_dashboard.student_dashboard.get_student_details",
+		// 	args: {"user": frappe.session.user},
+		// 	async: false,
+		// 	callback: function(r){
+		// 		if(r.message){
+		// 			college_val = r.message[0]
+		// 			programme_val = r.message[1]
+		// 			current_at = r.message[2]
+		// 		}
+		// 	}
+		// })
 		// let r = await frappe.db.get_value("Student",
 		// 	{"user": frappe.session.user},
 		// 	["company", "programme"]
@@ -300,29 +298,29 @@ frappe.pages['tutor-dashboard'].on_page_load = function(wrapper) {
 		// 	college.set_value(college_val);
 		// 	programme.set_value(programme_val);
 		// }
-		Promise.all([
-			college.set_value(college_val),
-			programme.set_value(programme_val),
-			academic_term.set_value(current_at)
-		]).then(() => {
-			checkAndLoad();   // 🔥 runs AFTER values are actually set
-		});
+		// Promise.all([
+		// 	college.set_value(college_val),
+		// 	// programme.set_value(programme_val),
+		// 	academic_term.set_value(current_at)
+		// ]).then(() => {
+		// 	checkAndLoad();   // 🔥 runs AFTER values are actually set
+		// });
 
-		function checkAndLoad() {
-			if (college.get_value() && programme.get_value() && academic_term.get_value()) {
-				load_timetable(
-					tableContainer,   // ✅ ONLY update table area
-					college.get_value(),
-					programme.get_value(),
-					academic_term.get_value()
-				);
-			} else {
-				tableContainer.html("<b>Please select all the fields</b>");
-			}
-		}
-		[college, programme, academic_term].forEach(f => {
-			f.$input.on("change", checkAndLoad);
-		});
+		// function checkAndLoad() {
+		// 	if (college.get_value() && programme.get_value() && academic_term.get_value()) {
+		// 		load_timetable(
+		// 			tableContainer,   // ✅ ONLY update table area
+		// 			college.get_value(),
+		// 			programme.get_value(),
+		// 			academic_term.get_value()
+		// 		);
+		// 	} else {
+		// 		tableContainer.html("<b>Please select all the fields</b>");
+		// 	}
+		// }
+		// [college, programme, academic_term].forEach(f => {
+		// 	f.$input.on("change", checkAndLoad);
+		// });
 
 	}
 

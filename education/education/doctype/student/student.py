@@ -1,7 +1,6 @@
 # Copyright (c) 2015, Frappe Technologies and contributors
 # For license information, please see license.txt
 
-
 import frappe
 from frappe import _
 from frappe.desk.form.linked_with import get_linked_doctypes
@@ -22,32 +21,71 @@ from education.education.utils import check_content_completion, check_quiz_compl
 class Student(Document):
 	def autoname(self):
 		year = str(self.joining_date).split("-")[0][2:]
-		# from erpnext.accounts.utils import get_autoname_with_number
 		from frappe.model.naming import make_autoname
 		college_code = frappe.db.get_value("Company", self.company, "college_code")
 		if not college_code:
-			frappe.throw("College Code is not set in Company {}".format(self.company))
+			frappe.throw(_("College Code is not set in Company {}".format(self.company)))
 		if self.is_existing_student == 0:
-			self.name = make_autoname(college_code+year+".####")
+			self.name = make_autoname(college_code + year + ".####")
 		else:
-			#if not self.old_student_id:
 			self.name = self.old_student_id
 
+	def before_validate(self):
+		"""Generate email BEFORE validation occurs"""
+		# Generate student ID if it's a new record
+		if self.is_new() and not self.name and not self.is_existing_student:
+			self.autoname()
+		
+		# Generate email using the student ID (name) as the prefix
+		if self.name and self.company:
+			if not self.student_email_id or '@' not in self.student_email_id:
+				self.generate_student_email()
 
 	def validate(self):
 		self.set_title()
 		self.validate_dates()
-		self.validate_user()
+		
+		# Ensure email is set and valid
+		if not self.student_email_id or '@' not in self.student_email_id:
+			self.generate_student_email()
+		
 		self.validate_identification()
+		
+		# Create user with the generated email
+		if self.student_email_id and '@' in self.student_email_id:
+			self.validate_user()
+		
 		if self.student_applicant:
 			self.check_unique()
 			self.update_applicant_status()
 
+	def generate_student_email(self):
+		"""Generate student email using Student ID as prefix: StudentID.CollegeAbbreviation@rub.edu.bt"""
+		if not self.name:
+			frappe.throw(_("Student ID must be generated before email creation"))
+		
+		if not self.company:
+			frappe.throw(_("Please select a College first"))
+		
+		# Get college abbreviation from Company
+		college_abbr = frappe.db.get_value("Company", self.company, "abbr")
+		if not college_abbr:
+			frappe.throw(_("College Abbreviation is not set in Company {0}").format(self.company))
+		
+		# Use the student ID (name) as the email prefix
+		# Clean it to ensure it's email-safe (replace dots, dashes, spaces with underscores)
+		student_id = self.name.replace('.', '_').replace('-', '_').replace(' ', '_')
+		
+		# Generate email: StudentID.CollegeAbbreviation@rub.edu.bt
+		self.student_email_id = f"{student_id}.{college_abbr}@rub.edu.bt"
+		
+		# Log for debugging
+		frappe.log_error(
+			f"Student ID: {self.name} -> Email: {self.student_email_id}", 
+			"Student Email Generated"
+		)
+
 	def on_update(self):
-		# for each student check whether a customer exists or not if it does not exist then create a customer with customer group student
-		# This prevents from polluting users data
-		#self.set_missing_customer_details()
-  
 		if self.status:
 			frappe.db.sql("""
 				UPDATE `tabHostel Allocation Item`
@@ -73,8 +111,8 @@ class Student(Document):
 		student_user_permission_exists = frappe.db.exists(
 			"User Permission", {"allow": "Student", "for_value": self.name, "user": self.user}
 		)
-		disable_user=frappe.db.exists(
-			"User",{"name":self.user,"enabled":0}
+		disable_user = frappe.db.exists(
+			"User", {"name": self.user, "enabled": 0}
 		)
 		if disable_user:
 			return
@@ -88,7 +126,7 @@ class Student(Document):
 	def validate_identification(self):
 		if self.identification_type == "CID":
 			if not self.is_numeric_string(self.cid):
-				frappe.throw(str(self.identification_type)+" can only contain numeric values.")
+				frappe.throw(str(self.identification_type) + " can only contain numeric values.")
 			if len(self.cid) != 11:
 				frappe.throw("CID should be 11 digits.")
 
@@ -104,13 +142,12 @@ class Student(Document):
 			self.customer_group = "Student"
 			frappe.db.set_value("Student", self.name, "customer_group", "Student")
 
-	def is_numeric_string(self,value):
+	def is_numeric_string(self, value):
 		try:
 			float(value)
 			return True
 		except (ValueError, TypeError):
 			return False
-
 
 	# Validate Functions
 	def set_title(self):
@@ -142,24 +179,55 @@ class Student(Document):
 
 	def validate_user(self):
 		"""Create a website user for student creation if not already exists"""
-		if not frappe.db.get_single_value(
-			"Education Settings", "user_creation_skip"
-		) and not frappe.db.exists("User", self.student_email_id):
+		# Check if user creation should be skipped
+		if frappe.db.get_single_value("Education Settings", "user_creation_skip"):
+			return
+		
+		# Ensure email is valid before checking user existence
+		if not self.student_email_id or '@' not in self.student_email_id:
+			self.generate_student_email()
+		
+		# Check if user already exists with this email
+		if frappe.db.exists("User", self.student_email_id):
+			# Get the existing user
+			existing_user = frappe.db.get_value("User", self.student_email_id, "name")
+			if existing_user:
+				self.user = existing_user
+			return
+		
+		# Create user with the proper email
+		try:
 			student_user = frappe.get_doc(
 				{
 					"doctype": "User",
-					"first_name": self.first_name,
-					"last_name": self.last_name,
-					"email": self.student_email_id,
-					"gender": self.gender,
+					"first_name": self.first_name or "Student",
+					"last_name": self.last_name or "",
+					"email": self.student_email_id,  # This uses the student ID as prefix
+					"gender": self.gender or "",
 					"send_welcome_email": 1,
 					"user_type": "Website User",
 				}
 			)
+			student_user.insert(ignore_permissions=True)
 			student_user.add_roles("Student")
-			student_user.save(ignore_permissions=True)
-
 			self.user = student_user.name
+			
+		except frappe.exceptions.InvalidEmailAddressError as e:
+			frappe.log_error(
+				f"Failed to create user for {self.name}: {str(e)}", 
+				"Student User Creation"
+			)
+			frappe.msgprint(
+				_("Warning: Could not create user. Email {0} might be invalid.").format(
+					self.student_email_id
+				),
+				alert=True
+			)
+		except Exception as e:
+			frappe.log_error(
+				f"Failed to create user for {self.name}: {str(e)}", 
+				"Student User Creation"
+			)
 
 	def check_unique(self):
 		"""Validates if the Student Applicant is Unique"""
@@ -281,7 +349,7 @@ class Student(Document):
 			enrollment.save(ignore_permissions=True)
 		except frappe.exceptions.ValidationError:
 			enrollment_name = frappe.get_list(
-				"Program Enrodlment", filters={"student": self.name, "Program": program_name}
+				"Program Enrolment", filters={"student": self.name, "Program": program_name}
 			)[0].name
 			return frappe.get_doc("Program Enrolment", enrollment_name)
 		else:

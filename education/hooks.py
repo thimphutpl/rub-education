@@ -173,6 +173,9 @@ after_install = "education.install.after_install"
 # }d
 permission_query_conditions = {
 	"Module Enrolment": "education.education.doctype.module_enrolment.module_enrolment.get_permission_query_conditions",
+	"Module": "education.academic_management.doctype.module.module.get_permission_query_conditions",
+	"Programme": "education.academic_management.doctype.programme.programme.get_permission_query_conditions",
+	# "Module Enrolment Key": "education.academic_management.doctype.module_enrolment_key.module_enrolment_key.get_permission_query_conditions",
 }
 #
 # has_permission = {

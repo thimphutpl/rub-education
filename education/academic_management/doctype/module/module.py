@@ -24,3 +24,27 @@ class Module(Document):
 	# 	if flt(total) != 100:
 	# 		# frappe.throw("Total Weightage must be 100%")
 	# 		pass
+
+def get_permission_query_conditions(user):
+	if not user: user = frappe.session.user
+	user_roles = frappe.get_roles(user)
+	if "Administrator" in user_roles or "System Manager" in user_roles:
+		return
+	if "Academic Dean" in user_roles:
+		college = frappe.db.get_value("Employee", {"user_id":frappe.session.user}, "company")
+		return """(
+		EXISTS( select 1 from `tabModule College` where `tabModule College`.college = '{college}'
+		and `tabModule College`.parent = `tabModule`.name)
+		)""".format(college=college)
+	if "Student" in user_roles:
+		college = frappe.db.get_value("Student", {"user":frappe.session.user}, "company")
+		return """(
+		EXISTS( select 1 from `tabModule College` where `tabModule College`.college = '{college}'
+		and `tabModule College`.parent = `tabModule`.name)
+		)""".format(college=college)
+	else:
+		college = frappe.db.get_value("Employee", {"user_id":frappe.session.user}, "company")
+		return """(
+		EXISTS( select 1 from `tabModule College` where `tabModule College`.college = '{college}'
+		and `tabModule College`.parent = `tabModule`.name)
+		)""".format(college=college)

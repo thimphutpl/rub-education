@@ -7,16 +7,18 @@
  "engine": "InnoDB",
  "field_order": [
   "college",
+  "programme",
   "module_type",
   "column_break_fnyv",
+  "year",
   "module_semester",
-  "programme",
   "is_home_college"
  ],
  "fields": [
   {
    "fieldname": "college",
    "fieldtype": "Link",
+   "ignore_user_permissions": 1,
    "in_list_view": 1,
    "label": "College",
    "options": "Company",
@@ -55,13 +57,21 @@
    "in_list_view": 1,
    "label": "Module Type",
    "options": "Compulsory\nElective\nInternational Students"
+  },
+  {
+   "fieldname": "year",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Year",
+   "options": "Year",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-04-27 15:38:04.950850",
+ "modified": "2026-07-14 10:36:34.446300",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Module College",

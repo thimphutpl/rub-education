@@ -205,6 +205,7 @@ class Student(Document):
 					"email": self.student_email_id,  # This uses the student ID as prefix
 					"gender": self.gender or "",
 					"send_welcome_email": 1,
+					"enabled":1,
 					"user_type": "Website User",
 				}
 			)
@@ -397,3 +398,23 @@ def get_timeline_data(doctype, name):
 			name,
 		)
 	)
+
+def get_permission_query_conditions(user):
+	if not user: user = frappe.session.user
+	user_roles = frappe.get_roles(user)
+	if "Administrator" in user_roles or "System Manager" in user_roles:
+		return
+	if "Academic Dean" in user_roles:
+		college = frappe.db.get_value("Employee", {"user_id":frappe.session.user}, "company")
+		return """(
+			`tabStudent`.company = '{college}'
+		)""".format(college=college)
+	if "Student" in user_roles:
+		return """(
+			`tabStudent`.user = {user}
+		)""".format(user=user)
+	else:
+		college = frappe.db.get_value("Employee", {"user_id":frappe.session.user}, "company")
+		return """(
+			`tabStudent`.company = '{college}'
+		)""".format(college=college)

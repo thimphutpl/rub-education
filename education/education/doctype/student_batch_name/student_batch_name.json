@@ -9,12 +9,7 @@
  "engine": "InnoDB",
  "field_order": [
   "batch_name",
-  "college",
-  "programme",
-  "column_break_ianb",
-  "academic_term",
-  "academic_year",
-  "academic_session"
+  "column_break_ianb"
  ],
  "fields": [
   {
@@ -26,49 +21,12 @@
    "unique": 1
   },
   {
-   "fieldname": "college",
-   "fieldtype": "Link",
-   "hidden": 1,
-   "label": "College",
-   "options": "Company"
-  },
-  {
-   "fetch_from": "academic_term.academic_session",
-   "fieldname": "academic_session",
-   "fieldtype": "Link",
-   "hidden": 1,
-   "label": "Academic Session",
-   "options": "Academic Session"
-  },
-  {
    "fieldname": "column_break_ianb",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "programme",
-   "fieldtype": "Link",
-   "hidden": 1,
-   "label": "Programme",
-   "options": "Programme"
-  },
-  {
-   "fetch_from": "academic_term.academic_year",
-   "fieldname": "academic_year",
-   "fieldtype": "Link",
-   "hidden": 1,
-   "label": "Academic Year",
-   "options": "Academic Year"
-  },
-  {
-   "fieldname": "academic_term",
-   "fieldtype": "Link",
-   "hidden": 1,
-   "label": "Academic Term",
-   "options": "Academic Term"
   }
  ],
  "links": [],
- "modified": "2026-03-04 18:52:33.489933",
+ "modified": "2026-07-16 14:19:31.043708",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student Batch Name",

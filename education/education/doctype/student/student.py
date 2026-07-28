@@ -108,7 +108,7 @@ class Student(Document):
 			return
 		if not has_permission("User Permission", ptype="write", raise_exception=False):
 			return
-		user = frappe.get_doc("User", self.user_id)
+		user = frappe.get_doc("User", self.user)
 		user.flags.ignore_permissions = True
 		if "Student" not in user.get("roles"):
 			user.append_roles("Student")

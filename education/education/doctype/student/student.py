@@ -58,6 +58,7 @@ class Student(Document):
 		if self.student_applicant:
 			self.check_unique()
 			self.update_applicant_status()
+		
 
 	def generate_student_email(self):
 		"""Generate student email using Student ID as prefix: StudentID.CollegeAbbreviation@rub.edu.bt"""
@@ -107,7 +108,10 @@ class Student(Document):
 			return
 		if not has_permission("User Permission", ptype="write", raise_exception=False):
 			return
-
+		user = frappe.get_doc("User", self.user_id)
+		user.flags.ignore_permissions = True
+		if "Student" not in user.get("roles"):
+			user.append_roles("Student")
 		student_user_permission_exists = frappe.db.exists(
 			"User Permission", {"allow": "Student", "for_value": self.name, "user": self.user}
 		)

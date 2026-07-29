@@ -32,7 +32,7 @@ class StudentPromotion(Document):
 
 	def on_cancel(self):
 		student = frappe.get_doc("Student", self.student)
-		student = update_student_work_history(student, self.promotion_details, cancel=True)
+		student = update_student_promotion_history(student, self.academic_term, self.promotion_details, cancel=True)
 
 		# if self.revised_ctc:
 		# 	student.ctc = self.current_ctc

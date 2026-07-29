@@ -9,9 +9,11 @@
   "college",
   "academic_term",
   "semester",
+  "new_semester",
   "cb_01",
   "programme",
-  "year"
+  "year",
+  "new_year"
  ],
  "fields": [
   {
@@ -57,13 +59,27 @@
    "label": "Year",
    "options": "Year",
    "read_only": 1
+  },
+  {
+   "fieldname": "new_year",
+   "fieldtype": "Link",
+   "label": "Promoted to Year",
+   "options": "Year",
+   "read_only": 1
+  },
+  {
+   "fieldname": "new_semester",
+   "fieldtype": "Link",
+   "label": "Promoted to Semester",
+   "options": "Semester",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-06-01 11:08:49.998280",
+ "modified": "2026-07-14 12:32:04.442734",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student Promotion History",

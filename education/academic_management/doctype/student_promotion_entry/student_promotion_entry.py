@@ -35,7 +35,7 @@ class StudentPromotionEntry(Document):
 	def on_cancel(self):
 		# if self.promotions_submitted == 1:
 		# 	frappe.throw("Please cancel employee promotions first.")
-		self.remove_employee_promotions()
+		self.remove_student_promotions()
 
 	def check_duplicates(self):
 		pass
@@ -79,9 +79,15 @@ class StudentPromotionEntry(Document):
 			# frappe.msgprint(str(is_eligible))
 			# frappe.msgprint(str(e.employee)+" "+str(is_eligible)+" grade:"+str(e.employee_grade))
 			if is_eligible == 1:
-				new_semester = frappe.db.get_value("Semester", s.semester, "promote_to_semester")
-				new_year = frappe.db.get_value("Semester", new_semester, "year")
 				programme_year = frappe.db.get_value("Programme", s.programme, "programme_year")
+				if flt(frappe.db.get_value("Year", s.year, "promote_to_year")) <= flt(programme_year):
+					new_semester = frappe.db.get_value("Semester", s.semester, "promote_to_semester")
+				else:
+					new_semester = s.semester
+				if s.semester == "II" and flt(frappe.db.get_value("Year", current_year, "promote_to_year")) <= flt(programme_year):
+					new_year = frappe.db.get_value("Year", s.year, "promote_to_year")
+				else:
+					new_year = s.year
 				if flt(new_year) > flt(programme_year):
 					new_status = "Graduated"
 				else:
@@ -224,7 +230,7 @@ class StudentPromotionEntry(Document):
 		return sp_list
 
 	@frappe.whitelist()
-	def remove_studnet_promotions(self):
+	def remove_student_promotions(self):
 		self.check_permission('write')
 		sp_list = self.get_student_promotion_list(sp_status=0)
 		if len(sp_list) > 500:
@@ -246,7 +252,7 @@ class StudentPromotionEntry(Document):
 	# 		for ss in submitted_ss:
 	# 			ss.email_salary_slip()
 
-def remove_student_promotions_for_employees(promotion_entry, employee_promotions, publish_progress=True):
+def remove_student_promotions_for_students(promotion_entry, student_promotions, publish_progress=True):
 	deleted_sp = []
 	not_deleted_sp = []
 	frappe.flags.via_promotion_entry = True
@@ -279,19 +285,25 @@ def create_student_promotion_for_students(students, args, publish_progress=True)
 
 	for std in promotion_entry.get("students"):
 		if std.student not in student_promotion_exists_for:
+			programme_year = frappe.db.get_value("Programme", frappe.db.get_value("Student", std.student, "programme"), "programme_year")
 			args.update({
 				"doctype": "Student Promotion",
 				"student": std.student
 			})
 			sp = frappe.get_doc(args)
-			#update paramters-------------
+			#update parameters-------------
 			current_semester = frappe.db.get_value("Student", std.student, "semester")
-			new_semester = frappe.db.get_value("Semester", frappe.db.get_value("Student", std.student, "semester"), "promote_to_semester")
+			if flt(frappe.db.get_value("Year", std.current_year, "promote_to_year")) <= flt(programme_year):
+				new_semester = frappe.db.get_value("Semester", frappe.db.get_value("Student", std.student, "semester"), "promote_to_semester")
+			else:
+				new_semester = current_semester
 			current_status = frappe.db.get_value("Student", std.student, "status")
 			current_year = frappe.db.get_value("Student", std.student, "year")
-			new_year = frappe.db.get_value("Semester", new_semester, "year")
-			programme_year = frappe.db.get_value("Programme", frappe.db.get_value("Student", std.student, "programme"), "programme_year")
-			#update paramters end---------
+			if current_semester == "II" and flt(frappe.db.get_value("Year", current_year, "promote_to_year")) <= flt(programme_year):
+				new_year = frappe.db.get_value("Year", current_year, "promote_to_year")
+			else:
+				new_year = current_year
+			#update parameters end---------
 			rows = [
 					{
 						'property': 'Semester',

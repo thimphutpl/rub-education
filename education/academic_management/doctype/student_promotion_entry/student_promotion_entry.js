@@ -4,6 +4,29 @@
 var in_progress = false;
 
 frappe.ui.form.on('Student Promotion Entry', {
+	setup: function(frm){
+		if(frm.doc.__islocal){
+			cur_frm.set_value("academic_term", undefined);
+			cur_frm.set_value("academic_year", undefined);
+			cur_frm.refresh_fields();
+		}
+		frm.set_query('academic_term', function(doc, cdt, cdn) {
+			if (!frm.doc.college) {
+			  return {
+				filters: {
+				  college: ["=", "Please Select College"]
+				}
+			  };
+			}
+			else{
+			  return {
+				filters: {
+				  college: frm.doc.college,
+				}
+			  };
+			}
+		  });
+	},
 	onload: function (frm) {
 		if (!frm.doc.posting_date) {
 			frm.doc.posting_date = frappe.datetime.nowdate();
@@ -12,6 +35,7 @@ frappe.ui.form.on('Student Promotion Entry', {
 	},
 
 	refresh: function(frm) {
+
 		if (frm.doc.docstatus == 0 && !frm.is_new()) {
 			// if(!frm.is_new()) {
 			// 	frm.page.clear_primary_action();

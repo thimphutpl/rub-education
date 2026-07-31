@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_import": 1,
- "autoname": "HTL-ROOM-.YYYY.-.#####",
+ "autoname": "format:{room_name} - {abbr}",
  "creation": "2015-09-09 16:20:14.613061",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -12,6 +12,7 @@
   "amount",
   "column_break_lhtm",
   "company",
+  "abbr",
   "branch",
   "cost_center",
   "exam_room",
@@ -93,14 +94,21 @@
    "fieldname": "qr_code",
    "fieldtype": "Attach Image",
    "label": "QR Code"
+  },
+  {
+   "fetch_from": "company.abbr",
+   "fieldname": "abbr",
+   "fieldtype": "Data",
+   "label": "Abbr",
+   "read_only": 1
   }
  ],
  "links": [],
- "modified": "2026-05-29 11:31:22.615600",
+ "modified": "2026-07-11 10:27:01.595235",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Room",
- "naming_rule": "Expression (old style)",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {

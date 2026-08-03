@@ -2,7 +2,6 @@
  "actions": [],
  "allow_import": 1,
  "allow_rename": 1,
- "autoname": "field:module_title",
  "creation": "2025-09-16 16:35:35.238824",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -35,8 +34,7 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Module Title",
-   "reqd": 1,
-   "unique": 1
+   "reqd": 1
   },
   {
    "fieldname": "module_code",
@@ -123,11 +121,10 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-06-09 10:18:56.810317",
+ "modified": "2026-08-03 16:05:06.691615",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Module",
- "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {

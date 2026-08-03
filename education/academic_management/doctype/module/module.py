@@ -4,9 +4,14 @@
 import frappe
 from frappe.model.document import Document
 from frappe.utils import flt
+from frappe.model.naming import make_autoname
+
 
 
 class Module(Document):
+	def autoname(self):
+		self.name = str(self.module_code)+" - "+str(self.module_title)
+
 	def validate(self):
 		if len(self.colleges) > 1:
 			self.multi_college_module = 1

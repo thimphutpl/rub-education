@@ -1,5 +1,5 @@
 frappe.ui.form.on('Student Section Creation Tool',{
-setup: function(frm){
+refresh: function(frm){
   frm.set_query('academic_term', function(doc, cdt, cdn) {
     if (!frm.doc.college) {
       return {

@@ -19,15 +19,15 @@ college: function(frm){
   }
 
 },
-academic_session: function(frm){
-  frm.set_query('semester', function () {
-    return {
-    filters: {
-        session: frm.doc.academic_session,
-    },
-    }
-  })
-}
+// academic_session: function(frm){
+//   frm.set_query('semester', function () {
+//     return {
+//     filters: {
+//         session: frm.doc.academic_session,
+//     },
+//     }
+//   })
+// }
 })
 frappe.ui.form.on('Student Section Creation Tool', 'refresh', function (frm) {
   // frm.disable_save()

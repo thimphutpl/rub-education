@@ -218,13 +218,13 @@ frappe.ui.form.on('Student Section Creation Tool', 'setup', function (frm) {
         frm.set_value("academic_term", null);
         frm.refresh_field("academic_term");        
       }
-      frm.set_query('semester', function () {
-        return {
-        filters: {
-            session: frm.doc.academic_session,
-        },
-        }
-      })
+      // frm.set_query('semester', function () {
+      //   return {
+      //   filters: {
+      //       session: frm.doc.academic_session,
+      //   },
+      //   }
+      // })
     }
 })
 

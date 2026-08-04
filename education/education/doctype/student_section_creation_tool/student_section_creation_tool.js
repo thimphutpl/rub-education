@@ -1,4 +1,22 @@
 frappe.ui.form.on('Student Section Creation Tool',{
+setup: function(frm){
+  frm.set_query('academic_term', function(doc, cdt, cdn) {
+    if (!frm.doc.college) {
+      return {
+        filters: {
+          college: ["=", "Please Select College"]
+        }
+      };
+    }
+    else{
+      return {
+        filters: {
+          college: frm.doc.college,
+        }
+      };
+    }
+  });
+},
 college: function(frm){
   if(frm.doc.college){
   frappe.call({

@@ -10,7 +10,7 @@ def get_timetable(college, programme, academic_term):
         order_by="from_time asc"
     )
 
-    constraint = frappe.get_doc("Timetable Constraints", {"academic_term":"2025 Spring Semester"})
+    constraint = frappe.get_doc("Timetable Constraints", {"academic_term":academic_term})
     blocked = []
     if timetable:
         for p in constraint.periods:
@@ -34,11 +34,17 @@ def get_student_details(user):
     college = ""
     programme = ""
     current_academic_term = ""
+    account_number = ""
+    
     if frappe.db.exists("Student", {"user": user}):
         college = frappe.db.get_value("Student", {"user": user}, "company")
         programme = frappe.db.get_value("Student", {"user": user}, "programme")
+        
+        if college:
+            account_number = frappe.db.get_value("Company", college, "default_bank_account")
+    
     current_at = frappe.db.get_value("Academic Term", {"term_start_date": ["<=", today()], "term_end_date": [">=", today()], "college": college})
-    return college, programme, current_at
+    return college, programme, current_at, account_number
 
 @frappe.whitelist()
 def get_results(student):
@@ -150,6 +156,8 @@ def apply_review(student, module, semester,request_type,journal_number):
     std_name = frappe.db.get_value("Student",{"name":student},"student_name")
     college = frappe.db.get_value("Student",{"name":student},"company")
     programme = frappe.db.get_value("Student",{"name":student},"programme")
+    account_number = frappe.db.get_value("Company", college, "default_bank_account")
+    
     records = frappe.get_all(
         "Module Enrolment",
         filters={
@@ -169,7 +177,7 @@ def apply_review(student, module, semester,request_type,journal_number):
     doc.programme =programme
     doc.assessment_component = "Semester Exam"
     doc.academic_term=academic_term
-   
+    doc.account_number = account_number
 
     doc.save()
     frappe.db.commit()

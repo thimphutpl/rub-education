@@ -112,7 +112,7 @@ frappe.ui.form.on('Student Section Creation Tool', 'get_students', function (frm
                   // Step 1: minimum sections needed
                   let section_count = total / max
                   if(section_count > 1){
-                    section_count = Math.floor();
+                    section_count = Math.floor(section_count);
                   }
                   else if(section_count > 0 && section_count < 1){
                     section_count = 1
@@ -131,10 +131,11 @@ frappe.ui.form.on('Student Section Creation Tool', 'get_students', function (frm
                   
                   // Step 3: even distribution
                   let base = Math.floor(total / section_count);
+                  
                   let remainder = total % section_count;
                   
                   let student_index = 0;
-                  
+                
                   for (let sec = 0; sec < section_count; sec++) {
                       let roll_no = 1;
                   

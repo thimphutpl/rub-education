@@ -73,7 +73,8 @@ frappe.ui.form.on('Student Section Creation Tool', 'refresh', function (frm) {
 frappe.ui.form.on('Student Section Creation Tool', 'get_students', function (frm) {
   if (
     frm.doc.group_based_on == 'Batch' ||
-    frm.doc.group_based_on == 'Semester'
+    frm.doc.group_based_on == 'Semester' ||
+    frm.doc.group_based_on == 'Year'
   ) {
     var student_list = []
     var max_roll_no = 0
@@ -91,14 +92,23 @@ frappe.ui.form.on('Student Section Creation Tool', 'get_students', function (frm
         if(!frm.doc.program){
           frappe.throw("Please select Programme.")
         }
+        
+        // Build the arguments object
+        var args = {
+            programme: frm.doc.program,
+            college: frm.doc.college,
+            batch: frm.doc.batch
+        };
+        
+        // If group_based_on is Year and year is selected, add year parameter
+        if (frm.doc.group_based_on == 'Year' && frm.doc.year) {
+            args.year = frm.doc.year;
+        }
+        
         frappe.call({
             method: "get_students",
             doc: frm.doc,
-            args: {
-                programme: frm.doc.program,
-                college: frm.doc.college,
-                batch: frm.doc.batch
-            },
+            args: args,
             callback: function(r) {
                 if(r.message){
                   console.log(r.message)

@@ -81,32 +81,36 @@ class StudentSectionCreationTool(Document):
 		return group_list
 
 	@frappe.whitelist()
-	def get_students(self, programme, college, batch=None):
+	def get_students(self, programme, college, batch=None, year=None):  # Add year parameter
 		if self.max_strength == 0:
 			frappe.throw("Max Strength cannot be 0.")
 		self.set("students", [])
 		if not (programme and college):
 			frappe.throw(_("Please select all the mandatory fields"))
 
-		# frappe.throw(str(programme)+" "+str(college)+" "+str(batch))
+		# Build filters dictionary
+		filters = {
+			"programme": programme,
+			"company": college,
+			"status": 'Active',
+		}
+		if batch:
+			filters["student_batch"] = batch
+			
+		if self.group_based_on == "Year" and year:  # Use the passed year parameter
+			filters["year"] = year
+
 		students = frappe.get_all(
 			"Student",
-			filters={
-				"programme": programme,
-				"company": college,
-				# "semester": semester,
-				"student_batch": batch,
-				"status": 'Active',
-			},
+			filters=filters,
 			order_by="student_name",
 			fields=["name", "student_name"],
-		 )
-		# frappe.throw(str(students))
+		)
+		
 		if not students or len(students) == 0:
-			frappe.throw("No student record for the selected filters.")
+			frappe.throw(f"No student record for the selected filters. Year filter: {year}")
 		return students
-
-	@frappe.whitelist()
+	
 	def create_student_groups(self):
 		# if not self.courses:
 		# 	frappe.throw(_("""No Student Section created."""))

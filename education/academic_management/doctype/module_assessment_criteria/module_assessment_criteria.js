@@ -12,13 +12,13 @@ frappe.ui.form.on("Module Assessment Criteria", {
 			};
       
 		});
-    frm.set_query('semester', function () {
-      return {
-      filters: {
-          session: frm.doc.academic_session,
-      },
-      }
-    })
+    // frm.set_query('semester', function () {
+    //   return {
+    //   filters: {
+    //       session: frm.doc.academic_session,
+    //   },
+    //   }
+    // })
     frm.set_query('tutor', function () {
         return {
             query:

@@ -110,7 +110,8 @@ class StudentSectionCreationTool(Document):
 		if not students or len(students) == 0:
 			frappe.throw(f"No student record for the selected filters. Year filter: {year}")
 		return students
-	
+		
+	@frappe.whitelist()
 	def create_student_groups(self):
 		# if not self.courses:
 		# 	frappe.throw(_("""No Student Section created."""))

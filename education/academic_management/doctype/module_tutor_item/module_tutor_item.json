@@ -18,6 +18,7 @@
   {
    "fieldname": "tutor",
    "fieldtype": "Link",
+   "ignore_user_permissions": 1,
    "in_list_view": 1,
    "label": "Tutor",
    "options": "Employee",
@@ -46,6 +47,7 @@
   {
    "fieldname": "student_group",
    "fieldtype": "Link",
+   "ignore_user_permissions": 1,
    "in_list_view": 1,
    "label": "Student Section",
    "options": "Student Section",
@@ -64,7 +66,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-04-21 12:50:04.569093",
+ "modified": "2026-08-12 14:06:26.268910",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Module Tutor Item",

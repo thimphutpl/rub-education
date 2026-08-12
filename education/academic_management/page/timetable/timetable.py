@@ -9,7 +9,7 @@ def get_timetable(college, programme, academic_term):
         order_by="from_time asc"
     )
 
-    constraint = frappe.get_doc("Timetable Constraints", {"academic_term":"2025 Spring Semester"})
+    constraint = frappe.get_doc("Timetable Constraints", {"academic_term":academic_term, "college": college})
     blocked = []
     if timetable:
         for p in constraint.periods:

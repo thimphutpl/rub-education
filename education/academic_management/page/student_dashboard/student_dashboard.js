@@ -509,6 +509,7 @@ caCollapsible.find(".ca-header").click(function () {
 		let college_val = ""
 		let programme_val = ""
 		let current_at = ""
+		let account_number = ""
 		frappe.call({
 			method:"education.academic_management.page.student_dashboard.student_dashboard.get_student_details",
 			args: {"user": frappe.session.user},
@@ -518,6 +519,7 @@ caCollapsible.find(".ca-header").click(function () {
 					college_val = r.message[0]
 					programme_val = r.message[1]
 					current_at = r.message[2]
+					account_number = r.message[3]
 				}
 			}
 		})
@@ -704,57 +706,103 @@ function draw_timetable(container, data, blocked, map){
 
 	const days = ["Monday","Tuesday","Wednesday","Thursday","Friday"];
 
-	let slots = generate_slots();
+	let slots = generate_slots(data, blocked);
 	slots.sort();
 
 	let table = $('<table class="table table-bordered timetable-table"></table>');
 	let tableWrapper = $('<div class="timetable-print-only"></div>');
 	tableWrapper.append(table);
 	// Header row (Time Slots)
+	// let header = "<tr><th>Day</th>";
+	// slots.forEach(slot=>{
+	// 	// header += `<th>${slot}</th>`;
+	// 	header += `<th>${moment(slot,"HH:mm").format("hh:mm A")}</th>`;
+	// });
+	// header += "</tr>";
+	// table.append(header);
 	let header = "<tr><th>Day</th>";
-	slots.forEach(slot=>{
-		// header += `<th>${slot}</th>`;
-		header += `<th>${moment(slot,"HH:mm").format("hh:mm A")}</th>`;
-	});
+
+	for (let i = 0; i < slots.length - 1; i++) {
+	
+		const start = moment(slots[i], "HH:mm");
+		const end = moment(slots[i + 1], "HH:mm");
+	
+		header += `
+			<th>
+				${start.format("hh:mm A")} - ${end.format("hh:mm A")}
+			</th>
+		`;
+	}
+	
 	header += "</tr>";
+	
 	table.append(header);
 
 	// Rows for each day
-	days.forEach(day=>{
+	days.forEach(day => {
 
 		let row = `<tr><td class="day-column"><b>${day}</b></td>`;
-
-		slots.forEach(slot=>{
-
-			let entry = map[`${day}_${slot}`];
-		
-			// Check if this slot is a blocked/non-academic period
-			let blockedSlot = blocked.find(b => {
-				return b.day === day && moment(slot,"HH:mm").isBetween(
-					moment(b.from_time,"HH:mm:ss").subtract(1,'seconds'),
-					moment(b.to_time,"HH:mm:ss")
+	
+		for (let i = 0; i < slots.length - 1; i++) {
+	
+			const slotStart = moment(slots[i], "HH:mm");
+			const slotEnd = moment(slots[i + 1], "HH:mm");
+	
+			// PUT IT HERE
+			const entry = data.find(d => {
+				if (d.day !== day) return false;
+	
+				const periodStart = moment(d.from_time, "HH:mm:ss");
+				const periodEnd = moment(d.to_time, "HH:mm:ss");
+	
+				return (
+					slotStart.isSameOrAfter(periodStart) &&
+					slotEnd.isSameOrBefore(periodEnd)
 				);
 			});
-		
-			if(entry){
+	
+			const blockedSlot = blocked.find(b => {
+				if (b.day !== day) return false;
+	
+				const blockStart = moment(b.from_time, "HH:mm:ss");
+				const blockEnd = moment(b.to_time, "HH:mm:ss");
+	
+				return (
+					slotStart.isSameOrAfter(blockStart) &&
+					slotEnd.isSameOrBefore(blockEnd)
+				);
+			});
+	
+			if (blockedSlot) {
+	
+				const breakTime =
+					`${slotStart.format("HH:mm")} - ${slotEnd.format("HH:mm")}`;
+	
 				row += `
-				<td class="tt-cell">
-					<div class="module">${entry.module_code}</div>
-					<div class="tutor">(${entry.class_type})</div>
-					<div class="tutor">${entry.tutor_name}</div>
-					<div class="tutor">Room: ${entry.room_name}</div>
-				</td>`;
-			}else if(blockedSlot){
-				row += `<td class="tt-break">${blockedSlot.period_name}</td>`;
-			}else{
-				row += "<td></td>";
+					<th class="tt-break">
+						${blockedSlot.period_name}
+					</th>
+				`;
+	
+			} else if (entry) {
+	
+				row += `
+					<td class="tt-cell">
+						<div class="module">${entry.module_code}</div>
+						<div class="tutor">(${entry.class_type})</div>
+						<div class="tutor">${entry.tutor_name}</div>
+						<div class="tutor">Room: ${entry.room_name}</div>
+					</td>
+				`;
+	
+			} else {
+	
+				row += `<td></td>`;
 			}
-		
-		});
-
+		}
+	
 		row += "</tr>";
 		table.append(row);
-
 	});
 	container.html(tableWrapper);
 
@@ -814,19 +862,51 @@ function applyLogoBackground(logo_url, container){
         "background-size": "300px auto"
     });
 }
-function generate_slots(){
+// function generate_slots(data, blocked){
 
-	let start = moment("09:00","HH:mm");
-	let end = moment("17:00","HH:mm");
+// 	let start = moment("09:00","HH:mm");
+// 	let end = moment("17:00","HH:mm");
 
-	let slots = [];
+// 	let slots = [];
 
-	while(start <= end){  // < instead of <= to avoid duplicate last slot
-		slots.push(start.format("HH:mm"));
-		start.add(1,"hour");
-	}
+// 	while(start <= end){  // < instead of <= to avoid duplicate last slot
+// 		slots.push(start.format("HH:mm"));
+// 		start.add(1,"hour");
+// 	}
 
-	return slots;
+// 	return slots;
+// }
+function generate_slots(data, blocked) {
+    const boundaries = new Set([
+        "09:00",
+        "17:00"
+    ]);
+
+    // Academic period boundaries
+    data.forEach(d => {
+        boundaries.add(
+            moment(d.from_time, "HH:mm:ss").format("HH:mm")
+        );
+
+        boundaries.add(
+            moment(d.to_time, "HH:mm:ss").format("HH:mm")
+        );
+    });
+
+    // Blocked period boundaries
+    blocked.forEach(b => {
+        boundaries.add(
+            moment(b.from_time, "HH:mm:ss").format("HH:mm")
+        );
+
+        boundaries.add(
+            moment(b.to_time, "HH:mm:ss").format("HH:mm")
+        );
+    });
+
+    return Array.from(boundaries).sort((a, b) =>
+        moment(a, "HH:mm").diff(moment(b, "HH:mm"))
+    );
 }
 
 function printTimetable(container){
@@ -842,19 +922,30 @@ function printTimetable(container){
         body {
             font-family: Arial, sans-serif;
         }
-        .timetable-table{
-            font-size:12px;
-            text-align:center;
-            border-collapse: collapse;
-            width: 100%;
-            table-layout: fixed; /* important for fixed-width cells */
-        }
-        .timetable-table th, .timetable-table td{
-            border:1px solid #ccc;
-            word-wrap: break-word;
-            white-space: normal; /* allow wrapping */
-            padding: 5px;
-        }
+
+		.timetable-table {
+			font-size: 9px;
+			text-align: center;
+			border-collapse: collapse;
+		}
+
+		.timetable-table tr {
+			height: 70px;
+		}
+
+		.timetable-table th,
+		.timetable-table td {
+			border: 1px solid #ccc;
+			width: 80px;
+			min-width: 100px;
+			max-width: 100px;
+			height: 70px;
+			padding: 3px;
+			vertical-align: middle;
+			box-sizing: border-box;
+			word-wrap: break-word;
+			white-space: normal;
+		}
         .tt-cell{
             background:#e6f7ff; /* academic */
             font-weight:bold;
@@ -897,23 +988,28 @@ $(`<style>
 		text-align:center;
 		border-collapse: collapse;
 	}
-	.timetable-container td,
-	.timetable-container th {
-		padding: 4px 6px;   /* reduce spacing */
-		font-size: 12px;    /* optional */
+	.timetable-table {
+		font-size: 9px;
+		text-align: center;
+		border-collapse: collapse;
 	}
+
+	.timetable-table tr {
+		height: 70px;
+	}
+
 	.timetable-table th,
-	.timetable-table td{
-		border:1px solid #ccc;
-		width:80px;       /* fixed width */
-		min-width:100px;
-		max-width:100px;
-		padding:3px;
-		height:45px;
-		height:50px;       /* min height */
+	.timetable-table td {
+		border: 1px solid #ccc;
+		width: 80px;
+		min-width: 100px;
+		max-width: 100px;
+		height: 70px;
+		padding: 3px;
 		vertical-align: middle;
-		word-wrap: break-word;   /* wrap text */
-		white-space: normal;     /* allow multiple lines */
+		box-sizing: border-box;
+		word-wrap: break-word;
+		white-space: normal;
 	}
 	.timetable-table th{
 		background:#E6E6E6; /* academic class color */
@@ -1075,6 +1171,22 @@ $(`<style>
 	function load_results(container, student) {
 
 		container.html("<p>Loading results...</p>");
+	
+		// Get college and account number
+		let college_val = "";
+		let account_number = "";
+		
+		frappe.call({
+			method: "education.academic_management.page.student_dashboard.student_dashboard.get_student_details",
+			args: {"user": frappe.session.user},
+			async: false,
+			callback: function(r){
+				if(r.message){
+					college_val = r.message[0];
+					account_number = r.message[3];
+				}
+			}
+		});
 	
 		frappe.call({
 			method: "education.academic_management.page.student_dashboard.student_dashboard.get_results",
@@ -1353,11 +1465,25 @@ $(`<style>
 								title: "Enter Payment Details",
 								fields: [
 									{
+										label: "College & Account Information",
+										fieldname: "account_info",
+										fieldtype: "HTML",
+										options: `
+											<div style="margin-bottom:10px; padding:10px; background:#f8f9fa; border-radius:4px; border-left: 3px solid #2490ef;">
+												<p style="margin:5px 0;"><strong>College:</strong> ${college_val || 'Not set'}</p>
+												<p style="margin:5px 0;"><strong>Account Number:</strong> ${account_number || 'Not set'}</p>
+												<hr style="margin:8px 0;">
+												<p style="margin:5px 0;"><strong>Amount to Pay:</strong> ${amountText}</p>
+												<p style="margin:5px 0; font-size:12px; color:#666;">Please transfer the exact amount to the above account.</p>
+											</div>
+										`
+									},
+									{
 										label: "Reference Number",
 										fieldname: "journal_entry",
 										fieldtype: "Data",
 										reqd: 1,
-										description: `Enter reference number. Payable amount: ${amountText}.`
+										// description: `Enter reference number. Payable amount: ${amountText}.`
 									}
 								],
 								primary_action_label: "Submit",

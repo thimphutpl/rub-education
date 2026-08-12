@@ -1,16 +1,16 @@
 import frappe
 from frappe.utils import today
 
+
 @frappe.whitelist()
 def get_timetable(college, programme, academic_term):
-    frappe.throw("here "+str(academic_term))
     timetable = frappe.get_all(
         "Timetable Schedule Entry",
         filters={"college": college, "programme": programme, "academic_term": academic_term},
         fields=["day","from_time","to_time","module_code","tutor","class_type","tutor_name","room_name"],
         order_by="from_time asc"
     )
-
+    frappe.throw(str(academic_term))
     constraint = frappe.get_doc("Timetable Constraints", {"academic_term":academic_term})
     blocked = []
     if timetable:

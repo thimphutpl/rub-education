@@ -14,6 +14,7 @@
   "group_based_on",
   "student_group_name",
   "max_strength",
+  "class_type",
   "column_break_3",
   "academic_term",
   "program",
@@ -171,10 +172,17 @@
    "label": "Year",
    "mandatory_depends_on": "eval:doc.group_based_on == \"Year\";",
    "options": "Year"
+  },
+  {
+   "fieldname": "class_type",
+   "fieldtype": "Select",
+   "label": "Class Type",
+   "options": "\nTheory\nPractical",
+   "reqd": 1
   }
  ],
  "links": [],
- "modified": "2026-08-03 10:45:21.491870",
+ "modified": "2026-08-12 12:44:09.384426",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student Section Creation Tool",

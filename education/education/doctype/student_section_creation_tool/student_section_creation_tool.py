@@ -16,8 +16,8 @@ class StudentSectionCreationTool(Document):
 
 	def validate_existing(self):
 		if self.batch:
-			if frappe.db.exists("Student Section Creation Tool", {"college": self.college, "academic_term": self.academic_term, "batch": self.batch, "name": ["!=", self.name], "program": self.program}):
-				frappe.throw("Student Section Creation Tool alraedy exists for: Student Batch: {}\nAcademic Term: {}\nCollege: {}\nPrgoramme: {}\nExisting Doc: {}".format(self.batch, self.academic_term, self.college, self.program, frappe.db.get_value("Student Section Creation Tool", {"college": self.college, "academic_term": self.academic_term, "batch": self.batch, "name": ["!=", self.name]}, "name")))
+			if frappe.db.exists("Student Section Creation Tool", {"college": self.college, "academic_term": self.academic_term, "batch": self.batch, "name": ["!=", self.name], "program": self.program, "class_type": self.class_type}):
+				frappe.throw("Student Section Creation Tool alraedy exists for: Student Batch: {}\nAcademic Term: {}\nCollege: {}\nPrgoramme: {}\nClass Type:{}\nExisting Doc: {}".format(self.batch, self.academic_term, self.college, self.program, self.class_type, frappe.db.get_value("Student Section Creation Tool", {"college": self.college, "academic_term": self.academic_term, "batch": self.batch, "name": ["!=", self.name]}, "name")))
 
 	@frappe.whitelist()
 	def get_current_academic_term(self, college):
@@ -178,6 +178,7 @@ class StudentSectionCreationTool(Document):
 			student_group.max_strength = self.max_strength
 			student_group.academic_term = self.academic_term
 			student_group.academic_year = self.academic_year
+			student_group.class_type = self.class_type
 			student_list = []
 			count = 1
 			for student in self.students:

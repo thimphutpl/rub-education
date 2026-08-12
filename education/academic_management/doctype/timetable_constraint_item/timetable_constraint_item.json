@@ -8,6 +8,7 @@
  "field_order": [
   "period_details_section",
   "period_name",
+  "allow_overlap",
   "column_break_ayob",
   "from_time",
   "to_time",
@@ -102,13 +103,19 @@
    "fieldname": "saturday",
    "fieldtype": "Check",
    "label": "Saturday"
+  },
+  {
+   "default": "0",
+   "fieldname": "allow_overlap",
+   "fieldtype": "Check",
+   "label": "Allow Overlap"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-02-23 19:36:01.040458",
+ "modified": "2026-08-12 12:12:09.534730",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Timetable Constraint Item",

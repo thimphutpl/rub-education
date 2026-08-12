@@ -13,16 +13,18 @@ class TimetableScheduleEntry(Document):
 	def validate_schedule_overlap(self):
 		if frappe.db.exists("Timetable Schedule Entry", {"college": self.college, "academic_term": self.academic_term, "module": self.module, "day": self.day, "from_time": [">=", self.from_time],  "to_time": ["<=", self.to_time], "name": ["!=", self.name]}):
 			frappe.throw("Timetable Schedule is overlapping with another schedule entry.")
-		exists = frappe.db.sql("select 1, period_name from `tabTimetable Constraint Item` where parent = '{}' and {}=1 and from_time >= '{}' and to_time <= '{}'limit 1".format(self.constraint, self.day.lower(), self.from_time, self.to_time),as_dict=1)
+		exists = frappe.db.sql("select 1, period_name, allow_overlap from `tabTimetable Constraint Item` where parent = '{}' and {}=1 and ((from_time>'{}' and from_time<'{}') or  (to_time > '{}' and to_time <'{}'))".format(self.constraint, self.day.lower(), self.from_time, self.to_time, self.from_time, self.to_time),as_dict=1)
 
 		period = ""
+		allow_overlap = 0
 		if len(exists) > 0:
-			period = exists[0].period_name
+			for exist in exists:
+				if exist.allow_overlap == 0:
+					frappe.throw("Your Timetable Schedule Entry cannot be allocated during {}".format(exist.period_name))
 			exists = 1
 		else:
 			exists = 0
-		if exists == 1:
-			frappe.throw("Your Timetable Schedule Entry cannot be allocated during {}".format(period))
+
 		# 2. Check across other timetable schedules
 		conflicts = frappe.db.sql("""
 			SELECT name

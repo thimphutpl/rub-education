@@ -1,11 +1,13 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
- "autoname": "field:assessment_name",
+ "autoname": "format:{assessment_name}-{abbr}",
  "creation": "2025-10-06 11:32:04.948092",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "college",
   "assessment_name",
   "examination_assesment",
   "attendance_included",
@@ -13,7 +15,8 @@
   "disciplinary_included",
   "assessment_role",
   "column_break_ewym",
-  "assessment_component_type"
+  "assessment_component_type",
+  "abbr"
  ],
  "fields": [
   {
@@ -65,16 +68,30 @@
    "fieldname": "disciplinary_included",
    "fieldtype": "Check",
    "label": "Disciplinary Included"
+  },
+  {
+   "fieldname": "college",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "College",
+   "options": "Company"
+  },
+  {
+   "fetch_from": "college.abbr",
+   "fieldname": "abbr",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Abbr"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-02-21 12:22:18.315935",
+ "modified": "2026-08-14 09:00:26.870983",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Assessment Component",
- "naming_rule": "By fieldname",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {

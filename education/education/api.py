@@ -90,6 +90,7 @@ def check_attendance_records_exist(course_schedule=None, student_group=None, dat
 def mark_attendance(
 	students_present, students_absent, from_time, to_time, day, timetable_schedule_entry, academic_year, academic_term, programme=None, student_group=None, date=None, course = None
 ):
+	frappe.throw("Programme: "+programme+", Academic Term: "+academic_term+", Academic Year: "+academic_year)
 	"""Creates Multiple Attendance Records.
 
 	:param students_present: Students Present JSON.

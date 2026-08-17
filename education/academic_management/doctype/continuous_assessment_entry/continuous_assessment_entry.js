@@ -112,26 +112,26 @@ frappe.ui.form.on("Continuous Assessment Entry", {
     },
     academic_termacademic_term: function(frm){
         frm.set_value('semester', '');
-        if(frm.doc.academic_term){
-            frappe.db.get_value('Academic Term', frm.doc.academic_term, 'academic_session', (r) => {
-                frm.set_query('semester', function () {
-                    return {
-                    filters: {
-                        session: r.academic_session,
-                    },
-                    }
-                })
-            });
-        }
-        else{
-            frm.set_query('semester', function () {
-                return {
-                    filters: {
-                        name: ["=", "Please select Academic Term"],
-                    }
-                };
-            });
-        }
+        // if(frm.doc.academic_term){
+        //     frappe.db.get_value('Academic Term', frm.doc.academic_term, 'academic_session', (r) => {
+        //         frm.set_query('semester', function () {
+        //             return {
+        //             filters: {
+        //                 session: r.academic_session,
+        //             },
+        //             }
+        //         })
+        //     });
+        // }
+        // else{
+        //     frm.set_query('semester', function () {
+        //         return {
+        //             filters: {
+        //                 name: ["=", "Please select Academic Term"],
+        //             }
+        //         };
+        //     });
+        // }
     },academic_term: function(frm){
         frm.set_value('semester', '');
         if(frm.doc.academic_term){

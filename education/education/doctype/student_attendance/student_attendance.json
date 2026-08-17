@@ -7,6 +7,7 @@
  "document_type": "Document",
  "engine": "InnoDB",
  "field_order": [
+  "college",
   "naming_series",
   "student",
   "student_name",
@@ -25,7 +26,10 @@
   "amended_from",
   "link_nvfk",
   "academic_year",
-  "academic_term"
+  "academic_term",
+  "tutor",
+  "tutor_name",
+  "class_type"
  ],
  "fields": [
   {
@@ -42,7 +46,6 @@
    "fieldname": "course_schedule",
    "fieldtype": "Link",
    "hidden": 1,
-   "in_list_view": 1,
    "label": "Course Schedule",
    "options": "Course Schedule"
   },
@@ -122,6 +125,7 @@
   {
    "fieldname": "module",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Module",
    "options": "Module",
    "reqd": 1
@@ -164,12 +168,41 @@
    "label": "Day",
    "options": "\nMonday\nTuesday\nWednesday\nThursday\nFriday\nSaturday\nSunday",
    "read_only": 1
+  },
+  {
+   "fieldname": "college",
+   "fieldtype": "Link",
+   "label": "College",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "tutor",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Tutor",
+   "options": "Employee",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fetch_from": "tutor.employee_name",
+   "fieldname": "tutor_name",
+   "fieldtype": "Data",
+   "label": "Tutor Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "class_type",
+   "fieldtype": "Data",
+   "label": "Class Type",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-08-17 10:05:19.882782",
+ "modified": "2026-08-17 14:47:06.372753",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student Attendance",

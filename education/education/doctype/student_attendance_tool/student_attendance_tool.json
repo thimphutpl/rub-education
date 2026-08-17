@@ -18,6 +18,7 @@
   "academic_year",
   "course",
   "to_time",
+  "class_type",
   "attendance",
   "students_html"
  ],
@@ -126,13 +127,21 @@
    "options": "\nMonday\nTuesday\nWednesday\nThursday\nFriday\nSaturday\nSunday",
    "read_only": 1,
    "reqd": 1
+  },
+  {
+   "fetch_from": "timetable_schedule_entry.class_type",
+   "fieldname": "class_type",
+   "fieldtype": "Data",
+   "label": "Class Type",
+   "read_only": 1,
+   "reqd": 1
   }
  ],
  "hide_toolbar": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-04-28 20:12:15.596981",
- "modified_by": "tshering.dorji@thimphutechpark.bt",
+ "modified": "2026-08-17 14:20:59.300432",
+ "modified_by": "Administrator",
  "module": "Education",
  "name": "Student Attendance Tool",
  "owner": "Administrator",

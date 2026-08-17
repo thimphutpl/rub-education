@@ -88,7 +88,7 @@ def check_attendance_records_exist(course_schedule=None, student_group=None, dat
 
 @frappe.whitelist()
 def mark_attendance(
-	students_present, students_absent, from_time, to_time, day, timetable_schedule_entry, academic_year, academic_term, programme=None, student_group=None, date=None, course = None
+	students_present, students_absent, from_time, to_time, day, timetable_schedule_entry, academic_year, academic_term, programme=None, college=None, tutor=None, student_group=None, date=None, course = None, class_type = None
 ):
 	"""Creates Multiple Attendance Records.
 
@@ -116,12 +116,12 @@ def mark_attendance(
 
 	for d in present:
 		make_attendance_records(
-			d["student"], d["student_name"], "Present", from_time, to_time, timetable_schedule_entry, day, academic_year, academic_term, programme = programme, student_group = student_group, date=date, course=course
+			d["student"], d["student_name"], "Present", from_time, to_time, timetable_schedule_entry, day, academic_year, academic_term, programme = programme, college=college, tutor=tutor, student_group = student_group, date=date, course=course, class_type = class_type
 		)
 
 	for d in absent:
 		make_attendance_records(
-			d["student"], d["student_name"], "Absent", from_time, to_time, timetable_schedule_entry, day, academic_year, academic_term, programme = programme, student_group = student_group, date=date, course=course
+			d["student"], d["student_name"], "Absent", from_time, to_time, timetable_schedule_entry, day, academic_year, academic_term, programme = programme, college=college, tutor=tutor, student_group = student_group, date=date, course=course, class_type = class_type
 		)
 
 	frappe.db.commit()
@@ -129,7 +129,7 @@ def mark_attendance(
 
 @frappe.whitelist()
 def make_attendance_records(
-	student, student_name, status, from_time, to_time, timetable_schedule_entry, day, academic_year, academic_term, programme=None, student_group=None, date=None, course=None
+	student, student_name, status, from_time, to_time, timetable_schedule_entry, day, academic_year, academic_term, programme=None, college=None, tutor=None, student_group=None, date=None, course=None, class_type = None
 ):
 	"""Creates/Update Attendance Record.
 
@@ -149,6 +149,8 @@ def make_attendance_records(
 	)
 	if not student_attendance:
 		student_attendance = frappe.new_doc("Student Attendance")
+	if not frappe.db.exists("Employee", {"user_id": tutor}, "name"):
+		frappe.throw("Logged in User must be a Tutor. \n*User must have <b>Tutor</b> role.")
 	student_attendance.student = student
 	student_attendance.student_name = student_name
 	student_attendance.student_group = student_group
@@ -161,8 +163,12 @@ def make_attendance_records(
 	student_attendance.academic_year = academic_year
 	student_attendance.academic_term = academic_term
 	student_attendance.programme = programme
+	student_attendance.college = college
+	student_attendance.tutor = frappe.db.get_value("Employee", {"user_id": tutor}, "name")
+	student_attendance.tutor_name = frappe.db.get_value("Employee", student_attendance.tutor, "employee_name")
 	if course:
 		student_attendance.module = course
+	student_attendance.class_type = class_type
 	student_attendance.save()
 	student_attendance.submit()
 

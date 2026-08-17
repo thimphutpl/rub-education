@@ -21,12 +21,19 @@ frappe.ui.form.on('Student Attendance Tool', {
 					}
 				};
 			}
-
+			if (!frm.doc.timetable_schedule_entry) {
+				return {
+					filters: {
+						company: ["=", "Please Select Timetable Schedule Entry"]
+					}
+				};
+			}
 			return {
 				filters: {
 					college: frm.doc.college,
           program: frm.doc.programme,
           academic_term: frm.doc.academic_term,
+          class_type: frm.doc.class_type,
           disabled: 0,
 				}
 			};
@@ -215,8 +222,11 @@ education.StudentsEditor = class StudentsEditor {
                   academic_year: cur_frm.doc.academic_year,
                   academic_term: cur_frm.doc.academic_term,
                   programme: cur_frm.doc.programme,
+                  college: cur_frm.doc.college,
+                  tutor: frappe.session.user,
                   date: frm.doc.date,
                   course: cur_frm.doc.course,
+                  class_type: cur_frm.doc.class_type,
                 },
                 callback: function (r) {
                   $(me.wrapper.find('.btn-mark-att')).attr('disabled', false)

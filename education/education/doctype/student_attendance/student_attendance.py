@@ -154,3 +154,27 @@ def get_holiday_list(company=None):
 			)
 		)
 	return holiday_list
+
+@frappe.whitelist()
+def get_permission_query_conditions(user):
+	if not user: user = frappe.session.user
+	user_roles = frappe.get_roles(user)
+	if "Administrator" in user_roles or "System Manager" in user_roles:
+		return
+	if "Academic Dean" in user_roles:
+		college = frappe.db.get_value("Employee", {"user_id":frappe.session.user}, "company")
+		return """(
+		`tabStudent Attendance`.college = '{college}'
+		)""".format(college=college)
+	if "Student" in user_roles:
+		student_id = frappe.db.get_value("Student", {"user":frappe.session.user}, "name")
+		return """(
+		`tabStudent Attendance`.student = '{student_id}'
+		)""".format(student_id=student_id)
+	if "Tutor" in user_roles:
+		tutor = frappe.db.get_value("Employee", {"user_id":frappe.session.user}, "name")
+		return """(
+		`tabStudent Attendance`.tutor = '{tutor}'
+		)""".format(tutor=tutor)
+	else:
+		frappe.throw("you are not allowed to view Student Attendance list")

@@ -88,7 +88,7 @@ def check_attendance_records_exist(course_schedule=None, student_group=None, dat
 
 @frappe.whitelist()
 def mark_attendance(
-	students_present, students_absent, from_time, to_time, day, timetable_schedule_entry, student_group=None, date=None, course = None
+	students_present, students_absent, from_time, to_time, day, timetable_schedule_entry, programme, academic_year, academic_term, student_group=None, date=None, course = None
 ):
 	"""Creates Multiple Attendance Records.
 
@@ -116,12 +116,12 @@ def mark_attendance(
 
 	for d in present:
 		make_attendance_records(
-			d["student"], d["student_name"], "Present", from_time, to_time, timetable_schedule_entry, day, student_group, date=date, course=course
+			d["student"], d["student_name"], "Present", from_time, to_time, timetable_schedule_entry, day, student_group, programme,  academic_year, academic_term, date=date, course=course
 		)
 
 	for d in absent:
 		make_attendance_records(
-			d["student"], d["student_name"], "Absent", from_time, to_time, timetable_schedule_entry, day, student_group, date=date, course=course
+			d["student"], d["student_name"], "Absent", from_time, to_time, timetable_schedule_entry, day, student_group, programme, academic_year, academic_term, date=date, course=course
 		)
 
 	frappe.db.commit()
@@ -129,7 +129,7 @@ def mark_attendance(
 
 @frappe.whitelist()
 def make_attendance_records(
-	student, student_name, status, from_time, to_time, timetable_schedule_entry, day, student_group=None, date=None, course=None
+	student, student_name, status, from_time, to_time, timetable_schedule_entry, day, programme, academic_year, academic_term, student_group=None, date=None, course=None
 ):
 	"""Creates/Update Attendance Record.
 
@@ -158,6 +158,9 @@ def make_attendance_records(
 	student_attendance.to_time = to_time
 	student_attendance.day = day
 	student_attendance.status = status
+	student_attendance.academic_year = academic_year
+	student_attendance.academic_term = academic_term
+	student_attendance.programme = programme
 	if course:
 		student_attendance.module = course
 	student_attendance.save()

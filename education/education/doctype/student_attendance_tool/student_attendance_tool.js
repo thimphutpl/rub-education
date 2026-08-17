@@ -214,6 +214,9 @@ education.StudentsEditor = class StudentsEditor {
                   day: frm.doc.day,
                   date: frm.doc.date,
                   course: cur_frm.doc.course,
+                  programme: cur_frm.doc.programme,
+                  academic_year: cur_frm.doc.academic_year,
+                  academic_year: cur_frm.doc.academic_year,
                 },
                 callback: function (r) {
                   $(me.wrapper.find('.btn-mark-att')).attr('disabled', false)

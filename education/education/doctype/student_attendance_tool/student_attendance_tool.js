@@ -212,11 +212,11 @@ education.StudentsEditor = class StudentsEditor {
                   to_time: frm.doc.to_time,
                   timetable_schedule_entry: frm.doc.timetable_schedule_entry,
                   day: frm.doc.day,
+                  programme: cur_frm.doc.programme,
+                  academic_year: cur_frm.doc.academic_term,
+                  academic_term: cur_frm.doc.academic_year,
                   date: frm.doc.date,
                   course: cur_frm.doc.course,
-                  programme: cur_frm.doc.programme,
-                  academic_term: cur_frm.doc.academic_term,
-                  academic_year: cur_frm.doc.academic_year,
                 },
                 callback: function (r) {
                   $(me.wrapper.find('.btn-mark-att')).attr('disabled', false)

@@ -88,7 +88,7 @@ def check_attendance_records_exist(course_schedule=None, student_group=None, dat
 
 @frappe.whitelist()
 def mark_attendance(
-	students_present, students_absent, from_time, to_time, day, timetable_schedule_entry, programme, academic_year, academic_term, student_group=None, date=None, course = None
+	students_present, students_absent, from_time, to_time, day, timetable_schedule_entry, academic_year, academic_term, programme=None, student_group=None, date=None, course = None
 ):
 	"""Creates Multiple Attendance Records.
 

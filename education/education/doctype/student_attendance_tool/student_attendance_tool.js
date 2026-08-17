@@ -215,7 +215,7 @@ education.StudentsEditor = class StudentsEditor {
                   date: frm.doc.date,
                   course: cur_frm.doc.course,
                   programme: cur_frm.doc.programme,
-                  academic_year: cur_frm.doc.academic_year,
+                  academic_term: cur_frm.doc.academic_term,
                   academic_year: cur_frm.doc.academic_year,
                 },
                 callback: function (r) {

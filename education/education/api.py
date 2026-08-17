@@ -116,12 +116,12 @@ def mark_attendance(
 
 	for d in present:
 		make_attendance_records(
-			d["student"], d["student_name"], "Present", from_time, to_time, timetable_schedule_entry, day, student_group, academic_year, academic_term, programme = programme, date=date, course=course
+			d["student"], d["student_name"], "Present", from_time, to_time, timetable_schedule_entry, day, academic_year, academic_term, programme = programme, student_group = student_group, date=date, course=course
 		)
 
 	for d in absent:
 		make_attendance_records(
-			d["student"], d["student_name"], "Absent", from_time, to_time, timetable_schedule_entry, day, student_group, academic_year, academic_term, programme = programme, date=date, course=course
+			d["student"], d["student_name"], "Absent", from_time, to_time, timetable_schedule_entry, day, academic_year, academic_term, programme = programme, student_group = student_group, date=date, course=course
 		)
 
 	frappe.db.commit()

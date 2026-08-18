@@ -58,6 +58,7 @@ class TimeTableSchedule(Document):
             doc.from_time = tts.from_time
             doc.to_time = tts.to_time
             doc.timetable_schedule_id = self.name
+            doc.student_section = tts.student_section
 
             doc.insert()
     

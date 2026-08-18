@@ -93,17 +93,16 @@ class TimeTableSchedule(Document):
             "Timetable Constraints",
             self.constraint
         )
-
         # Clear existing schedule items
         self.set("items", [])
 
         working_days = get_working_days(constraint)
         time_slots = get_time_slots(constraint)
         modules = build_module_workload(constraint)
-
+        
         # Get sections belonging to this College + Academic Term + Programme
         sections = get_available_sections(self)
-
+        #frappe.throw(str(sections))
         for section in sections:
 
             for idx, module_info in enumerate(modules):
@@ -118,6 +117,7 @@ class TimeTableSchedule(Document):
                 )
 
                 if not success:
+                    
                     # frappe.throw(
                     #     "Unable to generate timetable for "
                     #     "Section <b>{0}</b>, Module <b>{1}</b>, "
@@ -206,6 +206,7 @@ def build_blocked_slots(constraint):
 
 def build_module_workload(constraint):
     modules = []
+
     for m in constraint.academic_periods:
         modules.append({
             "module": m.module,
@@ -213,7 +214,9 @@ def build_module_workload(constraint):
             "class_room": m.class_room,
             "max_per_week": m.max_hours_per_week,
             "max_per_day": m.max_hours_per_day,
+            "max_per_session": constraint.max_hour_per_session,
         })
+
     return modules
 
 def get_working_days(constraint):
@@ -288,6 +291,58 @@ def is_valid_slot(doc, constraint, module, day, slot):
     # if is_adjacent_day(doc, module["module"], day):
     #     return False
     return True
+
+def get_consecutive_slots(
+    sorted_slots,
+    start_slot,
+    hours
+):
+
+    start_index = None
+
+    for i, slot in enumerate(sorted_slots):
+
+        if (
+            slot["from"] == start_slot["from"]
+            and slot["to"] == start_slot["to"]
+        ):
+            start_index = i
+            break
+
+
+    if start_index is None:
+        return []
+
+
+    result = [
+        sorted_slots[start_index]
+    ]
+
+
+    current_end = to_time_obj(
+        start_slot["to"]
+    )
+
+
+    for slot in sorted_slots[start_index + 1:]:
+
+        if len(result) >= hours:
+            break
+
+
+        if to_time_obj(slot["from"]) == current_end:
+
+            result.append(slot)
+
+            current_end = to_time_obj(
+                slot["to"]
+            )
+
+        else:
+            break
+
+
+    return result
 
 def get_class_type_hours(constraint, class_type):
 
@@ -417,11 +472,8 @@ def assign_modules(
     section=None,
     section_index=0
 ):
-    module_info = modules[index]
 
-    # --------------------------------------------------
-    # Check Section Class Type
-    # --------------------------------------------------
+    module_info = modules[index]
 
     section_class_type = frappe.db.get_value(
         "Student Section",
@@ -429,8 +481,9 @@ def assign_modules(
         "class_type"
     )
 
-    if section_class_type != module_info["class_type"]:
+    if section_class_type != module_info["class_type"] or not frappe.db.exists("Module Tutor Item", {"parent": module_info["module"], "student_group": section}):
         return True
+
 
     module_doc = frappe.get_doc(
         "Module",
@@ -441,10 +494,11 @@ def assign_modules(
 
     if not tutors:
         frappe.throw(
-            """Tutor is not allocated for module
-            <b><a href="/app/module/{0}">{0}</a></b>"""
-            .format(module_info["module"])
+            "Tutor is not allocated for module {}".format(
+                module_info["module"]
+            )
         )
+
 
     hours_needed = int(
         module_info.get("max_per_week") or 0
@@ -454,6 +508,11 @@ def assign_modules(
         module_info.get("max_per_day") or hours_needed
     )
 
+    max_per_session = int(
+        module_info.get("max_per_session") or 1
+    )
+
+
     placed_hours = count_module_week(
         schedule_doc,
         module_info["module"],
@@ -461,143 +520,180 @@ def assign_modules(
         module_info["class_type"]
     )
 
-    # ==================================================
-    # CREATE SLOT ORDER
-    # ==================================================
 
-    # Keep days randomized
+    # Randomize days
     random_days = list(days)
     random.shuffle(random_days)
 
-    # --------------------------------------------------
-    # IMPORTANT:
-    # Rotate the TIME slots based on section index.
-    #
-    # Section 0 → starts at slot 0
-    # Section 1 → starts at slot 1
-    # Section 2 → starts at slot 2
-    # Section 3 → starts at slot 3
-    # --------------------------------------------------
 
-    time_slots = list(slots)
+    # Keep slots chronological
+    sorted_slots = sorted(
+        slots,
+        key=lambda x: to_time_obj(x["from"])
+    )
 
-    if time_slots:
 
-        offset = section_index % len(time_slots)
+    while placed_hours < hours_needed:
 
-        time_slots = (
-            time_slots[offset:]
-            + time_slots[:offset]
-        )
+        allocated = False
 
-    # ==================================================
-    # Generate day/time combinations
-    # ==================================================
+        # Randomize days again for each session
+        random.shuffle(random_days)
 
-    available_slots = []
+        for day in random_days:
 
-    for day in random_days:
+            if placed_hours >= hours_needed:
+                break
 
-        day_slots = list(time_slots)
 
-        # Randomize time slots for this day
-        random.shuffle(day_slots)
-
-        for slot in day_slots:
-
-            available_slots.append({
-                "day": day,
-                "slot": slot
-            })
-
-    # Also randomize the final candidates
-    random.shuffle(available_slots)
-
-    # ==================================================
-    # Allocate
-    # ==================================================
-
-    for candidate in available_slots:
-
-        if placed_hours >= hours_needed:
-            break
-
-        day = candidate["day"]
-        slot = candidate["slot"]
-
-        # ------------------------------------------------
-        # Maximum hours per day
-        # ------------------------------------------------
-
-        if count_module_day(
-            schedule_doc,
-            module_info["module"],
-            day,
-            section,
-            module_info["class_type"]
-        ) >= max_per_day:
-            continue
-
-        # ------------------------------------------------
-        # Find tutor
-        # ------------------------------------------------
-
-        random_tutors = list(tutors)
-        random.shuffle(random_tutors)
-
-        tutor_assigned = None
-
-        for tutor_row in random_tutors:
-
-            if (
-                tutor_row.class_type
-                != module_info["class_type"]
-            ):
-                continue
-
-            tutor = tutor_row.tutor
-
-            if not is_valid_slot(
+            # Hours already allocated on this day
+            day_hours = count_module_day(
                 schedule_doc,
-                constraint,
-                module_info,
+                module_info["module"],
                 day,
-                slot,
-                tutor,
-                section
-            ):
+                section,
+                module_info["class_type"]
+            )
+
+
+            remaining_day_hours = max_per_day - day_hours
+            remaining_week_hours = hours_needed - placed_hours
+
+
+            if remaining_day_hours <= 0:
                 continue
 
-            tutor_assigned = tutor
+
+            # Maximum possible session size
+            allowed_session_hours = min(
+                max_per_session,
+                remaining_day_hours,
+                remaining_week_hours
+            )
+
+
+            if allowed_session_hours <= 0:
+                continue
+
+
+            # -----------------------------------------
+            # RANDOM SESSION LENGTH
+            # -----------------------------------------
+
+            session_hours = random.randint(
+                1,
+                allowed_session_hours
+            )
+
+
+            # Randomize starting positions
+            possible_slots = list(sorted_slots)
+            random.shuffle(possible_slots)
+
+
+            for start_slot in possible_slots:
+
+                consecutive_slots = get_consecutive_slots(
+                    sorted_slots,
+                    start_slot,
+                    session_hours
+                )
+
+
+                # We need the complete requested session
+                if len(consecutive_slots) != session_hours:
+                    continue
+
+
+                # -----------------------------------------
+                # Find tutor who is available
+                # for the ENTIRE session
+                # -----------------------------------------
+
+                random_tutors = list(tutors)
+                random.shuffle(random_tutors)
+
+                tutor_assigned = None
+
+
+                for tutor_row in random_tutors:
+
+                    if (
+                        tutor_row.class_type
+                        != module_info["class_type"]
+                    ):
+                        continue
+
+
+                    tutor = tutor_row.tutor
+
+                    session_valid = True
+
+
+                    for session_slot in consecutive_slots:
+
+                        if not is_valid_slot(
+                            schedule_doc,
+                            constraint,
+                            module_info,
+                            day,
+                            session_slot,
+                            tutor,
+                            section
+                        ):
+                            session_valid = False
+                            break
+
+
+                    if session_valid:
+
+                        tutor_assigned = tutor
+                        break
+
+
+                if not tutor_assigned:
+                    continue
+
+
+                # -----------------------------------------
+                # Allocate the ENTIRE random session
+                # -----------------------------------------
+
+                for session_slot in consecutive_slots:
+
+                    row = schedule_doc.append(
+                        "items",
+                        {}
+                    )
+
+                    row.student_section = section
+                    row.day = day
+                    row.module = module_info["module"]
+                    row.class_type = module_info["class_type"]
+                    row.class_room = module_info["class_room"]
+
+                    row.from_time = session_slot["from"]
+                    row.to_time = session_slot["to"]
+
+                    row.tutor = tutor_assigned
+
+                    row.tutor_name = frappe.db.get_value(
+                        "Employee",
+                        tutor_assigned,
+                        "employee_name"
+                    )
+
+                    placed_hours += 1
+
+
+                allocated = True
+                break
+
+
+        # No more possible allocation
+        if not allocated:
             break
 
-        if not tutor_assigned:
-            continue
-
-        # ------------------------------------------------
-        # Create row
-        # ------------------------------------------------
-
-        row = schedule_doc.append("items", {})
-
-        row.student_section = section
-        row.day = day
-        row.module = module_info["module"]
-        row.class_type = module_info["class_type"]
-        row.class_room = module_info["class_room"]
-
-        row.from_time = slot["from"]
-        row.to_time = slot["to"]
-
-        row.tutor = tutor_assigned
-
-        row.tutor_name = frappe.db.get_value(
-            "Employee",
-            tutor_assigned,
-            "employee_name"
-        )
-
-        placed_hours += 1
 
     return placed_hours >= hours_needed
 
@@ -629,6 +725,71 @@ def count_module_week(
         and r.student_section == section
         and r.class_type == class_type
     ])
+
+def count_consecutive_module_hours(
+    doc,
+    module,
+    day,
+    section,
+    class_type,
+    slot
+):
+    """
+    Count consecutive hours for the same module immediately
+    connected to the candidate slot.
+    """
+
+    module_slots = [
+        r for r in doc.items
+        if r.module == module
+        and r.day == day
+        and r.student_section == section
+        and r.class_type == class_type
+    ]
+
+    if not module_slots:
+        return 1
+
+    candidate_start = to_time_obj(slot["from"])
+    candidate_end = to_time_obj(slot["to"])
+
+    consecutive_hours = 1
+
+    # Check backwards
+    current_start = candidate_start
+
+    while True:
+        previous = None
+
+        for r in module_slots:
+            if to_time_obj(r.to_time) == current_start:
+                previous = r
+                break
+
+        if not previous:
+            break
+
+        consecutive_hours += 1
+        current_start = to_time_obj(previous.from_time)
+
+    # Check forwards
+    current_end = candidate_end
+
+    while True:
+        next_row = None
+
+        for r in module_slots:
+            if to_time_obj(r.from_time) == current_end:
+                next_row = r
+                break
+
+        if not next_row:
+            break
+
+        consecutive_hours += 1
+        current_end = to_time_obj(next_row.to_time)
+
+    return consecutive_hours
 
 def count_tutor_day(doc, tutor, day):
     return len([r for r in doc.items if r.tutor == tutor and r.day == day])

@@ -73,7 +73,7 @@ class StudentAttendance(Document):
 			)
 		elif self.timetable_schedule_entry_id:
 			if frappe.db.get_value("Timetable Schedule Entry", self.timetable_schedule_entry_id, "student_section"):
-				student_group = self.student_section
+				student_group = self.student_group
 		if not student_group:
 			student_group = self.student_group
 		student_group_students = [

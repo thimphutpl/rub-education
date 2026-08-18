@@ -24,8 +24,8 @@ class ModuleEnrolment(Document):
 		"""
 		Returns Progress of given student for a particular course enrollment
 
-		        :param self: Course Enrollment Object
-		        :param student: Student Object
+				:param self: Course Enrollment Object
+				:param student: Student Object
 		"""
 		course = frappe.get_doc("Course", self.course)
 		topics = course.get_topics()
@@ -139,12 +139,16 @@ def get_permission_query_conditions(user):
 	if "Academic Dean" in user_roles:
 		return
 	if "Student" in user_roles:
-		return """(
-			name in (select s.name
-				from `tabStudent` as s
-				where s.name = `tabModule Enrolment`.student
-				and s.user= '{user}')
-		)""".format(user=user)
+		return """
+			EXISTS (
+				SELECT 1
+				FROM `tabStudent` s
+				WHERE s.name = `tabModule Enrolment`.student
+				AND s.user = {user}
+			)
+		""".format(
+			user=frappe.db.escape(user)
+		)
 	else:
 		return """(
 		`tabModule Enrolment`.owner = '{user}'

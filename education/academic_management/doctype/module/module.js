@@ -16,29 +16,32 @@ frappe.ui.form.on("Module", {
   //     }
   // }
   // )
-  frm.set_query('programme', 'colleges', function (frm, cdt, cdn) {
-    var row = locals[cdt][cdn];
-    // let college = [];
-    // frm.doc.colleges.forEach(function(item) {
-    //     college.push(item.college);
-    // });
-  //   return {
-  //     // query:
-  //     // 'erpnext.controllers.queries.filter_college_programme_module_tutors',
-  //     filters: {
-  //       // program: frm.doc.progr name,
-  //       docstatus: 1,
-  //     },
-  // }
-    return {
-      query:
-      'erpnext.controllers.queries.get_college_programme',
-    filters: {
-      college: row.college,
+
+    frm.set_query('programme', 'colleges', function (frm, cdt, cdn) {
+        var row = locals[cdt][cdn];
+        // let college = [];
+        // frm.doc.colleges.forEach(function(item) {
+        //     college.push(item.college);
+        // });
+    //   return {
+    //     // query:
+    //     // 'erpnext.controllers.queries.filter_college_programme_module_tutors',
+    //     filters: {
+    //       // program: frm.doc.progr name,
+    //       docstatus: 1,
+    //     },
+    // }
+        return {
+        query:
+        'erpnext.controllers.queries.get_college_programme',
+        filters: {
+        college: row.college,
+        },
+    }
+    })
     },
-  }
-})
-},
+
+
 	refresh(frm) {
         frm.set_query('tutor', 'tutors', function (cdt, cdn) {
           let college = [];
@@ -53,6 +56,34 @@ frappe.ui.form.on("Module", {
               college: college,
             },
         }
+
+      })
+         frm.set_query('class_type', 'tutors', function (cdt, cdn) {
+
+         })
+
+
+       frm.set_query('student_group', 'tutors', function (doc,cdt, cdn) {
+        // let row = locals[cdt][cdn];
+       
+    
+  let row = locals[cdt][cdn];
+            
+          let college = [];
+          frm.doc.colleges.forEach(function(item) {
+              college.push(item.college);
+          });
+    
+          return {
+            query:
+            'erpnext.controllers.queries.filter_student_section',
+            filters: {
+                 college: college,
+                 class_type:row.class_type
+             
+            },
+        }
+        
       })
 	},
 });

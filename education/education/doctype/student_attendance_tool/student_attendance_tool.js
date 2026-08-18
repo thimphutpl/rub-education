@@ -83,9 +83,7 @@ frappe.ui.form.on('Student Attendance Tool', {
   //     frm.set_value('student_group', '')
   //   }
   // },
-
-  student_group: function (frm) {
-    if ((frm.doc.student_group && frm.doc.date && frm.doc.timetable_schedule_entry)) {
+  timetable_schedule_entry: function(frm){
       frm.students_area
         .find('.student-attendance-checks')
         .html(`<div style='padding: 2rem 0'>Fetching...</div>`)
@@ -103,7 +101,27 @@ frappe.ui.form.on('Student Attendance Tool', {
           frm.events.get_students(frm, r.message)
         },
       })
-    }
+  },
+  student_group: function (frm) {
+    // if ((frm.doc.student_group && frm.doc.date && frm.doc.timetable_schedule_entry)) {
+      frm.students_area
+        .find('.student-attendance-checks')
+        .html(`<div style='padding: 2rem 0'>Fetching...</div>`)
+      var method =
+        'education.education.doctype.student_attendance_tool.student_attendance_tool.get_student_attendance_records'
+      frappe.call({
+        method: method,
+        args: {
+          student_group: frm.doc.student_group,
+          date: frm.doc.date,
+          timetable_schedule_entry: frm.doc.timetable_schedule_entry,
+          course: frm.doc.course
+        },
+        callback: function (r) {
+          frm.events.get_students(frm, r.message)
+        },
+      })
+    // }
   },
 
   date: function (frm) {

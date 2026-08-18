@@ -117,7 +117,8 @@
    "fieldname": "student_section",
    "fieldtype": "Link",
    "label": "Student Section",
-   "options": "Student Section"
+   "options": "Student Section",
+   "reqd": 1
   },
   {
    "fieldname": "timetable_schedule_id",
@@ -202,7 +203,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-28 15:23:28.180772",
+ "modified": "2026-08-18 14:51:03.637820",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Timetable Schedule Entry",

@@ -29,6 +29,7 @@
   },
   {
    "depends_on": "eval:doc.timetable_schedule_entry",
+   "fetch_from": "timetable_schedule_entry.student_section",
    "fieldname": "student_group",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -140,7 +141,7 @@
  "hide_toolbar": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-08-17 14:20:59.300432",
+ "modified": "2026-08-18 14:52:10.866684",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student Attendance Tool",

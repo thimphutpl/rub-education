@@ -70,7 +70,6 @@
    "options": "Company"
   },
   {
-   "fetch_from": "module_enrollment_key.academic_term",
    "fieldname": "academic_term",
    "fieldtype": "Link",
    "label": "Academic Term",
@@ -85,14 +84,12 @@
    "read_only": 1
   },
   {
-   "fetch_from": "academic_term.academic_year",
    "fieldname": "academic_year",
    "fieldtype": "Link",
    "label": "Academic Year",
    "options": "Academic Year"
   },
   {
-   "fetch_from": "module_enrollment_key.module",
    "fieldname": "course",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -102,7 +99,6 @@
    "reqd": 1
   },
   {
-   "fetch_from": "module_enrollment_key.student_section",
    "fieldname": "student_section",
    "fieldtype": "Link",
    "label": "Student Section",
@@ -164,7 +160,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-27 14:36:45.049674",
+ "modified": "2026-08-19 11:22:27.677041",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Module Enrolment",

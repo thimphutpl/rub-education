@@ -20,6 +20,19 @@ class ModuleEnrolment(Document):
 		if datetime.strptime(str(self.enrollment_date), "%Y-%m-%d").date() > datetime.strptime(str(deadline), "%Y-%m-%d").date():
 			frappe.throw("Module Enrolment for this Module Enrolement Key has expired. Please contact your module tutor if extension is required.", title="Deadline Exceeded")
 
+	@frappe.whitelist()
+	def get_college_student(self):
+		user_roles = frappe.get_roles(frappe.session.user)
+		college = ""
+		if "Administrator" in user_roles or "System Manager" in user_roles:
+			college = "Administrator"
+		if "Student" in user_roles:
+			college = frappe.db.get_value("Student", {"user": frappe.session.user}, "company")
+		elif "Employee" in user_roles:
+			college = frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "company")
+		student = frappe.db.get_value("Student", {"user": frappe.session.user}, "name")
+		return college, student
+
 	def get_progress(self, student):
 		"""
 		Returns Progress of given student for a particular course enrollment
@@ -56,8 +69,20 @@ class ModuleEnrolment(Document):
 				title=_("Duplicate Entry"),
 			)
 
+
+
 	@frappe.whitelist()
-	def get_module_tutor(self):
+	def get_module_details(self):
+		self.set("tutors", [])
+		if not self.module_enrollment_key:
+			frappe.throw("Please select Module Enrolment Key")
+		mek = frappe.get_doc("Module Enrolment Key", self.module_enrollment_key)
+		student = frappe.db.get_value("Student", {"user": frappe.session.user}, "name")
+		data = {"student_section": mek.student_section, "student": student, "academic_term": mek.academic_term, "academic_year": mek.academic_year, "module": mek.module}
+		return data
+
+	@frappe.whitelist()
+	def get_tutor_details(self):
 		self.set("tutors", [])
 		if not self.module_enrollment_key:
 			frappe.throw("Please select Module Enrolment Key")
@@ -66,7 +91,6 @@ class ModuleEnrolment(Document):
 			row.tutor = t.tutor
 			row.tutor_name = t.tutor_name
 			row.class_type = t.class_type
-
 	def add_quiz_activity(
 		self, quiz_name, quiz_response, answers, score, status, time_taken
 	):
@@ -144,10 +168,10 @@ def get_permission_query_conditions(user):
 				SELECT 1
 				FROM `tabStudent` s
 				WHERE s.name = `tabModule Enrolment`.student
-				AND s.user = {user}
+				AND s.user = '{user}'
 			)
 		""".format(
-			user=frappe.db.escape(user)
+			user=user
 		)
 	else:
 		return """(

@@ -31,9 +31,12 @@ def get_permission_query_conditions(user):
 		)
 		
 	if "Student" in user_roles:
+		#frappe.throw("hi")
 		return """(
 			`tabModule Enrolment Key`.owner = {user}
-		)""".format(user=user)
+		)""".format(
+			user=frappe.db.escape(user)
+		)
 	else:
 		college = frappe.db.get_value("Employee", {"user_id":frappe.session.user}, "company")
 		return """(

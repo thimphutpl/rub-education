@@ -123,9 +123,11 @@ class Student(Document):
 
 		if student_user_permission_exists:
 			return
-
+		if not self.programme:
+			frappe.throw("set programme")
 		add_user_permission("Student", self.name, self.user)
 		add_user_permission("Company", self.company, self.user)
+		add_user_permission("Programme", self.programme, self.user)
 
 	def validate_identification(self):
 		if self.identification_type == "CID":
@@ -404,18 +406,20 @@ def get_timeline_data(doctype, name):
 	)
 
 def get_permission_query_conditions(user):
+	
 	if not user: user = frappe.session.user
 	user_roles = frappe.get_roles(user)
 	if "Administrator" in user_roles or "System Manager" in user_roles:
 		return
-	if "Academic Dean" in user_roles:
+	if "Academic Dean" in user_roles  or "ICT Admin" in user_roles:
 		college = frappe.db.get_value("Employee", {"user_id":frappe.session.user}, "company")
+		
 		return """(
 			`tabStudent`.company = '{college}'
 		)""".format(college=college)
 	if "Student" in user_roles:
 		return """(
-			`tabStudent`.user = {user}
+			`tabStudent`.user = '{user}'
 		)""".format(user=user)
 	else:
 		college = frappe.db.get_value("Employee", {"user_id":frappe.session.user}, "company")

@@ -45,17 +45,17 @@ frappe.ui.form.on("Module Assessment Criteria", {
         //       },
         //     }
         // })
-        frm.set_query('module', function () {
-            return {
-                query:
-                'education.academic_management.doctype.annual_programme_monitoring_report.annual_programme_monitoring_report.get_program_module',
-              filters: {
-                // program: frm.doc.programme,
-                college: frm.doc.college,
-                validate: 1
-              },
-            }
-        })
+        // frm.set_query('module', function () {
+        //     return {
+        //         query:
+        //         'education.academic_management.doctype.annual_programme_monitoring_report.annual_programme_monitoring_report.get_program_module',
+        //       filters: {
+        //         // program: frm.doc.programme,
+        //         college: frm.doc.college,
+        //         validate: 1
+        //       },
+        //     }
+        // })
         frm.set_query('programme', function () {
             return {
               query: 'erpnext.controllers.queries.filter_college_programmes',
@@ -70,7 +70,7 @@ frappe.ui.form.on("Module Assessment Criteria", {
               filters: {
                 college: frm.doc.college,
                 programme: frm.doc.programme,
-                academic_session: frm.doc.academic_session,
+                check_tutor: 0
               },
             }
           })

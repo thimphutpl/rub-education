@@ -92,14 +92,17 @@ def get_program_module(doctype, txt, searchfield, start, page_len, filters):
 		# 	frappe.msgprint(_("Please select a Semester."))
 		# 	return []
 
-
+	if txt:
+		name_cond = "and m.name like %(txt)s"
+	else:
+		name_cond = ""
 	doctype = "Module"
 	return frappe.db.sql(
 		"""select m.name as course, m.module_title as course_name from `tabModule` m, `tabModule College` mc
-        where  m.name = mc.parent and m.name like %(txt)s and mc.college = %(college)s
+        where  m.name = mc.parent and mc.college = %(college)s {name_cond}
         order by m.name
        """.format(
-			match_cond=get_match_cond(doctype), start=start, page_len=page_len
+			match_cond=get_match_cond(doctype), start=start, page_len=page_len, name_cond = name_cond
 		),
 		{
 			"txt": "%{0}%".format(txt),

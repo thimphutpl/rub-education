@@ -70,6 +70,7 @@ frappe.ui.form.on("Module Assessment Criteria", {
               filters: {
                 college: frm.doc.college,
                 programme: frm.doc.programme,
+                academic_session: frm.doc.academic_session,
                 check_tutor: 0
               },
             }

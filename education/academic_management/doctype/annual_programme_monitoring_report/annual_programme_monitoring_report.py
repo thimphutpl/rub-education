@@ -97,9 +97,7 @@ def get_program_module(doctype, txt, searchfield, start, page_len, filters):
 	return frappe.db.sql(
 		"""select m.name as course, m.module_title as course_name from `tabModule` m, `tabModule College` mc
         where  m.name = mc.parent and m.name like %(txt)s and mc.college = %(college)s
-        order by
-            if(locate(%(_txt)s, m.name), locate(%(_txt)s, m.name), 99999),
-            m.name asc
+        order by m.name
        """.format(
 			match_cond=get_match_cond(doctype), start=start, page_len=page_len
 		),

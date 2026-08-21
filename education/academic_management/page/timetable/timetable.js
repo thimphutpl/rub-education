@@ -89,39 +89,31 @@ function load_timetable(container, college, programme, academic_term){
 
 			let data = r.message.timetable || [];
 			let blocked = r.message.blocked || [];
+			let start_time = r.message.start_time;   // NEW
+			let end_time = r.message.end_time;        // NEW
 
-			// Create a map for fast lookup
 			let map = {};
 			if(data.length > 0){
-			data.forEach(d=>{
-				let time = moment(d.from_time,"HH:mm:ss").format("HH:mm");
-				map[`${d.day}_${time}`] = d;
-			});
+				data.forEach(d=>{
+					let time = moment(d.from_time,"HH:mm:ss").format("HH:mm");
+					map[`${d.day}_${time}`] = d;
+				});
 
-			// Pass map to the draw function
-				draw_timetable(container, data, blocked, map);
+				draw_timetable(container, data, blocked, map, start_time, end_time);  // pass through
 			}
 			else{
 				container.empty();
 				container.html("<b>No Timetable Generated</b>")
-
 			}
-			// let company_name = "College of Language and Culture Studies"; // get default company ***for now its static. Need to fetch company/college from logged in user
-			// frappe.db.get_value("Company", company_name, ["logo"], function(r){
-			// 	let logo_url = r.logo; // full URL of the company logo
-			// 	applyLogoBackground(logo_url, container); // function that adds logo div behind timetable
-			// });
 		}
 	})
-
 }
 
-
-function draw_timetable(container, data, blocked, map){
+function draw_timetable(container, data, blocked, map, start_time, end_time){
 
 	const days = ["Monday","Tuesday","Wednesday","Thursday","Friday"];
 
-	let slots = generate_slots();
+	let slots = generate_slots(start_time, end_time);   // pass through
 	slots.sort();
 
 	let table = $('<table class="table table-bordered timetable-table"></table>');
@@ -229,18 +221,17 @@ function applyLogoBackground(logo_url, container){
         "background-size": "300px auto"
     });
 }
-function generate_slots(){
+function generate_slots(start_time, end_time){
 
-	let start = moment("09:00","HH:mm");
-	let end = moment("17:00","HH:mm");
+	let start = moment(start_time, "HH:mm:ss");
+	let end = moment(end_time, "HH:mm:ss");
 
 	let slots = [];
 
-	while(start <= end){  // < instead of <= to avoid duplicate last slot
+	while(start < end){  // strictly less-than, avoids a trailing slot with nowhere to go
 		slots.push(start.format("HH:mm"));
 		start.add(1,"hour");
 	}
-
 	return slots;
 }
 

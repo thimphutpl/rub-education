@@ -20,10 +20,12 @@ def get_timetable(college, programme, academic_term):
                         "day": d.capitalize(),
                         "from_time": p.from_time,
                         "to_time": p.to_time,
-                        "period_name": period_name
+                        "period_name": period_name,
                     })
 
     return {
         "timetable": timetable,
-        "blocked": blocked
+        "blocked": blocked,
+        "start_time": constraint.start_time,   # NEW
+        "end_time": constraint.end_time, 
     }

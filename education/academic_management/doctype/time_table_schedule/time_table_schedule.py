@@ -97,8 +97,16 @@ class TimeTableSchedule(Document):
         # Clear existing schedule items
         self.set("items", [])
 
+        # working_days = get_working_days(constraint)
+        # time_slots = get_time_slots(constraint)
+        # modules = build_module_workload(constraint)
         working_days = get_working_days(constraint)
-        time_slots = get_time_slots(constraint)
+        blocked_map = build_blocked_slots(constraint)
+        # frappe.msgprint(str(blocked_map))
+        day_slots = {
+            day: get_day_time_slots(day, constraint, blocked_map)
+            for day in working_days
+        }
         modules = build_module_workload(constraint)
         
         # Get sections belonging to this College + Academic Term + Programme
@@ -107,12 +115,21 @@ class TimeTableSchedule(Document):
         for section in sections:
 
             for idx, module_info in enumerate(modules):
+                # success = assign_modules(
+                #     self,
+                #     constraint,
+                #     modules,
+                #     working_days,
+                #     time_slots,
+                #     index=idx,
+                #     section=section
+                # )
                 success = assign_modules(
                     self,
                     constraint,
                     modules,
                     working_days,
-                    time_slots,
+                    day_slots,          # <-- was time_slots
                     index=idx,
                     section=section
                 )
@@ -274,24 +291,105 @@ def get_time_slots(constraint):
 
     return slots
 
-def is_valid_slot(doc, constraint, module, day, slot):
-    blocked_map = build_blocked_slots(constraint)
-    # Block non-academic time
-    if day in blocked_map:
-        for b in blocked_map[day]:
-            if times_overlap(slot["from"], slot["to"], b["from"], b["to"]):
-                return False
-    # # Block tutor conflicts
-    # if count_tutor_day(doc, module["tutor"], day) >= module["max_per_day"]:
-    #     return False
-    # Block room conflicts
-    for r in doc.items:
-        if r.day == day and r.from_time == slot["from"] and r.room == module["class_room"]:
-            return False
-    # Block same module adjacent day
-    # if is_adjacent_day(doc, module["module"], day):
-    #     return False
-    return True
+def get_priority_start_times(day, blocked_map):
+    """
+    Returns the set of times (as time objects) that immediately
+    follow a non-academic period on the given day.
+    """
+    if day not in blocked_map:
+        return set()
+    return {to_time_obj(b["to"]) for b in blocked_map[day]}
+
+
+def get_day_time_slots(day, constraint, blocked_map):
+    """
+    Build time slots for a SPECIFIC day, cut exactly at that day's
+    break boundaries, so a slot always starts precisely where the
+    previous break/assembly ends -- no rigid grid, no lost time.
+    """
+    if not constraint.start_time:
+        frappe.throw("Academic Start Time is not set")
+    if not constraint.end_time:
+        frappe.throw("Academic End Time is not set")
+
+    day_start = to_time_obj(constraint.start_time)
+    day_end = to_time_obj(constraint.end_time)
+
+    blocks = sorted(
+        blocked_map.get(day, []),
+        key=lambda b: to_time_obj(b["from"])
+    )
+
+    free_windows = []
+    cursor = day_start
+
+    for b in blocks:
+        b_from = to_time_obj(b["from"])
+        b_to = to_time_obj(b["to"])
+
+        if b_from > cursor:
+            free_windows.append((cursor, min(b_from, day_end)))
+
+        if b_to > cursor:
+            cursor = b_to
+
+        if cursor >= day_end:
+            break
+
+    if cursor < day_end:
+        free_windows.append((cursor, day_end))
+
+    slot_duration = timedelta(hours=1)
+    slots = []
+
+    for win_start, win_end in free_windows:
+        current = datetime.combine(datetime.today(), win_start)
+        end_dt = datetime.combine(datetime.today(), win_end)
+
+        while current + slot_duration <= end_dt:
+            slots.append({
+                "from": current.strftime("%H:%M:%S"),
+                "to": (current + slot_duration).strftime("%H:%M:%S")
+            })
+            current += slot_duration
+
+        if current < end_dt:
+            slots.append({
+                "from": current.strftime("%H:%M:%S"),
+                "to": win_end.strftime("%H:%M:%S")
+            })
+
+    return slots
+
+
+def get_window_front_slots(sorted_slots, blocked_map, day, schedule_doc, section):
+    """
+    Only 'gap-free' starting points for this day/section:
+    - the first slot of ANY free window (whether that window starts
+      right after a break, or is simply the start of the academic
+      day itself), or
+    - a slot starting exactly where this section's last class
+      that day ends (a contiguous continuation).
+    """
+    placed_ends = {
+        to_time_obj(r.to_time)
+        for r in schedule_doc.items
+        if r.day == day and r.student_section == section
+    }
+
+    fronts = []
+    prev_to = None
+
+    for slot in sorted_slots:
+        slot_from = to_time_obj(slot["from"])
+        is_window_start = (prev_to is None or slot_from != prev_to)
+
+        if is_window_start or slot_from in placed_ends:
+            fronts.append(slot)
+
+        prev_to = to_time_obj(slot["to"])
+
+    return fronts
 
 def get_consecutive_slots(
     sorted_slots,
@@ -522,16 +620,23 @@ def assign_modules(
     )
 
 
+    # # Randomize days
+    # random_days = list(days)
+    # random.shuffle(random_days)
+
+
+    # # Keep slots chronological
+    # sorted_slots = sorted(
+    #     slots,
+    #     key=lambda x: to_time_obj(x["from"])
+    # )
     # Randomize days
     random_days = list(days)
     random.shuffle(random_days)
 
-
-    # Keep slots chronological
-    sorted_slots = sorted(
-        slots,
-        key=lambda x: to_time_obj(x["from"])
-    )
+    # slots is now a dict of {day: [slots...]}, plus the blocked map
+    # used to find "right after a break" starting points
+    blocked_map = build_blocked_slots(constraint)
 
 
     while placed_hours < hours_needed:
@@ -577,6 +682,19 @@ def assign_modules(
                 continue
 
 
+            # # -----------------------------------------
+            # # RANDOM SESSION LENGTH
+            # # -----------------------------------------
+
+            # session_hours = random.randint(
+            #     1,
+            #     allowed_session_hours
+            # )
+
+
+            # # Randomize starting positions
+            # possible_slots = list(sorted_slots)
+            # random.shuffle(possible_slots)
             # -----------------------------------------
             # RANDOM SESSION LENGTH
             # -----------------------------------------
@@ -586,10 +704,23 @@ def assign_modules(
                 allowed_session_hours
             )
 
+            # This day's own break-aligned slots
+            sorted_slots = sorted(
+                slots[day],
+                key=lambda x: to_time_obj(x["from"])
+            )
 
-            # Randomize starting positions
-            possible_slots = list(sorted_slots)
+            # Only gap-free starting points -- right after a break,
+            # or right after this section's previous class today.
+            # Random WHICH one is picked, never random whether a
+            # gap is left before it.
+            possible_slots = get_window_front_slots(
+                sorted_slots, blocked_map, day, schedule_doc, section
+            )
             random.shuffle(possible_slots)
+
+            if not possible_slots:
+                continue
 
 
             for start_slot in possible_slots:

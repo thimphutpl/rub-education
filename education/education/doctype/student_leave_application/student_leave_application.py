@@ -198,3 +198,57 @@ def get_student_groups(student):
 	)
 
 	return student_group
+
+def get_permission_query_conditions(user):
+	if not user:
+		user = frappe.session.user
+	user_roles = frappe.get_roles(user)
+	if user == "Administrator" in user_roles or "System Manager" in user_roles:
+		return
+	elif "Student" in user_roles:
+		student = frappe.db.get_value("Student", {"user": frappe.session.user}, "name")
+		conditions = f"""
+			(
+				`tabStudent Leave Application`.student = '{student}'
+				OR
+				EXISTS (
+					SELECT 1 FROM `tabEmployee`
+					WHERE `tabEmployee`.name = `tabLeave Application`.employee
+					AND `tabEmployee`.user_id = '{user}'
+					AND `tabLeave Application`.docstatus != 2
+				)
+
+				OR
+				(`tabLeave Application`.leave_approver = '{user}'
+				AND `tabLeave Application`.workflow_state NOT IN ('Draft'))
+		"""
+		conditions += ")"
+	elif "SSO" in user_roles or "Dean of Student Affairs" in user_roles or "Academic Dean" in user_roles:
+		college = frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "company")
+		conditions = f"""
+			(
+				`tabStudent Leave Application`.college = '{college}'
+		"""
+		conditions += ")"
+	elif "Tutor" in user_roles:
+		college = frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "company")
+		employee = frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "name")
+		conditions = f"""
+			(
+				EXISTS (
+					SELECT 1 FROM `tabModule Enrolment`, `tabModule Enrolment Tutor`
+					WHERE `tabModule Enrolment Tutor`.parent = `tabModule Enrolment`.name
+					AND `tabModule Enrolment Tutor`.tutor = '{employee}'
+					AND `tabModule Enrolment`.student = `tabStudent Leave Application`.student
+					AND `tabStudent Leave Application`.college = '{college}'
+					AND `tabStudent Leave Application`.docstatus != 2
+				)
+		"""
+		conditions += ")"
+	else:
+		conditions = f"""
+			(
+				`tabStudent Leave Application`.college = "No Appropriate Role Provided"
+		"""
+		conditions += ")"
+	return conditions

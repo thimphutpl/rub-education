@@ -210,17 +210,6 @@ def get_permission_query_conditions(user):
 		conditions = f"""
 			(
 				`tabStudent Leave Application`.student = '{student}'
-				OR
-				EXISTS (
-					SELECT 1 FROM `tabEmployee`
-					WHERE `tabEmployee`.name = `tabLeave Application`.employee
-					AND `tabEmployee`.user_id = '{user}'
-					AND `tabLeave Application`.docstatus != 2
-				)
-
-				OR
-				(`tabLeave Application`.leave_approver = '{user}'
-				AND `tabLeave Application`.workflow_state NOT IN ('Draft'))
 		"""
 		conditions += ")"
 	elif "SSO" in user_roles or "Dean of Student Affairs" in user_roles or "Academic Dean" in user_roles:

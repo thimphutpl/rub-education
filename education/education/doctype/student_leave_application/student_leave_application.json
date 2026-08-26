@@ -19,10 +19,12 @@
   "section_break_5",
   "reason",
   "sb_approver",
+  "approvers",
+  "section_break_qgmz",
   "approver",
-  "approver_name",
-  "column_break_bbyz",
   "approver_designation",
+  "column_break_bbyz",
+  "approver_name",
   "sb_attachment",
   "attachment",
   "joining_details_section",
@@ -212,11 +214,22 @@
    "label": "Workflow State",
    "options": "Workflow State",
    "read_only": 1
+  },
+  {
+   "fieldname": "approvers",
+   "fieldtype": "Table",
+   "label": "Approvers",
+   "options": "Student Leave Approvers",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_qgmz",
+   "fieldtype": "Section Break"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2026-03-23 15:55:06.009093",
+ "modified": "2026-08-21 12:31:34.865290",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student Leave Application",

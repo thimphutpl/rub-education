@@ -14,9 +14,16 @@
   },
   {
    "card": "Total Programmes Offered"
+  },
+  {
+   "card": "Leave Approved"
   }
  ],
  "charts": [
+  {
+   "chart": "Approved Leave College Wise",
+   "width": "Full"
+  },
   {
    "chart": "Hiring vs Attrition Count",
    "width": "Half"
@@ -50,10 +57,10 @@
  "dashboard_name": "Management Dashboard",
  "docstatus": 0,
  "doctype": "Dashboard",
- "idx": 0,
+ "idx": 2,
  "is_default": 0,
  "is_standard": 1,
- "modified": "2026-04-29 09:32:15.236124",
+ "modified": "2026-08-27 16:38:01.452613",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Management Dashboard",

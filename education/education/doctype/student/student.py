@@ -406,17 +406,15 @@ def get_timeline_data(doctype, name):
 	)
 
 def get_permission_query_conditions(user):
-	
 	if not user: user = frappe.session.user
 	user_roles = frappe.get_roles(user)
 	if "Administrator" in user_roles or "System Manager" in user_roles:
 		return
-	if "Academic Dean" in user_roles  or "ICT Admin" in user_roles:
-		college = frappe.db.get_value("Employee", {"user_id":user}, "company")
-		
-		return """(
-			`tabStudent`.company = '{college}'
-		)""".format(college=frappe.db.escape(college))
+	# if "Academic Dean" in user_roles  or "ICT Admin" in user_roles:
+	# 	college = frappe.db.get_value("Employee", {"user_id":user}, "company")
+	# 	return """(
+	# 		`tabStudent`.company = '{college}'
+	# 	)""".format(college=college)
 	if "Student" in user_roles:
 		return """(
 			`tabStudent`.user = '{user}'
@@ -425,4 +423,4 @@ def get_permission_query_conditions(user):
 		college = frappe.db.get_value("Employee", {"user_id":user}, "company")
 		return """(
 			`tabStudent`.company = '{college}'
-		)""".format(college=frappe.db.escape(college))
+		)""".format(college=college)

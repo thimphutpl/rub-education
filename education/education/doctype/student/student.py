@@ -425,4 +425,4 @@ def get_permission_query_conditions(user):
 		college = frappe.db.get_value("Employee", {"user_id":frappe.session.user}, "company")
 		return """(
 			`tabStudent`.company = '{college}'
-		)""".format(college=college)
+		)""".format(college=frappe.db.escape(college))

@@ -12,24 +12,25 @@
   "academic_year",
   "programme",
   "programme_abbreviation",
-  "tutor",
   "tutor_name",
   "constraint",
   "class_type",
   "column_break_ovju",
   "academic_term",
   "academic_session",
+  "tutor",
   "module",
   "module_code",
   "class_room",
+  "room_name",
   "student_section",
   "timetable_schedule_id",
-  "room_name",
   "ubschedule_detailsbu_section",
   "from_time",
   "day",
   "column_break_zxes",
-  "to_time"
+  "to_time",
+  "amended_from"
  ],
  "fields": [
   {
@@ -71,26 +72,26 @@
    "in_standard_filter": 1,
    "label": "Programme",
    "options": "Programme",
-   "read_only": 1,
    "reqd": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "module",
    "fieldtype": "Link",
    "in_standard_filter": 1,
    "label": "Module",
    "options": "Module",
-   "read_only": 1,
    "reqd": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "class_room",
    "fieldtype": "Link",
    "label": "Class Room",
-   "options": "Room",
-   "reqd": 1
+   "options": "Room"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "tutor",
    "fieldtype": "Link",
    "label": "Tutor",
@@ -101,6 +102,7 @@
    "fetch_from": "tutor.employee_name",
    "fieldname": "tutor_name",
    "fieldtype": "Data",
+   "in_standard_filter": 1,
    "label": "Tutor Name",
    "read_only": 1
   },
@@ -114,6 +116,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "student_section",
    "fieldtype": "Link",
    "label": "Student Section",
@@ -123,6 +126,7 @@
   {
    "fieldname": "timetable_schedule_id",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Timetable Schedule ID",
    "options": "Time Table Schedule",
    "read_only": 1
@@ -147,6 +151,7 @@
    "label": "To Time"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "day",
    "fieldtype": "Select",
    "label": "Day",
@@ -156,11 +161,13 @@
   {
    "fieldname": "constraint",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Timetable Constraint",
    "options": "Timetable Constraints",
    "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "class_type",
    "fieldtype": "Select",
    "label": "Class Type",
@@ -168,6 +175,7 @@
    "reqd": 1
   },
   {
+   "allow_on_submit": 1,
    "fetch_from": "module.module_code",
    "fieldname": "module_code",
    "fieldtype": "Data",
@@ -179,6 +187,7 @@
    "fetch_from": "programme.abbreviation",
    "fieldname": "programme_abbreviation",
    "fieldtype": "Data",
+   "hidden": 1,
    "in_list_view": 1,
    "label": "Programme Abbreviation",
    "read_only": 1
@@ -193,17 +202,29 @@
    "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "fetch_from": "class_room.room_name",
    "fieldname": "room_name",
    "fieldtype": "Data",
    "label": "Room Name",
    "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Timetable Schedule Entry",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
+ "is_submittable": 1,
  "links": [],
- "modified": "2026-08-18 14:51:03.637820",
+ "modified": "2026-09-07 09:18:18.480981",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Timetable Schedule Entry",

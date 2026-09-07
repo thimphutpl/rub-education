@@ -86,25 +86,25 @@
   {
    "fieldname": "max_hours_tutor",
    "fieldtype": "Float",
-   "label": "Maximum Hours for Tutor in a Day",
-   "reqd": 1
+   "hidden": 1,
+   "label": "Maximum Hours for Tutor in a Day"
   },
   {
    "fieldname": "max_hour_per_session",
    "fieldtype": "Float",
-   "label": "Maximum Teaching Hours Per Session",
-   "reqd": 1
+   "hidden": 1,
+   "label": "Maximum Teaching Hours Per Session"
   },
   {
    "fieldname": "sb_academic",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Academic Periods"
   },
   {
    "fieldname": "academic_periods",
    "fieldtype": "Table",
-   "options": "Timetable Constraint Academic Periods",
-   "reqd": 1
+   "options": "Timetable Constraint Academic Periods"
   },
   {
    "fieldname": "weekly_off_days",
@@ -134,7 +134,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-20 15:01:31.465227",
+ "modified": "2026-09-05 12:31:15.289606",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Timetable Constraints",

@@ -4,21 +4,25 @@
  "docstatus": 0,
  "doctype": "Page",
  "idx": 0,
- "modified": "2026-03-26 10:25:09.997761",
+ "modified": "2026-09-05 14:20:09.629872",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "tutor-timetable",
  "owner": "Administrator",
  "page_name": "tutor-timetable",
+ "restrict_to_domain": "",
  "roles": [
-  {
-   "role": "Academics User"
-  },
   {
    "role": "Academic Dean"
   },
   {
    "role": "System Manager"
+  },
+  {
+   "role": "Tutor"
+  },
+  {
+   "role": "ICT Admin"
   }
  ],
  "script": null,

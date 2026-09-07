@@ -9,7 +9,7 @@ from frappe.utils import get_time
 class TimetableConstraints(Document):
 	def validate(self):
 		self.validate_period_overlap()
-		self.validate_hours()
+		# self.validate_hours()
 
 	def validate_hours(self):
 		if self.max_hours_tutor == 0:

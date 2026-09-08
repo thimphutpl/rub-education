@@ -8,8 +8,9 @@ from frappe.model.document import Document
 
 class TimeTableSchedule(Document):
     def on_submit(self):
+        pass
         # self.validate_duplicate()
-        self.make_tts_entry()
+        # self.make_tts_entry()
 
     # def on_cancel(self):
     #     # self.remove_tts_entry()

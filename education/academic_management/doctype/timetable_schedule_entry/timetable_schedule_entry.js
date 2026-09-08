@@ -29,17 +29,18 @@ frappe.ui.form.on("Timetable Schedule Entry", {
 
         frm.set_query("programme", function () {
             return {
-                query: "education.academic_management.doctype.timetable_schedule_entry.timetable_schedule_entry.get_programmes_by_college",
+                query: "education.academic_management.doctype.timetable_schedule_entry.timetable_schedule_entry.get_programmes_by_college_and_tutor",
                 filters: {
-                    college: frm.doc.college
+                    college: frm.doc.college,
+                    tutor:frm.doc.tutor
                 }
             };
         });
 
-        // Module = College + Programme + Tutor
+
         frm.set_query("module", function () {
             return {
-                query: "education.academic_management.doctype.timetable_schedule_entry.timetable_schedule_entry.get_modules_by_programme_tutor",
+                query: "education.academic_management.doctype.timetable_schedule_entry.timetable_schedule_entry.get_modules_programme_by_tutor",
                 filters: {
                     college: frm.doc.college,
                     programme: frm.doc.programme,

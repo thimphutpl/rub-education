@@ -246,26 +246,34 @@ class TimetableScheduleEntry(Document):
 
 @frappe.whitelist()
 @frappe.validate_and_sanitize_search_inputs
-def get_programmes_by_college(doctype, txt, searchfield, start, page_len, filters):
+def get_programmes_by_college_and_tutor(doctype, txt, searchfield, start, page_len, filters):
 	college = filters.get("college")
+	tutor = filters.get("tutor")
 
-	if not college:
+	if not tutor:
 		return []
 
 	return frappe.db.sql("""
 		SELECT DISTINCT
-			p.name,
-			p.programme_name
-		FROM `tabProgramme` p
-		INNER JOIN `tabColleges` pc
-			ON pc.parent = p.name
+			mc.programme
+		FROM `tabModule` m
+
+		INNER JOIN `tabModule Tutor Item` mti
+			ON mti.parent = m.name
+
+		INNER JOIN `tabModule College` mc
+			ON mc.parent = m.name
+
 		WHERE
-			pc.company = %(college)s
-			AND p.name LIKE %(txt)s
-		ORDER BY p.name
+			mti.tutor = %(tutor)s
+			AND mc.college = %(college)s
+			AND mc.programme LIKE %(txt)s
+
+		ORDER BY mc.programme
 		LIMIT %(start)s, %(page_len)s
 	""", {
 		"college": college,
+		"tutor": tutor,
 		"txt": f"%{txt}%",
 		"start": start,
 		"page_len": page_len
@@ -339,40 +347,37 @@ def get_student_sections(doctype, txt, searchfield, start, page_len, filters):
 
 @frappe.whitelist()
 @frappe.validate_and_sanitize_search_inputs
-def get_modules_by_programme_tutor(
-    doctype, txt, searchfield, start, page_len, filters
+def get_modules_programme_by_tutor(
+	doctype, txt, searchfield, start, page_len, filters
 ):
-    college = filters.get("college")
-    programme = filters.get("programme")
-    tutor = filters.get("tutor")
+	college = filters.get("college")
+	tutor = filters.get("tutor")
 
-    if not college or not programme or not tutor:
-        return []
+	if not college or not tutor:
+		return []
 
-    return frappe.db.sql("""
-        SELECT DISTINCT
-            m.name
-        FROM `tabModule` m
+	return frappe.db.sql("""
+		SELECT DISTINCT
+			m.name
+		FROM `tabModule` m
 
-        INNER JOIN `tabModule Tutor Item` mti
-            ON mti.parent = m.name
+		INNER JOIN `tabModule Tutor Item` mti
+			ON mti.parent = m.name
 
-        INNER JOIN `tabModule College` mc
-            ON mc.parent = m.name
+		INNER JOIN `tabModule College` mc
+			ON mc.parent = m.name
 
-        WHERE
-            mti.tutor = %(tutor)s
-            AND mc.college = %(college)s
-            AND mc.programme = %(programme)s
-            AND m.name LIKE %(txt)s
+		WHERE
+			mti.tutor = %(tutor)s
+			AND mc.college = %(college)s
+			AND m.name LIKE %(txt)s
 
-        ORDER BY m.name
-        LIMIT %(start)s, %(page_len)s
-    """, {
-        "college": college,
-        "programme": programme,
-        "tutor": tutor,
-        "txt": f"%{txt}%",
-        "start": start,
-        "page_len": page_len
-    })
+		ORDER BY m.name
+		LIMIT %(start)s, %(page_len)s
+	""", {
+		"college": college,
+		"tutor": tutor,
+		"txt": f"%{txt}%",
+		"start": start,
+		"page_len": page_len
+	})

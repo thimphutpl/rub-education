@@ -199,45 +199,89 @@ def get_student_groups(student):
 
 	return student_group
 
+# def get_permission_query_conditions(user):
+# 	if not user:
+# 		user = frappe.session.user
+# 	user_roles = frappe.get_roles(user)
+# 	if user == "Administrator" in user_roles or "System Manager" in user_roles:
+# 		return
+# 	elif "Student" in user_roles:
+# 		student = frappe.db.get_value("Student", {"user": frappe.session.user}, "name")
+# 		conditions = f"""
+# 			(
+# 				`tabStudent Leave Application`.student = '{student}'
+# 		"""
+# 		conditions += ")"
+# 	elif "SSO" in user_roles or "Dean of Student Affairs" in user_roles or "Academic Dean" in user_roles:
+# 		college = frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "company")
+# 		conditions = f"""
+# 			(
+# 				`tabStudent Leave Application`.college = '{college}'
+# 		"""
+# 		conditions += ")"
+# 	elif "Tutor" in user_roles:
+# 		college = frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "company")
+# 		employee = frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "name")
+# 		conditions = f"""
+# 			(
+# 				EXISTS (
+# 					SELECT 1 FROM `tabModule Enrolment`, `tabModule Enrolment Tutor`
+# 					WHERE `tabModule Enrolment Tutor`.parent = `tabModule Enrolment`.name
+# 					AND `tabModule Enrolment Tutor`.tutor = '{employee}'
+# 					AND `tabModule Enrolment`.student = `tabStudent Leave Application`.student
+# 					AND `tabStudent Leave Application`.college = '{college}'
+# 					AND `tabStudent Leave Application`.docstatus != 2
+# 				)
+# 		"""
+# 		conditions += ")"
+# 	else:
+# 		conditions = f"""
+# 			(
+# 				`tabStudent Leave Application`.college = "No Appropriate Role Provided"
+# 		"""
+# 		conditions += ")"
+# 	return conditions
+
 def get_permission_query_conditions(user):
-	if not user:
-		user = frappe.session.user
-	user_roles = frappe.get_roles(user)
-	if user == "Administrator" in user_roles or "System Manager" in user_roles:
-		return
-	elif "Student" in user_roles:
-		student = frappe.db.get_value("Student", {"user": frappe.session.user}, "name")
-		conditions = f"""
-			(
-				`tabStudent Leave Application`.student = '{student}'
-		"""
-		conditions += ")"
-	elif "SSO" in user_roles or "Dean of Student Affairs" in user_roles or "Academic Dean" in user_roles:
-		college = frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "company")
-		conditions = f"""
-			(
-				`tabStudent Leave Application`.college = '{college}'
-		"""
-		conditions += ")"
-	elif "Tutor" in user_roles:
-		college = frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "company")
-		employee = frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "name")
-		conditions = f"""
-			(
-				EXISTS (
-					SELECT 1 FROM `tabModule Enrolment`, `tabModule Enrolment Tutor`
-					WHERE `tabModule Enrolment Tutor`.parent = `tabModule Enrolment`.name
-					AND `tabModule Enrolment Tutor`.tutor = '{employee}'
-					AND `tabModule Enrolment`.student = `tabStudent Leave Application`.student
-					AND `tabStudent Leave Application`.college = '{college}'
-					AND `tabStudent Leave Application`.docstatus != 2
-				)
-		"""
-		conditions += ")"
-	else:
-		conditions = f"""
-			(
-				`tabStudent Leave Application`.college = "No Appropriate Role Provided"
-		"""
-		conditions += ")"
-	return conditions
+    if not user:
+        user = frappe.session.user
+    user_roles = frappe.get_roles(user)
+    
+    # Full access for admins
+    if "Administrator" in user_roles or "System Manager" in user_roles:
+        return ""
+    
+    # Student - see only their own applications
+    elif "Student" in user_roles:
+        student = frappe.db.get_value("Student", {"user": frappe.session.user}, "name")
+        return f"`tabStudent Leave Application`.student = '{student}'" if student else "1=0"
+    
+    # SSO, Dean, Academic Dean - see applications for their college
+    elif "SSO" in user_roles or "Dean of Student Affairs" in user_roles or "Academic Dean" in user_roles:
+        college = frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "company")
+        return f"`tabStudent Leave Application`.college = '{college}'" if college else "1=0"
+    
+    # Tutor - see applications for students they tutor
+    elif "Tutor" in user_roles:
+        employee = frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "name")
+        if not employee:
+            return "1=0"
+        
+        # Get the list of students assigned to this tutor
+        students = frappe.db.sql("""
+            SELECT DISTINCT `tabModule Enrolment`.student
+            FROM `tabModule Enrolment`
+            INNER JOIN `tabModule Enrolment Tutor` 
+                ON `tabModule Enrolment Tutor`.parent = `tabModule Enrolment`.name
+            WHERE `tabModule Enrolment Tutor`.tutor = %s
+        """, employee, pluck="student")
+        
+        if not students:
+            return "1=0"
+        
+        student_list = "', '".join(students)
+        return f"`tabStudent Leave Application`.student IN ('{student_list}')"
+    
+    # No access for others
+    else:
+        return "1=0"

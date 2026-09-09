@@ -123,11 +123,11 @@ class Student(Document):
 
 		if student_user_permission_exists:
 			return
-		if not self.programme:
-			frappe.throw("set programme")
+		# if not self.programme:
+		# 	frappe.throw("set programme")
 		add_user_permission("Student", self.name, self.user)
 		add_user_permission("Company", self.company, self.user)
-		add_user_permission("Programme", self.programme, self.user)
+		# add_user_permission("Programme", self.programme, self.user)
 
 	def validate_identification(self):
 		if self.identification_type == "CID":

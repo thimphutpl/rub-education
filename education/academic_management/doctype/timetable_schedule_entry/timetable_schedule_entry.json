@@ -137,6 +137,7 @@
    "label": "<u><b>Schedule Details</b><u></u></u>"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "from_time",
    "fieldtype": "Time",
    "label": "From Time"
@@ -146,6 +147,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "to_time",
    "fieldtype": "Time",
    "label": "To Time"
@@ -224,7 +226,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-09-08 09:23:59.129533",
+ "modified": "2026-09-09 15:01:25.839204",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Timetable Schedule Entry",

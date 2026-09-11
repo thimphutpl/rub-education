@@ -4,6 +4,18 @@ frappe.ready(function () {
     let captchaRendered = false;
     let captchaVerified = false;
     let perDayAmount = 0;
+    let siteKey = null
+
+    function loadSiteKey() {
+        frappe.call({
+            method: "hrms.hr.hr_custom_function.get_recaptcha_site_key",
+            callback: function (r) {
+                siteKey = r.message;
+				// console.log("SITE KEY:", siteKey);
+                renderCaptcha();
+            }
+        });
+    }
 
     function renderCaptcha() {
         if (captchaRendered && captchaWidget !== null) {
@@ -71,7 +83,7 @@ frappe.ready(function () {
             container.innerHTML = "";
 
             captchaWidget = grecaptcha.render(container, {
-                sitekey: "6Lery8osAAAAAIvNfDE7w9rNEA5etF5cGkWlD4tY",
+                sitekey: siteKey,
 
                 callback: function () {
                     console.log("✅ Captcha verified");
@@ -217,7 +229,7 @@ frappe.ready(function () {
 
     function verifyWithServer(captchaResponse, callback) {
         frappe.call({
-            method: "education.event_management.web_form.hall_booking.hall_booking.verify_captcha",
+            method: "hrms.hr.hr_custom_function.verify_captcha",
             args: {
                 response: captchaResponse
             },
@@ -566,7 +578,8 @@ frappe.ready(function () {
         console.log("Initializing Hall Booking Web Form...");
 
         getHallDataFromURL();
-        renderCaptcha();
+        loadSiteKey();
+        // renderCaptcha();
         setupFieldChangeListeners();
         setupSubmitButton();
         calculateTotal();

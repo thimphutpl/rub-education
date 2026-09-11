@@ -113,7 +113,8 @@ def verify_captcha(response):
 	if not response:
 		return {"verified": False}
 
-	secret_key = "6Lery8osAAAAAI7iEn06SKmWSVoldHA-KraVV5Xl"
+	# secret_key = "6Lery8osAAAAAI7iEn06SKmWSVoldHA-KraVV5Xl"
+	secret_key= frappe.db.get_single_value("System Settings", "secret_key")
 
 	try:
 		verification = requests.post(
@@ -139,4 +140,3 @@ def verify_captcha(response):
 	except Exception as e:
 		frappe.log_error(f"reCAPTCHA exception: {str(e)}", "Captcha")
 		return {"verified": False}
-

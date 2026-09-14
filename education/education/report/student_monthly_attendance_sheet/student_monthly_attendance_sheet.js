@@ -21,35 +21,37 @@ frappe.query_reports['Student Monthly Attendance Sheet'] = {
         'Oct',
         'Nov',
         'Dec',
-      ][frappe.datetime.str_to_obj(frappe.datetime.get_today()).getMonth()],
+      ][frappe.datetime.str_to_obj(frappe.datetime.get_today()).getMonth()], reqd: 1,
     },
     {
-      fieldname: 'year',
-      label: __('Year'),
-      fieldtype: 'Select',
-      options: '',
-      reqd: 1,
-    },
+			fieldname: "college",
+			label: __("College"),
+			fieldtype: "Link",
+			options: "Company",
+			reqd: 1,
+		},
+		{
+			fieldname: "academic_term",
+			label: __("Academic Term"),
+			fieldtype: "Link",
+			options: "Academic Term",
+			reqd: 1,
+		},
+		{
+			fieldname: "link_nvfk",
+			label: __("Programme"),
+			fieldtype: "Link",
+			options: "Programme",
+			reqd: 1,
+		},
+    
     {
       fieldname: 'student_section',
       label: __('Student Section'),
       fieldtype: 'Link',
       options: 'Student Section',
-      reqd: 1,
+     
     },
   ],
-  onload: function () {
-    return frappe.call({
-      // method: "hrms.hr.report.monthly_attendance_sheet.monthly_attendance_sheet.get_attendance_years",
-      method:
-        'education.education.report.student_monthly_attendance_sheet.student_monthly_attendance_sheet.get_year_list',
-      callback: function (r) {
-        let year_filter = frappe.query_report.get_filter('year')
-        year_filter.df.options = r.message
-        year_filter.df.default = r.message.join('\n')
-        year_filter.refresh()
-        year_filter.set_input(year_filter.df.default)
-      },
-    })
-  },
+
 }

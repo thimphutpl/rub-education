@@ -9,7 +9,7 @@ def get_room_info(email):
         "Hall Booking",
         filters={
             "email": email,
-           "workflow_state": ["in", ["Waiting For Payment", "Waiting for Approval"]],
+           "workflow_state": ["in", ["Waiting For Payment", "Waiting for Approval","Payment Completed"]],
         },
         fields=["name",
         "venue","company","branch","cost_center","workflow_state","amount","total_days","total_amount","account_number","qr_code","country","dzongkhag","email","name1","designation","organization",],

@@ -877,10 +877,8 @@ function applyLogoBackground(logo_url, container){
 // 	return slots;
 // }
 function generate_slots(data, blocked) {
-    const boundaries = new Set([
-        "09:00",
-        "17:00"
-    ]);
+    // console.log(data)
+    const boundaries = new Set();
 
     // Academic period boundaries
     data.forEach(d => {

@@ -416,38 +416,70 @@ class TutorTimetablePage {
 				// -------------------------------------------------
 
 				else if (entry) {
+                   if (entry.called_off) {
+                       
 
-					row += `
-						<td class="tt-cell">
+                        row += `
+                            <td class="tt-cell tt-called-off">
+                                <div class="module">
+                                    ${frappe.utils.escape_html(
+                                        entry.module_code || ""
+                                    )}
+                                </div>
 
-							<div class="module">
-								${frappe.utils.escape_html(
-									entry.module_code || ""
-								)}
-							</div>
+                                <div class="called-off-text">
+                                    Called Off
+                                </div>
 
-							<div class="class-type">
-								${frappe.utils.escape_html(
-									entry.class_type || ""
-								)}
-							</div>
+                                <div class="tutor">
+                                    ${frappe.utils.escape_html(
+                                        entry.tutor_name || ""
+                                    )}
+                                </div>
 
-							<div class="tutor-name">
-								${frappe.utils.escape_html(
-									entry.tutor_name || ""
-								)}
-							</div>
+                                <div class="tutor">
+                                    Room:
+                                    ${frappe.utils.escape_html(
+                                        entry.room_name || ""
+                                    )}
+                                </div>
+                            </td>
+                        `;
 
-							<div class="room">
-								Room:
-								${frappe.utils.escape_html(
-									entry.room_name || ""
-								)}
-							</div>
+                    }else{
 
-						</td>
-					`;
-				}
+                        row += `
+                            <td class="tt-cell">
+
+                                <div class="module">
+                                    ${frappe.utils.escape_html(
+                                        entry.module_code || ""
+                                    )}
+                                </div>
+
+                                <div class="class-type">
+                                    ${frappe.utils.escape_html(
+                                        entry.class_type || ""
+                                    )}
+                                </div>
+
+                                <div class="tutor-name">
+                                    ${frappe.utils.escape_html(
+                                        entry.tutor_name || ""
+                                    )}
+                                </div>
+
+                                <div class="room">
+                                    Room:
+                                    ${frappe.utils.escape_html(
+                                        entry.room_name || ""
+                                    )}
+                                </div>
+
+                            </td>
+                        `;
+                    }
+                }
 
 
 				// -------------------------------------------------
@@ -575,6 +607,23 @@ class TutorTimetablePage {
 			fontWeight: "600",
             fontSize:"12px"
 		});
+        this.container.find(".tt-cell").css({
+            height: "90px",
+            fontSize: "12px"
+        });
+
+        this.container.find(".tt-called-off").css({
+            height: "90px",
+            fontSize: "12px",
+            background: "#FFF3F3"
+        });
+
+        this.container.find(".called-off-text").css({
+            fontWeight: "700",
+            fontSize: "13px",
+            marginBottom: "5px",
+            color: "#D9534F"
+        });
 
 	}
 

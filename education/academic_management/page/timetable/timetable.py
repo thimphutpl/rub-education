@@ -5,7 +5,7 @@ def get_timetable(college, programme, academic_term):
     timetable = frappe.get_all(
         "Timetable Schedule Entry",
         filters={"college": college, "programme": programme, "academic_term": academic_term},
-        fields=["day","from_time","to_time","module_code","tutor","class_type","tutor_name","room_name"],
+        fields=["day","from_time","to_time","module_code","tutor","class_type","tutor_name","room_name","called_off"],
         order_by="from_time asc"
     )
 
@@ -36,7 +36,7 @@ def get_timetable_tutor(college, tutor, academic_term):
     timetable = frappe.get_all(
         "Timetable Schedule Entry",
         filters={"college": college, "tutor": tutor, "academic_term": academic_term},
-        fields=["day","from_time","to_time","module_code","tutor","class_type","tutor_name","room_name"],
+        fields=["day","from_time","to_time","module_code","tutor","class_type","tutor_name","room_name","called_off"],
         order_by="from_time asc"
     )
 
@@ -51,7 +51,7 @@ def get_timetable_tutor(college, tutor, academic_term):
                         "day": d.capitalize(),
                         "from_time": p.from_time,
                         "to_time": p.to_time,
-                        "period_name": period_name,
+                        "period_name": period_name
                     })
 
     return {

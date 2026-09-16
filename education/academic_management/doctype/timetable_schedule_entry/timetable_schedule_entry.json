@@ -30,7 +30,8 @@
   "day",
   "column_break_zxes",
   "to_time",
-  "amended_from"
+  "amended_from",
+  "called_off"
  ],
  "fields": [
   {
@@ -220,13 +221,18 @@
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "called_off",
+   "fieldtype": "Check",
+   "label": "Called Off"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
- "is_submittable": 1,
  "links": [],
- "modified": "2026-09-09 15:01:25.839204",
+ "modified": "2026-09-15 16:38:49.723546",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Timetable Schedule Entry",

@@ -785,16 +785,40 @@ function draw_timetable(container, data, blocked, map){
 				`;
 	
 			} else if (entry) {
+
+                if (entry.called_off) {
+                        row += `
+                            <td class="called-off">
+                                <div class="module">
+                                    ${frappe.utils.escape_html(entry.module_code || "")}
+                                </div>
+
+                                <div class="called-off-text">
+                                    Called Off
+                                </div>
+
+                                <div class="tutor">
+                                    ${frappe.utils.escape_html(entry.tutor_name || "")}
+                                </div>
+
+                                <div class="tutor">
+                                    Room: ${frappe.utils.escape_html(entry.room_name || "")}
+                                </div>
+                            </td>
+                        `;
+
+                    } else {
 	
-				row += `
-					<td class="tt-cell">
-						<div class="module">${entry.module_code}</div>
-						<div class="tutor">(${entry.class_type})</div>
-						<div class="tutor">${entry.tutor_name}</div>
-						<div class="tutor">Room: ${entry.room_name}</div>
-					</td>
-				`;
-	
+                        row += `
+                            <td class="tt-cell">
+                                <div class="module">${entry.module_code}</div>
+                                <div class="tutor">(${entry.class_type})</div>
+                                <div class="tutor">${entry.tutor_name}</div>
+                                <div class="tutor">Room: ${entry.room_name}</div>
+                            </td>
+                        `;
+                    }
+            
 			} else {
 	
 				row += `<td></td>`;
@@ -948,13 +972,26 @@ function printTimetable(container){
             background:#e6f7ff; /* academic */
             font-weight:bold;
         }
+        .called-off {
+            background: #D9534F !important;
+            color: white !important;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .called-off-text {
+            color: #D9534F !important;
+        }
+
+        
+            
         .tt-break{
-            background:#f3f3f3; /* non-academic */
+            background:#f3f3f3;
             color:#666;
             font-weight:bold;
         }
         .day-column{
-            background:#dff0d8; /* days column */
+            background:#dff0d8; 
             font-weight:bold;
         }
 
@@ -968,6 +1005,8 @@ function printTimetable(container){
 				print-color-adjust: exact !important;       /* Firefox */
 			}
         }
+
+        
     </style>`);
 
     myWindow.document.write('</head><body>');

@@ -75,8 +75,7 @@
   {
    "fieldname": "periods",
    "fieldtype": "Table",
-   "options": "Timetable Constraint Item",
-   "reqd": 1
+   "options": "Timetable Constraint Item"
   },
   {
    "fieldname": "sb_tutor_constraints",
@@ -134,7 +133,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-09-05 12:31:15.289606",
+ "modified": "2026-09-15 16:14:34.895852",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Timetable Constraints",

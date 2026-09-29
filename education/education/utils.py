@@ -448,18 +448,46 @@ def get_homepage_by_role(user=None):
     else:
         return "/desk"  
 
+# @frappe.whitelist()
+# def get_active_employees():
+#     employees = frappe.db.count("Employee", {
+#         "status": "Active"
+#     })
+
+#     return employees
+
+# @frappe.whitelist()
+# def get_active_students():
+#     students = frappe.db.count("Student", {
+#         "status": "Active"
+#     })
+
+#     return students
+
 @frappe.whitelist()
 def get_active_employees():
-    employees = frappe.db.count("Employee", {
-        "status": "Active"
-    })
+    filters = {"status": "Active"}
+
+    user_roles = frappe.get_roles(frappe.session.user)
+    if "System Manager" not in user_roles and "HR Manager" not in user_roles:
+        company = frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "company")
+        if company:
+            filters["company"] = company
+
+    employees = frappe.db.count("Employee", filters)
 
     return employees
 
 @frappe.whitelist()
 def get_active_students():
-    students = frappe.db.count("Student", {
-        "status": "Active"
-    })
+    filters = {"status": "Active"}
+
+    user_roles = frappe.get_roles(frappe.session.user)
+    if "System Manager" not in user_roles and "HR Manager" not in user_roles:
+        company = frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "company")
+        if company:
+            filters["company"] = company
+
+    students = frappe.db.count("Student", filters)
 
     return students

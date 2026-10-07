@@ -8,7 +8,8 @@ from frappe.utils import get_time
 
 class TimetableConstraints(Document):
 	def validate(self):
-		self.validate_period_overlap()
+		pass
+		# self.validate_period_overlap()
 		# self.validate_hours()
 
 	def validate_hours(self):

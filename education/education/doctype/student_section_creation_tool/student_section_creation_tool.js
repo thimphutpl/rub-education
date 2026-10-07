@@ -78,12 +78,12 @@ frappe.ui.form.on('Student Section Creation Tool', 'get_students', function (frm
   ) {
     var student_list = []
     var max_roll_no = 0
-    $.each(frm.doc.students, function (_i, d) {
-      student_list.push(d.student)
-      if (d.group_roll_number > max_roll_no) {
-        max_roll_no = d.group_roll_number
-      }
-    })
+    // $.each(frm.doc.students, function (_i, d) {
+    //   student_list.push(d.student)
+    //   if (d.group_roll_number > max_roll_no) {
+    //     max_roll_no = d.group_roll_number
+    //   }
+    // })
 
     if (frm.doc.academic_year) {
         if(!frm.doc.college){
@@ -147,7 +147,7 @@ frappe.ui.form.on('Student Section Creation Tool', 'get_students', function (frm
                   let student_index = 0;
                 
                   for (let sec = 0; sec < section_count; sec++) {
-                      let roll_no = 1;
+                    //   let roll_no = 1;
                   
                       // top-down distribution
                       let size = base + (sec < remainder ? 1 : 0);
@@ -158,11 +158,11 @@ frappe.ui.form.on('Student Section Creation Tool', 'get_students', function (frm
                           let row = frm.add_child("students");
                           row.student = student.name;
                           row.student_name = student.student_name;
-                          row.group_roll_number = roll_no;
-                          row.section_name =
-                              frm.doc.student_group_name + " "+frm.doc.semester+" "+ String.fromCharCode(65 + sec);
+                        //   row.group_roll_number = roll_no;
+                          row.section_name = 
+                              frm.doc.student_group_name + " "+ String.fromCharCode(65 + sec);
                   
-                          roll_no++;
+                        //   roll_no++;
                           student_index++;
                       }
                   }

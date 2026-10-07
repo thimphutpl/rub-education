@@ -12,120 +12,237 @@ class TimetableScheduleEntry(Document):
 
 	def validate(self):
 		self.validate_schedule_overlap()
-	
-	
+
+
 	def validate_schedule_overlap(self):
-		if not self.day or not self.from_time or not self.to_time:
+
+		if not self.academic_timing:
 			return
+		if self.session_type =="Extra Class":
+			return	
 
-		# Convert current schedule time to timedelta
-		from_time = timedelta(
-			hours=int(str(self.from_time).split(":")[0]),
-			minutes=int(str(self.from_time).split(":")[1]),
-			seconds=int(str(self.from_time).split(":")[2]),
-		)
+		for timing in self.academic_timing:
 
-		to_time = timedelta(
-			hours=int(str(self.to_time).split(":")[0]),
-			minutes=int(str(self.to_time).split(":")[1]),
-			seconds=int(str(self.to_time).split(":")[2]),
-		)
+			if not timing.day or not timing.from_time or not timing.to_time:
+				continue
 
-		constraint = frappe.db.get_value(
-			"Timetable Constraints",
-			{
-				"academic_term": self.academic_term,
-				"college": self.college
-			},
-			"name"
-		)
+			day = timing.day
 
-		if constraint:
-			day_field = self.day.lower()
+			from_time = self.time_to_timedelta(timing.from_time)
+			to_time = self.time_to_timedelta(timing.to_time)
 
-			constraint_items = frappe.get_all(
-				"Timetable Constraint Item",
-				filters={
-					"parent": constraint,
-					day_field: 1
+
+			# -------------------------------------------------
+			# Timetable Constraint / Lunch Break
+			# -------------------------------------------------
+
+			constraint = frappe.db.get_value(
+				"Timetable Constraints",
+				{
+					"academic_term": self.academic_term,
+					"college": self.college
 				},
-				fields=["period_name", "from_time", "to_time", "allow_overlap"]
+				"name"
 			)
 
-			for item in constraint_items:
-				if item.allow_overlap:
-					continue
+			if constraint:
 
-				if (
-					item.from_time < to_time
-					and item.to_time > from_time
-				):
+				day_field = day.lower()
+
+				constraint_items = frappe.get_all(
+					"Timetable Constraint Item",
+					filters={
+						"parent": constraint,
+						day_field: 1
+					},
+					fields=[
+						"period_name",
+						"from_time",
+						"to_time",
+						"allow_overlap"
+					]
+				)
+
+				for item in constraint_items:
+
+					if item.allow_overlap:
+						continue
+
+					item_from = self.time_to_timedelta(
+						item.from_time
+					)
+
+					item_to = self.time_to_timedelta(
+						item.to_time
+					)
+
+					if (
+						item_from < to_time
+						and item_to > from_time
+					):
+
+						frappe.throw(
+							_("Time overlaps with Period {0} ({1} - {2}) on {3}.")
+							.format(
+								item.period_name,
+								item.from_time,
+								item.to_time,
+								day
+							)
+						)
+
+
+			# -------------------------------------------------
+			# Student Section
+			# -------------------------------------------------
+
+			if self.student_section:
+
+				conflict = frappe.db.sql(
+					"""
+					SELECT name
+					FROM `tabTimetable Schedule Entry`
+					WHERE
+						student_section = %(student_section)s
+						AND name != %(name)s
+						AND EXISTS (
+							SELECT 1
+							FROM `tabTimetable Constraint Academic Periods` at
+							WHERE
+								at.parent = `tabTimetable Schedule Entry`.name
+								AND at.parenttype = 'Timetable Schedule Entry'
+								AND at.day = %(day)s
+								AND at.from_time < %(to_time)s
+								AND at.to_time > %(from_time)s
+						)
+					LIMIT 1
+					""",
+					{
+						"student_section": self.student_section,
+						"name": self.name,
+						"day": day,
+						"from_time": timing.from_time,
+						"to_time": timing.to_time
+					},
+					as_dict=True
+				)
+
+				if conflict:
+
 					frappe.throw(
-						_("Time overlaps with Period {0} ({1} - {2}) on {3}.")
+						_("Time overlap for Student Section {0} on {1}.")
 						.format(
-							item.period_name,
-							item.from_time,
-							item.to_time,
-							self.day
+							self.student_section,
+							day
 						)
 					)
 
-		# Student Section
-		if self.student_section:
-			conflict = frappe.db.exists(
-				"Timetable Schedule Entry",
-				{
-					"student_section": self.student_section,
-					"day": self.day,
-					"name": ["!=", self.name],
-					"from_time": ["<", self.to_time],
-					"to_time": [">", self.from_time],
-				},
-			)
 
-			if conflict:
-				frappe.throw(
-					_("Time overlap for Student Section {0} on {1}.")
-					.format(self.student_section, self.day)
+			# -------------------------------------------------
+			# Class Room
+			# -------------------------------------------------
+
+			if self.class_room:
+
+				conflict = frappe.db.sql(
+					"""
+					SELECT name
+					FROM `tabTimetable Schedule Entry`
+					WHERE
+						class_room = %(class_room)s
+						AND name != %(name)s
+						AND EXISTS (
+							SELECT 1
+							FROM `tabTimetable Constraint Academic Periods` at
+							WHERE
+								at.parent = `tabTimetable Schedule Entry`.name
+								AND at.parenttype = 'Timetable Schedule Entry'
+								AND at.day = %(day)s
+								AND at.from_time < %(to_time)s
+								AND at.to_time > %(from_time)s
+						)
+					LIMIT 1
+					""",
+					{
+						"class_room": self.class_room,
+						"name": self.name,
+						"day": day,
+						"from_time": timing.from_time,
+						"to_time": timing.to_time
+					},
+					as_dict=True
 				)
 
-		# Class Room
-		if self.class_room:
-			conflict = frappe.db.exists(
-				"Timetable Schedule Entry",
-				{
-					"class_room": self.class_room,
-					"day": self.day,
-					"name": ["!=", self.name],
-					"from_time": ["<", self.to_time],
-					"to_time": [">", self.from_time],
-				},
-			)
+				if conflict:
 
-			if conflict:
-				frappe.throw(
-					_("Time overlap for Class Room {0} on {1}.")
-					.format(self.class_room, self.day)
+					frappe.throw(
+						_("Time overlap for Class Room {0} on {1}.")
+						.format(
+							self.class_room,
+							day
+						)
+					)
+
+
+			# -------------------------------------------------
+			# Tutor
+			# -------------------------------------------------
+
+			if self.tutor:
+
+				conflict = frappe.db.sql(
+					"""
+					SELECT name
+					FROM `tabTimetable Schedule Entry`
+					WHERE
+						tutor = %(tutor)s
+						AND name != %(name)s
+						AND EXISTS (
+							SELECT 1
+							FROM `tabTimetable Constraint Academic Periods` at
+							WHERE
+								at.parent = `tabTimetable Schedule Entry`.name
+								AND at.parenttype = 'Timetable Schedule Entry'
+								AND at.day = %(day)s
+								AND at.from_time < %(to_time)s
+								AND at.to_time > %(from_time)s
+						)
+					LIMIT 1
+					""",
+					{
+						"tutor": self.tutor,
+						"name": self.name,
+						"day": day,
+						"from_time": timing.from_time,
+						"to_time": timing.to_time
+					},
+					as_dict=True
 				)
 
-		# Tutor
-		if self.tutor:
-			conflict = frappe.db.exists(
-				"Timetable Schedule Entry",
-				{
-					"tutor": self.tutor,
-					"day": self.day,
-					"name": ["!=", self.name],
-					"from_time": ["<", self.to_time],
-					"to_time": [">", self.from_time],
-				},
-			)
+				if conflict:
 
-			if conflict:
-				frappe.throw(
-					_("Time overlap for Tutor {0} on {1}.")
-					.format(self.tutor, self.day)
-				)
+					frappe.throw(
+						_("Time overlap for Tutor {0} on {1}.")
+						.format(
+							self.tutor,
+							day
+						)
+					)
+
+	def time_to_timedelta(self, value):
+
+		if isinstance(value, timedelta):
+			return value
+
+		value = str(value).split(".")[0]
+
+		parts = value.split(":")
+
+		return timedelta(
+			hours=int(parts[0]),
+			minutes=int(parts[1]),
+			seconds=int(parts[2])
+		)
  
 	# def validate_schedule_overlap(self):
 	# 	if not self.day or not self.from_time or not self.to_time:
@@ -305,6 +422,52 @@ def get_tutor(doctype, txt, searchfield, start, page_len, filters):
 		"page_len": page_len
 	})
 
+@frappe.whitelist()
+@frappe.validate_and_sanitize_search_inputs
+def get_module_enrollment_key(
+	doctype,
+	txt,
+	searchfield,
+	start,
+	page_len,
+	filters
+):
+
+	filters = frappe.parse_json(filters) if isinstance(filters, str) else filters
+
+	college = filters.get("college")
+	tutor = filters.get("tutor")
+	module = filters.get("module")
+	programme =filters.get("programme")
+
+	if not college or not tutor or not module:
+		return []
+
+	return frappe.db.sql(
+		"""
+		SELECT
+			name,
+			name AS module_enrollment_key
+		FROM `tabModule Enrolment Key`
+		WHERE
+			college = %(college)s
+			AND tutor = %(tutor)s
+			AND module = %(module)s
+			AND name LIKE %(txt)s
+			AND programme =%(programme)s
+		ORDER BY creation DESC
+		LIMIT %(start)s, %(page_len)s
+		""",
+		{
+			"college": college,
+			"tutor": tutor,
+			"module": module,
+			"programme":programme,
+			"txt": f"%{txt}%",
+			"start": start,
+			"page_len": page_len
+		}
+	)
 
 @frappe.whitelist()
 @frappe.validate_and_sanitize_search_inputs
@@ -312,12 +475,18 @@ def get_student_sections(doctype, txt, searchfield, start, page_len, filters):
 	class_type = filters.get("class_type")
 	college = filters.get("college")
 	tutor = filters.get("tutor")
+	programme= filters.get("programme")
+	module = filters.get("module")
 
 	if not class_type:
 		return []
 	if not college:
 		return []
 	if not tutor:
+		return []
+	if not programme:
+		return []
+	if not module:
 		return []
 
 	return frappe.db.sql("""
@@ -332,7 +501,9 @@ def get_student_sections(doctype, txt, searchfield, start, page_len, filters):
 			mti.class_type = %(class_type)s
 			AND mc.college = %(college)s
 			AND mti.tutor = %(tutor)s
-			AND m.name LIKE %(txt)s
+			AND mc.programme = %(programme)s
+			AND m.name = %(module)s
+			AND mti.student_group LIKE %(txt)s
 
 		ORDER BY m.name
 		LIMIT %(start)s, %(page_len)s
@@ -340,11 +511,50 @@ def get_student_sections(doctype, txt, searchfield, start, page_len, filters):
 		"class_type": class_type,
 		"college": college,
 		"tutor": tutor,
+		"programme": programme,
+		"module": module,
 		"txt": f"%{txt}%",
 		"start": start,
 		"page_len": page_len
 	})
 
+
+@frappe.whitelist()
+@frappe.validate_and_sanitize_search_inputs
+def get_combined_sections(doctype, txt, searchfield, start, page_len, filters):
+	college = filters.get("college")
+	programme = filters.get("programme")
+	module = filters.get("module")
+
+	if not all((college, programme, module)):
+		return []
+
+	return frappe.db.sql(
+		"""
+		SELECT DISTINCT
+			mti.student_group
+		FROM `tabModule` m
+		INNER JOIN `tabModule Tutor Item` mti
+			ON mti.parent = m.name
+		INNER JOIN `tabModule College` mc
+			ON mc.parent = m.name
+		WHERE
+			mc.college = %(college)s
+			AND mc.programme = %(programme)s
+			AND m.name = %(module)s
+			AND mti.student_group LIKE %(txt)s
+		ORDER BY mti.student_group
+		LIMIT %(start)s, %(page_len)s
+		""",
+		{
+			"college": college,
+			"programme": programme,
+			"module": module,
+			"txt": f"%{txt}%",
+			"start": start,
+			"page_len": page_len,
+		},
+	)
 @frappe.whitelist()
 @frappe.validate_and_sanitize_search_inputs
 def get_modules_programme_by_tutor(

@@ -5,17 +5,18 @@
 import frappe
 from frappe.model.document import Document
 
-
+from datetime import datetime
 class StudentAttendanceTool(Document):
 	pass
 
 
 @frappe.whitelist()
 def get_student_attendance_records(
-	date=None, student_group=None, timetable_schedule_entry=None, course =None
+	date=None, student_group=None, timetable_schedule_entry=None, course =None,module_enrollment_key=None
 ):
 	student_list = []
 	student_attendance_list = []
+	
 	#--------------pre introduction to timetable schedule entry START-----------------------#
 	# if based_on == "Course Schedule":
 	# 	student_group = frappe.db.get_value(
@@ -32,12 +33,21 @@ def get_student_attendance_records(
 	# if not student_list:
 	#--------------pre introduction to timetable schedule entry END-----------------------#
 
+	# student_list = frappe.get_all(
+	# 	"Student Section Student",
+	# 	fields=["student", "student_name", "group_roll_number"],
+	# 	filters={"parent": student_group, "active": 1},
+	# 	order_by="group_roll_number",
+	# )
+
 	student_list = frappe.get_all(
-		"Student Section Student",
-		fields=["student", "student_name", "group_roll_number"],
-		filters={"parent": student_group, "active": 1},
-		order_by="group_roll_number",
-	)
+			"Module Enrolment",
+			fields=["student", "student_name","student_section"],
+			filters={
+				"module_enrollment_key": module_enrollment_key
+			}
+		)
+
 
 	StudentAttendance = frappe.qb.DocType("Student Attendance")
 
@@ -70,3 +80,33 @@ def get_student_attendance_records(
 				student.status = attendance.status
 
 	return student_list
+
+
+@frappe.whitelist()
+def get_timetable_period(name,date ):
+	day = datetime.strptime(date, "%Y-%m-%d").strftime("%A")
+
+	result = frappe.db.sql(
+		"""
+		SELECT
+			tcap.day,
+			tcap.from_time,
+			tcap.to_time
+		FROM `tabTimetable Schedule Entry` tse
+
+		INNER JOIN `tabTimetable Constraint Academic Periods` tcap
+			ON tse.name = tcap.parent
+
+		WHERE
+			tse.name = %(name)s
+			AND tcap.day = %(day)s
+		""",
+		{
+			"name": name,
+			"day": day
+		},
+		as_dict=True
+	)
+
+
+	return result[0] if result else {}

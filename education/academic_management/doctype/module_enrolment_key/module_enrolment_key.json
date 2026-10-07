@@ -1,6 +1,6 @@
 {
  "actions": [],
- "autoname": "MEKEY.YY.MM.DD.#####",
+ "autoname": "format:KEY - {module}",
  "creation": "2026-03-03 21:25:08.408677",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -16,6 +16,8 @@
   "student_batch",
   "student_section",
   "posting_date",
+  "tutor",
+  "tutor_name",
   "ubdeadline_settingsbu_section",
   "deadline",
   "section_break_yceo",
@@ -65,6 +67,7 @@
    "fieldname": "module",
    "fieldtype": "Link",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Module",
    "options": "Module",
    "reqd": 1
@@ -76,13 +79,14 @@
   {
    "fieldname": "student_batch",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Student Batch",
-   "options": "Student Batch Name",
-   "reqd": 1
+   "options": "Student Batch Name"
   },
   {
    "fieldname": "student_section",
    "fieldtype": "Link",
+   "in_standard_filter": 1,
    "label": "Student Section",
    "options": "Student Section",
    "reqd": 1
@@ -125,17 +129,29 @@
    "fieldtype": "Link",
    "label": "Academic Session",
    "options": "Academic Session"
+  },
+  {
+   "fieldname": "tutor",
+   "fieldtype": "Link",
+   "label": "Tutor",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "tutor.employee_name",
+   "fieldname": "tutor_name",
+   "fieldtype": "Data",
+   "label": "Tutor Name"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-05-13 15:11:10.638402",
+ "modified": "2026-09-28 11:41:17.752666",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Module Enrolment Key",
- "naming_rule": "Expression (old style)",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {
@@ -152,15 +168,13 @@
    "write": 1
   },
   {
-   "cancel": 1,
    "create": 1,
-   "delete": 1,
    "email": 1,
    "export": 1,
    "print": 1,
    "read": 1,
    "report": 1,
-   "role": "Academics User",
+   "role": "Tutor",
    "share": 1,
    "submit": 1,
    "write": 1

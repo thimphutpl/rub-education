@@ -98,7 +98,7 @@
    "fieldname": "sb_academic",
    "fieldtype": "Section Break",
    "hidden": 1,
-   "label": "Academic Periods"
+   "label": "Academic Timing"
   },
   {
    "fieldname": "academic_periods",
@@ -133,7 +133,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-09-15 16:14:34.895852",
+ "modified": "2026-10-01 10:36:22.400724",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Timetable Constraints",
@@ -171,6 +171,18 @@
    "read": 1,
    "report": 1,
    "role": "Academic Dean",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrator",
    "share": 1,
    "write": 1
   }

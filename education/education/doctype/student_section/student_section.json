@@ -39,7 +39,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Group Based on",
-   "options": "\nBatch\nProgramme and Semester\nActivity",
+   "options": "\nBatch\nProgramme and Semester\nYear",
    "reqd": 1
   },
   {
@@ -138,7 +138,7 @@
  ],
  "in_create": 1,
  "links": [],
- "modified": "2026-08-12 15:08:54.846317",
+ "modified": "2026-09-18 11:00:08.469440",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student Section",

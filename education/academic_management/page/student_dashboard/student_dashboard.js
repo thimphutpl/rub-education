@@ -672,10 +672,11 @@ function load_timetable(container, college, programme, academic_term){
 		args: {"college": college, "programme": programme, "academic_term": academic_term},
 		callback: function(r){
 
-			let data = r.message.timetable || [];
+			let data = r.message.timetable|| [];
 			let blocked = r.message.blocked || [];
 
 			// Create a map for fast lookup
+            console.log("Data:", blocked);
 			let map = {};
 			if(data.length > 0){
 			data.forEach(d=>{
@@ -708,6 +709,7 @@ function draw_timetable(container, data, blocked, map){
 
 	let slots = generate_slots(data, blocked);
 	slots.sort();
+    console.log("Slots:", slots);
 
 	let table = $('<table class="table table-bordered timetable-table"></table>');
 	let tableWrapper = $('<div class="timetable-print-only"></div>');
@@ -785,36 +787,55 @@ function draw_timetable(container, data, blocked, map){
 				`;
 	
 			} else if (entry) {
+                console.log((entry))
 
                 if (entry.called_off) {
                         row += `
-                            <td class="called-off">
+                            <td class="tt-cell tt-called-off" style="background-color:#FFF3F3">
                                 <div class="module">
-                                    ${frappe.utils.escape_html(entry.module_code || "")}
+                                    ${frappe.utils.escape_html(entry.module || "")}
                                 </div>
-
-                                <div class="called-off-text">
-                                    Called Off
-                                </div>
-
                                 <div class="tutor">
                                     ${frappe.utils.escape_html(entry.tutor_name || "")}
+                                </div>
+                                <div class="section-type">
+                                    ${frappe.utils.escape_html(
+                                        entry.session_type || ""
+                                    )}
                                 </div>
 
                                 <div class="tutor">
                                     Room: ${frappe.utils.escape_html(entry.room_name || "")}
                                 </div>
+
+                                <div class="called-off-text" style="color:red" >
+                                    Called Off
+                                </div>
                             </td>
                         `;
 
                     } else {
+                        console.log((entry))
 	
                         row += `
                             <td class="tt-cell">
-                                <div class="module">${entry.module_code}</div>
-                                <div class="tutor">(${entry.class_type})</div>
+                                <div class="module">${entry.module}</div>
+                                <div class="tutor">${entry.class_type}</div>
+                                <div class="section-type">
+                                    ${frappe.utils.escape_html(
+                                        entry.session_type || ""
+                                    )}
+                                </div>
                                 <div class="tutor">${entry.tutor_name}</div>
                                 <div class="tutor">Room: ${entry.room_name}</div>
+                                <div class="room">
+                                    Section:
+                                    ${(entry.sections || [])
+                                        .map(item =>
+                                            frappe.utils.escape_html(item.section || "")
+                                        )
+                                        .join(", ")}
+                                </div>
                             </td>
                         `;
                     }
@@ -969,9 +990,16 @@ function printTimetable(container){
 			white-space: normal;
 		}
         .tt-cell{
-            background:#e6f7ff; /* academic */
-            font-weight:bold;
+          	height: 90px,
+			fontSize: 12px
         }
+
+        
+      .tt-called-off{
+            height: 90px,
+            fontSize: 12px,
+            background:#FFF3F3
+        };
         .called-off {
             background: #D9534F !important;
             color: white !important;
@@ -993,6 +1021,11 @@ function printTimetable(container){
         .day-column{
             background:#dff0d8; 
             font-weight:bold;
+        }
+        .section-type{
+            fontWeight: 700,
+            fontSize: 13px,
+            marginBottom: 5px
         }
 
         /* Make it print-friendly */

@@ -19,6 +19,7 @@
   "programme",
   "year",
   "semester",
+  "semester_name",
   "is_existing_student",
   "create_user_permission",
   "old_student_id",
@@ -147,9 +148,7 @@
    "fieldname": "student_email_id",
    "fieldtype": "Data",
    "in_global_search": 1,
-   "label": "Student Email Address",
-   "reqd": 1,
-   "unique": 1
+   "label": "Student Email Address"
   },
   {
    "fieldname": "student_mobile_number",
@@ -555,6 +554,13 @@
    "fieldname": "promotion_history",
    "fieldtype": "Table",
    "options": "Student Promotion History"
+  },
+  {
+   "fetch_from": "semester.display_name",
+   "fieldname": "semester_name",
+   "fieldtype": "Data",
+   "label": "Semester",
+   "read_only": 1
   }
  ],
  "image_field": "image",
@@ -595,7 +601,7 @@
    "link_fieldname": "student"
   }
  ],
- "modified": "2026-06-02 15:03:13.585211",
+ "modified": "2026-07-14 10:09:49.803625",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student",

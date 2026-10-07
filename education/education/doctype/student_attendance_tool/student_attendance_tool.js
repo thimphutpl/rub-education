@@ -59,11 +59,15 @@ frappe.ui.form.on('Student Attendance Tool', {
 				filters: {
 					college: frm.doc.college,
 					date: frm.doc.date,
-          tutor: frappe.session.user
+                    tutor: frappe.session.user,
+                    module_enrollment_key:frm.doc.module_enrollment_key
+                    
 				}
 			};
 		});
   },
+
+
 
 
   refresh: function (frm) {
@@ -75,6 +79,27 @@ frappe.ui.form.on('Student Attendance Tool', {
     }
     frm.disable_save()
   },
+
+    
+    module_enrollment_key: function(frm) {
+
+        // When Module Enrollment Key is cleared
+        if (!frm.doc.module_enrollment_key) {
+
+            // Clear Timetable Schedule Entry
+            frm.set_value("timetable_schedule_entry", "");
+
+            // Clear related fields
+            frm.set_value("from_time", "");
+            frm.set_value("to_time", "");
+
+            // Clear student attendance display
+            if (frm.students_area) {
+                frm.students_area.empty();
+            }
+        }
+    },
+
 
   // based_on: function (frm) {
   //   if (frm.doc.based_on == 'Student Section') {
@@ -101,8 +126,29 @@ frappe.ui.form.on('Student Attendance Tool', {
           frm.events.get_students(frm, r.message)
         },
       })
+    frappe.call({
+        method: "education.education.doctype.student_attendance_tool.student_attendance_tool.get_timetable_period",
+
+        args: {
+            name: frm.doc.timetable_schedule_entry,
+            date: frm.doc.date
+        },
+
+        callback(r) {
+
+            console.log("Timetable Period:", r.message);
+
+            if (!r.message) {
+                return;
+            }
+
+            frm.set_value("from_time", r.message.from_time);
+            frm.set_value("to_time", r.message.to_time);
+            frm.set_value("day",r.message.day)
+        }
+    });
   },
-  student_group: function (frm) {
+  get_attednace_record: function (frm) {
     // if ((frm.doc.student_group && frm.doc.date && frm.doc.timetable_schedule_entry)) {
       frm.students_area
         .find('.student-attendance-checks')
@@ -115,7 +161,8 @@ frappe.ui.form.on('Student Attendance Tool', {
           student_group: frm.doc.student_group,
           date: frm.doc.date,
           timetable_schedule_entry: frm.doc.timetable_schedule_entry,
-          course: frm.doc.course
+          course: frm.doc.course,
+          module_enrollment_key:frm.doc.module_enrollment_key
         },
         callback: function (r) {
           frm.events.get_students(frm, r.message)
@@ -268,12 +315,12 @@ education.StudentsEditor = class StudentsEditor {
 						<label>
 							<input
 								type="checkbox"
-								data-group_roll_number="${student.group_roll_number}"
+								data-group_roll_number="${student.student_section}"
 								data-student="${student.student}"
 								data-student-name="${student.student_name}"
 								class="students-check"
 								${student.status === 'Present' ? 'checked' : ''}>
-							${student.group_roll_number} - ${student.student_name} (${student.student})
+							    ${student.student_name} (${student.student})
 						</label>
 					</div>
 				</div>`
@@ -287,7 +334,7 @@ education.StudentsEditor = class StudentsEditor {
   show_empty_state() {
     $(this.wrapper).html(
       `<div class="text-center text-muted" style="line-height: 100px;">
-				${__('No Students in')} ${this.frm.doc.student_group}
+				${__('No Students has enrolled in your module')} ${this.frm.doc.module_enrollment_key}
 			</div>`
     )
   }

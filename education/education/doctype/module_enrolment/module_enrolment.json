@@ -101,6 +101,7 @@
   {
    "fieldname": "student_section",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Student Section",
    "options": "Student Section",
    "read_only": 1
@@ -160,7 +161,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2026-08-19 11:22:27.677041",
+ "modified": "2026-09-27 13:14:25.244528",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Module Enrolment",

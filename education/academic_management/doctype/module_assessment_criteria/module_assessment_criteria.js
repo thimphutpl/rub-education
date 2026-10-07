@@ -12,6 +12,14 @@ frappe.ui.form.on("Module Assessment Criteria", {
 			};
       
 		});
+
+        frm.set_query("academic_term",function(){
+            return{
+                filters:{
+                    college:frm.doc.college
+                }
+            }
+        })
     // frm.set_query('semester', function () {
     //   return {
     //   filters: {
@@ -19,18 +27,18 @@ frappe.ui.form.on("Module Assessment Criteria", {
     //   },
     //   }
     // })
-    frm.set_query('tutor', function () {
-        return {
-            query:
-            'erpnext.controllers.queries.filter_module_tutors',
-          filters: {
-            // program: frm.doc.programme,
-            college: frm.doc.college,
-            programme: frm.doc.programme,
-            module: frm.doc.module,
-          },
-        }
-      })
+    // frm.set_query('employee','tutor_details', function () {
+    //     return {
+    //         query:
+    //         'erpnext.controllers.queries.filter_module_tutors',
+    //       filters: {
+    //         // program: frm.doc.programme,
+    //         college: frm.doc.college,
+    //         programme: frm.doc.programme,
+    //         module: frm.doc.module,
+    //       },
+    //     }
+    //   })
       if(frm.doc.__islocal){
           frm.set_value("academic_term", undefined);
           frm.refresh_field("academic_term")
@@ -81,6 +89,33 @@ frappe.ui.form.on("Module Assessment Criteria", {
         frm.set_value("programme", undefined);
         frm.set_value("module", undefined);
         frm.refresh_fields();
-    }
+    },
+    module(frm) {
+        frm.clear_table("tutor_details");
 
+        if (!frm.doc.module) {
+            frm.refresh_field("tutor_details");
+            return;
+        }
+
+        frappe.call({
+            method: "education.academic_management.doctype.module_assessment_criteria.module_assessment_criteria.get_tutor_details",
+            args: {
+                module: frm.doc.module
+            },
+            callback(r) {
+                if (r.message) {
+                    r.message.forEach(d => {
+                        let row = frm.add_child("tutor_details");
+
+                        row.employee = d.tutor;
+                        row.employee_name = d.tutor_name;
+                        row.tutor_type = d.tutor_type;
+                    });
+                }
+
+                frm.refresh_field("tutor_details");
+            }
+        });
+    }
 });

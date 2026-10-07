@@ -24,11 +24,12 @@ def get_permission_query_conditions(user):
 	if "Administrator" in user_roles or "System Manager" in user_roles:
 		return
 	if "Student" in user_roles:
-		college = frappe.db.get_value("Student", {"user":frappe.session.user}, "company")
-		return """(
-		EXISTS( select 1 from `tabColleges` where `tabColleges`.company = '{college}'
-		and `tabColleges`.parent = `tabProgramme`.name)
-		)""".format(college=college)
+		return
+		# college,programme = frappe.db.get_value("Student", {"user":frappe.session.user}, ["company","programme"])
+		# return """(
+		# EXISTS( select 1 from `tabColleges` where `tabColleges`.company = '{college}'
+		# and `tabColleges`.parent = `tabProgramme`.name and `tabProgramme`.name='{programme}')
+		# )""".format(college=college,programme=programme)
 	else:
 		college = frappe.db.get_value("Employee", {"user_id":frappe.session.user}, "company")
 		return """(

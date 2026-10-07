@@ -25,13 +25,14 @@ class TutorTimetablePage {
 	// ---------------------------------------------------------
 
 	make_filters() {
+        const is_admin = frappe.user.has_role("Administrator");
 
 		this.college = this.page.add_field({
 			label: __("College"),
 			fieldname: "college",
 			fieldtype: "Link",
 			options: "Company",
-			read_only: 1
+			read_only: !is_admin
 		});
 
 
@@ -40,7 +41,7 @@ class TutorTimetablePage {
 			fieldname: "tutor",
 			fieldtype: "Link",
 			options: "Employee",
-			read_only: 1
+			read_only: !is_admin
 		});
 
 
@@ -427,9 +428,21 @@ class TutorTimetablePage {
                                     )}
                                 </div>
 
-                                <div class="called-off-text">
-                                    Called Off
+
+                                <div class="class-type">
+                                    ${frappe.utils.escape_html(
+                                        entry.class_type || ""
+                                    )}
                                 </div>
+
+                                 <div class="section-type">
+                                    ${frappe.utils.escape_html(
+                                        entry.session_type || ""
+                                    )}
+                                </div>
+
+
+                               
 
                                 <div class="tutor">
                                     ${frappe.utils.escape_html(
@@ -442,6 +455,18 @@ class TutorTimetablePage {
                                     ${frappe.utils.escape_html(
                                         entry.room_name || ""
                                     )}
+                                </div>
+                                 <div class="room">
+                                        Section:
+                                        ${(entry.sections || [])
+                                            .map(item =>
+                                                frappe.utils.escape_html(item.section || "")
+                                            )
+                                            .join(", ")}
+                                    </div>
+
+                                 <div class="called-off-text">
+                                    Called Off
                                 </div>
                             </td>
                         `;
@@ -463,6 +488,12 @@ class TutorTimetablePage {
                                     )}
                                 </div>
 
+                                 <div class="section-type">
+                                    ${frappe.utils.escape_html(
+                                        entry.session_type || ""
+                                    )}
+                                </div>
+
                                 <div class="tutor-name">
                                     ${frappe.utils.escape_html(
                                         entry.tutor_name || ""
@@ -475,6 +506,14 @@ class TutorTimetablePage {
                                         entry.room_name || ""
                                     )}
                                 </div>
+                                 <div class="room">
+                                        Section:
+                                        ${(entry.sections || [])
+                                            .map(item =>
+                                                frappe.utils.escape_html(item.section || "")
+                                            )
+                                            .join(", ")}
+                                    </div>
 
                             </td>
                         `;
@@ -590,6 +629,11 @@ class TutorTimetablePage {
 			fontSize: "11px",
 			marginBottom: "3px"
 		});
+        this.container.find(".section-type").css({
+            fontWeight: "700",
+            fontSize: "13px",
+            marginBottom: "5px",
+        })
 
 
 		this.container.find(".tutor-name").css({
@@ -733,6 +777,20 @@ class TutorTimetablePage {
 					moment(b, "HH:mm")
 				)
 		);
+		// let slots = Array.from(boundaries).sort(
+		// 	(a, b) =>
+		// 		moment(a, "HH:mm").diff(
+		// 			moment(b, "HH:mm")
+		// 		)
+		// );
+		
+		// // Remove only the unwanted outer timings
+		// slots = slots.filter(time =>
+		// 	time !== "08:00" &&
+		// 	time !== "17:00"
+		// );
+		
+		// return slots;
 
 	}
 

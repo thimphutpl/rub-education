@@ -17,6 +17,8 @@
   "module",
   "semester",
   "semester_exam_not_required",
+  "section_break_mlll",
+  "tutor_details",
   "section_break_ewie",
   "assessment_item",
   "amended_from",
@@ -111,14 +113,15 @@
   {
    "fieldname": "tutor",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Tutor",
-   "options": "Employee",
-   "reqd": 1
+   "options": "Employee"
   },
   {
    "fetch_from": "tutor.employee_name",
    "fieldname": "tutor_name",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "Tutor Name",
    "read_only": 1
   },
@@ -159,14 +162,26 @@
    "fieldtype": "Check",
    "label": "Semester Exam Not Required",
    "read_only": 1
+  },
+  {
+   "fieldname": "section_break_mlll",
+   "fieldtype": "Section Break"
+  },
+  {
+   "description": "Tutor Detail (*Note: Insert all the tutor name for particular module)",
+   "fieldname": "tutor_details",
+   "fieldtype": "Table",
+   "label": "Tutor Details",
+   "options": "Tutor Item",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-06-02 17:29:27.262673",
- "modified_by": "Administrator",
+ "modified": "2026-09-21 22:24:37.089978",
+ "modified_by": "tshering.dorji@thimphutechpark.bt",
  "module": "Academic Management",
  "name": "Module Assessment Criteria",
  "naming_rule": "Expression (old style)",
@@ -181,6 +196,18 @@
    "read": 1,
    "report": 1,
    "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Module Coordinator",
    "share": 1,
    "submit": 1,
    "write": 1

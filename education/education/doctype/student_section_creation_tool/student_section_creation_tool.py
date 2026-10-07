@@ -175,6 +175,7 @@ class StudentSectionCreationTool(Document):
 			student_group.program = self.program
 			student_group.course = self.course
 			student_group.batch = self.batch
+			student_group.year= self.year
 			student_group.max_strength = self.max_strength
 			student_group.academic_term = self.academic_term
 			student_group.academic_year = self.academic_year

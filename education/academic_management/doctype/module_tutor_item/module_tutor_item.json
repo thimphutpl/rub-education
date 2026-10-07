@@ -12,7 +12,8 @@
   "class_type",
   "column_break_tnca",
   "tutor_type",
-  "student_group"
+  "student_group",
+  "college"
  ],
  "fields": [
   {
@@ -60,13 +61,21 @@
    "label": "Class Type",
    "options": "Theory\nPractical",
    "reqd": 1
+  },
+  {
+   "fetch_from": "tutor.company",
+   "fieldname": "college",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "College",
+   "options": "Company"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-08-12 14:06:26.268910",
+ "modified": "2026-09-18 14:59:57.288913",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Module Tutor Item",

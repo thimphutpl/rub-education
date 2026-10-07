@@ -131,13 +131,13 @@ frappe.ui.form.on('Student Section', {
       frm.doc.group_based_on == 'Course'
     ) {
       var student_list = []
-      var max_roll_no = 0
-      $.each(frm.doc.students, function (_i, d) {
-        student_list.push(d.student)
-        if (d.group_roll_number > max_roll_no) {
-          max_roll_no = d.group_roll_number
-        }
-      })
+    //   var max_roll_no = 0
+    //   $.each(frm.doc.students, function (_i, d) {
+    //     student_list.push(d.student)
+    //     if (d.group_roll_number > max_roll_no) {
+    //       max_roll_no = d.group_roll_number
+    //     }
+    //   })
 
       if (frm.doc.academic_year) {
           frappe.call({
@@ -153,13 +153,13 @@ frappe.ui.form.on('Student Section', {
               callback: function(r) {
                   if(r.message){
                       let students = r.message;
-                      let roll_no = 1
+                    //   let roll_no = 1
                       students.forEach(student => {
                           let row = frm.add_child("students");
                           row.student = student.name;
                           row.student_name = student.student_name;
-                          row.group_roll_number = roll_no;
-                          roll_no += 1;
+                        //   row.group_roll_number = roll_no;
+                        //   roll_no += 1;
                       })
                       frm.refresh_field("students");
                   }

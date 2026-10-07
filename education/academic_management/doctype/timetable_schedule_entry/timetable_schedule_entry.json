@@ -14,24 +14,30 @@
   "programme_abbreviation",
   "tutor_name",
   "constraint",
+  "session_type",
   "class_type",
   "column_break_ovju",
   "academic_term",
   "academic_session",
   "programme",
   "module",
+  "module_enrollment_key",
   "module_code",
   "class_room",
   "room_name",
   "student_section",
   "timetable_schedule_id",
+  "section_break_knrs",
+  "combined_class",
   "ubschedule_detailsbu_section",
   "from_time",
   "day",
   "column_break_zxes",
   "to_time",
   "amended_from",
-  "called_off"
+  "called_off",
+  "section_break_iqjc",
+  "academic_timing"
  ],
  "fields": [
   {
@@ -121,8 +127,7 @@
    "fieldname": "student_section",
    "fieldtype": "Link",
    "label": "Student Section",
-   "options": "Student Section",
-   "reqd": 1
+   "options": "Student Section"
   },
   {
    "fieldname": "timetable_schedule_id",
@@ -135,6 +140,7 @@
   {
    "fieldname": "ubschedule_detailsbu_section",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "<u><b>Schedule Details</b><u></u></u>"
   },
   {
@@ -158,8 +164,7 @@
    "fieldname": "day",
    "fieldtype": "Select",
    "label": "Day",
-   "options": "\nMonday\nTuesday\nWednesday\nThursday\nFriday\nSaturday\nSunday",
-   "reqd": 1
+   "options": "\nMonday\nTuesday\nWednesday\nThursday\nFriday\nSaturday\nSunday"
   },
   {
    "fieldname": "constraint",
@@ -174,8 +179,7 @@
    "fieldname": "class_type",
    "fieldtype": "Select",
    "label": "Class Type",
-   "options": "\nTheory\nPractical",
-   "reqd": 1
+   "options": "\nTheory\nPractical"
   },
   {
    "allow_on_submit": 1,
@@ -227,12 +231,46 @@
    "fieldname": "called_off",
    "fieldtype": "Check",
    "label": "Called Off"
+  },
+  {
+   "fieldname": "module_enrollment_key",
+   "fieldtype": "Link",
+   "label": "Module Enrollment Key",
+   "options": "Module Enrolment Key",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_iqjc",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "academic_timing",
+   "fieldtype": "Table",
+   "label": "Academic Timing",
+   "options": "Timetable Constraint Academic Periods"
+  },
+  {
+   "fieldname": "session_type",
+   "fieldtype": "Select",
+   "label": "Session Type",
+   "options": "\nRegular\nCombined\nExtra Class"
+  },
+  {
+   "fieldname": "section_break_knrs",
+   "fieldtype": "Section Break"
+  },
+  {
+   "depends_on": "eval:doc.session_type !=\"Regular\"",
+   "fieldname": "combined_class",
+   "fieldtype": "Table",
+   "label": "Combined Class",
+   "options": "Combined Class Item"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-09-15 16:38:49.723546",
+ "modified": "2026-09-21 14:44:27.582592",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Timetable Schedule Entry",

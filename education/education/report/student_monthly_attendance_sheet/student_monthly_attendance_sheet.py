@@ -71,11 +71,34 @@ def execute(filters=None):
 		msgprint(_("Invalid Month"), raise_exception=1)
 
 	# Example: 2026-09-01
-	from_date = getdate(
-		f"{academic_year}-{month_number:02d}-01"
+	# Get Academic Year start and end dates
+	year_dates = frappe.db.get_value(
+		"Academic Year",
+		academic_year,
+		["year_start_date", "year_end_date"],
+		as_dict=True,
 	)
 
-	to_date = get_last_day(from_date)
+	if not year_dates:
+		frappe.throw(_("Academic Year dates not found"))
+
+	year_start = getdate(year_dates.year_start_date)
+	year_end = getdate(year_dates.year_end_date)
+
+	# Determine the correct calendar year for the selected month
+	from_date = None
+
+	for year in range(year_start.year, year_end.year + 1):
+		candidate = getdate(f"{year}-{month_number:02d}-01")
+		candidate_end = get_last_day(candidate)
+
+		if candidate <= year_end and candidate_end >= year_start:
+			from_date = max(candidate, year_start)
+			to_date = min(candidate_end, year_end)
+			break
+
+	if not from_date:
+		frappe.throw(_("Selected month is outside the Academic Year"))
 
 	total_days_in_month = date_diff(to_date, from_date) + 1
 

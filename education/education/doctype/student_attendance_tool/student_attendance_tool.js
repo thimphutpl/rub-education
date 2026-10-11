@@ -13,31 +13,55 @@ frappe.ui.form.on('Student Attendance Tool', {
       frm.set_value('date', frappe.datetime.get_today());
     }
     frm.refresh_field("date");
-    frm.set_query('student_group', function(doc, cdt, cdn) {
-			if (!frm.doc.college) {
-				return {
-					filters: {
-						company: ["=", "Please Select College"]
-					}
-				};
-			}
-			if (!frm.doc.timetable_schedule_entry) {
-				return {
-					filters: {
-						company: ["=", "Please Select Timetable Schedule Entry"]
-					}
-				};
-			}
-			return {
-				filters: {
-					college: frm.doc.college,
-          program: frm.doc.programme,
-          academic_term: frm.doc.academic_term,
-          class_type: frm.doc.class_type,
-          disabled: 0,
-				}
-			};
-		});
+    // frm.set_query('student_group', function(doc, cdt, cdn) {
+	// 		if (!frm.doc.college) {
+	// 			return {
+	// 				filters: {
+	// 					company: ["=", "Please Select College"]
+	// 				}
+	// 			};
+	// 		}
+	// 		if (!frm.doc.timetable_schedule_entry) {
+	// 			return {
+	// 				filters: {
+	// 					company: ["=", "Please Select Timetable Schedule Entry"]
+	// 				}
+	// 			};
+	// 		}
+	// 		return {
+	// 			filters: {
+	// 				college: frm.doc.college,
+    //                 program: frm.doc.programme,
+    //                 academic_term: frm.doc.academic_term,
+    //                 class_type: frm.doc.class_type,
+    //                 disabled: 0,
+	// 			}
+	// 		};
+	// 	});
+ 
+    frm.set_query("student_group", function () {
+        if (!frm.doc.college || !frm.doc.timetable_schedule_entry) {
+            return {
+                filters: {
+                    name: ["=", ""]
+                }
+            };
+        }
+
+        return {
+            query: "education.education.doctype.student_attendance_tool.student_attendance_tool.filter_student_group",
+            filters: {
+                college: frm.doc.college,
+                programme: frm.doc.programme,
+                academic_term: frm.doc.academic_term,
+                class_type: frm.doc.class_type,
+                session_type: frm.doc.session_type,
+                timetable_schedule_entry: frm.doc.timetable_schedule_entry
+            }
+        };
+    });
+
+
 
     frm.set_query('timetable_schedule_entry', function(doc, cdt, cdn) {
 			if (!frm.doc.college) {

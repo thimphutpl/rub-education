@@ -20,6 +20,7 @@
   "academic_year",
   "course",
   "class_type",
+  "session_type",
   "section_break_viho",
   "get_attednace_record",
   "attendance",
@@ -148,12 +149,19 @@
    "fieldname": "get_attednace_record",
    "fieldtype": "Button",
    "label": "Get Attednace Record"
+  },
+  {
+   "fetch_from": "timetable_schedule_entry.session_type",
+   "fieldname": "session_type",
+   "fieldtype": "Data",
+   "label": "Session Type",
+   "read_only": 1
   }
  ],
  "hide_toolbar": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-09-28 08:38:13.854202",
+ "modified": "2026-10-10 12:55:26.855474",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student Attendance Tool",

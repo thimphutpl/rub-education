@@ -101,7 +101,8 @@ frappe.ui.form.on("Module Assessment Criteria", {
         frappe.call({
             method: "education.academic_management.doctype.module_assessment_criteria.module_assessment_criteria.get_tutor_details",
             args: {
-                module: frm.doc.module
+                module: frm.doc.module,
+                college:frm.doc.college
             },
             callback(r) {
                 if (r.message) {

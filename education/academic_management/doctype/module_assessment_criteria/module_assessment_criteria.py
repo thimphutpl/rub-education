@@ -39,21 +39,24 @@ class ModuleAssessmentCriteria(Document):
 		if flt(total) != 100:
 			frappe.throw("Total Weightage must be 100%")
 @frappe.whitelist()
-def get_tutor_details(module):
-    if not module:
-        return []
+def get_tutor_details(module,college):
+	if not module:
+		return []
+	if not college:
+		return []
 
-    tutor_details = frappe.get_all(
-        "Module Tutor Item",
-       	filters={
-            "parent": module,
-            "parenttype": "Module"
-        },
-        fields=[
-            "tutor",
-            "tutor_name",
-            "tutor_type"
-        ]
-    )
+	tutor_details = frappe.get_all(
+		"Module Tutor Item",
+	   	filters={
+			"parent": module,
+			"college":college,
+			"parenttype": "Module"
+		},
+		fields=[
+			"tutor",
+			"tutor_name",
+			"tutor_type"
+		]
+	)
 
-    return tutor_details
+	return tutor_details

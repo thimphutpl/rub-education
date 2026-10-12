@@ -43,9 +43,9 @@ frappe.ui.form.on('Module Enrolment', {
           query:
           'erpnext.controllers.queries.filter_module_enrolment_key',
         filters: {
-          // program: frm.doc.programme,
+        //   program: frm.doc.programme,
           college: frm.doc.college,
-          academic_term: frm.doc.academic_term,
+        //   academic_term: frm.doc.academic_term,
           program: frm.doc.program,
           student_id: frappe.session.user,
           enrollment_date: frm.doc.enrollment_date,

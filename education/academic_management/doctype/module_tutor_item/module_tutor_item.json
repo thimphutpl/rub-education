@@ -66,6 +66,7 @@
    "fetch_from": "tutor.company",
    "fieldname": "college",
    "fieldtype": "Link",
+   "ignore_user_permissions": 1,
    "in_list_view": 1,
    "label": "College",
    "options": "Company"
@@ -75,7 +76,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-09-18 14:59:57.288913",
+ "modified": "2026-10-13 09:06:19.876571",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Module Tutor Item",

@@ -72,6 +72,14 @@ frappe.ui.form.on('Module Enrolment', {
     })
   },
   module_enrollment_key: function(frm){
+       if (!frm.doc.module_enrollment_key) {
+            frm.set_value("academic_term", "");
+            frm.set_value("academic_year", "");
+            frm.set_value("course", "");
+            frm.set_value("tutors",[])
+            return
+       }
+
     frappe.call({
       method: "get_module_details",
       doc: frm.doc,

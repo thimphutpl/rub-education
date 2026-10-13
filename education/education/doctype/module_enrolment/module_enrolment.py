@@ -53,7 +53,8 @@ class ModuleEnrolment(Document):
 	def validate_duplication(self):
 		enrollment = frappe.db.exists(
 			"Module Enrolment",
-			{
+			{ 
+				"module_enrollment_key":self.module_enrollment_key,
 				"student": self.student,
 				"course": self.course,
 				"academic_term": self.academic_term,

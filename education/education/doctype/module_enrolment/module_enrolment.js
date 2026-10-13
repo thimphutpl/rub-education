@@ -76,6 +76,7 @@ frappe.ui.form.on('Module Enrolment', {
             frm.set_value("academic_term", "");
             frm.set_value("academic_year", "");
             frm.set_value("course", "");
+            frm.set_value("student_section","");
             frm.set_value("tutors",[])
             return
        }

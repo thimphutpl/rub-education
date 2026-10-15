@@ -101,6 +101,7 @@
   {
    "fieldname": "student_section",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Student Section",
    "options": "Student Section",
    "read_only": 1
@@ -112,9 +113,9 @@
   },
   {
    "fieldname": "module_enrollment_key",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "Module Enrolment Key",
-   "options": "Module Enrolment Key",
+   "options": "xxw",
    "reqd": 1
   },
   {
@@ -160,7 +161,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2026-10-13 18:42:26.204214",
+ "modified": "2026-10-15 09:56:51.048060",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Module Enrolment",

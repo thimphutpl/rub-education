@@ -50,38 +50,48 @@ frappe.ui.form.on("Module Enrolment Key", {
             };
           }
         });
-        frm.set_query('student_section', function(doc, cdt, cdn) {
-          if (!frm.doc.college) {
+        frm.set_query("student_section", function () {
             return {
-              filters: {
-                college: ["=", "Please Select College"]
-              }
+                query: "education.academic_management.doctype.module_enrolment_key.module_enrolment_key.get_section_by_module",
+                filters: {
+                    module: frm.doc.module,
+                    college: frm.doc.college
+                }
             };
-          }
-          else if (!frm.doc.academic_term) {
-            return {
-              filters: {
-                college: ["=", "Please Select Academic Term"]
-              }
-            };
-          }
-          else if (!frm.doc.programme) {
-            return {
-              filters: {
-                college: ["=", "Please Select Programme"]
-              }
-            };
-          }
-          else{
-            return {
-              filters: {
-                college: frm.doc.college,
-                academic_term: frm.doc.academic_term,
-                program: frm.doc.programme,
-              }
-            };
-          }
         });
+    
+        // frm.set_query('student_section', function(doc, cdt, cdn) {
+        //   if (!frm.doc.college) {
+        //     return {
+        //       filters: {
+        //         college: ["=", "Please Select College"]
+        //       }
+        //     };
+        //   }
+        //   else if (!frm.doc.academic_term) {
+        //     return {
+        //       filters: {
+        //         college: ["=", "Please Select Academic Term"]
+        //       }
+        //     };
+        //   }
+        //   else if (!frm.doc.programme) {
+        //     return {
+        //       filters: {
+        //         college: ["=", "Please Select Programme"]
+        //       }
+        //     };
+        //   }
+        //   else{
+        //     return {
+        //       filters: {
+        //         college: frm.doc.college,
+        //         academic_term: frm.doc.academic_term,
+        //         program: frm.doc.programme,
+        //       }
+        //     };
+        //   }
+        // });
     },
 	refresh(frm) {
 

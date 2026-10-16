@@ -12,6 +12,7 @@ from frappe.utils import cstr, flt, getdate
 from frappe.utils.dateutils import get_dates_from_timegrain
 
 
+
 def get_course(program):
 	"""Return list of courses for a particular program
 	:param program: Program
@@ -86,91 +87,287 @@ def check_attendance_records_exist(course_schedule=None, student_group=None, dat
 		)
 
 
+# @frappe.whitelist()
+# def mark_attendance(
+# 	students_present, students_absent, from_time, to_time, day, timetable_schedule_entry, academic_year, academic_term, programme=None, college=None, tutor=None, student_group=None, date=None, course = None, class_type = None
+# ):
+# 	"""Creates Multiple Attendance Records.
+
+# 	:param students_present: Students Present JSON.
+# 	:param students_absent: Students Absent JSON.
+# 	:param course_schedule: Course Schedule.
+# 	:param student_group: Student Group.
+# 	:param date: Date.
+# 	"""
+# 	# frappe.throw(str(programme))
+# 	if student_group:
+# 		academic_year = frappe.db.get_value("Student Section", student_group, "academic_year")
+# 		if academic_year:
+# 			year_start_date, year_end_date = frappe.db.get_value(
+# 				"Academic Year", academic_year, ["year_start_date", "year_end_date"]
+# 			)
+# 			if getdate(date) < getdate(year_start_date) or getdate(date) > getdate(
+# 				year_end_date
+# 			):
+# 				frappe.throw(
+# 					_("Attendance cannot be marked outside of Academic Year {0}").format(academic_year)
+# 				)
+
+# 	present = json.loads(students_present)
+# 	absent = json.loads(students_absent)
+
+# 	for d in present:
+# 		make_attendance_records(
+# 			d["student"], d["student_name"], "Present", from_time, to_time, timetable_schedule_entry, day, academic_year, academic_term, programme = programme, college=college, tutor=tutor, student_group = student_group, date=date, course=course, class_type = class_type
+# 		)
+
+# 	for d in absent:
+# 		make_attendance_records(
+# 			d["student"], d["student_name"], "Absent", from_time, to_time, timetable_schedule_entry, day, academic_year, academic_term, programme = programme, college=college, tutor=tutor, student_group = student_group, date=date, course=course, class_type = class_type
+# 		)
+
+# 	frappe.db.commit()
+# 	frappe.msgprint(_("Attendance has been marked successfully."))
+
+
 @frappe.whitelist()
 def mark_attendance(
-	students_present, students_absent, from_time, to_time, day, timetable_schedule_entry, academic_year, academic_term, programme=None, college=None, tutor=None, student_group=None, date=None, course = None, class_type = None
+    students_present,
+    students_absent,
+    from_time,
+    to_time,
+    day,
+    timetable_schedule_entry,
+    academic_year,
+    academic_term,
+    programme=None,
+    college=None,
+    tutor=None,
+    student_group=None,
+    date=None,
+    course=None,
+    class_type=None,
 ):
-	"""Creates Multiple Attendance Records.
+    """Create separate attendance records for each timetable slot."""
 
-	:param students_present: Students Present JSON.
-	:param students_absent: Students Absent JSON.
-	:param course_schedule: Course Schedule.
-	:param student_group: Student Group.
-	:param date: Date.
-	"""
-	if student_group:
-		academic_year = frappe.db.get_value("Student Section", student_group, "academic_year")
-		if academic_year:
-			year_start_date, year_end_date = frappe.db.get_value(
-				"Academic Year", academic_year, ["year_start_date", "year_end_date"]
-			)
-			if getdate(date) < getdate(year_start_date) or getdate(date) > getdate(
-				year_end_date
-			):
-				frappe.throw(
-					_("Attendance cannot be marked outside of Academic Year {0}").format(academic_year)
-				)
+    if student_group:
+        academic_year = frappe.db.get_value(
+            "Student Section", student_group, "academic_year"
+        )
 
-	present = json.loads(students_present)
-	absent = json.loads(students_absent)
+        if academic_year:
+            year_start_date, year_end_date = frappe.db.get_value(
+                "Academic Year",
+                academic_year,
+                ["year_start_date", "year_end_date"],
+            )
 
-	for d in present:
-		make_attendance_records(
-			d["student"], d["student_name"], "Present", from_time, to_time, timetable_schedule_entry, day, academic_year, academic_term, programme = programme, college=college, tutor=tutor, student_group = student_group, date=date, course=course, class_type = class_type
-		)
+            if (
+                getdate(date) < getdate(year_start_date)
+                or getdate(date) > getdate(year_end_date)
+            ):
+                frappe.throw(
+                    _("Attendance cannot be marked outside of Academic Year {0}").format(
+                        academic_year
+                    )
+                )
 
-	for d in absent:
-		make_attendance_records(
-			d["student"], d["student_name"], "Absent", from_time, to_time, timetable_schedule_entry, day, academic_year, academic_term, programme = programme, college=college, tutor=tutor, student_group = student_group, date=date, course=course, class_type = class_type
-		)
+    present = json.loads(students_present) if isinstance(
+        students_present, str
+    ) else students_present
 
-	frappe.db.commit()
-	frappe.msgprint(_("Attendance has been marked successfully."))
+    absent = json.loads(students_absent) if isinstance(
+        students_absent, str
+    ) else students_absent
+
+    # Load the selected timetable
+    timetable = frappe.get_doc(
+        "Timetable Schedule Entry", timetable_schedule_entry
+    )
+
+    # Get every timetable slot matching the selected day
+    time_slots = [
+        row
+        for row in timetable.academic_timing
+        if row.day == day and not row.called_off
+    ]
+
+    if not time_slots:
+        frappe.throw(
+            _("No timetable slots found for {0}.").format(day)
+        )
+
+    # Create attendance separately for each slot
+    for slot in time_slots:
+        for student in present:
+            make_attendance_records(
+                student["student"],
+                student["student_name"],
+                "Present",
+                slot.from_time,
+                slot.to_time,
+                timetable_schedule_entry,
+                day,
+                academic_year,
+                academic_term,
+                programme=programme,
+                college=college,
+                tutor=tutor,
+                student_group=student_group,
+                date=date,
+                course=course,
+                class_type=class_type,
+            )
+
+        for student in absent:
+            make_attendance_records(
+                student["student"],
+                student["student_name"],
+                "Absent",
+                slot.from_time,
+                slot.to_time,
+                timetable_schedule_entry,
+                day,
+                academic_year,
+                academic_term,
+                programme=programme,
+                college=college,
+                tutor=tutor,
+                student_group=student_group,
+                date=date,
+                course=course,
+                class_type=class_type,
+            )
+
+    frappe.db.commit()
+    frappe.msgprint(
+        _("Attendance has been marked successfully for all timetable slots.")
+    )
+# @frappe.whitelist()
+# def make_attendance_records(
+# 	student, student_name, status, from_time, to_time, timetable_schedule_entry, day, academic_year, academic_term, programme=None, college=None, tutor=None, student_group=None, date=None, course=None, class_type = None
+# ):
+# 	"""Creates/Update Attendance Record.
+
+# 	:param student: Student.
+# 	:param student_name: Student Name.
+# 	:param course_schedule: Course Schedule.
+# 	:param status: Status (Present/Absent/Leave).
+# 	"""
+# 	student_attendance = frappe.get_doc(
+# 		{
+# 			"doctype": "Student Attendance",
+# 			"student": student,
+# 			"timetable_schedule_entry_id": timetable_schedule_entry,
+# 			"student_group": student_group,
+# 			"date": date,
+# 		}
+# 	)
+# 	if not student_attendance:
+# 		student_attendance = frappe.new_doc("Student Attendance")
+# 	if not frappe.db.exists("Employee", {"user_id": tutor}, "name"):
+# 		frappe.throw("Logged in User must be a Tutor. \n*User must have <b>Tutor</b> role.")
+# 	student_attendance.student = student
+# 	student_attendance.student_name = student_name
+# 	student_attendance.student_group = student_group
+# 	student_attendance.date = date
+# 	student_attendance.timetable_schedule_entry_id = timetable_schedule_entry
+# 	student_attendance.from_time = from_time
+# 	student_attendance.to_time = to_time
+# 	student_attendance.day = day
+# 	student_attendance.status = status
+# 	student_attendance.academic_year = academic_year
+# 	student_attendance.academic_term = academic_term
+# 	student_attendance.programme = programme
+# 	student_attendance.college = college
+# 	student_attendance.tutor = frappe.db.get_value("Employee", {"user_id": tutor}, "name")
+# 	student_attendance.tutor_name = frappe.db.get_value("Employee", student_attendance.tutor, "employee_name")
+# 	if course:
+# 		student_attendance.module = course
+# 	student_attendance.class_type = class_type
+# 	student_attendance.save()
+# 	student_attendance.submit()
+
 
 @frappe.whitelist()
 def make_attendance_records(
-	student, student_name, status, from_time, to_time, timetable_schedule_entry, day, academic_year, academic_term, programme=None, college=None, tutor=None, student_group=None, date=None, course=None, class_type = None
+    student,
+    student_name,
+    status,
+    from_time,
+    to_time,
+    timetable_schedule_entry,
+    day,
+    academic_year,
+    academic_term,
+    programme=None,
+    college=None,
+    tutor=None,
+    student_group=None,
+    date=None,
+    course=None,
+    class_type=None,
 ):
-	"""Creates/Update Attendance Record.
+    # Prevent duplicate attendance for the same time slot
+    existing = frappe.db.exists(
+        "Student Attendance",
+        {
+            "student": student,
+            "date": date,
+            "student_group": student_group,
+            "timetable_schedule_entry_id": timetable_schedule_entry,
+            "from_time": from_time,
+            "to_time": to_time,
+            "docstatus": ["!=", 2],
+        },
+    )
 
-	:param student: Student.
-	:param student_name: Student Name.
-	:param course_schedule: Course Schedule.
-	:param status: Status (Present/Absent/Leave).
-	"""
-	student_attendance = frappe.get_doc(
-		{
-			"doctype": "Student Attendance",
-			"student": student,
-			"timetable_schedule_entry_id": timetable_schedule_entry,
-			"student_group": student_group,
-			"date": date,
-		}
-	)
-	if not student_attendance:
-		student_attendance = frappe.new_doc("Student Attendance")
-	if not frappe.db.exists("Employee", {"user_id": tutor}, "name"):
-		frappe.throw("Logged in User must be a Tutor. \n*User must have <b>Tutor</b> role.")
-	student_attendance.student = student
-	student_attendance.student_name = student_name
-	student_attendance.student_group = student_group
-	student_attendance.date = date
-	student_attendance.timetable_schedule_entry_id = timetable_schedule_entry
-	student_attendance.from_time = from_time
-	student_attendance.to_time = to_time
-	student_attendance.day = day
-	student_attendance.status = status
-	student_attendance.academic_year = academic_year
-	student_attendance.academic_term = academic_term
-	student_attendance.programme = programme
-	student_attendance.college = college
-	student_attendance.tutor = frappe.db.get_value("Employee", {"user_id": tutor}, "name")
-	student_attendance.tutor_name = frappe.db.get_value("Employee", student_attendance.tutor, "employee_name")
-	if course:
-		student_attendance.module = course
-	student_attendance.class_type = class_type
-	student_attendance.save()
-	student_attendance.submit()
+    if existing:
+        frappe.throw(
+            _(
+                "Attendance already exists for student {0} "
+                "for {1} to {2} on {3}."
+            ).format(student, from_time, to_time, date)
+        )
+
+    tutor_employee = frappe.db.get_value(
+        "Employee", {"user_id": tutor}, "name"
+    )
+
+    if not tutor_employee:
+        frappe.throw(
+            "Logged in User must be a Tutor. "
+            "User must have the Tutor role."
+        )
+
+    student_attendance = frappe.new_doc("Student Attendance")
+
+    student_attendance.student = student
+    student_attendance.student_name = student_name
+    student_attendance.student_group = student_group
+    student_attendance.date = date
+    student_attendance.timetable_schedule_entry_id = (
+        timetable_schedule_entry
+    )
+    student_attendance.from_time = from_time
+    student_attendance.to_time = to_time
+    student_attendance.day = day
+    student_attendance.status = status
+    student_attendance.academic_year = academic_year
+    student_attendance.academic_term = academic_term
+    student_attendance.programme = programme
+    student_attendance.college = college
+    student_attendance.tutor = tutor_employee
+    student_attendance.tutor_name = frappe.db.get_value(
+        "Employee", tutor_employee, "employee_name"
+    )
+    student_attendance.module = course
+    student_attendance.class_type = class_type
+
+    student_attendance.insert()
+    student_attendance.submit()
+
+    return student_attendance.name
 
 
 @frappe.whitelist()

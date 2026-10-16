@@ -13,6 +13,31 @@ class ModuleEnrolmentKey(Document):
 		if frappe.db.exists("Module Enrolment Key", {"college": self.college, "programme": self.programme, "academic_term": self.academic_term, "module": self.module, "docstatus": ["<", 2], "student_batch": self.student_batch, "student_section": self.student_section, "name": ["!=", self.name]}):
 			frappe.throw("""Module Enrolment Key <b><a href="/app/module-enrolment-key/{0}">{0}</a></b> already exists for the selected details.""".format(frappe.db.get_value("Module Enrolment Key", {"college": self.college, "programme": self.programme, "academic_term": self.academic_term, "module": self.module, "docstatus": ["<", 2], "student_batch": self.student_batch, "student_section": self.student_section, "name": ["!=", self.name]})))
 
+	
+@frappe.whitelist()
+@frappe.validate_and_sanitize_search_inputs
+def get_section_by_module(doctype, txt, searchfield, start, page_len, filters):
+	module = filters.get("module")
+	college = filters.get("college")
+
+	if not module:
+		return []
+
+	return frappe.db.sql(
+		"""
+		SELECT DISTINCT student_group
+		FROM `tabModule Tutor Item`
+		WHERE parent = %s
+		AND parenttype = 'Module'
+		AND (%s IS NULL OR college = %s)
+		AND student_group LIKE %s
+		ORDER BY student_group
+		LIMIT %s OFFSET %s
+		""",
+		(module, college, college, f"%{txt}%", page_len, start)
+	)
+			
+
 def get_permission_query_conditions(user):
 	if not user: user = frappe.session.user
 	user_roles = frappe.get_roles(user)
@@ -42,3 +67,5 @@ def get_permission_query_conditions(user):
 		return """(
 			`tabModule Enrolment Key`.college = '{college}'
 		)""".format(college=college)
+
+	

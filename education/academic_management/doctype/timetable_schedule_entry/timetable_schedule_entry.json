@@ -30,7 +30,6 @@
   "section_break_knrs",
   "combined_class",
   "ubschedule_detailsbu_section",
-  "from_time",
   "day",
   "column_break_zxes",
   "to_time",
@@ -144,12 +143,6 @@
    "label": "<u><b>Schedule Details</b><u></u></u>"
   },
   {
-   "allow_on_submit": 1,
-   "fieldname": "from_time",
-   "fieldtype": "Time",
-   "label": "From Time"
-  },
-  {
    "fieldname": "column_break_zxes",
    "fieldtype": "Column Break"
   },
@@ -233,11 +226,12 @@
    "label": "Called Off"
   },
   {
+   "depends_on": "eval:doc.session_type != \"Combined\"",
    "fieldname": "module_enrollment_key",
    "fieldtype": "Link",
    "label": "Module Enrollment Key",
-   "options": "Module Enrolment Key",
-   "reqd": 1
+   "mandatory_depends_on": "eval:doc.session_type != \"Combined\"",
+   "options": "Module Enrolment Key"
   },
   {
    "fieldname": "section_break_iqjc",
@@ -253,6 +247,7 @@
    "fieldname": "session_type",
    "fieldtype": "Select",
    "label": "Session Type",
+   "mandatory_depends_on": "eval:doc.session_type !=\"Combined\"",
    "options": "\nRegular\nCombined\nExtra Class"
   },
   {
@@ -270,7 +265,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-09-21 14:44:27.582592",
+ "modified": "2026-10-15 14:43:04.125717",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Timetable Schedule Entry",

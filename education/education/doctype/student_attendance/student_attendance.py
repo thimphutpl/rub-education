@@ -87,9 +87,56 @@ class StudentAttendance(Document):
 				)
 			)
 
+	# def validate_duplication(self):
+	# 	"""Check if the Attendance Record is Unique"""
+	# 	attendance_record = None
+	# 	if self.course_schedule:
+	# 		attendance_record = frappe.db.exists(
+	# 			"Student Attendance",
+	# 			{
+	# 				"student": self.student,
+	# 				"course_schedule": self.course_schedule,
+	# 				"docstatus": ("!=", 2),
+	# 				"name": ("!=", self.name),
+	# 			},
+	# 		)
+	# 	elif self.timetable_schedule_entry_id:
+	# 		attendance_record = frappe.db.exists(
+	# 			"Student Attendance",
+	# 			{
+	# 				"student": self.student,
+	# 				"timetable_schedule_entry_id": self.timetable_schedule_entry_id,
+	# 				"date": self.date,
+	# 				"docstatus": ("!=", 2),
+	# 				"name": ("!=", self.name),
+	# 			},
+	# 		)
+	# 	else:
+	# 		attendance_record = frappe.db.exists(
+	# 			"Student Attendance",
+	# 			{
+	# 				"student": self.student,
+	# 				"student_group": self.student_group,
+	# 				"date": self.date,
+	# 				"docstatus": ("!=", 2),
+	# 				"name": ("!=", self.name),
+	# 			},
+	# 		)
+
+	# 	if attendance_record:
+	# 		record = get_link_to_form("Student Attendance", attendance_record)
+	# 		frappe.throw(
+	# 			_("Student Attendance record {0} already exists against the Student {1}").format(
+	# 				record, frappe.bold(self.student)
+	# 			),
+	# 			title=_("Duplicate Entry"),
+	# 		)
+	
+
 	def validate_duplication(self):
-		"""Check if the Attendance Record is Unique"""
+		"""Check if the Attendance Record is Unique."""
 		attendance_record = None
+
 		if self.course_schedule:
 			attendance_record = frappe.db.exists(
 				"Student Attendance",
@@ -100,6 +147,7 @@ class StudentAttendance(Document):
 					"name": ("!=", self.name),
 				},
 			)
+
 		elif self.timetable_schedule_entry_id:
 			attendance_record = frappe.db.exists(
 				"Student Attendance",
@@ -107,10 +155,13 @@ class StudentAttendance(Document):
 					"student": self.student,
 					"timetable_schedule_entry_id": self.timetable_schedule_entry_id,
 					"date": self.date,
+					"from_time": self.from_time,
+					"to_time": self.to_time,
 					"docstatus": ("!=", 2),
 					"name": ("!=", self.name),
 				},
 			)
+
 		else:
 			attendance_record = frappe.db.exists(
 				"Student Attendance",
@@ -118,19 +169,30 @@ class StudentAttendance(Document):
 					"student": self.student,
 					"student_group": self.student_group,
 					"date": self.date,
+					"from_time": self.from_time,
+					"to_time": self.to_time,
 					"docstatus": ("!=", 2),
 					"name": ("!=", self.name),
 				},
 			)
 
 		if attendance_record:
-			record = get_link_to_form("Student Attendance", attendance_record)
+			record = get_link_to_form(
+				"Student Attendance", attendance_record
+			)
 			frappe.throw(
-				_("Student Attendance record {0} already exists against the Student {1}").format(
-					record, frappe.bold(self.student)
+				_(
+					"Student Attendance record {0} already exists "
+					"against the Student {1} for {2} to {3}."
+				).format(
+					record,
+					frappe.bold(self.student),
+					self.from_time,
+					self.to_time,
 				),
 				title=_("Duplicate Entry"),
 			)
+
 
 	def validate_is_holiday(self):
 		holiday_list = get_holiday_list(frappe.db.get_value("Student", self.student, "company"))

@@ -63,32 +63,64 @@ frappe.ui.form.on('Student Attendance Tool', {
 
 
 
-    frm.set_query('timetable_schedule_entry', function(doc, cdt, cdn) {
-			if (!frm.doc.college) {
-				return {
-					filters: {
-						company: ["=", "Please Select College"]
-					}
-				};
-			}
-			if (!frm.doc.date) {
-				return {
-					filters: {
-						company: ["=", "Please Select Date"]
-					}
-				};
-			}
-			return {
-        query: "erpnext.controllers.queries.filter_timetable_schedule_entries",
-				filters: {
-					college: frm.doc.college,
-					date: frm.doc.date,
-                    tutor: frappe.session.user,
-                    module_enrollment_key:frm.doc.module_enrollment_key
+    // frm.set_query('timetable_schedule_entry', function(doc, cdt, cdn) {
+	// 		if (!frm.doc.college) {
+	// 			return {
+	// 				filters: {
+	// 					company: ["=", "Please Select College"]
+	// 				}
+	// 			};
+	// 		}
+	// 		if (!frm.doc.date) {
+	// 			return {
+	// 				filters: {
+	// 					company: ["=", "Please Select Date"]
+	// 				}
+	// 			};
+	// 		}
+	// 		return {
+    //     query: "erpnext.controllers.queries.filter_timetable_schedule_entries",
+	// 			filters: {
+	// 				college: frm.doc.college,
+	// 				date: frm.doc.date,
+    //                 tutor: frappe.session.user,
+    //                 module_enrollment_key:frm.doc.module_enrollment_key
                     
-				}
-			};
-		});
+	// 			}
+	// 		};
+	// 	});
+        frm.set_query("timetable_schedule_entry", function (doc, cdt, cdn) {
+        if (!frm.doc.college || !frm.doc.date) {
+            return {
+                filters: {
+                    name: ["=", ""]
+                }
+            };
+        }
+
+        if (frm.doc.session_type === "Regular") {
+            return {
+                query: "erpnext.controllers.queries.filter_timetable_schedule_entries",
+                filters: {
+                    college: frm.doc.college,
+                    date: frm.doc.date,
+                    tutor: frappe.session.user,
+                    module_enrollment_key: frm.doc.module_enrollment_key
+                }
+            };
+        }
+
+        if (frm.doc.session_type === "Combined" || frm.doc.session_type=="Extra Class") {
+            return {
+                query: "erpnext.controllers.queries.filter_timetable_schedule_entries_combined",
+                filters: {
+                    college: frm.doc.college,
+                    date: frm.doc.date,
+                    session_type: frm.doc.session_type
+                }
+            };
+        }
+    });
   },
 
 
@@ -172,7 +204,10 @@ frappe.ui.form.on('Student Attendance Tool', {
         }
     });
   },
+   
   get_attednace_record: function (frm) {
+    if (frm.doc.session_type=="Regular"){
+
     // if ((frm.doc.student_group && frm.doc.date && frm.doc.timetable_schedule_entry)) {
       frm.students_area
         .find('.student-attendance-checks')
@@ -192,6 +227,26 @@ frappe.ui.form.on('Student Attendance Tool', {
           frm.events.get_students(frm, r.message)
         },
       })
+    }else if(frm.doc.session_type=="Combined" || frm.doc.session_type=="Extra Class"){
+        frm.students_area
+        .find('.student-attendance-checks')
+        .html(`<div style='padding: 2rem 0'>Fetching...</div>`)
+      var method =
+        'education.education.doctype.student_attendance_tool.student_attendance_tool.get_student_attendance_records_student_group'
+      frappe.call({
+        method: method,
+        args: {
+          student_group: frm.doc.student_group,
+          date: frm.doc.date,
+          timetable_schedule_entry: frm.doc.timetable_schedule_entry,
+          course: frm.doc.course,
+        },
+        callback: function (r) {
+          frm.events.get_students(frm, r.message)
+        },
+      })
+
+    }
     // }
   },
 

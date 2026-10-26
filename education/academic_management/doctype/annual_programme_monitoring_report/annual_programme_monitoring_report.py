@@ -32,10 +32,14 @@ class AnnualProgrammeMonitoringReport(Document):
 		permitted_users = []
 		if client_side == 0:
 			for pu in self.permitted_users:
-				permitted_users.append(pu.user)
+				user_id = frappe.db.get_value("Employee",pu.employee,"user_id")
+				permitted_users.append(user_id)
 		else:
 			for pu in self.to:
-				permitted_users.append(pu.user)
+				
+				
+				user_id = frappe.db.get_value("Employee", pu.employee, "user_id")
+				permitted_users.append(user_id)
 		if frappe.session.user not in permitted_users and self.apmr_type != "Module Level Input":
 			if frappe.session.user != "Administrator":
 				if client_side == 0 and self.permitted_users:
@@ -80,6 +84,37 @@ class AnnualProgrammeMonitoringReport(Document):
 
 @frappe.whitelist()
 @frappe.validate_and_sanitize_search_inputs
+def program_module(doctype, txt, searchfield, start, page_len, filters):
+	filters = frappe._dict(filters or {})
+
+	module = filters.get("module")
+	college = filters.get("college")
+
+	if not module or not college:
+		return []
+
+	data= frappe.db.sql("""
+		SELECT DISTINCT mc.programme
+		FROM `tabModule` AS m
+		INNER JOIN `tabModule College` AS mc
+			ON mc.parent = m.name
+		WHERE m.name = %(module)s
+		  AND mc.parenttype = 'Module'
+		  AND mc.college = %(college)s
+		  AND mc.programme LIKE %(txt)s
+		ORDER BY mc.programme
+		LIMIT %(start)s, %(page_len)s
+	""", {
+		"module": module,
+		"college": college,
+		"txt": f"%{txt}%",
+		"start": start,
+		"page_len": page_len
+	})
+	return data
+
+@frappe.whitelist()
+@frappe.validate_and_sanitize_search_inputs
 def get_program_module(doctype, txt, searchfield, start, page_len, filters):
 	if filters.get("validate") == 1:
 		# if not filters.get("program"):
@@ -99,9 +134,9 @@ def get_program_module(doctype, txt, searchfield, start, page_len, filters):
 	doctype = "Module"
 	return frappe.db.sql(
 		"""select m.name as course, m.module_title as course_name from `tabModule` m, `tabModule College` mc
-        where  m.name = mc.parent and mc.college = %(college)s {name_cond}
-        order by m.name
-       """.format(
+		where  m.name = mc.parent and mc.college = %(college)s {name_cond}
+		order by m.name
+	   """.format(
 			match_cond=get_match_cond(doctype), start=start, page_len=page_len, name_cond = name_cond
 		),
 		{

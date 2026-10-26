@@ -10,7 +10,24 @@ frappe.ui.form.on("Annual Programme Monitoring Report", {
               name: ["not in", ["Office of Vice Chancellor",frm.doc.college]]
           }
       };
+     
   });
+   frm.set_query("to",function(){
+        return{
+            filters:{
+                company:frm.doc.college,
+                employment_status:"In Service"
+            }
+        }
+    })
+    frm.set_query("academic_term",function(){
+        return{
+            filters:{
+                  college:frm.doc.college
+
+            }
+        }
+    })
     frappe.call({
       method: "check_reference",
       doc: frm.doc,
@@ -33,7 +50,52 @@ frappe.ui.form.on("Annual Programme Monitoring Report", {
         }
       }
     })
+
+   
+        // frm.set_query("programme", "cross_college_team", function (doc, cdt, cdn) {
+        //     let row = locals[cdt][cdn];
+
+        //     query:'education.academic_management.doctype.annual_programme_monitoring_report.annual_programme_monitoring_report.get_program_module',
+
+
+        //     return {
+        //         filters: {
+        //             module : doc.module,
+        //             company: row.college,
+
+        //         }
+        //     };
+        // });
+        frm.set_query("programme", "cross_college_team", function (doc, cdt, cdn) {
+            let row = locals[cdt][cdn];
+
+            return {
+                query: "education.academic_management.doctype.annual_programme_monitoring_report.annual_programme_monitoring_report.program_module",
+                filters: {
+                    module: doc.module,
+                    college: doc.college
+                }
+            };
+        });
+    
+
+        frm.set_query("tutor", "cross_college_team", function (doc, cdt, cdn) {
+            let row = locals[cdt][cdn];
+
+            return {
+                filters: {
+                    company: row.college
+                }
+            };
+        });
+    
+
+    
   },
+  college(frm, cdt, cdn) {
+        frappe.model.set_value(cdt, cdn, "programme", "");
+        frappe.model.set_value(cdt, cdn, "tutor", "");
+    },
 	refresh(frm) {
     frm.set_query("college", function () {
 			return {

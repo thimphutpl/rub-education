@@ -7,12 +7,12 @@
  "docstatus": 0,
  "doctype": "Report",
  "filters": [],
- "idx": 1,
+ "idx": 6,
  "is_standard": "Yes",
  "json": "{}",
  "letter_head": "rub_defaut",
  "letterhead": null,
- "modified": "2026-04-02 17:30:34.206789",
+ "modified": "2026-10-27 15:48:34.955264",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Module Enrolment Report",
@@ -30,7 +30,7 @@
    "role": "Academic Dean"
   },
   {
-   "role": "Academics User"
+   "role": "Tutor"
   }
  ],
  "timeout": 0

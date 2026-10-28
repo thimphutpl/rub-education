@@ -31,187 +31,399 @@ import frappe
 #     }
 
 
-@frappe.whitelist()
-def get_timetable(college, programme,academic_term):
+# @frappe.whitelist()
+# def get_timetable(college, programme,academic_term):
 
-	user = frappe.session.user 
-	student = frappe.db.get_value( "Student", {"user": user}, "name" )
+# 	user = frappe.session.user 
+# 	student = frappe.db.get_value( "Student", {"user": user}, "name" )
 
-	enrollments = frappe.get_all( 
-		"Module Enrolment", 
-		filters={
-			"student": student,
-			"academic_term": academic_term
-		}, 
-		fields=[ "course", "student_section" ] 
-	)
-	enrolled = { 
-		( 
-			row.course, 
-			row.student_section ) 
-		for row in enrollments if row.course and row.student_section 
-		}
-	# frappe.throw(frappe.as_json(enrolled))
+# 	enrollments = frappe.get_all( 
+# 		"Module Enrolment", 
+# 		filters={
+# 			"student": student,
+# 			"academic_term": academic_term
+# 		}, 
+# 		fields=[ "course", "student_section" ] 
+# 	)
+# 	enrolled = { 
+# 		( 
+# 			row.course, 
+# 			row.student_section ) 
+# 		for row in enrollments if row.course and row.student_section 
+# 		}
+# 	# frappe.throw(frappe.as_json(enrolled))
 
-	entries = frappe.get_all(
-		"Timetable Schedule Entry",
-		filters={
-			"college": college,
-			"programme": programme,
-			"academic_term":academic_term
-		},
-		fields=[
-			"name",
-			"module",
-			"tutor",
-			"class_type",
-			"session_type",
-			"tutor_name",
-			"room_name",
-			"student_section"
-		],
-		order_by="name asc"
-	)
-	# frappe.throw(frappe.as_json(entries))
+# 	entries = frappe.get_all(
+# 		"Timetable Schedule Entry",
+# 		filters={
+# 			"college": college,
+# 			"programme": programme,
+# 			"academic_term":academic_term
+# 		},
+# 		fields=[
+# 			"name",
+# 			"module",
+# 			"tutor",
+# 			"class_type",
+# 			"session_type",
+# 			"tutor_name",
+# 			"room_name",
+# 			"student_section"
+# 		],
+# 		order_by="name asc"
+# 	)
+# 	# frappe.throw(frappe.as_json(entries))
    
 
 
-	timetable = []
+# 	timetable = []
 
-	for entry in entries:
+# 	for entry in entries:
 		
 
-		doc = frappe.get_doc(
-			"Timetable Schedule Entry",
-			entry.name
-		)
+# 		doc = frappe.get_doc(
+# 			"Timetable Schedule Entry",
+# 			entry.name
+# 		)
 
-		# ---------------------------------------------
-		# Get Sections
-		# ---------------------------------------------
+# 		# ---------------------------------------------
+# 		# Get Sections
+# 		# ---------------------------------------------
 
-		sections = []
+# 		sections = []
 
-		if doc.session_type == "Combined":
+# 		if doc.session_type == "Combined":
 			
 
-			# For Combined, get ALL sections
-			# from Combined Class child table
-			for row in doc.combined_class:
-				if not row.section:
-					continue
+# 			# For Combined, get ALL sections
+# 			# from Combined Class child table
+# 			for row in doc.combined_class:
+# 				if not row.section:
+# 					continue
 
-				if (
-					row.module,
-					row.section
-				) not in enrolled:
-					continue
+# 				if (
+# 					row.module,
+# 					row.section
+# 				) not in enrolled:
+# 					continue
 
-				if row.section:
-					sections.append({
-						"module": row.module,
-						"section": row.section
-					})
+# 				if row.section:
+# 					sections.append({
+# 						"module": row.module,
+# 						"section": row.section
+# 					})
 
-		else:
+# 		else:
 			
 
-			# For normal sessions, use student_section
-			if entry.student_section:
+# 			# For normal sessions, use student_section
+# 			if entry.student_section:
 			
-				if (
-					entry.module,
-					entry.student_section
-				) not in enrolled:
-					continue
-					# frappe.throw(frappe.as_json((entry.module, entry.student_section)))
-				sections.append({
-					"module": entry.module,
-					"section": entry.student_section
-				})
+# 				if (
+# 					entry.module,
+# 					entry.student_section
+# 				) not in enrolled:
+# 					continue
+# 					# frappe.throw(frappe.as_json((entry.module, entry.student_section)))
+# 				sections.append({
+# 					"module": entry.module,
+# 					"section": entry.student_section
+# 				})
 
-		# ---------------------------------------------
-		# Get Academic Timing
-		# ---------------------------------------------
-		# frappe.throw(str(sections))
-		for timing in doc.academic_timing:
+# 		# ---------------------------------------------
+# 		# Get Academic Timing
+# 		# ---------------------------------------------
+# 		# frappe.throw(str(sections))
+# 		for timing in doc.academic_timing:
 
-			timetable.append({
-				"name": entry.name,
+# 			timetable.append({
+# 				"name": entry.name,
 
-				"day": timing.day,
-				"from_time": timing.from_time,
-				"to_time": timing.to_time,
-				"called_off": timing.called_off,
+# 				"day": timing.day,
+# 				"from_time": timing.from_time,
+# 				"to_time": timing.to_time,
+# 				"called_off": timing.called_off,
 
-				"module": entry.module,
-				"tutor": entry.tutor,
-				"class_type": entry.class_type,
-				"session_type": entry.session_type,
-				"tutor_name": entry.tutor_name,
-				"room_name": entry.room_name,
+# 				"module": entry.module,
+# 				"tutor": entry.tutor,
+# 				"class_type": entry.class_type,
+# 				"session_type": entry.session_type,
+# 				"tutor_name": entry.tutor_name,
+# 				"room_name": entry.room_name,
 
-				# Sections to display
-				"sections": sections
-			})
+# 				# Sections to display
+# 				"sections": sections
+# 			})
 
-	# ---------------------------------------------
-	# Timetable Constraints
-	# ---------------------------------------------
+# 	# ---------------------------------------------
+# 	# Timetable Constraints
+# 	# ---------------------------------------------
 
-	constraint = frappe.get_doc(
-		"Timetable Constraints",
-		{
-			"academic_term": academic_term,
-			"college": college
-		}
-	)
+# 	constraint = frappe.get_doc(
+# 		"Timetable Constraints",
+# 		{
+# 			"academic_term": academic_term,
+# 			"college": college
+# 		}
+# 	)
 
-	# blocked = []
+# 	# blocked = []
 
-	# for p in constraint.periods:
+# 	# for p in constraint.periods:
 
-	#     blocked.append({
-	#         "period_name": p.period_name or "Non-Academic",
-	#         "from_time": p.from_time,
-	#         "to_time": p.to_time
-	#     })
+# 	#     blocked.append({
+# 	#         "period_name": p.period_name or "Non-Academic",
+# 	#         "from_time": p.from_time,
+# 	#         "to_time": p.to_time
+# 	#     })
 
-	blocked = []
+# 	blocked = []
 
-	days = [
-		"monday",
-		"tuesday",
-		"wednesday",
-		"thursday",
-		"friday",
-		"saturday",
-		"sunday"
-	]
+# 	days = [
+# 		"monday",
+# 		"tuesday",
+# 		"wednesday",
+# 		"thursday",
+# 		"friday",
+# 		"saturday",
+# 		"sunday"
+# 	]
 
-	for p in constraint.periods:
+# 	for p in constraint.periods:
 
-		for day in days:
+# 		for day in days:
 
-			if getattr(p, day, 0):
+# 			if getattr(p, day, 0):
 
-				blocked.append({
-					"day": day.capitalize(),
-					"period_name": p.period_name or "Non-Academic",
-					"from_time": p.from_time,
-					"to_time": p.to_time
-				})
+# 				blocked.append({
+# 					"day": day.capitalize(),
+# 					"period_name": p.period_name or "Non-Academic",
+# 					"from_time": p.from_time,
+# 					"to_time": p.to_time
+# 				})
 
-	# ---------------------------------------------
-	# Return
-	# ---------------------------------------------
-	# frappe.throw(str(timetable))
-	return {
-		"timetable": timetable,
-		"blocked": blocked,
-		"start_time": constraint.start_time,
-		"end_time": constraint.end_time
-	}
+# 	# ---------------------------------------------
+# 	# Return
+# 	# ---------------------------------------------
+# 	# frappe.throw(str(timetable))
+# 	return {
+# 		"timetable": timetable,
+# 		"blocked": blocked,
+# 		"start_time": constraint.start_time,
+# 		"end_time": constraint.end_time
+# 	}
+
+
+
+@frappe.whitelist()
+def get_timetable(college, programme, academic_term):
+
+    # --------------------------------------------------
+    # 1. Get the logged-in student's record
+    # --------------------------------------------------
+    user = frappe.session.user
+
+    student = frappe.db.get_value(
+        "Student",
+        {"user": user},
+        "name"
+    )
+
+    if not student:
+        frappe.throw(
+            _("No Student record is linked to the logged-in user.")
+        )
+
+    # --------------------------------------------------
+    # 2. Get only this student's module enrollments
+    #    for the selected academic term
+    # --------------------------------------------------
+    enrollments = frappe.get_all(
+        "Module Enrolment",
+        filters={
+            "student": student,
+            "academic_term": academic_term
+        },
+        fields=["course", "student_section"]
+    )
+
+    enrolled = {
+        (row.course, row.student_section)
+        for row in enrollments
+        if row.course and row.student_section
+    }
+
+    if not enrolled:
+        return {
+            "timetable": [],
+            "blocked": [],
+            "start_time": None,
+            "end_time": None
+        }
+
+    # --------------------------------------------------
+    # 3. Get timetable entries for the selected
+    #    college, programme and academic term
+    # --------------------------------------------------
+    entries = frappe.get_all(
+        "Timetable Schedule Entry",
+        filters={
+            "college": college,
+            "programme": programme,
+            "academic_term": academic_term
+        },
+        fields=[
+            "name",
+            "module",
+            "tutor",
+            "class_type",
+            "session_type",
+            "tutor_name",
+            "room_name",
+            "student_section"
+        ],
+        order_by="name asc"
+    )
+
+    timetable = []
+
+    # --------------------------------------------------
+    # 4. Match each timetable entry against enrollment
+    # --------------------------------------------------
+    for entry in entries:
+
+        # Skip entries without a module
+        if not entry.module:
+            continue
+
+        doc = frappe.get_doc(
+            "Timetable Schedule Entry",
+            entry.name
+        )
+
+        sections = []
+
+        if doc.session_type == "Combined":
+
+            # Combined class:
+            # Include only sections where this student
+            # is enrolled in the corresponding module.
+            for row in doc.combined_class:
+
+                if not row.module or not row.section:
+                    continue
+
+                if (row.module, row.section) in enrolled:
+                    sections.append({
+                        "module": row.module,
+                        "section": row.section
+                    })
+
+        else:
+
+            # Regular class:
+            # Both module and section must match enrollment.
+            if (
+                entry.student_section
+                and (
+                    entry.module,
+                    entry.student_section
+                ) in enrolled
+            ):
+                sections.append({
+                    "module": entry.module,
+                    "section": entry.student_section
+                })
+
+        # IMPORTANT:
+        # Do not return timetable entries that do not
+        # match this student's enrollment.
+        if not sections:
+            continue
+
+        # --------------------------------------------------
+        # 5. Add the matching entry's academic timings
+        # --------------------------------------------------
+        for timing in doc.academic_timing:
+
+            timetable.append({
+                "name": entry.name,
+                "day": timing.day,
+                "from_time": timing.from_time,
+                "to_time": timing.to_time,
+                "called_off": timing.called_off,
+
+                "module": entry.module,
+                "tutor": entry.tutor,
+                "class_type": entry.class_type,
+                "session_type": entry.session_type,
+                "tutor_name": entry.tutor_name,
+                "room_name": entry.room_name,
+
+                # Only the sections matching this student
+                "sections": sections
+            })
+
+    # --------------------------------------------------
+    # 6. Get timetable constraints
+    # --------------------------------------------------
+    constraint_name = frappe.db.get_value(
+        "Timetable Constraints",
+        {
+            "academic_term": academic_term,
+            "college": college
+        },
+        "name"
+    )
+
+    blocked = []
+    start_time = None
+    end_time = None
+
+    if constraint_name:
+
+        constraint = frappe.get_doc(
+            "Timetable Constraints",
+            constraint_name
+        )
+
+        days = [
+            "monday",
+            "tuesday",
+            "wednesday",
+            "thursday",
+            "friday",
+            "saturday",
+            "sunday"
+        ]
+
+        for period in constraint.periods:
+
+            for day in days:
+
+                if getattr(period, day, 0):
+                    blocked.append({
+                        "day": day.capitalize(),
+                        "period_name": (
+                            period.period_name or "Non-Academic"
+                        ),
+                        "from_time": period.from_time,
+                        "to_time": period.to_time
+                    })
+
+        start_time = constraint.start_time
+        end_time = constraint.end_time
+
+    # --------------------------------------------------
+    # 7. Return student-specific timetable
+    # --------------------------------------------------
+    return {
+        "timetable": timetable,
+        "blocked": blocked,
+        "start_time": start_time,
+        "end_time": end_time
+    }
+
 
 
 

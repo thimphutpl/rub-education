@@ -11,11 +11,19 @@ class ContinuousAssessmentEntry(Document):
 		self.check_assesment_component()
 		self.check_duplicate_marks_entry()
 		self.calculate_weightage_achieved()
+		self.validate_marks_obtained()
+		
+
 
 	def on_submit(self):
 		# self.check_earlier_assesment()
 		self.create_assessment_ledger()
-
+	def validate_marks_obtained(self):
+		for item in self.items:
+			if (item.marks_obtained or 0) > (self.total_marks or 0):
+				frappe.throw(
+					f"Row {item.idx}: Marks Obtained cannot be greater than Total Marks ({self.total_marks})."
+				)
 	def on_cancel(self):
 		self.ignore_linked_doctypes = (
 			"Assessment Ledger",

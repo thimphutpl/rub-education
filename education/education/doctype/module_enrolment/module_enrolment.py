@@ -156,25 +156,84 @@ def check_activity_exists(enrollment, content_type, content):
 	else:
 		return None
 
+# def get_permission_query_conditions(user):
+# 	if not user: user = frappe.session.user
+# 	user_roles = frappe.get_roles(user)
+# 	if "Administrator" in user_roles:
+# 		return
+# 	if "Academic Dean" in user_roles:
+# 		return
+#     if "Tutor" in user_roles:
+#         return """
+#             EXISTS (
+#                 SELECT 1
+#                 FROM `tabModule Enrolment Tutor` t
+#                 INNER JOIN `tabEmployee` e
+#                     ON e.name = t.tutor
+#                 WHERE t.parent = `tabModule Enrolment`.name
+#                 AND t.parenttype = 'Module Enrolment'
+#                 AND t.parentfield = 'tutors'
+#                 AND e.user_id = {user}
+#             )
+#         """.format(user=frappe.db.escape(user))
+# 	elif "Student" in user_roles:
+# 		return """
+# 			EXISTS (
+# 				SELECT 1
+# 				FROM `tabStudent` s
+# 				WHERE s.name = `tabModule Enrolment`.student
+# 				AND s.user = '{user}'
+# 			)
+# 		""".format(
+# 			user=user
+# 		)
+    
+# 	else:
+# 		return """(
+# 		`tabModule Enrolment`.owner = '{user}'
+# 		)""".format(user=user)
+
+
 def get_permission_query_conditions(user):
-	if not user: user = frappe.session.user
-	user_roles = frappe.get_roles(user)
-	if "Administrator" in user_roles:
-		return
-	if "Academic Dean" in user_roles:
-		return
-	if "Student" in user_roles:
-		return """
-			EXISTS (
-				SELECT 1
-				FROM `tabStudent` s
-				WHERE s.name = `tabModule Enrolment`.student
-				AND s.user = '{user}'
-			)
-		""".format(
-			user=user
-		)
-	else:
-		return """(
-		`tabModule Enrolment`.owner = '{user}'
-		)""".format(user=user)
+    if not user:
+        user = frappe.session.user
+
+    user_roles = frappe.get_roles(user)
+
+    if "Administrator" in user_roles:
+        return
+
+    elif "Academic Dean" in user_roles:
+        return
+
+    # Tutor: See only Module Enrolments assigned to them
+    elif "Tutor" in user_roles:
+        return """
+            EXISTS (
+                SELECT 1
+                FROM `tabModule Enrolment Tutor` t
+                INNER JOIN `tabEmployee` e
+                    ON e.name = t.tutor
+                WHERE t.parent = `tabModule Enrolment`.name
+                AND t.parenttype = 'Module Enrolment'
+                AND t.parentfield = 'tutors'
+                AND e.user_id = {user}
+            )
+        """.format(user=frappe.db.escape(user))
+
+    # Student: See own enrolments
+    elif "Student" in user_roles:
+        return """
+            EXISTS (
+                SELECT 1
+                FROM `tabStudent` s
+                WHERE s.name = `tabModule Enrolment`.student
+                AND s.user = {user}
+            )
+        """.format(user=frappe.db.escape(user))
+
+    # Other users: See records created by themselves
+    else:
+        return """
+            `tabModule Enrolment`.owner = {user}
+        """.format(user=frappe.db.escape(user))

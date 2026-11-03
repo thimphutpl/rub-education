@@ -7,6 +7,7 @@
  "engine": "InnoDB",
  "field_order": [
   "ubkey_detailsbu_section",
+  "column_break_tlmj",
   "module_enrollment_key",
   "column_break_xiqs",
   "enrollment_date",
@@ -59,6 +60,7 @@
    "fetch_from": "student.programme",
    "fieldname": "program",
    "fieldtype": "Data",
+   "in_standard_filter": 1,
    "label": "Programme",
    "read_only": 1
   },
@@ -79,6 +81,7 @@
    "fetch_from": "student.semester",
    "fieldname": "semester",
    "fieldtype": "Link",
+   "in_standard_filter": 1,
    "label": "Semester",
    "options": "Semester",
    "read_only": 1
@@ -93,6 +96,7 @@
    "fieldname": "course",
    "fieldtype": "Link",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Module",
    "options": "Module",
    "read_only": 1,
@@ -101,7 +105,6 @@
   {
    "fieldname": "student_section",
    "fieldtype": "Link",
-   "hidden": 1,
    "label": "Student Section",
    "options": "Student Section",
    "read_only": 1
@@ -114,6 +117,7 @@
   {
    "fieldname": "module_enrollment_key",
    "fieldtype": "Data",
+   "in_standard_filter": 1,
    "label": "Module Enrolment Key",
    "options": "xxw",
    "reqd": 1
@@ -157,11 +161,16 @@
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
+  },
+  {
+   "fieldname": "column_break_tlmj",
+   "fieldtype": "Column Break",
+   "in_standard_filter": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2026-10-15 09:56:51.048060",
+ "modified": "2026-11-03 15:05:10.612548",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Module Enrolment",

@@ -86,6 +86,7 @@
    "fieldname": "programme",
    "fieldtype": "Link",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Programme",
    "options": "Programme",
    "reqd": 1
@@ -94,6 +95,7 @@
    "fieldname": "module",
    "fieldtype": "Link",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Module",
    "options": "Module",
    "reqd": 1
@@ -180,8 +182,8 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-09-21 22:24:37.089978",
- "modified_by": "tshering.dorji@thimphutechpark.bt",
+ "modified": "2026-11-05 12:06:01.984239",
+ "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Module Assessment Criteria",
  "naming_rule": "Expression (old style)",

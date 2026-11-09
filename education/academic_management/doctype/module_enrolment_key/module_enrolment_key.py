@@ -55,13 +55,42 @@ def get_permission_query_conditions(user):
 			user=frappe.db.escape(user)
 		)
 		
+	# if "Student" in user_roles:
+	# 	#frappe.throw("hi")
+	# 	return """(
+	# 		`tabModule Enrolment Key`.owner = {user}
+	# 	)""".format(
+	# 		user=frappe.db.escape(user)
+	# 	)
 	if "Student" in user_roles:
-		#frappe.throw("hi")
-		return """(
-			`tabModule Enrolment Key`.owner = {user}
-		)""".format(
-			user=frappe.db.escape(user)
+
+		student = frappe.db.get_value(
+			"Student",
+			{"user": user},
+			["name", "company", "programme"],
+			as_dict=True
 		)
+
+		if not student:
+			return "1=0"
+
+		return """
+			`tabModule Enrolment Key`.docstatus != 2
+			AND EXISTS (
+				SELECT 1
+				FROM `tabStudent Section` ss
+				INNER JOIN `tabStudent Section Student` sss
+					ON sss.parent = ss.name
+				WHERE ss.name = `tabModule Enrolment Key`.student_section
+					AND sss.student = {student}
+			)
+			AND `tabModule Enrolment Key`.college = {company}
+			AND `tabModule Enrolment Key`.programme = {programme}
+		""".format(
+			student=frappe.db.escape(student.name),
+			company=frappe.db.escape(student.company),
+			programme=frappe.db.escape(student.programme)
+)
 	else:
 		college = frappe.db.get_value("Employee", {"user_id":frappe.session.user}, "company")
 		return """(

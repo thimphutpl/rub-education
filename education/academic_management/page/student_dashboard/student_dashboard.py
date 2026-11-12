@@ -223,6 +223,7 @@ def get_ca(student, academic_term, semester, module):
             AND al.semester = %(semester)s
             AND al.module = %(module)s
             AND al.is_cancelled = 0
+            AND ac.docstatus = 1
             AND ac.assessment_component_type = 'Continuous Assessment'
         ORDER BY ac.assessment_component_type
         """,

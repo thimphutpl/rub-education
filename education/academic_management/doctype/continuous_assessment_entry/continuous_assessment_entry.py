@@ -31,29 +31,44 @@ class ContinuousAssessmentEntry(Document):
 		# super().on_cancel()
 		self.cancel_assessment_entry()
 
-	def cancel_assessment_entry(self):
-		for i in self.items:
-			assessment_ledger = frappe.db.get_value(
-				"Assessment Ledger",
-				{
-					"reference_name": self.name,
+	# def cancel_assessment_entry(self):
+	# 	for i in self.items:
+	# 		assessment_ledger = frappe.db.get_value(
+	# 			"Assessment Ledger",
+	# 			{
+	# 				"reference_name": self.name,
 					
-				},
-				"name"
-			)
+	# 			},
+	# 			"name"
+	# 		)
 
-			if assessment_ledger:
-				frappe.db.sql(
-					'''
-					UPDATE `tabAssessment Ledger`
-					SET is_cancelled = 1
-					WHERE name = %s
-					''',
-					(assessment_ledger,)
-				)
+	# 		if assessment_ledger:
+	# 			frappe.db.sql(
+	# 				'''
+	# 				UPDATE `tabAssessment Ledger`
+	# 				SET is_cancelled = 1
+	# 				WHERE name = %s
+	# 				''',
+	# 				(assessment_ledger,)
+	# 			)
 
-		frappe.db.commit()
+	# 	frappe.db.commit()
 
+	def cancel_assessment_entry(self):
+		assessment_ledgers = frappe.get_all(
+			"Assessment Ledger",
+			filters={
+				"reference_name": self.name
+			},
+			pluck="name"
+		)
+
+		for ledger in assessment_ledgers:
+			frappe.db.sql("""
+				UPDATE `tabAssessment Ledger`
+				SET is_cancelled = 1
+				WHERE name = %s
+			""", (ledger,))
 	def fetch_exam_registration(self):
 		if self.exam_type in ('Regular Assessment','Exam Re-Assessment'):
 			if self.exam_type=='Regular Assessment':

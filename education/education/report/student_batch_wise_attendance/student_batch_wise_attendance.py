@@ -507,3 +507,145 @@ def get_module_contact_hours(module):
     )
 
     return contact_hours or 0
+
+
+@frappe.whitelist()
+@frappe.validate_and_sanitize_search_inputs
+def get_college_query(
+	doctype, txt, searchfield, start, page_len, filters=None
+):
+	company_filters = {
+		"name": ["like", f"%{txt}%"],
+	}
+
+	if frappe.session.user != "Administrator":
+		allowed_colleges = get_allowed_colleges()
+
+		if not allowed_colleges:
+			return []
+
+		company_filters["name"] = [
+			"in",
+			allowed_colleges,
+		]
+
+		# Apply the typed search text as well as permitted colleges.
+		return frappe.get_list(
+			"Company",
+			filters=company_filters,
+			or_filters={
+				"name": ["like", f"%{txt}%"],
+			},
+			fields=["name"],
+			order_by="name asc",
+			start=start,
+			page_length=page_len,
+			as_list=True,
+		)
+
+	return frappe.get_list(
+		"Company",
+		filters=company_filters,
+		fields=["name"],
+		order_by="name asc",
+		start=start,
+		page_length=page_len,
+		as_list=True,
+	)
+	
+@frappe.whitelist()
+@frappe.validate_and_sanitize_search_inputs
+def get_academic_term_query(
+	doctype, txt, searchfield, start, page_len, filters=None
+):
+	filters = frappe._dict(filters or {})
+
+	if not filters.get("college"):
+		return []
+
+	college = get_effective_college(filters)
+
+	frappe.has_permission(
+		"Student Attendance",
+		"read",
+		throw=True,
+	)
+	frappe.has_permission(
+		"Academic Term",
+		"read",
+		throw=True,
+	)
+
+	# get_list respects the user's Academic Term permissions.
+	visible_terms = frappe.get_list(
+		"Academic Term",
+		filters={
+			"name": ["like", f"%{txt}%"],
+		},
+		pluck="name",
+		limit_page_length=0,
+	)
+
+	if not visible_terms:
+		return []
+
+	return frappe.db.sql(
+		"""
+		SELECT DISTINCT academic_term
+		FROM `tabStudent Attendance`
+		WHERE college = %(college)s
+			AND docstatus = 1
+			AND academic_term IN %(visible_terms)s
+		ORDER BY academic_term DESC
+		LIMIT %(start)s, %(page_len)s
+		""",
+		{
+			"college": college,
+			"visible_terms": tuple(visible_terms),
+			"start": start,
+			"page_len": page_len,
+		},
+	)
+@frappe.whitelist()
+@frappe.validate_and_sanitize_search_inputs
+def get_student_query(
+	doctype, txt, searchfield, start, page_len, filters=None
+):
+	filters = frappe._dict(filters or {})
+
+	# Select the parent filters before searching for students.
+	if not all(
+		filters.get(field)
+		for field in ("college", "academic_term", "module")
+	):
+		return []
+
+	college = get_effective_college(filters)
+
+	attendance_filters = {
+		"college": college,
+		"academic_term": filters.get("academic_term"),
+		"module": filters.get("module"),
+		"docstatus": 1,
+		"student": ["is", "set"],
+	}
+
+	if filters.get("student_group"):
+		attendance_filters["student_group"] = filters.get(
+			"student_group"
+		)
+
+	return frappe.get_list(
+		"Student Attendance",
+		filters=attendance_filters,
+		or_filters={
+			"student": ["like", f"%{txt}%"],
+			"student_name": ["like", f"%{txt}%"],
+		},
+		fields=["student", "student_name"],
+		group_by="student, student_name",
+		order_by="student_name asc, student asc",
+		start=start,
+		page_length=page_len,
+		as_list=True,
+	)

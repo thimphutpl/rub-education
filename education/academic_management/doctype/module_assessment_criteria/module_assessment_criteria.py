@@ -20,25 +20,17 @@ class ModuleAssessmentCriteria(Document):
 						f"Cannot have Semester Exam when 'No Exam Required' is ticked in module. Row: {i.idx}"
 					)
 	
-	# def validate_duplicate(self):
-	# 	if frappe.db.exists("Module Assessment Criteria", {
-	# 		"college": self.college,
-	# 		"academic_term": self.academic_term,
-	# 		"programme": self.programme,
-	# 		"module": self.module,
-	# 		"name": ["!=", self.name],
-	# 		"docstatus":1
-	# 	}):
-	# 		frappe.throw("Record already exists for the selected combination.")
 	def validate_duplicate(self):
-		existing = frappe.db.get_value(
-			"Module Assessment Criteria",
-			{"module_enrolment_key": self.module_enrolment_key},
-			"name",
-		)
-		if existing and existing != self.name:
-			frappe.throw(f"Record {existing} already exists for the selected combination.")
-			
+		if frappe.db.exists("Module Assessment Criteria", {
+			"college": self.college,
+			"academic_term": self.academic_term,
+			"programme": self.programme,
+			"module": self.module,
+			"name": ["!=", self.name],
+			"docstatus":1
+		}):
+			frappe.throw("Record already exists for the selected combination.")
+
 	@frappe.whitelist()
 	def validate_assessment(self):
 		total = 0

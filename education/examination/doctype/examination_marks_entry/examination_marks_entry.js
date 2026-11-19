@@ -3,9 +3,9 @@
 
 frappe.ui.form.on("Examination Marks Entry", {
     onload(frm) {
-		if (!frm.doc.posting_date) {
-			frm.set_value("posting_date", frappe.datetime.now_date());
-		}
+        if (!frm.doc.posting_date) {
+            frm.set_value("posting_date", frappe.datetime.now_date());
+        }
         if (!frm.doc.company) {
             set_company_from_user(frm);
         }
@@ -13,11 +13,9 @@ frappe.ui.form.on("Examination Marks Entry", {
         // if (!frm.doc.academic_term){
         //     set_current_academic_term(frm);
         // }
-        
-        
-        
-	},
-    academic_term: function(frm) {
+    },
+
+    academic_term: function (frm) {
         frm.set_value('semester', '');
 
         if (frm.doc.academic_term) {
@@ -32,36 +30,40 @@ frappe.ui.form.on("Examination Marks Entry", {
             });
         }
     },
-    setup(frm){
+
+    setup(frm) {
         frm.set_query('module_enrolment_key', function () {
             return {
-              filters: {
-                // program: frm.doc.programme,
-                // academic_term: frm.doc.academic_term,
-                college: frm.doc.college,
-                // docstatus: 1,
-              },
-            }
-          })
+                filters: {
+                    // program: frm.doc.programme,
+                    // academic_term: frm.doc.academic_term,
+                    college: frm.doc.college,
+                    // docstatus: 1,
+                },
+            };
+        });
+
         frm.set_query("college", function () {
             return {
                 filters: {
                     is_group: 0,
-            name: ["!=", "Office of Vice Chancellor"]
+                    name: ["!=", "Office of Vice Chancellor"],
                 },
             };
         });
+
         frm.set_query('programme', function () {
             return {
                 query:
-                'education.education.doctype.module_enrolment_tool.module_enrolment_tool.get_programme',
-              filters: {
-                college: frm.doc.college,
-                date: frm.doc.posting_date,
-                validate: 1
-              },
-            }
-        })
+                    'education.education.doctype.module_enrolment_tool.module_enrolment_tool.get_programme',
+                filters: {
+                    college: frm.doc.college,
+                    date: frm.doc.posting_date,
+                    validate: 1,
+                },
+            };
+        });
+
         // frm.set_query('tutor', function () {
         //     return {
         //         query:
@@ -73,45 +75,41 @@ frappe.ui.form.on("Examination Marks Entry", {
         //         module: frm.doc.module,
         //         },
         //     }
-        // })
+        // });
+
         frm.set_query('assessment_component', function () {
             return {
                 query:
-                'erpnext.controllers.queries.filter_assessment_component',
+                    'erpnext.controllers.queries.filter_assessment_component',
                 filters: {
-                college: frm.doc.college,
-                programme: frm.doc.programme,
-                module: frm.doc.module,
-                academic_term: frm.doc.academic_term,
-                examination_assesment: 1
+                    college: frm.doc.college,
+                    programme: frm.doc.programme,
+                    module: frm.doc.module,
+                    academic_term: frm.doc.academic_term,
+                    examination_assesment: 1,
                 },
-            }
-        })
+            };
+        });
     },
-    
-        
+
     refresh(frm) {
         // Set module field visibility based on exam type
-        this.set_module_field_visibility(frm);
+        set_module_field_visibility(frm);   // ← FIX: call local function, not this.
 
         frm.set_query('assessment_component', function () {
             return {
                 query:
-                'erpnext.controllers.queries.filter_assessment_component',
+                    'erpnext.controllers.queries.filter_assessment_component',
                 filters: {
-                college: frm.doc.college,
-                programme: frm.doc.programme,
-                module: frm.doc.module,
-                tutor: frm.doc.tutor,
-                academic_term: frm.doc.academic_term,
+                    college: frm.doc.college,
+                    programme: frm.doc.programme,
+                    module: frm.doc.module,
+                    tutor: frm.doc.tutor,
+                    academic_term: frm.doc.academic_term,
                 },
-            }
-        })
+            };
+        });
     },
-    
-
-   
-        
 
     // assessment_component: function(frm) {
     //     if (frm.doc.assessment_component) {
@@ -140,15 +138,16 @@ frappe.ui.form.on("Examination Marks Entry", {
     //     }
     // },
 
-    exam_type: function(frm){
-        this.set_module_field_visibility(frm);
+    exam_type: function (frm) {
+        set_module_field_visibility(frm);   // ← FIX: call local function, not this.
+
         // Clear examination registration when switching to Semester End Examination
         if (frm.doc.exam_type === 'Semester End Examination') {
             frm.set_value('examination_registration', null);
         }
     },
 
-    get_students: function(frm){
+    get_students: function (frm) {
         // Validate required fields based on exam type
         if (!frm.doc.assessment_component) {
             frappe.msgprint(__("Please select Assessment Component first"));
@@ -170,13 +169,13 @@ frappe.ui.form.on("Examination Marks Entry", {
             frappe.msgprint(__("Please select Semester"));
             return;
         }
-        
+
         // Validate tutor (always required now)
         if (!frm.doc.tutor) {
             frappe.msgprint(__("Please select Tutor"));
             return;
         }
-        
+
         // For Semester End Examination, module is required
         if (frm.doc.exam_type === 'Semester End Examination' && !frm.doc.module) {
             frappe.msgprint(__("Please select Module"));
@@ -187,42 +186,42 @@ frappe.ui.form.on("Examination Marks Entry", {
             method: "education.examination.doctype.examination_marks_entry.examination_marks_entry.get_students",
             args: {
                 examination_registration: frm.doc.examination_registration || null,
-                doc: frm.doc
+                doc: frm.doc,
             },
-            callback: function(r) {
+            callback: function (r) {
                 if (r.message) {
                     const students = r.message;
-                    
+
                     if (students.length === 0) {
                         frappe.msgprint(__("No students found for the selected criteria"));
                         return;
                     }
-                    
+
                     // Clear and populate child table
                     frm.clear_table('items');
-                    
+
                     students.forEach(student => {
                         let row = frm.add_child('items');
                         row.student = student.student;
                         row.student_name = student.student_name;
                         row.programme = student.programme;
-                        row.examination_review_link = student.review_name
+                        row.examination_review_link = student.review_name;
                     });
-                    
+
                     // Refresh child table
                     frm.refresh_field('items');
-                    
+
                     // Show success message
                     frappe.show_alert({
                         message: __("Fetched {0} students", [students.length]),
-                        indicator: 'green'
+                        indicator: 'green',
                     }, 5);
                 }
-            }
+            },
         });
     },
-    
-    set_module_field_visibility: function(frm) {
+
+    set_module_field_visibility: function (frm) {
         // Function to set module field visibility based on exam type
         if (frm.doc.exam_type) {
             // For Semester End Examination, module is mandatory
@@ -231,7 +230,7 @@ frappe.ui.form.on("Examination Marks Entry", {
                 frm.set_df_property('module', 'hidden', 0);
                 frm.set_df_property('examination_registration', 'hidden', 1);
                 frm.set_df_property('examination_registration', 'reqd', 0);
-            } 
+            }
             // For other exam types, module is optional and examination registration may be needed
             else {
                 frm.set_df_property('module', 'reqd', 0);
@@ -239,25 +238,24 @@ frappe.ui.form.on("Examination Marks Entry", {
                 frm.set_df_property('examination_registration', 'hidden', 0);
             }
         }
-    }
+    },
 });
 
 function set_company_from_user(frm) {
     // Step 1: Get Employee linked to current user
     frappe.db.get_value('Employee', {
-        user_id: frappe.session.user
-    }, ['company','name']).then(r => {
+        user_id: frappe.session.user,
+    }, ['company', 'name']).then(r => {
         if (r.message) {
             frm.set_value('college', r.message.company);
-            frm.set_value('tutor',r.message.name);
+            frm.set_value('tutor', r.message.name);
         } else {
             console.log("No Employee linked to this user");
         }
     });
-
 }
-// function set_current_academic_term(frm) {
 
+// function set_current_academic_term(frm) {
 //     frappe.db.get_value('Academic Term', {
 //         term_start_date: ['<=', frappe.datetime.now_date()],
 //         term_end_date: ['>=', frappe.datetime.now_date()]

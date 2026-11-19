@@ -5,9 +5,10 @@ import frappe
 from frappe.model.document import Document
 import json
 
+
 class ExaminationMarksEntry(Document):
     def validate(self):
-        # if self.exam_type == 'Regular Assessment':
+        # if self.exam_type == 'Semester End Examination':
         #     self.fetch_exam_registration()
         self.check_duplicate_ass_component()
         self.check_duplicate_marks_entry()
@@ -29,7 +30,6 @@ class ExaminationMarksEntry(Document):
                 "Assessment Ledger",
                 {
                     "reference_name": self.name,
-                    
                 },
                 "name"
             )
@@ -47,12 +47,12 @@ class ExaminationMarksEntry(Document):
         frappe.db.commit()
 
     def fetch_exam_registration(self):
-        if self.exam_type == 'Regular Assessment':
+        if self.exam_type == 'Semester End Examination':
             return
-            
-        if self.exam_type in ('Exam Re-Assessment','Exam Recheck','Exam Re-Evaluation'):
+
+        if self.exam_type in ('Exam Re-Assessment', 'Exam Recheck', 'Exam Re-Evaluation'):
             exam_registration = frappe.db.sql("""
-                SELECT name 
+                SELECT name
                 FROM `tabExamination Review Application`
                 WHERE module = %s
                 AND semester = %s
@@ -61,32 +61,35 @@ class ExaminationMarksEntry(Document):
                 AND assessment_component = %s
                 AND tutor = %s
                 order by posting_date DESC limit 1
-            """, 
-            (self.module, self.semester, self.academic_term, self.college, self.assessment_component, self.tutor),
+            """,
+            (self.module, self.semester, self.academic_term, self.college,
+             self.assessment_component, self.tutor),
             as_dict=True)
 
             if exam_registration:
                 self.examination_registration = exam_registration[0].get('name')
             else:
-                frappe.throw("Examination Review Application not found for {}".format(self.assessment_component))
-                
+                frappe.throw(
+                    "Examination Review Application not found for {}".format(
+                        self.assessment_component
+                    )
+                )
+
     def check_duplicate_marks_entry(self):
-       
-        duplicate = frappe.db.exists("Examination Marks Entry",{
+        duplicate = frappe.db.exists("Examination Marks Entry", {
             "exam_type": self.exam_type,
             "academic_term": self.academic_term,
-            "programme":self.programme,
-            "module":self.module,
-            "assessment_component":self.assessment_component,
+            "programme": self.programme,
+            "module": self.module,
+            "assessment_component": self.assessment_component,
             "docstatus": 1
         })
-    
-    
+
         if duplicate:
             frappe.throw(
                 f"The marks entry for <b>{self.assessment_component}</b> has already been completed."
             )
-            
+
     def check_duplicate_ass_component(self):
         pass
 
@@ -98,7 +101,7 @@ class ExaminationMarksEntry(Document):
                     "student": i.student,
                     "assessment_component": self.assessment_component,
                     "module": self.module,
-                    "has_reassessment":0
+                    "has_reassessment": 0
                 },
                 "name"
             )
@@ -114,27 +117,30 @@ class ExaminationMarksEntry(Document):
                 )
 
         frappe.db.commit()
-    
+
     def calculate_weightageAchieved(self):
         for i in self.items:
             if not (i.marks_obtained and self.total_marks):
                 continue
 
-            # condition = f" AND mac.tutor = '{self.tutor}'"
-
-            query = f"""
+            # Parameterized query — avoids SQL injection from f-string interpolation
+            query = """
                 SELECT mai.weightage
                 FROM `tabModule Assessment Item` mai
-                INNER JOIN `tabModule Assessment Criteria` mac 
+                INNER JOIN `tabModule Assessment Criteria` mac
                     ON mai.parent = mac.name
-                WHERE mac.college = '{self.college}'
-                AND mac.academic_term = '{self.academic_term}'
-                AND mac.programme = '{self.programme}'
-                AND mai.assessment_name = '{self.assessment_component}'
-               
+                WHERE mac.college = %s
+                AND mac.academic_term = %s
+                AND mac.programme = %s
+                AND mai.assessment_name = %s
             """
 
-            result = frappe.db.sql(query)
+            result = frappe.db.sql(
+                query,
+                (self.college, self.academic_term, self.programme,
+                 self.assessment_component),
+                as_dict=False
+            )
 
             if not result:
                 frappe.throw("Weightage not defined for this configuration")
@@ -149,7 +155,7 @@ class ExaminationMarksEntry(Document):
     def create_assessment_ledger(self):
         for i in self.items:
             programme = frappe.get_value("Student", {"name": i.student}, "programme")
-            
+
             # Prepare ledger data
             ledger_data = {
                 "doctype": "Assessment Ledger",
@@ -174,26 +180,34 @@ class ExaminationMarksEntry(Document):
                 "tutor": self.tutor,
                 "tutor_name": self.tutor_name
             }
-            
+
             doc = frappe.get_doc(ledger_data)
-
             doc.insert(ignore_permissions=True)
-
             doc.submit()
 
-            frappe.db.set_value(
-                "Examination Review Application",
-                i.examination_review_link,
-                {"marks_awarded": 1}
-            )
+            # Guard: only update when a review link actually exists
+            # (Semester End Examination rows won't have one)
+            if i.get("examination_review_link"):
+                frappe.db.set_value(
+                    "Examination Review Application",
+                    i.examination_review_link,
+                    {"marks_awarded": 1}
+                )
 
-        frappe.msgprint(f"Assessment Ledger created and submitted for {self.module} - {self.assessment_component}")
-        
+        frappe.msgprint(
+            f"Assessment Ledger created and submitted for "
+            f"{self.module} - {self.assessment_component}"
+        )
+
+
 @frappe.whitelist()
 def get_students(examination_registration=None, doc=None):
     doc = json.loads(doc)
-    
-    if doc['exam_type'] == 'Regular Assessment':
+
+    # Always initialize `data` so `if not data:` can never raise UnboundLocalError
+    data = []
+
+    if doc['exam_type'] == 'Semester End Examination':
         if not doc.get('module'):
             frappe.throw("Please select Module")
         if not doc.get('tutor'):
@@ -204,15 +218,15 @@ def get_students(examination_registration=None, doc=None):
             frappe.throw("Please select College")
         if not doc.get('semester'):
             frappe.throw("Please select Semester")
-            
+
         data = frappe.db.sql(
             """
-           SELECT DISTINCT 
-            me.student,
-            me.student_name
+            SELECT DISTINCT
+                me.student,
+                me.student_name
             FROM `tabModule Enrolment` me
-            INNER JOIN `tabModule Enrolment Tutor` met 
-            ON met.parent = me.name
+            INNER JOIN `tabModule Enrolment Tutor` met
+                ON met.parent = me.name
             WHERE me.course = %s
             AND met.tutor = %s
             AND me.academic_term = %s
@@ -220,12 +234,11 @@ def get_students(examination_registration=None, doc=None):
             AND me.semester = %s
             AND me.docstatus = 1
             """,
-            (doc["module"], doc["tutor"], doc["academic_term"], doc["college"], doc["semester"]),
+            (doc["module"], doc["tutor"], doc["academic_term"],
+             doc["college"], doc["semester"]),
             as_dict=True
         )
 
-        # frappe.throw(str(data))
-        
     elif doc['exam_type'] in ('Exam Recheck', 'Exam Re-Evaluation', 'Exam Re-Assessment'):
         if not doc.get('module'):
             frappe.throw("Please select Module")
@@ -239,25 +252,24 @@ def get_students(examination_registration=None, doc=None):
             frappe.throw("Please select Semester")
         if not doc.get('assessment_component'):
             frappe.throw("Please select Assessment Component")
-        
+
         data = frappe.db.sql(
             """
-            SELECT DISTINCT 
+            SELECT DISTINCT
                 era.student,
                 era.student_name,
                 era.programme,
                 era.name as review_name
-
-            FROM 
+            FROM
                 `tabExamination Review Application` era
-            INNER JOIN `tabModule Enrolment` me 
+            INNER JOIN `tabModule Enrolment` me
                 ON me.student = era.student
                 AND me.course = era.module
                 AND me.academic_term = era.academic_term
                 AND me.college = era.college
                 AND me.semester = era.semester
                 AND me.docstatus = 1
-            INNER JOIN `tabModule Enrolment Tutor` met 
+            INNER JOIN `tabModule Enrolment Tutor` met
                 ON met.parent = me.name
                 AND met.tutor = %(tutor)s
             WHERE era.academic_term = %(academic_term)s
@@ -279,27 +291,33 @@ def get_students(examination_registration=None, doc=None):
             },
             as_dict=True
         )
-    
+
+    else:
+        # Explicit error instead of silent fall-through → no more UnboundLocalError
+        frappe.throw(
+            f"Unsupported exam type: {doc.get('exam_type')!r}. "
+            "Please select a valid Exam Type before fetching students."
+        )
+
     if not data:
         frappe.msgprint("No students found for the selected criteria")
         return []
-    
-  
+
     ineligible_students_query = """
-        SELECT DISTINCT 
+        SELECT DISTINCT
             ies.student,
             ies.consider_attendance,
             ins.module,
             ins.assessment_component
         FROM `tabIneligible Student` ins
-        INNER JOIN `tabNon Eligible Exam Students` ies 
+        INNER JOIN `tabNon Eligible Exam Students` ies
             ON ies.parent = ins.name
         WHERE ins.docstatus = 1
     """
-    
+
     where_conditions = []
     params = []
-    
+
     if doc.get('college'):
         where_conditions.append("ins.company = %s")
         params.append(doc.get('college'))
@@ -312,48 +330,47 @@ def get_students(examination_registration=None, doc=None):
     if doc.get('semester'):
         where_conditions.append("ins.semester = %s")
         params.append(doc.get('semester'))
-    
-   
-    
+
     module_condition = ""
     assessment_condition = ""
-    
+
     if doc.get('module'):
         module_condition = """ AND (ins.module = %s OR ins.module IS NULL) """
         params.append(doc.get('module'))
-    
+
     if doc.get('assessment_component'):
         assessment_condition = """ AND (ins.assessment_component = %s OR ins.assessment_component IS NULL) """
         params.append(doc.get('assessment_component'))
-    
+
     if where_conditions:
         ineligible_students_query += " AND " + " AND ".join(where_conditions)
-    
+
     if module_condition:
         ineligible_students_query += module_condition
-    
+
     if assessment_condition:
         ineligible_students_query += assessment_condition
-    
-    ineligible_records = frappe.db.sql(ineligible_students_query, tuple(params), as_dict=True)
-    
-   
+
+    ineligible_records = frappe.db.sql(
+        ineligible_students_query, tuple(params), as_dict=True
+    )
+
     completely_ineligible_set = set()
     ineligible_details = []
-    
+
     for record in ineligible_records:
         student_id = record.get('student')
         if student_id:
             applies = True
-            
+
             if doc.get('module') and record.get('module') is not None:
                 if record.get('module') != doc.get('module'):
                     applies = False
-            
+
             if applies and doc.get('assessment_component') and record.get('assessment_component') is not None:
                 if record.get('assessment_component') != doc.get('assessment_component'):
                     applies = False
-            
+
             if applies and record.get('consider_attendance') == 0:
                 completely_ineligible_set.add(student_id)
                 ineligible_details.append({
@@ -362,43 +379,51 @@ def get_students(examination_registration=None, doc=None):
                     "module": record.get('module'),
                     "assessment_component": record.get('assessment_component')
                 })
-    
+
     eligible_data = []
     ineligible_filtered_out = []
-    
+
     for student in data:
         student_id = student.get('student')
-        
+
         if student_id in completely_ineligible_set:
             ineligible_filtered_out.append({
                 "student": student_id,
                 "student_name": student.get('student_name', ''),
                 "programme": student.get('programme'),
-                "reason": next((d['reason'] for d in ineligible_details if d['student'] == student_id), 'Marked as ineligible')
+                "reason": next(
+                    (d['reason'] for d in ineligible_details
+                     if d['student'] == student_id),
+                    'Marked as ineligible'
+                )
             })
         else:
             eligible_data.append(student)
-    
+
     for i in eligible_data:
         if not i.get('programme'):
             programme = frappe.get_value('Student', {"name": i.student}, 'programme')
             if not programme:
-                frappe.throw("Set programme for student {} in Student".format(i.student))
+                frappe.throw(
+                    "Set programme for student {} in Student".format(i.student)
+                )
             i["programme"] = programme
         else:
             i["programme"] = i.get('programme')
-    
+
     if ineligible_filtered_out:
         frappe.local.ineligible_students = ineligible_filtered_out
-        
-        ineligible_names = ", ".join([f"{s['student']} - {s['student_name']}" for s in ineligible_filtered_out[:5]])
+
+        ineligible_names = ", ".join(
+            [f"{s['student']} - {s['student_name']}" for s in ineligible_filtered_out[:5]]
+        )
         if len(ineligible_filtered_out) > 5:
             ineligible_names += f" and {len(ineligible_filtered_out) - 5} more"
-        
+
         frappe.msgprint(
             title="Ineligible Students Filtered Out",
             msg=f"Student {ineligible_names} is being Excluded from the Exam Mark Entry.",
             indicator="orange"
         )
-    
+
     return eligible_data

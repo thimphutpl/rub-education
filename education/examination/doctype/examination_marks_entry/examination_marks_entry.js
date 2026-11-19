@@ -93,9 +93,9 @@ frappe.ui.form.on("Examination Marks Entry", {
     },
 
     refresh(frm) {
+        frm.set_df_property('items', 'cannot_add_rows', true);
         // Set module field visibility based on exam type
         set_module_field_visibility(frm);   // ← FIX: call local function, not this.
-
         frm.set_query('assessment_component', function () {
             return {
                 query:

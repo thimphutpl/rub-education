@@ -60,6 +60,7 @@ frappe.ui.form.on("Continuous Assessment Entry", {
         })
     },
 	refresh(frm) {
+        frm.set_df_property('items', 'cannot_add_rows', true);
         frm.set_query('course', function () {
             return {
                 query:

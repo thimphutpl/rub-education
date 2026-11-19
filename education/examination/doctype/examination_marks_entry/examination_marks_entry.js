@@ -128,8 +128,8 @@ frappe.ui.form.on("Examination Marks Entry", {
     //                     // Set tutor field as mandatory
     //                     frm.set_df_property('tutor', 'reqd', 1);
     //                     frm.set_df_property('tutor', 'hidden', 0);
-    //                     // Module is mandatory for Regular Assessment
-    //                     if (frm.doc.exam_type === 'Regular Assessment') {
+    //                     // Module is mandatory for Semester End Examination
+    //                     if (frm.doc.exam_type === 'Semester End Examination') {
     //                         frm.set_df_property('module', 'reqd', 1);
     //                     } else {
     //                         frm.set_df_property('module', 'reqd', 0);
@@ -142,8 +142,8 @@ frappe.ui.form.on("Examination Marks Entry", {
 
     exam_type: function(frm){
         this.set_module_field_visibility(frm);
-        // Clear examination registration when switching to Regular Assessment
-        if (frm.doc.exam_type === 'Regular Assessment') {
+        // Clear examination registration when switching to Semester End Examination
+        if (frm.doc.exam_type === 'Semester End Examination') {
             frm.set_value('examination_registration', null);
         }
     },
@@ -177,8 +177,8 @@ frappe.ui.form.on("Examination Marks Entry", {
             return;
         }
         
-        // For Regular Assessment, module is required
-        if (frm.doc.exam_type === 'Regular Assessment' && !frm.doc.module) {
+        // For Semester End Examination, module is required
+        if (frm.doc.exam_type === 'Semester End Examination' && !frm.doc.module) {
             frappe.msgprint(__("Please select Module"));
             return;
         }
@@ -225,8 +225,8 @@ frappe.ui.form.on("Examination Marks Entry", {
     set_module_field_visibility: function(frm) {
         // Function to set module field visibility based on exam type
         if (frm.doc.exam_type) {
-            // For Regular Assessment, module is mandatory
-            if (frm.doc.exam_type === 'Regular Assessment') {
+            // For Semester End Examination, module is mandatory
+            if (frm.doc.exam_type === 'Semester End Examination') {
                 frm.set_df_property('module', 'reqd', 1);
                 frm.set_df_property('module', 'hidden', 0);
                 frm.set_df_property('examination_registration', 'hidden', 1);

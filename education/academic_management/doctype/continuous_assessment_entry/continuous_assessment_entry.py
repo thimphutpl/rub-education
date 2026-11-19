@@ -70,8 +70,8 @@ class ContinuousAssessmentEntry(Document):
 				WHERE name = %s
 			""", (ledger,))
 	def fetch_exam_registration(self):
-		if self.exam_type in ('Regular Assessment','Exam Re-Assessment'):
-			if self.exam_type=='Regular Assessment':
+		if self.exam_type in ('Semester End Examination','Exam Re-Assessment'):
+			if self.exam_type=='Semester End Examination':
 				exam_registration = frappe.db.sql("""
 					SELECT name 
 					FROM `tabExamination Registration`

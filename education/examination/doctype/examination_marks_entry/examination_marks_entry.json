@@ -6,9 +6,9 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "module_enrolment_key",
   "academic_term",
   "academic_year",
-  "module_enrolment_key",
   "programme",
   "semester",
   "column_break_xvsj",
@@ -62,6 +62,7 @@
    "fieldname": "module",
    "fieldtype": "Link",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Module",
    "options": "Module"
   },
@@ -103,6 +104,8 @@
   {
    "fieldname": "academic_term",
    "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Academic Term",
    "options": "Academic Term",
    "reqd": 1
@@ -146,6 +149,8 @@
   {
    "fieldname": "semester",
    "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Semester",
    "options": "Semester",
    "reqd": 1
@@ -168,6 +173,7 @@
    "fetch_from": "module_enrolment_key.programme",
    "fieldname": "programme",
    "fieldtype": "Link",
+   "in_standard_filter": 1,
    "label": "Programme",
    "options": "Programme",
    "reqd": 1
@@ -190,7 +196,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-05-08 19:58:39.850230",
+ "modified": "2026-11-19 10:07:23.258665",
  "modified_by": "Administrator",
  "module": "Examination",
  "name": "Examination Marks Entry",

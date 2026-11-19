@@ -210,7 +210,7 @@ function exam_registration_filter(frm) {
                 }
             };
         
-        }else if (frm.doc.exam_type === 'Regular Assessment') {
+        }else if (frm.doc.exam_type === 'Semester End Examination') {
             return {
                 filters: {
                     reassesment: 0

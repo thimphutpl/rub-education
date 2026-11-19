@@ -37,7 +37,7 @@ frappe.ui.form.on("Examination Marks Entry", {
             return {
               filters: {
                 // program: frm.doc.programme,
-                academic_term: frm.doc.academic_term,
+                // academic_term: frm.doc.academic_term,
                 college: frm.doc.college,
                 // docstatus: 1,
               },

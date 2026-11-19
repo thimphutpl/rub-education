@@ -58,6 +58,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "depends_on": "eval:doc.module_enrolment_key",
    "fetch_from": "module_enrolment_key.module",
    "fieldname": "module",
    "fieldtype": "Link",
@@ -93,6 +94,7 @@
    "reqd": 1
   },
   {
+   "depends_on": "eval:doc.module_enrolment_key",
    "fetch_from": "module_enrolment_key.academic_year",
    "fieldname": "academic_year",
    "fieldtype": "Link",
@@ -102,6 +104,8 @@
    "reqd": 1
   },
   {
+   "depends_on": "eval:doc.module_enrolment_key",
+   "fetch_from": "module_enrolment_key.academic_term",
    "fieldname": "academic_term",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -111,6 +115,7 @@
    "reqd": 1
   },
   {
+   "depends_on": "eval:doc.module_enrolment_key",
    "fieldname": "tutor",
    "fieldtype": "Link",
    "label": "Tutor",
@@ -132,6 +137,7 @@
    "options": "Exam Marks"
   },
   {
+   "depends_on": "eval:doc.module_enrolment_key",
    "fetch_from": "module_enrolment_key.college",
    "fieldname": "college",
    "fieldtype": "Link",
@@ -147,6 +153,7 @@
    "read_only": 1
   },
   {
+   "depends_on": "eval:doc.module_enrolment_key",
    "fieldname": "semester",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -170,6 +177,7 @@
    "reqd": 1
   },
   {
+   "depends_on": "eval:doc.module_enrolment_key",
    "fetch_from": "module_enrolment_key.programme",
    "fieldname": "programme",
    "fieldtype": "Link",
@@ -196,7 +204,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-11-19 10:33:00.354709",
+ "modified": "2026-11-19 11:23:48.734391",
  "modified_by": "Administrator",
  "module": "Examination",
  "name": "Examination Marks Entry",

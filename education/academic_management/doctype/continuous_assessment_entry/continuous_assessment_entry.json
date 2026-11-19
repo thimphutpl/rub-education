@@ -165,6 +165,7 @@
   },
   {
    "allow_bulk_edit": 1,
+   "allow_on_submit": 1,
    "fieldname": "items",
    "fieldtype": "Table",
    "options": "Exam Marks"
@@ -211,7 +212,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-11-05 12:20:36.239680",
+ "modified": "2026-11-10 15:14:55.300753",
  "modified_by": "Administrator",
  "module": "Academic Management",
  "name": "Continuous Assessment Entry",

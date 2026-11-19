@@ -27,11 +27,7 @@ frappe.ui.form.on("Examination Marks Entry", {
                 'academic_session'
             ).then(r => {
                 if (r.message) {
-                    frm.set_query('semester', () => ({
-                        filters: {
-                            session: r.message.academic_session
-                        }
-                    }));
+                    // add filter if required
                 }
             });
         }

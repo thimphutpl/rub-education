@@ -84,7 +84,7 @@ class ResultDeclaration(Document):
 			if i.ca_passed and i.se_passed and i.tl_passed:
 				i.remark = "Pass"
 				i.overall_passed = 1
-				if i.review_type in ('Regular Assessment','Exam Recheck'):
+				if i.review_type in ('Semester End Examination','Exam Recheck'):
 					i.total = i.total_achieved
 				if i.no_semester_exam_required:
 					i.total = i.total_achieved

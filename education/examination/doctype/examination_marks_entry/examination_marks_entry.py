@@ -199,7 +199,6 @@ class ExaminationMarksEntry(Document):
             f"{self.module} - {self.assessment_component}"
         )
 
-
 @frappe.whitelist()
 def get_students(examination_registration=None, doc=None):
     doc = json.loads(doc)
@@ -221,21 +220,28 @@ def get_students(examination_registration=None, doc=None):
 
         data = frappe.db.sql(
             """
-            SELECT DISTINCT
-                me.student,
-                me.student_name
-            FROM `tabModule Enrolment` me
-            INNER JOIN `tabModule Enrolment Tutor` met
-                ON met.parent = me.name
-            WHERE me.course = %s
-            AND met.tutor = %s
-            AND me.academic_term = %s
-            AND me.college = %s
-            AND me.semester = %s
-            AND me.docstatus = 1
+                SELECT DISTINCT
+                    me.student,
+                    me.student_name
+                FROM `tabModule Enrolment` me
+                INNER JOIN `tabModule Enrolment Tutor` met
+                    ON met.parent = me.name
+                WHERE me.course = %s
+                AND met.tutor = %s
+                AND me.academic_term = %s
+                AND me.college = %s
+                AND me.semester = %s
+                AND me.module_enrollment_key = %s
+                AND me.docstatus = 1
             """,
-            (doc["module"], doc["tutor"], doc["academic_term"],
-             doc["college"], doc["semester"]),
+            (
+                doc["module"],
+                doc["tutor"],
+                doc["academic_term"],
+                doc["college"],
+                doc["semester"],
+                doc["module_enrolment_key"]
+            ),
             as_dict=True
         )
 
@@ -255,30 +261,30 @@ def get_students(examination_registration=None, doc=None):
 
         data = frappe.db.sql(
             """
-            SELECT DISTINCT
-                era.student,
-                era.student_name,
-                era.programme,
-                era.name as review_name
-            FROM
-                `tabExamination Review Application` era
-            INNER JOIN `tabModule Enrolment` me
-                ON me.student = era.student
-                AND me.course = era.module
-                AND me.academic_term = era.academic_term
-                AND me.college = era.college
-                AND me.semester = era.semester
-                AND me.docstatus = 1
-            INNER JOIN `tabModule Enrolment Tutor` met
-                ON met.parent = me.name
-                AND met.tutor = %(tutor)s
-            WHERE era.academic_term = %(academic_term)s
-                AND era.module = %(module)s
-                AND era.college = %(college)s
-                AND era.semester = %(semester)s
-                AND era.assessment_component = %(assessment_component)s
-                AND era.exam_review_type = %(exam_type)s
-                AND era.docstatus = 1
+                SELECT DISTINCT
+                    era.student,
+                    era.student_name,
+                    era.programme,
+                    era.name as review_name
+                FROM
+                    `tabExamination Review Application` era
+                INNER JOIN `tabModule Enrolment` me
+                    ON me.student = era.student
+                    AND me.course = era.module
+                    AND me.academic_term = era.academic_term
+                    AND me.college = era.college
+                    AND me.semester = era.semester
+                    AND me.docstatus = 1
+                INNER JOIN `tabModule Enrolment Tutor` met
+                    ON met.parent = me.name
+                    AND met.tutor = %(tutor)s
+                WHERE era.academic_term = %(academic_term)s
+                    AND era.module = %(module)s
+                    AND era.college = %(college)s
+                    AND era.semester = %(semester)s
+                    AND era.assessment_component = %(assessment_component)s
+                    AND era.exam_review_type = %(exam_type)s
+                    AND era.docstatus = 1
             """,
             {
                 "academic_term": doc["academic_term"],
@@ -427,3 +433,230 @@ def get_students(examination_registration=None, doc=None):
         )
 
     return eligible_data
+# @frappe.whitelist()
+# def get_students(examination_registration=None, doc=None):
+#     doc = json.loads(doc)
+
+#     # Always initialize `data` so `if not data:` can never raise UnboundLocalError
+#     data = []
+
+#     if doc['exam_type'] == 'Semester End Examination':
+#         if not doc.get('module'):
+#             frappe.throw("Please select Module")
+#         if not doc.get('tutor'):
+#             frappe.throw("Please select Tutor")
+#         if not doc.get('academic_term'):
+#             frappe.throw("Please select Academic Term")
+#         if not doc.get('college'):
+#             frappe.throw("Please select College")
+#         if not doc.get('semester'):
+#             frappe.throw("Please select Semester")
+
+#         data = frappe.db.sql(
+#             """
+#             SELECT DISTINCT
+#                 me.student,
+#                 me.student_name
+#             FROM `tabModule Enrolment` me
+#             INNER JOIN `tabModule Enrolment Tutor` met
+#                 ON met.parent = me.name
+#             WHERE me.course = %s
+#             AND met.tutor = %s
+#             AND me.academic_term = %s
+#             AND me.college = %s
+#             AND me.semester = %s
+#             AND me.docstatus = 1
+#             """,
+#             (doc["module"], doc["tutor"], doc["academic_term"],
+#              doc["college"], doc["semester"]),
+#             as_dict=True
+#         )
+
+#     elif doc['exam_type'] in ('Exam Recheck', 'Exam Re-Evaluation', 'Exam Re-Assessment'):
+#         if not doc.get('module'):
+#             frappe.throw("Please select Module")
+#         if not doc.get('tutor'):
+#             frappe.throw("Please select Tutor")
+#         if not doc.get('academic_term'):
+#             frappe.throw("Please select Academic Term")
+#         if not doc.get('college'):
+#             frappe.throw("Please select College")
+#         if not doc.get('semester'):
+#             frappe.throw("Please select Semester")
+#         if not doc.get('assessment_component'):
+#             frappe.throw("Please select Assessment Component")
+
+#         data = frappe.db.sql(
+#             """
+#             SELECT DISTINCT
+#                 era.student,
+#                 era.student_name,
+#                 era.programme,
+#                 era.name as review_name
+#             FROM
+#                 `tabExamination Review Application` era
+#             INNER JOIN `tabModule Enrolment` me
+#                 ON me.student = era.student
+#                 AND me.course = era.module
+#                 AND me.academic_term = era.academic_term
+#                 AND me.college = era.college
+#                 AND me.semester = era.semester
+#                 AND me.docstatus = 1
+#             INNER JOIN `tabModule Enrolment Tutor` met
+#                 ON met.parent = me.name
+#                 AND met.tutor = %(tutor)s
+#             WHERE era.academic_term = %(academic_term)s
+#                 AND era.module = %(module)s
+#                 AND era.college = %(college)s
+#                 AND era.semester = %(semester)s
+#                 AND era.assessment_component = %(assessment_component)s
+#                 AND era.exam_review_type = %(exam_type)s
+#                 AND era.docstatus = 1
+#             """,
+#             {
+#                 "academic_term": doc["academic_term"],
+#                 "module": doc["module"],
+#                 "college": doc["college"],
+#                 "semester": doc["semester"],
+#                 "tutor": doc["tutor"],
+#                 "assessment_component": doc["assessment_component"],
+#                 "exam_type": doc["exam_type"]
+#             },
+#             as_dict=True
+#         )
+
+#     else:
+#         # Explicit error instead of silent fall-through → no more UnboundLocalError
+#         frappe.throw(
+#             f"Unsupported exam type: {doc.get('exam_type')!r}. "
+#             "Please select a valid Exam Type before fetching students."
+#         )
+
+#     if not data:
+#         frappe.msgprint("No students found for the selected criteria")
+#         return []
+
+#     ineligible_students_query = """
+#         SELECT DISTINCT
+#             ies.student,
+#             ies.consider_attendance,
+#             ins.module,
+#             ins.assessment_component
+#         FROM `tabIneligible Student` ins
+#         INNER JOIN `tabNon Eligible Exam Students` ies
+#             ON ies.parent = ins.name
+#         WHERE ins.docstatus = 1
+#     """
+
+#     where_conditions = []
+#     params = []
+
+#     if doc.get('college'):
+#         where_conditions.append("ins.company = %s")
+#         params.append(doc.get('college'))
+#     if doc.get('academic_year'):
+#         where_conditions.append("ins.academic_year = %s")
+#         params.append(doc.get('academic_year'))
+#     if doc.get('academic_term'):
+#         where_conditions.append("ins.academic_term = %s")
+#         params.append(doc.get('academic_term'))
+#     if doc.get('semester'):
+#         where_conditions.append("ins.semester = %s")
+#         params.append(doc.get('semester'))
+
+#     module_condition = ""
+#     assessment_condition = ""
+
+#     if doc.get('module'):
+#         module_condition = """ AND (ins.module = %s OR ins.module IS NULL) """
+#         params.append(doc.get('module'))
+
+#     if doc.get('assessment_component'):
+#         assessment_condition = """ AND (ins.assessment_component = %s OR ins.assessment_component IS NULL) """
+#         params.append(doc.get('assessment_component'))
+
+#     if where_conditions:
+#         ineligible_students_query += " AND " + " AND ".join(where_conditions)
+
+#     if module_condition:
+#         ineligible_students_query += module_condition
+
+#     if assessment_condition:
+#         ineligible_students_query += assessment_condition
+
+#     ineligible_records = frappe.db.sql(
+#         ineligible_students_query, tuple(params), as_dict=True
+#     )
+
+#     completely_ineligible_set = set()
+#     ineligible_details = []
+
+#     for record in ineligible_records:
+#         student_id = record.get('student')
+#         if student_id:
+#             applies = True
+
+#             if doc.get('module') and record.get('module') is not None:
+#                 if record.get('module') != doc.get('module'):
+#                     applies = False
+
+#             if applies and doc.get('assessment_component') and record.get('assessment_component') is not None:
+#                 if record.get('assessment_component') != doc.get('assessment_component'):
+#                     applies = False
+
+#             if applies and record.get('consider_attendance') == 0:
+#                 completely_ineligible_set.add(student_id)
+#                 ineligible_details.append({
+#                     "student": student_id,
+#                     "reason": record.get('reason', 'Marked as ineligible'),
+#                     "module": record.get('module'),
+#                     "assessment_component": record.get('assessment_component')
+#                 })
+
+#     eligible_data = []
+#     ineligible_filtered_out = []
+
+#     for student in data:
+#         student_id = student.get('student')
+
+#         if student_id in completely_ineligible_set:
+#             ineligible_filtered_out.append({
+#                 "student": student_id,
+#                 "student_name": student.get('student_name', ''),
+#                 "programme": student.get('programme'),
+#                 "reason": next(
+#                     (d['reason'] for d in ineligible_details
+#                      if d['student'] == student_id),
+#                     'Marked as ineligible'
+#                 )
+#             })
+#         else:
+#             eligible_data.append(student)
+
+#     for i in eligible_data:
+#         if not i.get('programme'):
+#             programme = frappe.get_value('Student', {"name": i.student}, 'programme')
+#             if not programme:
+#                 frappe.throw(
+#                     "Set programme for student {} in Student".format(i.student)
+#                 )
+#             i["programme"] = programme
+#         else:
+#             i["programme"] = i.get('programme')
+
+#     if ineligible_filtered_out:
+#         frappe.local.ineligible_students = ineligible_filtered_out
+
+#         ineligible_names = ", ".join(
+#             [f"{s['student']} - {s['student_name']}" for s in ineligible_filtered_out[:5]]
+#         )
+#         if len(ineligible_filtered_out) > 5:
+#             ineligible_names += f" and {len(ineligible_filtered_out) - 5} more"
+
+#         frappe.msgprint(
+#             title="Ineligible Students Filtered Out",
+#             msg=f"Student {ineligible_names} is being Excluded from the Exam Mark Entry.",
+#             indicator="orange"
+#         )
+
+#     return eligible_data

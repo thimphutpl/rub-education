@@ -5,316 +5,260 @@ import frappe
 from frappe.model.document import Document
 import json
 
+
 class ContinuousAssessmentEntry(Document):
-	def validate(self):
-		self.fetch_weightage()
-		self.check_assesment_component()
-		self.check_duplicate_marks_entry()
-		self.calculate_weightage_achieved()
-		self.validate_marks_obtained()
-		
+    def validate(self):
+        self.fetch_weightage()
+        self.check_assesment_component()
+        self.check_duplicate_marks_entry()
+        self.calculate_weightage_achieved()
+        self.validate_marks_obtained()
 
+    def on_submit(self):
+        self.create_assessment_ledger()
 
-	def on_submit(self):
-		# self.check_earlier_assesment()
-		self.create_assessment_ledger()
-	def validate_marks_obtained(self):
-		for item in self.items:
-			if (item.marks_obtained or 0) > (self.total_marks or 0):
-				frappe.throw(
-					f"Row {item.idx}: Marks Obtained cannot be greater than Total Marks ({self.total_marks})."
-				)
-	def on_cancel(self):
-		self.ignore_linked_doctypes = (
-			"Assessment Ledger",
-		)
-		# super().on_cancel()
-		self.cancel_assessment_entry()
+    def on_cancel(self):
+        self.ignore_linked_doctypes = ("Assessment Ledger",)
+        self.cancel_assessment_entry()
 
-	# def cancel_assessment_entry(self):
-	# 	for i in self.items:
-	# 		assessment_ledger = frappe.db.get_value(
-	# 			"Assessment Ledger",
-	# 			{
-	# 				"reference_name": self.name,
-					
-	# 			},
-	# 			"name"
-	# 		)
+    def validate_marks_obtained(self):
+        for item in self.items:
+            if (item.marks_obtained or 0) > (self.total_marks or 0):
+                frappe.throw(
+                    f"Row {item.idx}: Marks Obtained cannot be greater than "
+                    f"Total Marks ({self.total_marks})."
+                )
 
-	# 		if assessment_ledger:
-	# 			frappe.db.sql(
-	# 				'''
-	# 				UPDATE `tabAssessment Ledger`
-	# 				SET is_cancelled = 1
-	# 				WHERE name = %s
-	# 				''',
-	# 				(assessment_ledger,)
-	# 			)
+    def cancel_assessment_entry(self):
+        assessment_ledgers = frappe.get_all(
+            "Assessment Ledger",
+            filters={"reference_name": self.name},
+            pluck="name",
+        )
+        for ledger in assessment_ledgers:
+            frappe.db.sql(
+                """
+                UPDATE `tabAssessment Ledger`
+                SET is_cancelled = 1
+                WHERE name = %s
+                """,
+                (ledger,),
+            )
 
-	# 	frappe.db.commit()
+    def fetch_exam_registration(self):
+        if self.exam_type not in ("Semester End Examination", "Exam Re-Assessment"):
+            return
 
-	def cancel_assessment_entry(self):
-		assessment_ledgers = frappe.get_all(
-			"Assessment Ledger",
-			filters={
-				"reference_name": self.name
-			},
-			pluck="name"
-		)
+        params = (
+            self.module,
+            self.semester,
+            self.academic_term,
+            self.college,
+            self.assessment_component,
+            self.tutor,
+        )
 
-		for ledger in assessment_ledgers:
-			frappe.db.sql("""
-				UPDATE `tabAssessment Ledger`
-				SET is_cancelled = 1
-				WHERE name = %s
-			""", (ledger,))
-	def fetch_exam_registration(self):
-		if self.exam_type in ('Semester End Examination','Exam Re-Assessment'):
-			if self.exam_type=='Semester End Examination':
-				exam_registration = frappe.db.sql("""
-					SELECT name 
-					FROM `tabExamination Registration`
-					WHERE module = %s
-					AND semester = %s
-					AND academic_term = %s
-					AND company = %s
-					AND assessment_component = %s
-					AND tutor = %s
-					AND reassesment=0
-				""", 
-				(self.module, self.semester, self.academic_term, self.college, self.assessment_component, self.tutor),
-				as_dict=True)
-			elif self.exam_type=='Exam Re-Assessment':
-				exam_registration = frappe.db.sql("""
-					SELECT name 
-					FROM `tabExamination Registration`
-					WHERE module = %s
-					AND semester = %s
-					AND academic_term = %s
-					AND company = %s
-					AND assessment_component = %s
-					AND tutor = %s
-					AND reassesment=1 
-					order by posting_date DESC limit 1
-				""", 
-				(self.module, self.semester, self.academic_term, self.college, self.assessment_component, self.tutor),
-				as_dict=True)
-			else:
-				exam_registration = frappe.db.sql("""
-					SELECT name 
-					FROM `tabExamination Registration`
-					WHERE module = %s
-					AND semester = %s
-					AND academic_term = %s
-					AND company = %s
-					AND assessment_component = %s
-					AND tutor = %s
-					order by posting_date DESC limit 1
-				""", 
-				(self.module, self.semester, self.academic_term, self.college, self.assessment_component, self.tutor),
-				as_dict=True)
-			
+        if self.exam_type == "Semester End Examination":
+            query = """
+                SELECT name
+                FROM `tabExamination Registration`
+                WHERE module = %s
+                  AND semester = %s
+                  AND academic_term = %s
+                  AND company = %s
+                  AND assessment_component = %s
+                  AND tutor = %s
+                  AND reassesment = 0
+            """
+        else:  # Exam Re-Assessment
+            query = """
+                SELECT name
+                FROM `tabExamination Registration`
+                WHERE module = %s
+                  AND semester = %s
+                  AND academic_term = %s
+                  AND company = %s
+                  AND assessment_component = %s
+                  AND tutor = %s
+                  AND reassesment = 1
+                ORDER BY posting_date DESC
+                LIMIT 1
+            """
 
+        exam_registration = frappe.db.sql(query, params, as_dict=True)
 
-			if exam_registration:
-				self.examination_registration = exam_registration[0].get('name')
-			else:
-				frappe.throw("Examination Registration not found for {}".format(self.assessment_component))
-	# def check_duplicate_marks_entry(self):
-	# 	duplicate = frappe.db.exists("Continuous Assessment Entry",{"college":self.college, "programme":self.programme, "module": self.module, "academic_term":self.academic_term,"tutor":self.tutor,"docstatus":["!=", 2], "assessment_component": self.assessment_component, "name": ["!=", self.name]})
-	# 	if duplicate:
-	# 		frappe.throw("CA Entry already exists.<br> Existing Entry: {}".format(", ".join(str(idx+1)+". "+a.name for idx, a in enumerate(frappe.get_all("Continuous Assessment Entry",{"college":self.college, "programme":self.programme, "module": self.module, "academic_term":self.academic_term,"tutor":self.tutor,"docstatus":["!=", 2], "assessment_component": self.assessment_component})))))
-	
-	def check_duplicate_marks_entry(self):
-		if not self.module_enrolment_key:
-			return
+        if exam_registration:
+            self.examination_registration = exam_registration[0].get("name")
+        else:
+            frappe.throw(
+                f"Examination Registration not found for {self.assessment_component}"
+            )
 
-		exclude = [self.name]
-		if self.amended_from:
-			exclude.append(self.amended_from)
+    def check_duplicate_marks_entry(self):
+        if not self.module_enrolment_key:
+            return
 
-		# Check if an entry already exists for this exact key and component
-		duplicate = frappe.db.get_value(
-			"Continuous Assessment Entry",
-			{
-				"module_enrolment_key": self.module_enrolment_key,
-				"assessment_component": self.assessment_component,
-				"tutor": self.tutor,
-				"exam_type": self.exam_type,
-				"docstatus": ["!=", 2],
-				"name": ["not in", exclude],
-			},
-			"name",
-		)
+        exclude = [self.name]
+        if self.amended_from:
+            exclude.append(self.amended_from)
 
-		if duplicate:
-			frappe.throw(
-				f"CA Entry <b>{duplicate}</b> already exists for "
-				f"{self.assessment_component} ({self.exam_type}) under this Module Enrolment Key."
-			)
-	def check_assesment_component(self):
-		# ass_com = frappe.db.exists("Module Assessment Item",{"module":self.module,"assessment_name":self.assessment_component,"college":self.college,"":self.academic_term})
-		ass_com = frappe.db.sql("""
-				SELECT 1 
-				FROM `tabModule Assessment Item` mai
-				INNER JOIN `tabModule Assessment Criteria` mac 
-					ON mai.parent = mac.name
-				WHERE mac.module = %s
-					AND mai.assessment_name = %s
-					AND mac.academic_term = %s
-					AND mac.college = %s
-			""", (
-				self.module,
-				self.assessment_component,
-				self.academic_term,
-				self.college
-			))
-	
-		if not ass_com:
-			frappe.throw("The component {} dont exist for module {}".format(self.assessment_component,self.module))
+        duplicate = frappe.db.get_value(
+            "Continuous Assessment Entry",
+            {
+                "module_enrolment_key": self.module_enrolment_key,
+                "assessment_component": self.assessment_component,
+                "tutor": self.tutor,
+                "exam_type": self.exam_type,
+                "docstatus": ["!=", 2],
+                "name": ["not in", exclude],
+            },
+            "name",
+        )
 
-	# def check_earlier_assesment(self):
-	# 	for i in self.items:
-	# 		assessment_ledger = frappe.db.get_value(
-	# 			"Assessment Ledger",
-	# 			{
-	# 				"student": i.student,
-	# 				"assessment_component": self.assessment_component,
-	# 				"module": self.module,
-	# 				"has_reassessment":0
-	# 			},
-	# 			"name"
-	# 		)
+        if duplicate:
+            frappe.throw(
+                f"CA Entry <b>{duplicate}</b> already exists for "
+                f"{self.assessment_component} ({self.exam_type}) "
+                f"under this Module Enrolment Key."
+            )
 
-	# 		if assessment_ledger:
-	# 			frappe.db.sql(
-	# 				'''
-	# 				UPDATE `tabAssessment Ledger`
-	# 				SET has_reassessment = 1
-	# 				WHERE name = %s
-	# 				''',
-	# 				(assessment_ledger,)
-	# 			)
+    def check_assesment_component(self):
+        ass_com = frappe.db.sql(
+            """
+            SELECT 1
+            FROM `tabModule Assessment Item` mai
+            INNER JOIN `tabModule Assessment Criteria` mac
+                ON mai.parent = mac.name
+            WHERE mac.module = %s
+              AND mai.assessment_name = %s
+              AND mac.academic_term = %s
+              AND mac.college = %s
+            """,
+            (
+                self.module,
+                self.assessment_component,
+                self.academic_term,
+                self.college,
+            ),
+        )
 
-	# 	frappe.db.commit()
-			
+        if not ass_com:
+            frappe.throw(
+                f"The component {self.assessment_component} "
+                f"does not exist for module {self.module}"
+            )
 
-	def calculate_weightage_achieved(self):
-		for i in self.items:
-			if not (i.marks_obtained and self.total_marks):
-				continue
+    def calculate_weightage_achieved(self):
+        for item in self.items:
+            if not (item.marks_obtained and self.total_marks):
+                continue
 
-			condition = ""
-			# if self.tutor:
-			# 	condition = f" AND mac.tutor = '{self.tutor}'"
+            result = frappe.db.sql(
+                """
+                SELECT mai.weightage
+                FROM `tabModule Assessment Item` mai
+                INNER JOIN `tabModule Assessment Criteria` mac
+                    ON mai.parent = mac.name
+                WHERE mac.college = %s
+                  AND mac.academic_term = %s
+                  AND mac.programme = %s
+                  AND mac.module = %s
+                  AND mai.assessment_name = %s
+                """,
+                (
+                    self.college,
+                    self.academic_term,
+                    self.programme,
+                    self.module,
+                    self.assessment_component,
+                ),
+            )
 
-			query = f"""
-				SELECT mai.weightage
-				FROM `tabModule Assessment Item` mai
-				INNER JOIN `tabModule Assessment Criteria` mac 
-					ON mai.parent = mac.name
-				WHERE mac.college = '{self.college}'
-				AND mac.academic_term = '{self.academic_term}'
-				AND mac.programme = '{self.programme}'
-				AND mac.module = '{self.module}'
-				AND mai.assessment_name = '{self.assessment_component}'
-			
-			"""
+            if not result:
+                frappe.throw("Weightage not defined for this configuration")
 
-			# frappe.throw(str(query))
+            weightage = result[0][0] or 0
+            item.weightage = weightage
+            item.weightage_achieved = (
+                (item.marks_obtained / self.total_marks) * weightage
+            )
 
-			result = frappe.db.sql(query)
+    def fetch_weightage(self):
+        weightage = frappe.db.sql(
+            """
+            SELECT mai.weightage
+            FROM `tabModule Assessment Item` mai
+            INNER JOIN `tabModule Assessment Criteria` mac
+                ON mai.parent = mac.name
+            WHERE mac.college = %s
+              AND mac.academic_term = %s
+              AND mac.programme = %s
+              AND mac.module = %s
+              AND mai.assessment_name = %s
+            """,
+            (
+                self.college,
+                self.academic_term,
+                self.programme,
+                self.module,
+                self.assessment_component,
+            ),
+            as_dict=1,
+        )
 
-			if not result:
-				frappe.throw("Weightage not defined for this configuration")
+        if len(weightage) > 0:
+            self.weightage = weightage[0].weightage
 
-			# frappe.throw(str(result[0][0]))
+    def create_assessment_ledger(self):
+        for item in self.items:
+            doc = frappe.get_doc(
+                {
+                    "doctype": "Assessment Ledger",
+                    "student": item.student,
+                    "posting_date": self.posting_date,
+                    "student_name": item.student_name,
+                    "academic_year": self.academic_year,
+                    "academic_term": self.academic_term,
+                    "marks_obtained": item.marks_obtained,
+                    "semester": self.semester,
+                    "passing_marks": self.passing_marks,
+                    "total_marks": self.total_marks,
+                    "reference_type": self.doctype,
+                    "reference_name": self.name,
+                    "has_reassessment": 0,
+                    "college": self.college,
+                    "programme": self.programme,
+                    "module": self.module,
+                    "assessment_component": self.assessment_component,
+                    "tutor": self.tutor,
+                    "tutor_name": self.tutor_name,
+                    "assessment_weightage": self.weightage,
+                    "weightage_achieved": item.weightage_achieved,
+                }
+            )
+            doc.insert(ignore_permissions=True)
+            doc.submit()
 
-			weightage = result[0][0] or 0
+        frappe.msgprint(
+            f"Assessment Ledger created and submitted for {self.assessment_component}"
+        )
 
-			i.weightage = weightage
-			i.weightage_achieved = (
-				(i.marks_obtained / self.total_marks) * weightage
-			)
-
-	def fetch_weightage(self):
-		condition = ""
-		# if self.tutor:
-		# 	condition = f" AND mac.tutor = '{self.tutor}'"
-		weightage= frappe.db.sql(f"""
-			SELECT mai.weightage
-			FROM `tabModule Assessment Item` mai
-			INNER JOIN `tabModule Assessment Criteria` mac 
-				ON mai.parent = mac.name
-			WHERE mac.college = '{self.college}'
-			AND mac.academic_term = '{self.academic_term}'
-			AND mac.programme = '{self.programme}'
-			AND mac.module = '{self.module}'
-			AND mai.assessment_name = '{self.assessment_component}'
-			
-		""", as_dict=1)
-		if len(weightage) > 0:
-			weightage = weightage[0].weightage
-		self.weightage = weightage
-
-	def create_assessment_ledger(self):
-		for i in self.items:
-			doc = frappe.get_doc({
-				"doctype": "Assessment Ledger",
-				"student": i.student,
-				"posting_date":self.posting_date,
-				"student_name": i.student_name,
-				"academic_year": self.academic_year,
-				"academic_term": self.academic_term,
-				"marks_obtained": i.marks_obtained,
-				"semester":self.semester,
-				"passing_marks": self.passing_marks,
-				"total_marks": self.total_marks,
-				"reference_type": self.doctype,
-				"reference_name": self.name,
-				"has_reassessment": 0,
-				"college": self.college,
-				"programme": self.programme,
-				"module": self.module,
-				"assessment_component": self.assessment_component,
-				"tutor": self.tutor,
-				"tutor_name": self.tutor_name,
-				"assessment_weightage": self.weightage,
-				"weightage_achieved": i.weightage_achieved,
-			})
-
-			# Insert into database
-			# frappe.throw(frappe.as_json(doc))
-			doc.insert(ignore_permissions=True)
-
-			# Optionally submit if needed
-			doc.submit()
-
-		frappe.msgprint(f"Assessment Ledger created and submitted for {self.assessment_component}")
-
-		
 
 @frappe.whitelist()
 def get_students(doc, module_enrolment_key):
-	# Step 1: Get students enrolled in the given term & module
-	if not module_enrolment_key:
-		frappe.throw("Please select Module Enrolment Key")
-	doc = json.loads(doc)
-	# frappe.throw(frappe.as_json(doc['college']))
+    if not module_enrolment_key:
+        frappe.throw("Please select Module Enrolment Key")
 
-	data = frappe.db.sql(
-		"""
-		select distinct student, student_name
-		from `tabModule Enrolment` where module_enrollment_key=%s and docstatus=1
-		""",
-		(module_enrolment_key),
-		as_dict=True
-	)
+    data = frappe.db.sql(
+        """
+        SELECT DISTINCT student, student_name
+        FROM `tabModule Enrolment`
+        WHERE module_enrollment_key = %s
+          AND docstatus = 1
+        ORDER BY student_name ASC
+        """,
+        (module_enrolment_key,),
+        as_dict=True,
+    )
 
-	# Step 2: For each student, calculate attendance percentage
-	
-	# frappe.throw(str(data))
-	return data
-
-
+    return data
